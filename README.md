@@ -25,6 +25,24 @@ The functions are provided in the if97 pacakge:
    * third input parameter: the propertyID of the calculated property(int, 0-29), see Properties in libseuif97
    * the return: the calculated property value(double)
 
+```bash
+cargo add if97
+```
+
+```rust
+use if97::pt;
+fn main() {
+    
+    let p:f64 = 3.0;
+    let t:f64= 300.0-273.15;
+   
+    let h=pt(p,t,if97::OH);
+    let s=pt(p,t,if97::OS);
+    let v=pt(p,t,if97::OV);
+    println!("p={} t={} h={} s={} v={}",p,t,h,s,v,u,w);    
+}
+```
+    
 ## Properties in if97
 
 | Properties                            |    Unit     | symbol | propertyID |
