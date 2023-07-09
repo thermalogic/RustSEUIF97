@@ -2,9 +2,9 @@
 
 [![DOI](https://zenodo.org/badge/110833324.svg)](https://zenodo.org/badge/latestdoi/110833324)
 
-IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.   
+IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
-Through the high-speed packagey, the results of the IAPWS-IF97 are accurately produced at about 5~10x speed-up compared to  the `powi()` of the Rust standard library.   
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5~10x speed-up compared to  the `powi()` of the Rust standard library.   
 
 The following input pairs are implemented: 
 
@@ -15,15 +15,14 @@ The following input pairs are implemented:
 
 (h,s)  
 ```
-
-### Usage
+## Usage
 
 The functions are provided in the if97 pacakge:
 
 * ??(in1,in2,propertyID), , e.g:`h=pt(p,t,4)`, the propertyID h is 4 
-   * first,second input parameters: the input properties(double)
-   * third input parameter: the propertyID of the calculated property(int, 0-29), see Properties in libseuif97
-   * the return: the calculated property value(double)
+   * first,second input parameters: the input properties(f64)
+   * third input parameter: the propertyID of the calculated property(i32, 0-29)
+   * the return: the calculated property value(f64)
 
 ```bash
 cargo add if97
