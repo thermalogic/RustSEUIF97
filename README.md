@@ -17,16 +17,31 @@ The following input pairs are implemented:
 ```
 ## Usage
 
-The functions are provided in the if97 pacakge:
-
-* ??(in1,in2,propertyID), , e.g:`h=pt(p,t,4)`, the propertyID h is 4 
-   * first,second input parameters: the input properties(f64)
-   * third input parameter: the propertyID of the calculated property(i32, 0-29)
-   * the return: the calculated property value(f64)
+Install the crate
 
 ```bash
 cargo add if97
 ```
+
+The type of functions are provided in the if97 package:
+
+```rust
+fn(f64,f64,i32) -> f64;
+``````
+
+* first,second input parameters: the input propertry pairs(f64)
+* third input parameter: the propertyID of the calculated property(i32)
+* the return: the calculated property value(f64)
+
+```rust
+pt(p:f64,tf64,o_id::i32)->f64;
+ph(p:f64,tf64,o_id::i32)->f64;
+ps(p:f64,tf64,o_id::i32)->f64;
+hs(p:f64,tf64,o_id::i32)->f64;
+px(p:f64,xf64,o_id::i32)->f64;
+tx(p:f64,xf64,o_id::i32)->f64;
+```
+Examples
 
 ```rust
 use if97::pt;
@@ -38,7 +53,8 @@ fn main() {
     let h=pt(p,t,if97::OH);
     let s=pt(p,t,if97::OS);
     let v=pt(p,t,if97::OV);
-    println!("p={} t={} h={} s={} v={}",p,t,h,s,v,u,w);    
+    
+    println!("p={} t={} h={} s={} v={}",p,t,h,s,v);    
 }
 ```
     
