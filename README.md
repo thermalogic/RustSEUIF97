@@ -32,12 +32,12 @@ fn(f64,f64,i32) -> f64;
 * the return: the calculated property value(f64)
 
 ```rust
-pt(p:f64,tf64,o_id::i32)->f64;
-ph(p:f64,tf64,o_id::i32)->f64;
-ps(p:f64,tf64,o_id::i32)->f64;
-hs(p:f64,tf64,o_id::i32)->f64;
-px(p:f64,xf64,o_id::i32)->f64;
-tx(p:f64,xf64,o_id::i32)->f64;
+pt(p:f64,t:f64,o_id::i32)->f64;
+ph(p:f64,h:f64,o_id::i32)->f64;
+ps(p:f64,s:f64,o_id::i32)->f64;
+hs(h:f64,s:f64,o_id::i32)->f64;
+px(p:f64,x:f64,o_id::i32)->f64;
+tx(p:f64,x:f64,o_id::i32)->f64;
 ```
 Examples
 
