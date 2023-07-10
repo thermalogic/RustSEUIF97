@@ -28,7 +28,7 @@ fn(f64,f64,i32) -> f64;
 ``````
 
 * first,second input parameters: the input propertry pairs(f64)
-* third input parameter: o_id -:the property ID of the calculated property(i32)
+* third input parameter: o_id - the property ID of the calculated property(i32)
 * the return: the calculated property value(f64)
 
 ```rust
