@@ -3,14 +3,33 @@
 //!        Dynamic viscosity  Pa.s  dv (mu)   
 //!        Kinematic viscosity  m^2/s    kv     25 
 //!        Thermal conductivity  W/(m.K)     tc  k  26    
-//!        Thermal diffusivity   um^2/s   td        27 
+//!        Thermal diffusivity   um^2/s   td        27 热扩散率
 //!        Prandtl number                  pr         28 
-//!        Refractive index 
-//!        Relative static dialectric sonstant   
+//!        static dialectric sonstant   sdc - 30 
 //！       Surface tension     st   mN/m      29 sigma  [N/m]
-  
+
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
+
+
+/// Prandtl number=dv*cp/tc
+///    dv: Dynamic viscosity Pa.s 
+///    cp: specific isobaric heat capacity
+///    tc: Thermal conductivity   W/(m.K) 
+pub fn prandtl_number(dv:f64,cp:f64,tc:f64)->f64
+{
+   1.0E+3 * dv *cp /tc
+}
+
+/// Thermal diffusivity 
+///      = Thermal conductivity /(specific isobaric heat capacity*density)
+///       cp: specific isobaric heat capacity
+///       tc: Thermal conductivity   W/(m.K) 
+pub fn thermal_diffusivity(tc:f64,cp:f64,d:f64)->f64
+{
+ return tc / (cp * d);
+}
+
  
 /// The Viscosity for IF97
 ///    Parameters
@@ -105,3 +124,42 @@ pub fn surface_tension(T:f64)->f64
     else
        { return INVALID_VALUE as f64};
 }
+
+///The Static Dielectric Constant of Ordinary Water Substance 
+/// Parameters
+///      rho : Density [kg/m³]
+///      T :  Temperature [K]
+///    Returns
+///      epsilon : Dielectric constant [-]
+///    IAPWS, Release on the Static Dielectric Constant of Ordinary Water
+///    Substance for Temperatures from 238 K to 873 K and Pressures up to 1000MPa
+//             http://www.iapws.org/relguide/Dielec.html
+pub fn  static_dielectric(rho:f64, T:f64)->f64
+{
+    let k:f64 = 1.380658e-23;
+    let Na:f64 = 6.0221367e23;
+    let alfa:f64 = 1.636e-40;
+    let epsilon0:f64 = 8.854187817e-12;
+    let mu:f64 = 6.138e-30;
+    let M:f64 = 0.018015268;
+
+    let d:f64 = rho/DC_WATER;
+    let Tr:f64 = TC_WATER/T;
+    const I:[i32;11] = [1, 1, 1, 2, 3, 3, 4, 5, 6, 7, 10];
+    const J:[f64;11] = [0.25, 1.0, 2.5, 1.5, 1.5, 2.5, 2.0, 2.0, 5.0, 0.5, 10.0];
+    const n:[f64;12] = [0.978224486826, -0.957771379375, 0.237511794148, 
+                        0.714692244396,-0.298217036956, -0.108863472196, 
+                        0.949327488264e-1, -0.980469816509e-2,0.165167634970e-4,
+                        0.937359795772e-4, -0.12317921872e-9,0.196096504426e-2];
+
+    let mut g:f64= 1.0+n[11]*d/(TC_WATER/228.0/Tr-1.0).powf(1.2);
+    for i in 0..11
+    {    g += n[i]*sac_pow(d,I[i])*Tr.powf(J[i]);};
+
+    let A:f64 = Na*mu*mu*rho*g/M/epsilon0/k/T;
+    let B:f64 = Na*alfa*rho/3.0/M/epsilon0;
+    let c:f64=9.0+2.0*A+18.0*B+A*A+10.0*A*B+9.0*B*B;
+    let epsilon:f64  = (1.0+A+5.0*B+c.sqrt())/4.0/(1.-B);
+    return epsilon; 
+}   
+

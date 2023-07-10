@@ -1,4 +1,4 @@
-//！  Basic Equation of  IAPWS-IF97 Region1
+//！  IAPWS-IF97 Region1: Page8 Table 3 thermodynamic  properties 
 //！       (p,T)-->v, u,h,s,cp, cv,w
 //！       T: temperature  K
 //！       P: pressure  Map

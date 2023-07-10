@@ -9,7 +9,7 @@ pub struct IJnData {
 
 /// constants of propertry ID - o_id
 
-/// 1 propertry in IF97 Basic Equation
+// 1 propertry in IF97 Basic Equation
 pub const OP:i32=0;   //  p  Pressure           MPa     
 pub const OT:i32=1;   //  t  Temperature        °C        
 pub const OD:i32=2;   //  d  Density            kg/m^3    
@@ -32,27 +32,27 @@ pub const OR:i32=16;   // r  Region in IF97
 pub const OEC:i32=17;   // ec Isobaric volume expansion coefficient  1/K  
 pub const OKT:i32=18;   // kt Isothermal compressibility   1/MPa  
 
-/// 3 Partial derivative
+// 3 Partial derivative
 pub const ODVDT:i32=19;   // dvdt Partial derivative (dV/dT)p  m3/(kg·K)
 pub const ODVDP:i32=20;   // dvdp Partial derivative (dV/dP)T  m3/(kg·MPa)
 pub const ODPDT:i32=21;   // dpdT Partial derivative (dP/dT)v   MPa/K  
 
-/// 4 extended  propertry 
+// 4 extended  propertry 
 pub const OIJTC:i32=22;   // iJTC Isothermal Joule-Thomson coefficient kJ/(kg·MPa)
 pub const OITCR:i32=23;   // JTC  Joule-Thomson coefficient    K/MPa 
 
-/// 5 non-thremal  propertry 
+// 5 non-thremal  propertry 
 pub const ODV:i32=24;   // dv Dynamic viscosity  kg/(m·s) or mu(Pa.s)
 pub const OKV:i32=25;   // kv Kinematic viscosity  m^2/s 
 pub const OTC:i32=26;   // tc Thermal conductivity W/(m.K) 
 pub const OTD:i32=27;   // td Thermal diffusivity   um^2/s 
 pub const OPR:i32=28;   // pr Prandtl number  
 pub const OST:i32=29;   // st Surface tension   mN/m  
+pub const OSDC:i32=30;   // Static Dielectric Constant 
 
 
-///---------------------------------------------
+
 /// code for error input
-///-----------------------------------------------
 pub const INVALID_VALUE:i32=-9999;
 pub const INVALID_OUTID:i32=-1000;
 pub const INVALID_P:i32=-2100;
