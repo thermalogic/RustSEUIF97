@@ -1,13 +1,8 @@
-///----------------------------------------------------------------------------
-///  Root Finding Methods For IAPWS - IF97
-///
-///  SECANT METHOD :Numerical Reciples  Ch.9.2: Pages 357
-///    Using the secant method, find the root of a func throught lie between x1 and x2
-///    The root returned as rtsec, is refined until its accuracy is ABS(xacc)
-///  
-///  By Maohua Cheng
-///
-///----------------------------------------------------------------------------
+//！  Root Finding Methods For IAPWS - IF97
+//！
+//！  SECANT METHOD :Numerical Reciples  Ch.9.2: Pages 357
+//！    Using the secant method, find the root of a func throught lie between x1 and x2
+//！    The root returned as rtsec, is refined until its accuracy is ABS(xacc)
 pub type IF97_EQ = fn(f64,f64) -> f64;
 
 pub const ESP:f64=1.0E-08;
