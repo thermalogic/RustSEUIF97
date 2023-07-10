@@ -155,7 +155,7 @@ pub fn hs_thermal(h: f64, s: f64, o_id: i32) -> f64 {
 
 pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
     match o_id {
-        OP | OT | OV | OD | OH | OS | OU | OCP | OCV | OW | OR  | OX => hs_thermal(h, s, o_id),
+        OP | OT | OV | OD | OH | OS | OU | OCP | OCV | OW | OR | OX => hs_thermal(h, s, o_id),
         OST =>  { let t: f64 = hs_thermal(h, s, OT);
                   return surface_tension(t+K);
                  },

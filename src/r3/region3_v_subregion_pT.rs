@@ -1,13 +1,11 @@
 
-/*----------------------------------------------------------------------
-Backward Equation for Region 3:
-     IAPWS-IF97-S05rev 
-          (p,T)->d  
+//! Backward Equation for Region 3:
+//!      IAPWS-IF97-S05rev 
+//!           (p,T)->d  
+//!    p is pressure in MPa
+//!    t is temperature in K
+//！    returns v is specific volume in Region 3a in m3/kg
 
-    p is pressure in MPa
-    t is temperature in K
-    returns v is specific volume in Region 3a in m3/kg
-------------------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 use crate::r4::region4_sat_pT::*;

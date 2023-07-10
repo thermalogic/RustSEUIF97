@@ -1,6 +1,7 @@
 
 // importing common module.
 #![allow(warnings)]
+mod common;
 use assert_approx_eq::assert_approx_eq;
 
 use if97::pt;
@@ -19,7 +20,8 @@ pub struct TestData {
   }
 #[test]
 fn test_regino1_pt() {
-
+    // using common code.
+    common::setup();
     // Table 5，Page 9: p,T,v,h,u,s,cp,w
 const p: [f64; 3] = [3.0, 80.0, 3.0];
 const T: [f64; 3] = [300.0, 300.0, 500.0];

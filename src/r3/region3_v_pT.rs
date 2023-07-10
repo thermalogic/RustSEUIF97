@@ -1,25 +1,20 @@
-/*----------------------------------------------------------------------
-Backward Equation for Region 3:
-     IAPWS-IF97-S05rev 
-          (p,T)->v 
-     p  pressure in MPa
-     T  temperature in K
-     v  density in kg/m3
+//! Backward Equation for Region 3:
+//!    IAPWS-IF97-S05rev 
+//!     (p,T)->v 
+//!        p  pressure in MPa
+//!        T  temperature in K
+//!         v  density in kg/m3
 
-Author： Maohua  Cheng
-------------------------------------------------------------*/
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
 use crate::r4::region4_sat_pT::*;
 use crate::r3::region3_v_subregion_pT::*;
 
-
+/// boundary is one of 3ab, 3cd, ...
+/// p is pressure in MPa
+/// returns the temperature at the boundary in K
 pub fn T_atRegionBoundary(p:f64, boundary:String)->f64
 {
- // p is pressure in MPa
- // boundary is one of 3ab, 3cd, ...
- // returns the temperature at the boundary in K
-   
     const I3ab:[i32;6] =[0, 0, 1, 2, -1, -2];
     const I3cd:[i32;5] = [0, 0, 1, 2, 3];
     const I3gh:[i32;6] = [0,0, 1, 2, 3, 4];
@@ -74,12 +69,12 @@ pub fn T_atRegionBoundary(p:f64, boundary:String)->f64
     return T
 }
 
+/// p is pressure in MPa
+/// t is temperature in K
+/// x = 0 is liquid, =1 is steam]  x : integer    Vapor quality [-]
+/// returns density in kg/m3
 pub fn pT2v_sat_reg3(p:f64, T:f64,x:f64)->f64
 {
-    // p is pressure in MPa
-    // t is temperature in K
-    // x = 0 is liquid, =1 is steam]  x : integer    Vapor quality [-]
-    // returns density in kg/m3
     let mut v:f64=0.0;
     let mut subRegion:char;
     // set the region
@@ -125,13 +120,9 @@ pub fn pT2v_sat_reg3(p:f64, T:f64,x:f64)->f64
     return pT2v_3subreg(p, T, subRegion);
 }
 
-//-------------------------------------------------------------------------
-
+/// sets the subregion in region3
 pub fn sub_region3_pT(p:f64,T:f64)->char
 {
-    // p is pressure in MPa
-    // T is temperature in K
-    // sets the subregion
 
     let mut subRegion:char;
 

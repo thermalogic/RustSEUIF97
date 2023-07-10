@@ -1,10 +1,7 @@
-/*---------------------------------------------------------------------------
-   IAPWS-IF97 Backware Equation (H,S)->P for Region 1:
-     
-     IAPWS-IF97-S01: Supp-PHS12-2014.pdf  June 2014
+//！ IAPWS-IF97 Backware Equation (H,S)->P for Region 1:
+//！     IAPWS-IF97-S01: Supp-PHS12-2014.pdf  June 2014
+//！
 
-  Author: Cheng Maohua 
---------------------------------------------------------------------- */
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
 use crate::algo::root::rtsec1;
@@ -14,7 +11,7 @@ use crate::algo::root::IF97_EQ;
 use crate::r1::region1_pT::*;
 use crate::r1::region1_T_phps::*;
 
-// helper for iter (h,s)->p
+/// helper for iter (h,s)->p
 fn ph2s_reg1(p:f64, h:f64)->f64
 {
   let T:f64=ph2T_reg1(p, h);
@@ -22,9 +19,9 @@ fn ph2s_reg1(p:f64, h:f64)->f64
 }
 
 
-//----------------------------------------------------------------
-//  Backward equation p(h,s) for region 1
-//----------------------------------------------------------------
+///----------------------------------------------------------------
+///  Backward equation p(h,s) for region 1
+///----------------------------------------------------------------
 pub fn hs2p_reg1(h:f64, s:f64)->f64
 {
   // Page 5, Table 2 :

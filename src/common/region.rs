@@ -1,13 +1,10 @@
-/*-----------------------------------------------------------------------
- Check the Region
+//!
+//! Check the Region
+//!    pT_sub_region
+//!    ph_sub_region
+//!    ps_sub_region
+//!    hs_sub_region
 
-    pT_sub_region
-    ph_sub_region
-    ps_sub_region
-    hs_sub_region
-
-Author: Maohua Cheng
--------------------------------------------------------------------------*/
 use crate::common::boundaries::*;
 use crate::common::constant::*;
 use crate::r1::region1_pT::*;
@@ -21,9 +18,11 @@ use crate::r4::region4_sat_pT::*;
 use crate::r5::region5_pT::*;
 use crate::r5::region5_backward::*;
 
+/// T in up-order  to check region，
+///    p in MPa
+///    T in K
+/// returns the region
 pub fn pT_sub_region(p: f64, T: f64) -> i32
-// 温度升序，判断区域 ，直接return。判定逻辑简单，避免了多重if
-// p in MPa。T in K returns the region
 {
     if (p < P_MIN || p > 100.0) {
         return INVALID_P;
@@ -80,14 +79,14 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32
     return INVALID_VALUE;
 }
 
+/// Pmin -> Ps_623-> Pc-> 100MP ，3 range to check region
+///  in each sub region use(hmin, hmax) to chack region
 pub fn ph_sub_region(p:f64,h:f64)->i32
 {
-    // 压力Pmin -> Ps_623-> Pc-> 100MP 升序，分3段判断区域
-    //    每个压力区域 hmin  hmax 分段判断区域
     let hmin:f64 = pT2h_reg1(p, 273.15);
     let hmax:f64 = pT2h_reg5(p, 2273.15);
 
-    if (P_MIN <= p && p <= Ps_623) // Ps_623 PMIN3 3区的最小压力
+    if (P_MIN <= p && p <= Ps_623) // Ps_623 
     {
         let T_sat:f64=T_saturation(p);
         let h14:f64 = pT2h_reg1(p, T_sat);
@@ -147,10 +146,10 @@ pub fn ph_sub_region(p:f64,h:f64)->i32
     return INVALID_VALUE;
 }
 
+/// Pmin -> Ps_623-> Pc-> 100MP ，3 range to check region
+///  in each sub region use(smin ,smax) to chack region
 pub fn ps_sub_region(p:f64,s:f64)->i32
 {
-   // 压力Pmin -> Ps_623 -> Pc>-> 100升序，分3段判断区域
-    //    每个压力区域 smin  smax 分段判断区域
     let smin:f64 = pT2s_reg1(p, 273.15);
     let smax:f64 = pT2s_reg5(p, 2273.15);
     
@@ -213,9 +212,8 @@ pub fn ps_sub_region(p:f64,s:f64)->i32
     return INVALID_VALUE;
 }
 
-
+///  region 1,2,3,4 (smin ->smax), region 5
 pub fn hs_sub_region(h:f64, s:f64)->i32
-// 1,2,3,4 区 smin ->smax。5区另外处理
 {
     let mut T:f64=0.0;
     let mut p:f64=0.0;

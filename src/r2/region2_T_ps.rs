@@ -1,13 +1,11 @@
-/*--------------------------------------------------------------------------
- Backward Equation for Region 2:
-   IAPWS-IF97-Rev : (P,s)->T
-   Page 25:
-       6.3.2 The Backward Equations T( p, s ) for Subregions 2a, 2b, and 2c.
-          ps2T_reg2(p,s)
+//！ Backward Equation for Region 2:
+//！   IAPWS-IF97-Rev : (P,s)->T
+//！      Page 25:
+//！       6.3.2 The Backward Equations T( p, s ) for Subregions 2a, 2b, and 2c.
+//！          ps2T_reg2(p,s)
+//！
+//！        ps2T_reg2a, I  is f64，non SAC
 
-    ps2T_reg2a, I 不是整数，不能使用SAC方法！
- Author： Maohua Cheng
--------------------------------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::algo::root::rtsec2;
 use crate::algo::root::ESP;
@@ -16,19 +14,17 @@ use crate::algo::root::I_MAX;
 use crate::common::constant::*;
 use crate::r2::region2_pT::*;
 
+/// region 2: ps2T_reg2a,  I is float
 pub struct fIJnData
-// region 2: ps2T_reg2a,  I is float
 {
     pub I: f64,
     pub J: i32,
     pub n: f64,
 }
 
-//-----  the backward equation T( p,s ) ---------------------
+/// the backward equation T( p,s ) 
 pub fn ps2T_reg2a(p: f64, s: f64) -> f64 {
-    // Table 25. Page 26  Numerical values of the coefficients and exponents of
-    // the backward equation T( p,s ) for
-    // subregion 2a, Eq. (25)
+// Table 25. Page 26  the coefficients and exponents of equation T( p,s ) for  subregion 2a, Eq.(25)
     const IJn: [fIJnData; 46] = [
         fIJnData {
             I: -1.5,
@@ -278,15 +274,13 @@ pub fn ps2T_reg2a(p: f64, s: f64) -> f64 {
     println!("pi {} sigma {}", pi, sigma);
     for k in 0..46 {
         theta += IJn[k].n * pi.powf(IJn[k].I) * sac_pow(sigma, IJn[k].J); // IJn[k].I) is float
-                                                                          // theta += IJn[k].n * pi.powf(IJn[k].I) * sigma.powi(IJn[k].J); // IJn[k].I) is float
+        // theta += IJn[k].n * pi.powf(IJn[k].I) * sigma.powi(IJn[k].J); // IJn[k].I) is float
     }
     return 1.0 * theta;
 }
 
 pub fn ps2T_reg2b(p: f64, s: f64) -> f64 {
-    // Table 26. Page 27
-    //   Numerical values of the coefficients and exponents of
-    //     the backward equation T( p,s ) for subregion 2b, Eq. (26)
+// Table 26. Page 27 the coefficients and exponents of  the equation T(p,s) for subregion 2b, Eq (26)
     const IJn: [IJnData; 44] = [
         IJnData {
             I: -6,
@@ -521,9 +515,7 @@ pub fn ps2T_reg2b(p: f64, s: f64) -> f64 {
 }
 
 pub fn ps2T_reg2c(p: f64, s: f64) -> f64 {
-    // Table 27. Page 28
-    // Numerical values of the coefficient s and exponents of
-    //  the backward equation T( p,s ) for subregion 2c, Eq. (27)
+// Table 27. Page 28  the coefficient s and exponents of the equation T(p,s) for subregion 2c, Eq.(27)
     const IJn: [IJnData; 30] = [
         IJnData {
             I: -2,

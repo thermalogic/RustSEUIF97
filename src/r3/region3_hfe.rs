@@ -1,17 +1,13 @@
 
-/*-----------------------------------------------------------------
-the coefficients and   exponents of the dimensionless Helmholtz free energy
-                   for Region 3 (Table 30, page 30)
-     Speciphic Helmholtz free energy.
-       * tau :dimensionless temperature [K]
-       * delta: dimensionless density [kg/m3]
+//! the dimensionless Helmholtz free energy  for Region 3 
+//!     Speciphic Helmholtz free energy.
+//!        tau :dimensionless temperature [K]
+//1        delta: dimensionless density [kg/m3]
 
-Author: Maohua Cheng
--------------------------------------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 
-//  Initialize coefphicients and exponents for region 3
+//  Initialize coefphicients and exponents for region 3(Table 30, page 30)
 pub const n1:f64 = 0.10658070028513e1;
 	
 pub const IJn:[IJnData;39] = [
@@ -62,8 +58,8 @@ pub const IJn:[IJnData;39] = [
 	IJnData{I:10, J:1, n: -0.16557679795037E-03},
 	IJnData{I:11, J:26, n: -0.44923899061815E-04}];
 
+/// Fundamental equation for region 3
 pub fn phi_reg3(tau:f64,delta:f64)->f64
-// Fundamental equation for region 3
 {
 	let mut result:f64  = n1 * delta.ln();
 	for k in 0..39{
@@ -73,8 +69,8 @@ pub fn phi_reg3(tau:f64,delta:f64)->f64
 	return result;
 }
 
+/// First derivative in delta of fundamental equation for region 3
 pub fn phi_delta_reg3(tau:f64,delta:f64)->f64
-// first derivative in delta of fundamental equation for region 3
 {
 	let mut result:f64= n1 / delta;
 	for k in 0..39
@@ -85,8 +81,8 @@ pub fn phi_delta_reg3(tau:f64,delta:f64)->f64
 	return  result;
 }
 
+/// Second derivative in delta of fundamental equation for region 3
 pub fn phi_deltadelta_reg3(tau:f64,delta:f64)->f64
-// Second derivative in delta of fundamental equation for region 3
 {
 	let mut result:f64 = -n1 / delta / delta;
 	for k in 0..39
@@ -98,8 +94,8 @@ pub fn phi_deltadelta_reg3(tau:f64,delta:f64)->f64
 	return result;
 }
 
+/// First derivative in tau of fundamental equation for region 3
 pub fn phi_tau_reg3(tau:f64,delta:f64)->f64
-// phirst derivative in tau of fundamental equation for region 3
 {
 	let mut result:f64 = 0.0;
 	for k in 0..39
@@ -111,8 +107,8 @@ pub fn phi_tau_reg3(tau:f64,delta:f64)->f64
 	return result;
 }
 
+/// Second derivative in tau of fundamental equation for region 3
 pub fn phi_tautau_reg3(tau:f64,delta:f64)->f64
-// Second derivative in tau of fundamental equation for region 3
 {
 	let mut result:f64 = 0.0;
 	for k in 0..39
@@ -123,8 +119,8 @@ pub fn phi_tautau_reg3(tau:f64,delta:f64)->f64
 	return result;
 }
 
+/// Second derivative in delta and tau of fundamental equation for region 3
 pub fn phi_deltatau_reg3(tau:f64,delta:f64)->f64
-// Second derivative in delta and tau of fundamental equation for region 3
 {
 	let mut result:f64 = 0.0;
 	for k in 0..39{

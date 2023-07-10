@@ -1,12 +1,9 @@
-/* ----------------------------------------------------------
-	http://www.iapws.org/relguide/IF97-Rev.html, Eq 32-34
-	 P39 
-        Basic: (p,T)->v,h,s,cp,cv,w,k 
-
-        k: isentropic exponent
-	Author: Maohua Cheng			  
-----------------------------------------------------------------------------*/
-
+//! Region5  Basic Equation
+//!    http://www.iapws.org/relguide/IF97-Rev.html, Eq 32-34
+//! P39 (p,T)->v,h,s,cp,cv,w,k 
+//！    t[K],p[MPa]
+//！             k: isentropic exponent
+	
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 use crate::r5::region5_gfe::*;
@@ -15,7 +12,7 @@ const r5Pstar:f64 = 1.0;	//[MPa]
 const r5Tstar:f64 = 1000.0; //[K]
 
 pub fn pT2v_reg5(p:f64,T:f64)->f64
-{ //t[K],	p[MPa]
+{ 
 	let pi:f64 = p / r5Pstar;
 	let tau:f64 = r5Tstar / T;
 	let a:f64 = pi * (gamma0_pi_reg5(pi) + gammar_pi_reg5(pi, tau));
@@ -23,7 +20,7 @@ pub fn pT2v_reg5(p:f64,T:f64)->f64
 }
 
 pub fn pT2u_reg5(p:f64,T:f64)->f64
-{ //t[K],	p[MPa]
+{ 
 	let pi:f64 = p / r5Pstar;
 	let tau:f64 = r5Tstar / T;
 	let a:f64 = tau * (gamma0_tau_reg5(tau) + gammar_tau_reg5(pi, tau)) - pi * (gamma0_pi_reg5(pi) + gammar_pi_reg5(pi, tau));
@@ -31,7 +28,7 @@ pub fn pT2u_reg5(p:f64,T:f64)->f64
 }
 
 pub fn pT2s_reg5(p:f64,T:f64)->f64
-{ //t[K],	p[MPa]
+{ 
 	let pi:f64 = p / r5Pstar;
 	let tau:f64 = r5Tstar / T;
 	let a:f64=tau* (gamma0_tau_reg5(tau) + gammar_tau_reg5(pi, tau)) - (gamma0_reg5(pi, tau) + gammar_reg5(pi, tau));
@@ -51,7 +48,7 @@ pub fn pT2s_reg5(p:f64,T:f64)->f64
 }
 
 pub fn pT2h_reg5(p:f64,T:f64)->f64
-{ //t[K],	p[MPa]
+{ 
 	let pi:f64 = p / r5Pstar;
 	let tau:f64 = r5Tstar / T;
 	let a:f64=tau* (gamma0_tau_reg5(tau) + gammar_tau_reg5(pi, tau));
@@ -59,7 +56,7 @@ pub fn pT2h_reg5(p:f64,T:f64)->f64
 }
 
 pub fn pT2cp_reg5(p:f64,T:f64)->f64
-{  // T[K],	p[MPa]
+{ 
 	let pi:f64 = p / r5Pstar;
 	let tau:f64 = r5Tstar / T;
 	let a:f64 = -tau*tau * (gamma0_tautau_reg5(tau) + gammar_tautau_reg5(pi, tau));
@@ -67,7 +64,7 @@ pub fn pT2cp_reg5(p:f64,T:f64)->f64
 }
 
 pub fn pT2cv_reg5(p:f64,T:f64)->f64
-{ //t[K],	p[MPa]
+{ 
 	let pi:f64 = p / r5Pstar;
 	let  tau:f64 = r5Tstar / T;
 	let a:f64 = -tau*tau * (gamma0_tautau_reg5(tau) + gammar_tautau_reg5(pi, tau));
@@ -98,11 +95,9 @@ pub fn pT2w_reg5(p:f64,T:f64)->f64
 	return w.sqrt();
 }
 
-// isentropic exponent
+/// isentropic exponent
 pub fn pT2k_reg5(p:f64,T:f64)->f64
-{  // T[K],	p[MPa]
-	
-	let tau:f64 = r5Tstar / T;
+{  	let tau:f64 = r5Tstar / T;
 	let pi:f64 = p / r5Pstar;
 
 	let dgammar_pi:f64 = gammar_pi_reg5(pi, tau);

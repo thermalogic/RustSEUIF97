@@ -1,8 +1,6 @@
-/*---------------------------------------------------------------------------
-  Region 1 API
+//！ Region 1 API
+//！pT_reg1 ，ph_reg1,ps_reg1 hs_reg1
 
- Author: Maohua Cheng
----------------------------------------------------------------------------*/
 use crate::common::constant::*;
 
 use crate::r1::region1_T_phps::*;
@@ -10,7 +8,6 @@ use crate::r1::region1_pT::*;
 use crate::r1::region1_p_hs::*;
 
 pub fn pT_reg1(p: f64, T: f64, o_id: i32) -> f64
-// o_id: output propertry
 {
     match o_id {
         OT => T,
@@ -34,7 +31,6 @@ pub fn pt_reg1(p:f64,t:f64,o_id:i32) -> f64 {
 
 
 pub fn ph_reg1(p: f64, h: f64, o_id: i32) -> f64
-// o_id: output propertry
 {
     if o_id == OP {
         return p;
@@ -51,7 +47,6 @@ pub fn ph_reg1(p: f64, h: f64, o_id: i32) -> f64
 }
 
 pub fn ps_reg1(p: f64, s: f64, o_id: i32) -> f64
-// o_id: output propertry
 {
     if o_id == OP {
         return p;
@@ -68,7 +63,6 @@ pub fn ps_reg1(p: f64, s: f64, o_id: i32) -> f64
 }
 
 pub fn hs_reg1(h: f64, s: f64, o_id: i32) -> f64
-// o_id: output propertry
 {
     if o_id == OH {
         return h;

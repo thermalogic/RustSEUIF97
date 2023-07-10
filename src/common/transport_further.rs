@@ -1,39 +1,27 @@
 
-/*------------------------------------------------------------------
-
-    5 Transport Properties
-    
-    * ok Dynamic viscosity  Pa.s  dv (mu)   
-    * Kinematic viscosity  m^2/s    kv     25 
-    * ok Thermal conductivity  W/(m.K)     tc  k  26    
-|   * Thermal diffusivity   um^2/s   td        27 
-|   * Prandtl number                  pr         28 
-|   Further properties-
-      * Refractive index -待
-      * Relative static dialectric sonstant  -待
-      * ok Surface tension     st   mN/m      29 sigma  [N/m]
+//!    Transport  and Further  Properties
+//!       Dynamic viscosity  Pa.s  dv (mu)   
+//!       Kinematic viscosity  m^2/s    kv     25 
+//!       Thermal conductivity  W/(m.K)     tc  k  26    
+//!       Thermal diffusivity   um^2/s   td        27 
+//!       Prandtl number                  pr         28 
+//!       Refractive index 
+//!       Relative static dialectric sonstant  -待
+//！       Surface tension     st   mN/m      29 sigma  [N/m]
   
- ---------------------------------------------------------------------------*/
- use crate::algo::fast_ipower::sac_pow;
- use crate::common::constant::*;
+use crate::algo::fast_ipower::sac_pow;
+use crate::common::constant::*;
  
-
- /*----------------------------------------------------------------
+/// The Viscosity for IF97
+///    Parameters
+///       rho :  Density [kg/m³]
+///       T :    Temperature [K]
+///    Returns：  mu : float  Viscosity [Pa·s]
+///     IAPWS, Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary  Water Substance
+///         http://www.iapws.org/relguide/viscosity.html
+pub fn viscosity(rho:f64, T:f64)->f64
+{
  
-  Transport properties
-----------------------------------------------------------------*/
- pub fn viscosity(rho:f64, T:f64)->f64
- {
- /* The Viscosity for IF97
-     Parameters
-       rho :  Density [kg/m³]
-       T :    Temperature [K]
-       Returns：  mu : float  Viscosity [Pa·s]
-     References
-     ----------
-     IAPWS, Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary  Water Substance
-         http://www.iapws.org/relguide/viscosity.html
-*/
      let Tr:f64 = T/TC_WATER;
      let Dr:f64 = rho/DC_WATER;
 
@@ -59,19 +47,15 @@
      return fi0*fi1*fi2*1.0e-6;
     }
 
-
+/// The thermal conductivity
+///      Parameters
+///         rho :     Density [kg/m³]
+///         T :    Temperature [K]
+///      Returns 
+///           k : Thermal conductivity [W/mK]
+///  IAPWS, Release on the IAPWS Formulation 2011 for the Thermal Conductivity  of Ordinary Water Substance
+///         http://www.iapws.org/relguide/ThCond.html
 pub fn thcond(rho:f64, T:f64)->f64
- /* Equation for the thermal conductivity
-        Parameters
-          rho :     Density [kg/m³]
-          T :    Temperature [K]
-       Returns 
-           k : Thermal conductivity [W/mK]
-    References 
-    ----------
-    IAPWS, Release on the IAPWS Formulation 2011 for the Thermal Conductivity  of Ordinary Water Substance
-         http://www.iapws.org/relguide/ThCond.html
-*/
 {
     let d:f64 = rho/DC_WATER;
     let Tr:f64 = T/TC_WATER;
@@ -105,26 +89,19 @@ pub fn thcond(rho:f64, T:f64)->f64
     return 1e-3*(L0*L1+L2);
  }
 
- pub fn surface_tension(T:f64)->f64
- {
-/* Equation for the surface tension
-  Parameters
-    ----------
-    T :  Temperature [K]
-    Returns
-    -------
-    sigma :   Surface tension [N/m]
-   
-    References
-    ----------
-    IAPWS, Revised Release on Surface Tension of Ordinary Water Substance June 2014
-           http://www.iapws.org/relguide/Surf-H2O.html
-    """
-*/
+/// Equation for the surface tension
+///  Parameters
+///    T :  Temperature [K]
+///  Returns
+///      sigma :   Surface tension [N/m]
+///    IAPWS, Revised Release on Surface Tension of Ordinary Water Substance June 2014
+///           http://www.iapws.org/relguide/Surf-H2O.html
+pub fn surface_tension(T:f64)->f64
+{
     if 248.15 <= T && T<= TC_WATER
     {    let Tr = T/TC_WATER;
         return 1e-3*(235.8*(1.0-Tr).powf(1.256)*(1.0-0.625*(1.0-Tr)));
     }
     else
        { return INVALID_VALUE as f64};
-  }
+}

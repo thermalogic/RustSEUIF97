@@ -1,10 +1,7 @@
 
-/*---------------------------------------------------------------------------
-  Region 4 API: 
-    (p,x) (t,x)  (p,h) (p,s) (h,s)
-      
- Author: Maohua Cheng
----------------------------------------------------------------------------*/
+//！  Region 4 API: 
+//！    (p,h) (p,s) (h,s)
+
 use crate::common::constant::*;
 use crate::r4::region4_sat_pT::*;
 use crate::r4::region4_pTx::*;

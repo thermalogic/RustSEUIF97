@@ -1,5 +1,5 @@
+/// shortest addition chains,n>=0
 fn possac(x: f64, n: i32) -> f64 {
-    // shortest addition chains,n>=0
     let mut x2: f64;
     let mut x3: f64;
     let mut x4: f64;

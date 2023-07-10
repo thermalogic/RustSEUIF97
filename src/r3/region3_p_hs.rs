@@ -1,17 +1,16 @@
-/*--------------------------------------------------------------------------------
- Backward Equation for Region 3:
- * IAPWS-IF97-S04rev :Supp-phs3-2014.pdf
-     (h,s)->p  (3a,3b,3c)
-       h : Specific enthalpy [kJ/kg]
-       s : Specific entropy [kJ/kgK]
-      P : Pressure [MPa]
- ----------------------------------------------------------------------------------*/
+//! Backward Equation for Region 3:
+//!  IAPWS-IF97-S04rev :Supp-phs3-2014.pdf
+//!     (h,s)->p  (3a,3b,3c)
+//!       h : Specific enthalpy [kJ/kg]
+//!       s : Specific entropy [kJ/kgK]
+//!      P : Pressure [MPa]
+
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
 use crate::r3::region3_v_subregion_pT::*;
 
+/// Backward equation for region 3a, P=f(h,s) 
 pub fn hs2p3a_reg3(h:f64, s:f64)->f64
-/*  Backward equation for region 3a, P=f(h,s) */
 {
 
     const I:[i32;33] = [0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 6, 7, 8, 10, 10,
@@ -40,12 +39,8 @@ pub fn hs2p3a_reg3(h:f64, s:f64)->f64
     return 99.0 * suma;
 }
 
+/// Backward equation for region 3b, P=f(h,s)
 pub fn hs2p3b_reg3(h:f64, s:f64)->f64
-/*Backward equation for region 3b, P=f(h,s)
-    (2400,4.7)   63.63924887
-   (2600,5.1)   34.34999263
-   (2700,5.0)   88.39043281
-*/
 {
 
     const I:[i32;35] = [-12, -12, -12, -12, -12, -10, -10, -10, -10, -8, -8, -6, -6, -6, -6,
@@ -76,8 +71,8 @@ pub fn hs2p3b_reg3(h:f64, s:f64)->f64
     return 16.6 / suma;
 }
 
+///  Backward equation for region 3, P=f(h,s) 
 pub fn hs2p_reg3(h:f64, s:f64)->f64
-/*  Backward equation for region 3, P=f(h,s) */
 {
     if (s <= SC_WATER)
     {  return hs2p3a_reg3(h, s);}

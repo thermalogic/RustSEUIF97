@@ -1,13 +1,10 @@
-/*---------------------------------------------------------------------------
- IAPWS-IF97 Basic Equation for Region 1
+//！  IAPWS-IF97 Basic Equation for Region 1
+//！
+//！ The dimensionless Gibbs free energy (p,T) EQUATIONS
+//！          gamma and its derivatives
+//！ Release : August 2007  Equations for Region 1 P6-9
+//！        according to Eq. (7), P8 release if97-rev 2007
 
- The dimensionless Gibbs free energy (p,T) EQUATIONS
-          gamma and its derivatives
- Release : August 2007  Equations for Region 1 P6-9
-        according to Eq. (7), P8 release if97-rev 2007
-
-Author: Maohua Cheng
---------------------------------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 
@@ -55,8 +52,8 @@ pub const IJn: [IJnData; 34] = [
     IJnData{I:32, J:-41, n:-0.93537087292458E-25},
 ];
 
+/// Fundamental equation for region 1
 pub fn gamma_reg1(mut tau: f64, mut pi: f64) -> f64
-// Fundamental equation for region 1
 {
     tau = tau - 1.222;
     pi = 7.1 - pi;
@@ -68,8 +65,8 @@ pub fn gamma_reg1(mut tau: f64, mut pi: f64) -> f64
     return value;
 }
 
+/// First derivative of fundamental equation in pi for region 1
 pub fn gamma_pi_reg1(mut tau: f64, mut pi: f64) -> f64
-// First derivative of fundamental equation in pi for region 1
 {
     tau = tau - 1.222;
     pi = 7.1 - pi;
@@ -82,8 +79,8 @@ pub fn gamma_pi_reg1(mut tau: f64, mut pi: f64) -> f64
     return value;
 }
 
+/// Second derivative of fundamental equation in pi for region 1
 pub fn gamma_pipi_reg1(mut tau: f64, mut pi: f64) -> f64
-// Second derivative of fundamental equation in pi for region 1
 {
     tau = tau - 1.222;
     pi = 7.1 - pi;
@@ -97,8 +94,8 @@ pub fn gamma_pipi_reg1(mut tau: f64, mut pi: f64) -> f64
     return value;
 }
 
+/// First derivative of fundamental equation in tau for region 1
 pub fn gamma_tau_reg1(mut tau: f64, mut pi: f64) -> f64
-// First derivative of fundamental equation in tau for region 1
 {
     tau = tau - 1.222;
     pi = 7.1 - pi;
@@ -110,8 +107,8 @@ pub fn gamma_tau_reg1(mut tau: f64, mut pi: f64) -> f64
     return value;
 }
 
+/// Second derivative of fundamental equation in tau for region 1
 pub fn gamma_tautau_reg1(mut tau: f64, mut pi: f64) -> f64
-// Second derivative of fundamental equation in tau for region 1
 {
     tau = tau - 1.222;
     pi = 7.1 - pi;
@@ -125,8 +122,8 @@ pub fn gamma_tautau_reg1(mut tau: f64, mut pi: f64) -> f64
     return value;
 }
 
+/// Second derivative of fundamental equation in pi and tau for region 1
 pub fn gamma_pitau_reg1(mut tau: f64, mut pi: f64) -> f64
-// Second derivative of fundamental equation in pi and tau for region 1
 {
     tau = tau - 1.222;
     pi = 7.1 - pi;

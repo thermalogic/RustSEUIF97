@@ -1,28 +1,25 @@
-/*-----------------------------------------------------------------------------
-  Root Finding Methods For IAPWS - IF97
-     Ref: Numerical Reciples - Chapter 9 :Pages:347 ~ 368
-  
-  By Maohua Cheng
------------------------------------------------------------------------------*/
-
-//----------------------------------------------------------------------------
-// SECANT METHOD : Ch.9.2: Pages 357, 
-// Using the secant method, find the root of a func throught lie between x1 and
-// x2. The root returned as rtsec, is refined until its accuracy is ABS(xacc)
-//----------------------------------------------------------------------------
+///----------------------------------------------------------------------------
+///  Root Finding Methods For IAPWS - IF97
+///
+///  SECANT METHOD :Numerical Reciples  Ch.9.2: Pages 357
+///    Using the secant method, find the root of a func throught lie between x1 and x2
+///    The root returned as rtsec, is refined until its accuracy is ABS(xacc)
+///  
+///  By Maohua Cheng
+///
+///----------------------------------------------------------------------------
 pub type IF97_EQ = fn(f64,f64) -> f64;
 
 pub const ESP:f64=1.0E-08;
 pub const I_MAX:i32=100;
 
+///  rtsec1 :fun(x,con_var2)所求解是方程的第一个参数：x，x={x1,x2}
+///  第二个参数con_var2，迭代求解中不变
+///    fr:是输入的fun(x,con_var2)计算结果
+///    fl: fr-fun(x1,con_var2)
+///    f: fr-fun(x2,con_var2)
+/// rts：返回x的解
 pub fn  rtsec1(fun:IF97_EQ, con_var2:f64, fr:f64,x1:f64, x2:f64, mut fl:f64,mut f:f64, xacc:f64,i_max:i32)->f64
-/*  rtsec1 :fun(x,con_var2)所求解是方程的第一个参数：x，x={x1,x2}
-    第二个参数con_var2，迭代求解中不变
-    fr:是输入的fun(x,con_var2)计算结果
-    fl: fr-fun(x1,con_var2)
-    f: fr-fun(x2,con_var2)
-    rts：返回x的解
-*/
 {
    let mut xl:f64;
    let mut rts:f64;
@@ -67,14 +64,13 @@ pub fn  rtsec1(fun:IF97_EQ, con_var2:f64, fr:f64,x1:f64, x2:f64, mut fl:f64,mut 
    return rts;
 }
 
+///  rtsec2 :fun(con_var1，x)所求解是方程的第二个参数：x，x={x1,x2}
+///     第一个参数con_var1，迭代求解中不变
+///     fr: fr：是输入的func(con_var1,x)计算结果
+///     fl: fr-func(con_var1,x1)
+///     f: fr-func(con_var1,x2)
+///     rts：返回x的解
 pub fn  rtsec2(fun:IF97_EQ, con_var1:f64, fr:f64, x1:f64, x2:f64,mut fl:f64,mut f:f64, xacc:f64, i_max:i32)->f64
-/*  rtsec2 :fun(con_var1，x)所求解是方程的第二个参数：x，x={x1,x2}
-     第一个参数con_var1，迭代求解中不变
-     fr: fr：是输入的func(con_var1,x)计算结果
-     fl: fr-func(con_var1,x1)
-     f: fr-func(con_var1,x2)
-     rts：返回x的解
- */
 {
   let mut xl:f64;
   let mut rts:f64;

@@ -1,15 +1,12 @@
-/*---------------------------------------------------------------------------
-  Region 5 API
-
- Author: Maohua Cheng
----------------------------------------------------------------------------*/
+//！  Region 5 API
+//！   (p,T) (p,h) (p,s) (h,s)
+   
 use crate::common::constant::*;
 
 use crate::r5::region5_pT::*;
 use crate::r5::region5_backward::*;
 
 pub fn pT_reg5(p: f64, T: f64, o_id: i32) -> f64
-// o_id: output propertry
 {
     match o_id {
         OT => T,
@@ -33,7 +30,6 @@ pub fn pt_reg5(p:f64,t:f64,o_id:i32) -> f64 {
 }
 
 pub fn ph_reg5(p: f64, h: f64, o_id: i32) -> f64
-// o_id: output propertry
 {
     if o_id == OP {
         return p;
@@ -50,7 +46,6 @@ pub fn ph_reg5(p: f64, h: f64, o_id: i32) -> f64
 }
 
 pub fn ps_reg5(p: f64, s: f64, o_id: i32) -> f64
-// o_id: output propertry
 {
     if o_id == OP {
         return p;
@@ -68,7 +63,6 @@ pub fn ps_reg5(p: f64, s: f64, o_id: i32) -> f64
 
 
 pub fn hs_reg5(h: f64, s: f64, o_id: i32) -> f64
-// o_id: output propertry
 {
     if o_id == OH {
         return h;

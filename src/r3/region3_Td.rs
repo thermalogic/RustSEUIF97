@@ -1,26 +1,23 @@
 
-/*---------------------------------------------------------------------------
-  Basic Equation of  IAPWS-IF97 Region3
-       (T,d)-->p,h,u,s,cp,w
-       T: temperature  K
-       P: pressure  Map
-       v: specific volume m^3/kg
-       h: specific enthalpy kJ/kg
-       u: specific internal energy kJ/kg
-       s: specific entropy  kJ/(kg K)
-       cp: specific isobaric heat capacity  kJ/(kg K)
-       cv: specific isochoric heat capacity kJ/(kg K)
-       w:  speed of sound  m/s
+//！  Basic Equation of  IAPWS-IF97 Region3
+//！  (T,d)-->p,h,u,s,cp,w
+//！       T: temperature  K
+//！       P: pressure  MPa
+//！       v: specific volume m^3/kg
+//！       h: specific enthalpy kJ/kg
+//！       u: specific internal energy kJ/kg
+//！       s: specific entropy  kJ/(kg K)
+//！       cp: specific isobaric heat capacity  kJ/(kg K)
+//！       cv: specific isochoric heat capacity kJ/(kg K)
+//！       w:  speed of sound  m/s
 
-   Author Maohua Cheng
----------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 use crate::r3::region3_hfe::*;
 
+/// Fast recursion algorithm of phi and its derivatives 
+///          phi_delta, deltatau, deltadelta, tautau
 fn recursion_of_phi_derivatives(delta:f64,tau:f64)->(f64,f64,f64,f64) 
-// Fast recursion algorithm of phi and its derivatives 
-//          phi_delta, deltatau, deltadelta, tautau
 {
       let mut item: f64 = IJn[0].n  * sac_pow(delta, IJn[0].I) * sac_pow(tau, IJn[0].J); 
       let mut item_delta:f64= item*IJn[0].I as f64;
@@ -48,24 +45,24 @@ fn recursion_of_phi_derivatives(delta:f64,tau:f64)->(f64,f64,f64,f64)
       return (phi_delta,phi_deltadelta,phi_deltatau,phi_tautau);
 }
 
+/// pressure in region 3
 pub fn Td2p_reg3(T:f64, d:f64)->f64
-// pressure in region 3
 {
     let tau:f64= TC_WATER / T;
     let delta:f64= d / DC_WATER;
     return 0.001 * d * RGAS_WATER * T * delta * phi_delta_reg3(tau, delta);
 }
 
+/// speciphic internal energy in region 3 in kJ/kg
 pub fn Td2u_reg3(T:f64, d:f64)->f64
-// speciphic internal energy in region 3 in kJ/kg
 {
     let tau:f64= TC_WATER / T;
     let delta:f64= d / DC_WATER;
     return RGAS_WATER * T * tau * phi_tau_reg3(tau, delta);
 }
 
+/// speciphic entropy in region 3 in kJ/(kg K)
 pub fn Td2s_reg3(T:f64, d:f64)->f64
-// speciphic entropy in region 3 in kJ/(kg K)
 {
     let tau:f64= TC_WATER / T;
     let delta:f64= d / DC_WATER;
@@ -84,8 +81,8 @@ pub fn Td2s_reg3(T:f64, d:f64)->f64
 
 }
 
+/// speciphic enthalpy in region 3 in kJ/kg
 pub fn Td2h_reg3(T:f64, d:f64)->f64
-// speciphic enthalpy in region 3 in kJ/kg
 {
     let tau:f64= TC_WATER / T;
     let delta:f64= d / DC_WATER;
@@ -105,8 +102,8 @@ pub fn Td2h_reg3(T:f64, d:f64)->f64
     return RGAS_WATER * T * (tau * sum_phi_tau/tau + delta * sum_phi_delta);
 }
 
+/// speciphic isobaric heat capacity in region 3 in kJ/(kg K)
 pub fn Td2cp_reg3(T:f64, d:f64)->f64
-// speciphic isobaric heat capacity in region 3 in kJ/(kg K)
 {
     let tau:f64= TC_WATER / T;
     let delta:f64= d / DC_WATER;
@@ -124,16 +121,16 @@ pub fn Td2cp_reg3(T:f64, d:f64)->f64
     return RGAS_WATER * (-tau * tau * phi_tautau + a / b);
 }
 
+/// speciphic isochoric heat capacity in region 3  in kJ/(kg K)
 pub fn Td2cv_reg3(T:f64, d:f64)->f64
-// speciphic isochoric heat capacity in region 3  in kJ/(kg K)
 {
     let tau:f64= TC_WATER / T;
     let delta:f64= d / DC_WATER;
     return RGAS_WATER * (-tau * tau * phi_tautau_reg3(tau, delta));
 }
 
+/// speed of sound in region 3  in m/s
 pub fn Td2w_reg3(T:f64, d:f64)->f64
-// speed of sound in region 3  in m/s
 {
     let tau:f64= TC_WATER / T;
     let delta:f64= d / DC_WATER;

@@ -1,25 +1,17 @@
-/*---------------------------------------------------------------------------
-  Region 3 API:   IAPWS-IF97 and supp release
+//！  Region 3 API:   IAPWS-IF97 and supp release
+//！   Basic Equation of  IAPWS -IF 97 Region3
+//！      *  IAPWS-IF97, R7-97(2012)
+//！          (T,d)-->p,h,u,s,cp,w
+//！
+//！    Backward Equation for Region 3:
+//!       * IAPWS-IF97-S03rev
+//!           (p,h) -T,v
+//!            (p,s)->T,v
+//!       *  IAPWS-IF97-S04rev
+//!             (h,s)->p      Supp-phs3-2014.pdf文档中其他区域判断公式在boundarie中
+//!        * IAPWS-IF97-S05rev
+//!              (p,T)->d
 
-    Basic Equation of  IAPWS -IF 97 Region3
-      *  IAPWS-IF97, R7-97(2012)
-          (T,d)-->p,h,u,s,cp,w
-
-    Backward Equation for Region 3:
-       * IAPWS-IF97-S03rev
-           (p,h) -T,v
-            (p,s)->T,v
-
-       *  IAPWS-IF97-S04rev
-             (h,s)->p
-
-           Supp-phs3-2014.pdf文档中其他区域判断公式在boundarie中
-
-        * IAPWS-IF97-S05rev
-              (p,T)->d
-
- Author: Maohua Cheng
----------------------------------------------------------------------------*/
 use crate::common::constant::*;
 use crate::r3::region3_Td::*;
 use crate::r3::region3_Tv_phps::*;
@@ -43,7 +35,6 @@ pub fn Td_reg3(T: f64, d: f64, o_id: i32) -> f64 {
     }
 }
 
-// --------------  region3 --------------------------
 pub fn td_reg3(t: f64, d: f64, o_id: i32) -> f64 {
     Td_reg3(t + K, d, o_id)
 }

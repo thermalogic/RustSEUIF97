@@ -1,13 +1,9 @@
-/*---------------------------------------------------------------------------
-   IAPWS-IF97 Basic Equation for Region 2:
-     Release : IF97-rev  August 2007
-     The dimensionless Gibbs free energy gamma and its derivatives
-       REGION2 G(p,T) EQUATIONS：  Eq.(15), P13
-          The ideal-gas part ： Eq.(16)
-          The residual part ： Eq.(17)
-
-   Author： Maohua Cheng
------------------------------------------------------------------------------*/
+//! IAPWS-IF97 Basic Equation for Region 2:
+//！ Release : IF97-rev  August 2007
+//！     The dimensionless Gibbs free energy gamma and its derivatives
+//！       REGION2 G(p,T) EQUATIONS：  Eq.(15), P13
+//！          The ideal-gas part ： Eq.(16)
+//！          The residual part ： Eq.(17)
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
@@ -248,8 +244,7 @@ pub const IJn: [IJnData; 43] = [
     },
 ];
 
-// Ideal-gas part of fundamental equation for region 2
-// Eq16 P13
+/// Eq16 P13 Ideal-gas part of fundamental equation for region 2
 pub fn gamma0_reg2(tau: f64, pi: f64) -> f64 {
     let mut result = pi.ln(); //
     for i in 0..9 {
@@ -259,20 +254,20 @@ pub fn gamma0_reg2(tau: f64, pi: f64) -> f64 {
     return result;
 }
 
+/// First derivative in pi of ideal-gas part of fundamental equation for region 2
 pub fn gamma0_pi_reg2(pi: f64) -> f64
-// First derivative in pi of ideal-gas part of fundamental equation for region 2
 {
     return 1.0 / pi;
 }
 
+/// Second derivative in pi of ideal-gas part of fundamental equation for region 2
 pub fn gamma0_pipi_reg2(pi: f64) -> f64
-// Second derivative in pi of ideal-gas part of fundamental equation for region 2
 {
     return -1.0 / pi / pi;
 }
 
+/// First derivative in tau of ideal-gas part of fundamental equation for region 2
 pub fn gamma0_tau_reg2(tau: f64) -> f64
-// First derivative in tau of ideal-gas part of fundamental equation for region 2
 {
     let mut result: f64 = 0.0;
     for i in 0..9 {  // 为什么需要：0..9 而不是0..8
@@ -282,8 +277,8 @@ pub fn gamma0_tau_reg2(tau: f64) -> f64
    return result;
 }
 
+/// Second derivative in tau of ideal-gas part of fundamental equation for region 2
 pub fn gamma0_tautau_reg2(tau: f64, pi: f64) -> f64
-//Second derivative in tau of ideal-gas part of fundamental equation for region 2
 {
     let mut result: f64 = 0.0;
     for i in 0..9 {
@@ -293,15 +288,13 @@ pub fn gamma0_tautau_reg2(tau: f64, pi: f64) -> f64
     return result;
 }
 
+/// Second derivative in pi and tau of ideal-gas part of fundamental equation for region 2
 pub fn gamma0_pitau_reg2() -> f64
-// Second derivative in pi and tau of ideal-gas part of fundamental equation for region 2
 {
     return 0.0;
 }
 
-//-------------------------------------------------------------------------------
-//             Residual part of fundamental equation for region 2
-//                      Eq(17), Page 13
+//   Eq(17), Page 13   Residual part of fundamental equation for region 2
 pub fn gammar_reg2(tau: f64, pi: f64) -> f64 {
     let mut result: f64 = 0.0;
     let tau1: f64 = tau - 0.5;
@@ -312,8 +305,8 @@ pub fn gammar_reg2(tau: f64, pi: f64) -> f64 {
     return result;
 }
 
+/// First derivative in pi of residual part of fundamental equation for region 2
 pub fn gammar_pi_reg2(tau: f64, pi: f64) -> f64
-// First derivative in pi of residual part of fundamental equation for region 2
 {
     let mut result: f64 = 0.0;
     let tau1: f64 = tau - 0.5;
@@ -323,8 +316,8 @@ pub fn gammar_pi_reg2(tau: f64, pi: f64) -> f64
     return result;
 }
 
+/// Second derivative in pi of residual part of fundamental equation for region 2
 pub fn gammar_pipi_reg2(tau: f64, pi: f64) -> f64
-// Second derivative in pi of residual part of fundamental equation for region 2
 {
     let mut result: f64 = 0.0;
     let tau1: f64 = tau - 0.5;
@@ -337,8 +330,8 @@ pub fn gammar_pipi_reg2(tau: f64, pi: f64) -> f64
     return result;
 }
 
+/// First derivative in tau of residual part of fundamental equation for region 2
 pub fn gammar_tau_reg2(tau: f64, pi: f64) -> f64
-// First derivative in tau of residual part of fundamental equation for region 2
 {
     let mut result: f64 = 0.0;
     let tau1: f64 = tau - 0.5;
@@ -351,8 +344,8 @@ pub fn gammar_tau_reg2(tau: f64, pi: f64) -> f64
     return result;
 }
 
+/// Second derivative in tau of residual part of fundamental equation for region 2
 pub fn gammar_tautau_reg2(tau: f64, pi: f64) -> f64
-// Second derivative in tau of residual part of fundamental equation for region 2
 {
     let mut result: f64 = 0.0;
     let tau1: f64 = tau - 0.5;
@@ -365,8 +358,8 @@ pub fn gammar_tautau_reg2(tau: f64, pi: f64) -> f64
     return result;
 }
 
+/// Second derivative in pi and tau of residual part of fundamental equation for region 2
 pub fn gammar_pitau_reg2(tau: f64, pi: f64) -> f64
-// Second derivative in pi and tau of residual part of fundamental equation for region 2
 {
     let mut result: f64 = 0.0;
     let tau1: f64 = tau - 0.5;

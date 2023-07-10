@@ -1,12 +1,8 @@
-/*-----------------------------------------------------------------
- Region 4 saturation  water and steam
-            p in bar
-     Ttemperaturein K
-          p_saturation(
-          T_saturation(  
+//! Region 4 saturation  water and steam
+//!       p in MPar
+//!       T in K
+//！      p_saturation  T_saturation  
 
-Author: Maohua Cheng
--------------------------------------------------------------------------------*/
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
 
@@ -17,9 +13,9 @@ const n:[f64;10] =[ 0.11670521452767E+04, -0.72421316703206E+06, -0.170738469400
                        -0.48232657361591E+04, 0.40511340542057E+06, -0.23855557567849E+00,
                        0.65017534844798E+03];
 
+
+/// saturation pressure,  return -1 if temperature outside range
 pub fn p_saturation(T:f64)->f64
-// saturation pressure of water pSatW in bar T :temperaturein K
-// pSat = -1: temperature outside range
 {
     let mut ps:f64=0.0;
     if (T < 273.15 || T > 647.096) // TC_WATER=647.096
@@ -35,9 +31,8 @@ pub fn p_saturation(T:f64)->f64
     return ps;
 }
 
+/// saturation temperature,return -1 if pressure outside range
 pub fn T_saturation(p:f64)->f64
-// saturation temperature of water tSatW in K  p :pressure in bar 
-// tSatW=-1: pressure outside range
 {
     let mut Ts:f64=0.0;
     if (p < 0.000611212677 || p > 22.064)

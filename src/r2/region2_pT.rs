@@ -1,27 +1,22 @@
-/*---------------------------------------------------------------------------
-  Basic Equation of  IAPWS-IF97 Region2
-       (p,T)-->vol, u,h,s,enthalpy,cp, cv,w
-       T: temperature  K
-       P: pressure  Map
-       v: specific volume m^3/kg
-       h: specific enthalpy kJ/kg
-       u: specific internal energy kJ/kg
-       s: specific entropy  kJ/(kg K)
-       cp: specific isobaric heat capacity  kJ/(kg K)
-       cv: specific isochoric heat capacity kJ/(kg K)
-       w:  speed of sound  m/s
+//！  Basic Equation of  IAPWS-IF97 Region2
+//！       (p,T)-->v, u,h,s,cp, cv,w
+//！       T: temperature  K
+//!       P: pressure  Map
+//!       v: specific volume m^3/kg
+//!       h: specific enthalpy kJ/kg
+//!       u: specific internal energy kJ/kg
+//!       s: specific entropy  kJ/(kg K)
+//!       cp: specific isobaric heat capacity  kJ/(kg K)
+//1       cv: specific isochoric heat capacity kJ/(kg K)
+//！       w:  speed of sound  m/s
 
-   Author Maohua Cheng
----------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 use crate::r2::region2_gfe::*;
 
-const r2Tstar: f64 = 540.0; // K
-const r2pstar: f64 = 1.0; //Mpa 为减少计算，没有使用这个变量
+const r2Tstar: f64 = 540.0; 
+const r2pstar: f64 = 1.0;   
 
-// temperature in K
-// pressure in MPa
 pub fn pT2v_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;

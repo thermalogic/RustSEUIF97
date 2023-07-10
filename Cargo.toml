@@ -1,6 +1,6 @@
 [package]
 name = "if97"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package"
@@ -9,6 +9,7 @@ homepage = "https://github.com/thermalogic/"
 repository = "https://github.com/thermalogic/IF97/"
 license = "MIT"
 keywords = ["IF97", "IAPWS-IF97"]
+categories = ["development-tools","science"]
 
 [dependencies]
 assert_approx_eq = "1.1.0"

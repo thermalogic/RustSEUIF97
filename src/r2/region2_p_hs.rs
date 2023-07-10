@@ -1,12 +1,8 @@
-/*----------------------------------------------------------------
-   Supp-PHS12-2014: (H,S)->P
-       6 Backward Equations p(h,s) for Region 2
-           hs2preg2(h,s)
-      7 Backward Functions T(h,s) for Regions 1 and 2
-           p(h,s)- p -> T(p,h) - 待补充
-
- Author： Maohua Cheng
------------------------------------------------------------------------------*/
+//！ Supp-PHS12-2014: (H,S)->P
+//！       6 Backward Equations p(h,s) for Region 2
+//！           hs2preg2(h,s)
+//！      7 Backward Functions T(h,s) for Regions 1 and 2
+//！           p(h,s)- p -> T(p,h) - 待补充
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
 use crate::algo::root::rtsec1;
@@ -17,7 +13,7 @@ use crate::r2::region2_pT::*;
 use crate::r2::region2_T_ph::*;
 
 
-// for iter (h,s)->p
+/// for iter (h,s)->p
 pub  fn ph2s_reg2(p:f64,h:f64)->f64
 {
     let T:f64=ph2T_reg2(p,h);
@@ -27,7 +23,6 @@ pub  fn ph2s_reg2(p:f64,h:f64)->f64
 pub fn hs2p_reg2a(h:f64,s:f64)->f64
 {   
 // Initialize coefficients and exponents (h,s)->P for region 2a
-    
     const IJn: [IJnData; 29] = [
           IJnData{I:0, J:1, n: -0.182575361923032E-01},
           IJnData{I:0, J:3, n: -0.125229548799536 },
@@ -78,12 +73,9 @@ pub fn hs2p_reg2a(h:f64,s:f64)->f64
     return 4.0*pi2*pi2;
 }
 
-//-------------------------------------------------------------------------=
-// Initialize coefficients and exponents (H,S)->P for region 2b
-//  Table 7
-//------------------------------------------------------------------------
 pub fn  hs2p_reg2b(h:f64,s:f64)->f64
 {
+// Table 7 Initialize coefficients and exponents (H,S)->P for region 2b
     const IJn: [IJnData; 33] = [
          IJnData{I:0, J:0, n:0.801496989929495E-01 },
          IJnData{I:0, J:1, n: -0.543862807146111},
@@ -136,12 +128,9 @@ pub fn  hs2p_reg2b(h:f64,s:f64)->f64
     return 100.0*pi2*pi2;
 }
 
-//=========================================================
-// Initialize coefficients and exponents (H,S)->P for region 2c
-//  Table 8
-//=========================================================
 pub fn hs2p_reg2c(h:f64, s:f64)->f64
 {   
+//   Table 8 Initialize coefficients and exponents (H,S)->P for region 2c
   const IJn: [IJnData; 31] = [
     IJnData{I:0, J:0, n: 0.112225607199012E+00 },
     IJnData{I:0, J:1, n: -0.339005953606712E+01 },
@@ -196,12 +185,10 @@ pub fn hs2p_reg2c(h:f64, s:f64)->f64
 // Region 2 (h,s)
 //------------------------------------------------------------
 
+
+/// Define the boundary between Region 2a and 2b, h=f(s)
+///    Supp-PHS12-2014.pdf, Eq 2
 pub fn s2h_reg2_ab(s:f64)->f64
- /*
-  Define the boundary between Region 2a and 2b, h=f(s)
-    Supp-PHS12-2014.pdf, Eq 2
-    s2h_reg2_ab(7)-> 3376.437884
-*/    
 {
    let n:[f64;4]=[ -0.349898083432139E+04,
                    0.257560716905876E+04,

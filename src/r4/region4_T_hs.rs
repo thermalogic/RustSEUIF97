@@ -1,13 +1,11 @@
 
-/*----------------------------------------------------------------------------------------------
-    Supp-phs3-2014.pdf Page25 Page30
-    http://www.iapws.org/relguide/Supp-phs3-2014.pdf. Eq 9
-       
-       5.3 Backward Equation Tsat(h,s)
-          s>  5.210 887 825
-          Temperature range is T （273.15 ， 623.15 ）
+//！ Region 4   Supp-phs3-2014.pdf Page25 Page30
+//！    http://www.iapws.org/relguide/Supp-phs3-2014.pdf. Eq 9
+//！       
+//！       5.3 Backward Equation Tsat(h,s)
+//！          s>  5.210 887 825
+//！     Temperature range is T （273.15 ， 623.15 ）
 
-----------------------------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 use crate::r1::region1_pT::*;
@@ -28,9 +26,8 @@ const h4V_623:f64 = 2.5635920043e+03; // Page 25  Sature steam   h
 const s4L_273:f64 = -1.545495919e-04;  // T=273.15 ，Sature Liquid s
 const s4V_273:f64= 9.155759395;       // T=273.15 ，Sature steam s
 
+///  Page30  5.3 Backward Functions Tsat(h,s),
 pub fn  hs2T_reg43(h:f64, s:f64)->f64
-//  Page30  5.3 Backward Functions Tsat(h,s),
-//  
 {
     // Table 28 
     const IJn:[(i32,i32,f64);36] = [

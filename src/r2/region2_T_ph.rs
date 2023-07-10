@@ -1,11 +1,8 @@
-/*---------------------------------------------------------------------------
- Backward Equation for Region 2:
-   IAPWS-IF97-Rev : (P,H)->T
-       6.3.1 The Backward Equations T( p, h ) for Subregions 2a, 2b, and 2c.
-          ph2T_reg2(p,h)
+//！ Backward Equation for Region 2:
+//！   IAPWS-IF97-Rev : (P,H)->T
+//！       6.3.1 The Backward Equations T( p, h ) for Subregions 2a, 2b, and 2c.
+//!          ph2T_reg2(p,h)
 
- Author： Maohua Cheng
-------------------------------------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::algo::root::rtsec2;
 use crate::algo::root::ESP;
@@ -15,9 +12,7 @@ use crate::common::constant::*;
 use crate::r2::region2_pT::*;
 
 pub fn ph2T_reg2a(p: f64, h: f64) -> f64 {
-    // Table 20.
-    // Numerical values of the coefficients and exponents of  the backward equation T ( p,h )
-    // for subregion 2a, Eq.(22)
+// Table 20 the coefficients and exponents of  the backward equation T ( p,h ) for subregion 2a, Eq.(22)
     const IJn: [IJnData; 34] = [
         IJnData {
             I: 0,
@@ -202,8 +197,7 @@ pub fn ph2T_reg2a(p: f64, h: f64) -> f64 {
 }
 
 pub fn ph2T_reg2b(p: f64, h: f64) -> f64 {
-    // Table 21. Numerical values of the coefficients and exponents of the backward equation T ( p,h )
-    // for  subregion 2b Eq.(23)
+// Table 21. the coefficients and exponents of the backward equation T ( p,h ) for  subregion 2b Eq.(23)
     const IJn: [IJnData; 38] = [
         IJnData {
             I: 0,
@@ -407,8 +401,7 @@ pub fn ph2T_reg2b(p: f64, h: f64) -> f64 {
 }
 
 pub fn ph2T_reg2c(p: f64, h: f64) -> f64 {
-    // Table 22. Numerical values of the coefficients and exponents of
-    // the backward  equation T(p,h) for subregion 2c, Eq.(24)
+// Table 22. the coefficients and exponents of the backward  equation T(p,h) for subregion 2c, Eq.(24)
     const IJn: [IJnData; 23] = [
         IJnData {
             I: -7,
@@ -538,8 +531,8 @@ pub fn ph2T_reg2c(p: f64, h: f64) -> f64 {
     return 1.0 * theta;
 }
 
+/// http://www.iapws.org/relguide/IF97-Rev.html, Eq 21
 pub fn enthalpy_2bc(p: f64) -> f64
-// http://www.iapws.org/relguide/IF97-Rev.html, Eq 21
 {
     const n: [f64; 3] = [0.12809002730136e-3, 0.26526571908428e4, 0.45257578905948e1];
     return n[1] + ((p - n[2]) / n[0]).sqrt();
@@ -557,7 +550,7 @@ pub fn ph2T_reg2(p: f64, h: f64) -> f64 {
     } else {
         T = ph2T_reg2a(p, h);
     }
-    //println!(" non 代改进 h - pT2h_reg2(p, T) {}",h-pT2h_reg2(p, T));
+    //println!(" non iter to improve h - pT2h_reg2(p, T) {}",h-pT2h_reg2(p, T));
     // return T;
 
     let T1: f64 = T;

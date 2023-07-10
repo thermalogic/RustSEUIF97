@@ -1,10 +1,6 @@
-/*---------------------------------------------------------------------------
+//！ IAPWS-IF97  Backware  for Region 5  Using the secant method, 
+//！   (p,h)  (p,s) (h,s)
 
- IAPWS-IF97  Backware  for Region 5:
-   Using the secant method, 
-   (p,h)  (p,s) (h,s)
-   
----------------------------------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::algo::root::rtsec1;
 use crate::algo::root::rtsec2;
@@ -87,7 +83,7 @@ pub fn ps2T_reg5(p:f64, s:f64)->f64
    return T;
 }
 
-// helper for hs2preg5
+/// helper for hs2preg5
 fn ph2s_reg5(p:f64, h:f64)->f64
 {
    let T:f64 = ph2T_reg5(p, h);

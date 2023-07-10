@@ -1,21 +1,17 @@
-/*---------------------------------------------------------------
- Backward Equation for Region 3:
-  
-IAPWS-IF97-S03rev: Supp-Tv(ph,ps)3-2014.pdf
-     (p,h) -T,v
-     (p,s)->T,v
-  
-Author Maohua Cheng
---------------------------------------------------------------- */
+//! Backward Equation for Region 3:
+//!   IAPWS-IF97-S03rev: Supp-Tv(ph,ps)3-2014.pdf
+//!     (p,h) -T,v
+//1     (p,s)->T,v
+ 
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
 use crate::r3::region3_v_subregion_pT::*;
 
-//  Initialize coefphicients and exponents for region 3
+/// the boundary /between subregions 3a and 3b
 fn p2h_3ab(p:f64)->f64
 {
-  //Page 6 Table 2. Numerical values of the coefficients of the equation h3ab(p) in
-  //its dimensionless form, Eq. (1), for defining the boundary /between subregions 3a and 3b
+  //Page 6 Table 2. the coefficients of the equation h3ab(p) inits dimensionless form, Eq. (1)
+  //  for defining the boundary /between subregions 3a and 3b
   const n:[f64;4] = [0.201464004206875E+04,
                         0.374696550136983E+01,
                         -0.219921901054187E-01,
@@ -25,10 +21,10 @@ fn p2h_3ab(p:f64)->f64
   return eta * 1.0;
 }
 
+/// (p,h)->T for region 3a 
 pub fn ph2T_3a_reg3(p:f64, h:f64)->f64
 {
-  // (p,h)->T for region 3a  Page7 Table 3.
-  //    Coefficients and exponents of the backward equation T3a(p,h) for subregion 3a in its dimensionless form, Eq. (2)
+  // Page7 Table 3.  Coefficients and exponents of the equation T3a(p,h) for subregion 3a in its dimensionless form, Eq. (2)
   const IJn:[(i32,i32,f64);31] = [
       (-12, 0, -1.33645667811215e-7),
       (-12, 1, 4.55912656802978e-6),
@@ -78,13 +74,11 @@ pub fn ph2T_3a_reg3(p:f64, h:f64)->f64
   return 760.0 * theta;
 
 }
-//-------------------------------------------------
-// (p,h)   3b
-//--------------------------------------------------
+
+/// (p,h)->T for region 3b 
 pub fn ph2T_3b_reg3(p:f64, h:f64)->f64
 {
-  // Table 4. Coefficients and exponents of the backward equation T3b=(p,h) for subregion 3b in its
-  // dimensionless form, Eq. (3)
+  // Table 4. Coefficients and exponents of the equation T3b=(p,h) for subregion 3b in its dimensionless form, Eq. (3)
   const IJn:[(i32,i32,f64);33] = [
       (-12, 0, 3.23254573644920e-5),
       (-12, 1, -1.27575556587181e-4),
@@ -135,13 +129,10 @@ pub fn ph2T_3b_reg3(p:f64, h:f64)->f64
   return 860.0*theta
 }
 
-//----------------------------------------------
-// Region 3a (p,h)->v
-//----------------------------------------------
+/// Region 3a (p,h)->v
 fn ph2v_3a_reg3(p:f64, h:f64)->f64
 {
-  //Page9 Table 6. Coefficients and exponents of the backward equation v3a(p,h) for subregion 3a in its
-  //dimensionless form, Eq. (4)
+  //Page9 Table 6. Coefficients and exponents of the  equation v3a(p,h) for subregion 3a in its dimensionless form, Eq. (4)
   const IJn:[(i32,i32,f64);32] = [
       (-12, 6, 5.29944062966028e-3),
       (-12, 8, -1.70099690234461e-1),
@@ -184,15 +175,10 @@ fn ph2v_3a_reg3(p:f64, h:f64)->f64
   return 0.0028 *omega;
 }
 
-
-//-------------------------------------------------
-// (p,h)->v 3b
-//--------------------------------------------------
+/// (p,h)->v 3b
 pub fn ph2v_3b_reg3(p:f64, h:f64)->f64
 {
-  // Page 9
-  // Table 7. Coefficients and exponents of the backward equation v3b (p,h) for subregion 3b in its
-  //dimensionless form, Eq. (5)
+  // Page 9 Table 7. Coefficients and exponents of the equation v3b (p,h) for subregion 3b in its/dimensionless form, Eq. (5)
   const IJn:[(i32,i32,f64);30] = [
       (-12, 0, -2.25196934336318e-9),
       (-12, 1, 1.40674363313486e-8),
@@ -234,10 +220,7 @@ pub fn ph2v_3b_reg3(p:f64, h:f64)->f64
   return 0.0088 *omega;
 }
 
-
-//------------------------------------------------------------
-// Region 3(3a,3b)  (p,h)->T
-//-----------------------------------------------------------
+/// Region 3(3a,3b)  (p,h)->T
 pub fn ph2T_reg3(p:f64, h:f64)->f64
 {
   let h3ab:f64 = p2h_3ab(p);
@@ -264,9 +247,7 @@ pub fn ph2v_reg3(p:f64, h:f64)->f64
   } 
 }
 
-//-------------------- (p,s)->T  ----------------------------------------
-// (p,s)->T   3a Page 13, Table 11  Page 12 Eq(7)
-//---------------------------------------------------------------
+/// (p,s)->T   3a Page 13, Table 11  Page 12 Eq(7)
 pub fn ps2T_3a_reg3(p:f64,s:f64)->f64
 {
   const I:[i32;33] =[-12, -12, -10, -10, -10,
@@ -332,11 +313,7 @@ pub fn ps2T_3a_reg3(p:f64,s:f64)->f64
   return 760.0 * theta;
 }
 
- 
-//------------------------------------------------------------
-// (p,s)->T   3b  Page 13, Table 12, Page 12 Eq(7)
-//---------------------------------------------------------------
-
+/// (p,s)->T   3b  Page 13, Table 12, Page 12 Eq(7)
 fn ps2T_3b_reg3(p:f64,s:f64)->f64
 {
     const I:[i32;28] =[-12, -12, -12, -12, -8,
@@ -394,9 +371,7 @@ fn ps2T_3b_reg3(p:f64,s:f64)->f64
   return 860.0 *theta
 }
 
-//------------------------------------------------------------
-// (p,s)->v  3a Page 15, Table 14  Page 14, Eq(8), Ok! 2003.12.18
-//---------------------------------------------------------------
+/// (p,s)->v  3a Page 15, Table 14  Page 14, Eq(8), Ok! 2003.12.18
 fn  ps2v_3a_reg3(p:f64,s:f64)->f64
 {
     const I:[i32;28] = [-12, -12, -12, -10, -10,
@@ -455,9 +430,7 @@ fn  ps2v_3a_reg3(p:f64,s:f64)->f64
   return 0.0028 * omega;
 }
 
-//-------------------------------------------------------------------
-// (p,s)->v  3b Page 15, Table 15  Page 14, Eq(9)   OK! 2003.12.18
-//-------------------------------------------------------------------
+/// (p,s)->v  3b Page 15, Table 15  Page 14, Eq(9)   OK! 2003.12.18
 fn ps2v_3b_reg3(p:f64,s:f64)->f64
 {
   const I:[i32;31] = [-12, -12, -12, -12, -12,

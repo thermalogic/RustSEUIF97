@@ -1,26 +1,21 @@
-/*---------------------------------------------------------------------------
-  Region 2 API
+//！ Region 2 API
+//！
+//！  IAPWS-IF97 and supp release
+//！      1: IF97 IAPWS, R7-97(2012)
+//！            IF97-Rev.pdf: P12-32
+//！               1)fundamental: (p,t)->v,u,s,h,cp,cv,w
+//！               2)backward: (p,h)->T, (p,s)->T
+//！
+//！      2: IAPWS, SR2-01(2014)
+//！              Supp-PHS12-2014.pdf  (h,s)->p
 
-  IAPWS-IF97 and supp release
-      1: IF97 IAPWS, R7-97(2012)
-            IF97-Rev.pdf: P12-32
-               1)fundamental: (p,t)->v,u,s,h,cp,cv,w
-               2)backward: (p,h)->T, (p,s)->T
-
-      2: IAPWS, SR2-01(2014)
-              Supp-PHS12-2014.pdf  (h,s)->p
-
- Author: Maohua Cheng
----------------------------------------------------------------------------*/
 use crate::common::constant::*;
-
 use crate::r2::region2_T_ph::*;
 use crate::r2::region2_T_ps::*;
 use crate::r2::region2_pT::*;
 use crate::r2::region2_p_hs::*;
 
 pub fn pT_reg2(p:f64,T:f64, o_id:i32)->f64
-// oID: output propertry 
 {
     match o_id
     {

@@ -1,12 +1,9 @@
-/*-----------------------------------------------------------------
- Region 4 saturation and wet
-            p in bar
-     Ttemperaturein K
-          p2sat_water,   p2sat_steam
-          T2sat_water,  T2sat_steam
+//! Region 4 saturation and wet
+//!            p in MPa
+//!     T temperaturein K
+//!          p2sat_water,   p2sat_steam
+//!          T2sat_water,  T2sat_steam
 
-Author: Maohua Cheng
--------------------------------------------------------------------------------*/
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 use crate::r1::region1_pT::*;
@@ -18,9 +15,8 @@ use crate::r3::region3_v_pT::*;
 use crate::r4::region4_sat_pT::*;
 
 
+/// saturation water include :region3  pT2v_sat_reg
 pub fn p2sat_water(p:f64,o_id:i32)->f64
-// saturation water
-// include :region3  pT2v_sat_reg
 {  
    if o_id == OP
    {   return p;}
@@ -51,8 +47,8 @@ pub fn p2sat_water(p:f64,o_id:i32)->f64
    }
 }
 
+/// saturation  steam
 pub fn p2sat_steam(p:f64, o_id:i32)->f64
-//saturation  steam
 {  
    if o_id == OP
     {  return p;}
@@ -83,7 +79,6 @@ pub fn p2sat_steam(p:f64, o_id:i32)->f64
    }
 }
 
-//--------------------------------------------------
 pub fn T2sat_water(T:f64,o_id:i32)->f64
 {
    if o_id == OT

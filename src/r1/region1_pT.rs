@@ -1,18 +1,14 @@
-/*----------------------------------------------------------------------------
-  Basic Equation of  IAPWS-IF97 Region1
-       (p,T)-->vol, u,h,s,enthalpy,cp, cv,w
-       T: temperature  K
-       P: pressure  Map
-       v: specific volume m^3/kg
-       h: specific enthalpy kJ/kg
-       u: specific internal energy kJ/kg
-       s: specific entropy  kJ/(kg K)
-       cp: specific isobaric heat capacity  kJ/(kg K)
-       cv: specific isochoric heat capacity kJ/(kg K)
-       w:  speed of sound  m/s
-
-   Author Maohua Cheng
------------------------------------------------------------------*/
+//！  Basic Equation of  IAPWS-IF97 Region1
+//！       (p,T)-->vol, u,h,s,enthalpy,cp, cv,w
+//！       T: temperature  K
+//！       P: pressure  Map
+//！       v: specific volume m^3/kg
+//！       h: specific enthalpy kJ/kg
+//！       u: specific internal energy kJ/kg
+//！       s: specific entropy  kJ/(kg K)
+//！       cp: specific isobaric heat capacity  kJ/(kg K)
+//！       cv: specific isochoric heat capacity kJ/(kg K)
+//！       w:  speed of sound  m/s
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
@@ -21,23 +17,22 @@ use crate::r1::region1_gfe::*;
 const r1pstar: f64 = 16.53; // MPa
 const r1Tstar: f64 = 1386.0; // K
 
+/// specific volume in region 1
 pub fn pT2v_reg1(p: f64, T: f64) -> f64
-// specific volume in region 1
 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
     return 0.001 * RGAS_WATER * T * pi * gamma_pi_reg1(tau, pi) / p;
 }
 
+/// specific internal energy in region 1
 pub fn pT2u_reg1(p: f64, T: f64) -> f64
-// specific internal energy in region 1
 {
    /*
     let pi: f64 = p / r1pstar;
     let tau: f64 = r1Tstar / T;
     return RGAS_WATER * T * (tau * gamma_tau_reg1(tau, pi) - pi * gamma_pi_reg1(tau, pi));
   */
-    // -------------- derative  有错误 -----------------------------
      let pi1: f64 = p / r1pstar;
      let tau1: f64 = r1Tstar / T;
  
@@ -53,12 +48,10 @@ pub fn pT2u_reg1(p: f64, T: f64) -> f64
          d_tau += item * IJn[k].J as f64;
      }
      return RGAS_WATER *T* (tau1 * d_tau/tau - pi1*d_pi/pi);    
-      
-   
 }
 
+/// specific entropy in region 1
 pub fn pT2s_reg1(p: f64, T: f64) -> f64
-// specific entropy in region 1
 {
     /*
     let tau:f64 = r1Tstar / T;
@@ -84,25 +77,24 @@ pub fn pT2s_reg1(p: f64, T: f64) -> f64
     return RGAS_WATER * (tau1 * d_tau / tau -v);
 }
 
+/// specific enthalpy in region 1
 pub fn pT2h_reg1(p: f64, T: f64) -> f64
-// specific enthalpy in region 1
 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
     return RGAS_WATER * T * tau * gamma_tau_reg1(tau, pi);
 }
 
+/// specific isobaric heat capacity in region 1
 pub fn pT2cp_reg1(p: f64, T: f64) -> f64
-// specific isobaric heat capacity in region 1
 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
     return -RGAS_WATER * tau * tau * gamma_tautau_reg1(tau, pi);
 }
 
+/// specific isochoric heat capacity in region 1
 pub fn pT2cv_reg1(p: f64, T: f64) -> f64
-// specific isochoric heat capacity in region 1
-// cv in kJ/(kg K), T in K, p in MPa
 {
   /*
     let tau: f64 = r1Tstar / T;
@@ -141,8 +133,8 @@ pub fn pT2cv_reg1(p: f64, T: f64) -> f64
   return  RGAS_WATER * (a + b / (d_pipi / pi / pi));
 }
 
+/// speed of sound in region 1:  w in m/s, T in K, p in Mpa
 pub fn pT2w_reg1(p: f64, T: f64) -> f64
-// speed of sound in region 1:  w in m/s, T in K, p in Mpa
 {
     /*let tau: f64 = r1Tstar / T;
     let pi = p / r1pstar;

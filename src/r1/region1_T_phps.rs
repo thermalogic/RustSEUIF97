@@ -1,10 +1,6 @@
-/*---------------------------------------------------------------------------
-   IAPWS-IF 97 Backware Equation for Region 1:
-      August 2007 IF97: IF97-Rev.pdf: P6-9
-          (p,h)->T, (p,s)->T
-    
-  Author: Maohua Cheng
----------------------------------------------------------------------------*/
+//！  IAPWS-IF 97 Backware Equation for Region 1:
+//！      August 2007 IF97: IF97-Rev.pdf: P6-9
+//！          (p,h)->T, (p,s)->T
 
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
@@ -14,9 +10,7 @@ use crate::algo::root::I_MAX;
 use crate::algo::root::IF97_EQ; 
 use crate::r1::region1_pT::*;
 
-//-------------------------------------------------------------
-// Backward equation T(p,h) for region 1
-//--------------------------------------------------------------
+/// Backward equation T(p,h) for region 1
 pub fn ph2T_reg1(p:f64, h:f64)->f64
 {
   // Page 11, Table6 :Initialize coefficients and exponents (P,H)->T for region 1
@@ -77,13 +71,11 @@ pub fn ph2T_reg1(p:f64, h:f64)->f64
 
 }
 
-//----------------------------------------------------------------
-//  Backward equation T(p,s) for region 1
-//----------------------------------------------------------------
+///  Backward equation T(p,s) for region 1
 pub fn ps2T_reg1(p:f64, s:f64)->f64
-// Page 12, Table 8 : Initialize coefficients and exponents (P,S)->T for region 1
 {
-  const IJn: [IJnData; 20] = [
+// Page 12, Table 8 : Initialize coefficients and exponents (P,S)->T for region 1
+ const IJn: [IJnData; 20] = [
       IJnData{I:0, J:0, n:0.17478268058307e3},
       IJnData{I:0, J:1, n:0.34806930892873e2},
       IJnData{I:0, J:2, n:0.65292584978455e1},
