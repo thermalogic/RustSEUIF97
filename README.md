@@ -2,7 +2,7 @@
 
 IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5~10x speed-up compared to  the `powi()` of the Rust standard library.   
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5~10x speed-up compared to  the `powi()` of the Rust standard library，5x speed-up compared to  the shared library in C using the same fast algorithms.  
 
 The following input pairs are implemented: 
 
@@ -90,9 +90,3 @@ fn main() {
 | Thermal diffusivity                   |   um^2/s    |     td |         27 |
 | Prandtl number                        |             |     pr |         28 |
 | Surface tension                       |    mN/m     |     st |         29 |
-
-## Cite as
-
-* Wang Pei-hong, Jia Jun-ying, Cheng Mao-hua. General Calculating Models of Water and Steam Properties(IAPWS-IF97), Power Engineering, 21 (6), 2001, pp. 1564-1567. (in Chinese)
-
-* Cheng Maohua. SEUIF97: the high-speed shared library of IAPWS-IF97(1.0.1). Zenodo. https://doi.org/10.5281/zenodo.4586961
