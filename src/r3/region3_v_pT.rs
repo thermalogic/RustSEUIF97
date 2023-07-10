@@ -1,9 +1,9 @@
 //! Backward Equation for Region 3:
 //!    IAPWS-IF97-S05rev 
 //!     (p,T)->v 
-//!        p  pressure in MPa
-//!        T  temperature in K
-//!         v  density in kg/m3
+//!          p  pressure MPa
+//!          T  temperature  K
+//!          v  density  kg/m3
 
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;

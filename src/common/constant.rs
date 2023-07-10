@@ -7,9 +7,7 @@ pub struct IJnData {
 }
 
 
-///--------------------------------------------------
 /// constants of propertry ID - o_id
-///----------------------------------------------------
 
 /// 1 propertry in IF97 Basic Equation
 pub const OP:i32=0;   //  p  Pressure           MPa     

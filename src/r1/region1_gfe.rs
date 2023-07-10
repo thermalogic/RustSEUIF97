@@ -1,9 +1,9 @@
 //！  IAPWS-IF97 Basic Equation for Region 1
 //！
-//！ The dimensionless Gibbs free energy (p,T) EQUATIONS
+//！   The dimensionless Gibbs free energy (p,T) EQUATIONS
 //！          gamma and its derivatives
-//！ Release : August 2007  Equations for Region 1 P6-9
-//！        according to Eq. (7), P8 release if97-rev 2007
+//！   Release : August 2007  Equations for Region 1 P6-9
+//！             according to Eq. (7), P8 release if97-rev 2007
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;

@@ -1,8 +1,7 @@
 //! Region5  Basic Equation
 //!    http://www.iapws.org/relguide/IF97-Rev.html, Eq 32-34
-//! P39 (p,T)->v,h,s,cp,cv,w,k 
-//！    t[K],p[MPa]
-//！             k: isentropic exponent
+//!    P39 (p,T)->v,h,s,cp,cv,w,k 
+//！        T,K   p, MPa       
 	
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
@@ -95,7 +94,7 @@ pub fn pT2w_reg5(p:f64,T:f64)->f64
 	return w.sqrt();
 }
 
-/// isentropic exponent
+/// k:isentropic exponent
 pub fn pT2k_reg5(p:f64,T:f64)->f64
 {  	let tau:f64 = r5Tstar / T;
 	let pi:f64 = p / r5Pstar;

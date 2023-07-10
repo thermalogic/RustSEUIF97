@@ -1,7 +1,6 @@
 //! Backward Equation for Region 3:
-//!   IAPWS-IF97-S03rev: Supp-Tv(ph,ps)3-2014.pdf
-//!     (p,h) -T,v
-//1     (p,s)->T,v
+//!   Supp-Tv(ph,ps)3-2014.pdf
+//!        (p,h) -T,v    (p,s)->T,v
  
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;

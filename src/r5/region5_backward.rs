@@ -1,5 +1,5 @@
-//！ IAPWS-IF97  Backware  for Region 5  Using the secant method, 
-//！   (p,h)  (p,s) (h,s)
+//！ IAPWS-IF97 Backward of Region 5  using the secant method,
+//！      (p,h)  (p,s) (h,s)
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::algo::root::rtsec1;

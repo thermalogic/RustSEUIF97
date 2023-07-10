@@ -1,4 +1,3 @@
-//!
 //! Check the Region
 //!    pT_sub_region
 //!    ph_sub_region

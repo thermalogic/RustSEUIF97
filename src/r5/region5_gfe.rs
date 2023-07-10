@@ -1,5 +1,5 @@
 //！  Region 5 Basic Equation L the dimensionless Gibbs free energy
-//！         http://www.iapws.org/relguide/IF97-Rev.html, Eq 32-34
+//！       http://www.iapws.org/relguide/IF97-Rev.html, Eq32-34
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
@@ -7,7 +7,7 @@ use crate::common::constant::*;
 /// ideal-gas part  of the  dimensionless Gibbs free energy for region 5 
 
 /*	P37 Table 37: Ideal properties for Region 5
- the coefficients and exponents of ideal-gas part  of the dimensionless Gibbs free energy for region 5, Eq. (33)
+     the coefficients and exponents of ideal-gas part  of the dimensionless Gibbs free energy for region 5, Eq. (33)
 */
 const Jo:[i32;6] = [0, 1, -3, -2, -1, 2];
 

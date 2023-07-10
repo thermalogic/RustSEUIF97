@@ -1,16 +1,15 @@
 //! IAPWS-IF97 Basic Equation for Region 2:
-//！ Release : IF97-rev  August 2007
+//！  Release : IF97-rev  August 2007
 //！     The dimensionless Gibbs free energy gamma and its derivatives
-//！       REGION2 G(p,T) EQUATIONS：  Eq.(15), P13
-//！          The ideal-gas part ： Eq.(16)
-//！          The residual part ： Eq.(17)
+//！        REGION2 G(p,T) EQUATIONS：  Eq.(15), P13
+//！            The ideal-gas part ： Eq.(16)
+//！            The residual part ： Eq.(17)
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 
 //  Initialize coefficients and exponents for region 2
-//  Table 10 Page 13
-//    The ideal-gas part gamma'o of the dimensionless Gibbs free energy for region 2, Eq.(16)a
+//  Table 10 Page 13：The ideal-gas part gamma'o for region 2, Eq.(16)a
 pub const J0: [i32; 9] = [0, 1, -5, -4, -3, -2, -1, 2, 3];
 pub const n0: [f64; 9] = [
      -0.96927686500217E+01,
@@ -23,8 +22,7 @@ pub const n0: [f64; 9] = [
     -0.28408632460772,
      0.21268463753307E-01];
 
-// Table 11 Page 13
-// The  residual part gamma'r of the dimensionless Gibbs free energy for  region 2, Eq. (17)
+// Table 11 Page 13 The residual part gamma'r for  region 2, Eq. (17)
 pub const IJn: [IJnData; 43] = [
     IJnData {
         I: 1,

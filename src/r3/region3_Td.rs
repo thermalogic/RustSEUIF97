@@ -1,6 +1,6 @@
 
 //！  Basic Equation of  IAPWS-IF97 Region3
-//！  (T,d)-->p,h,u,s,cp,w
+//！  (T,d)-->p,h,u,s,cp,cv,w
 //！       T: temperature  K
 //！       P: pressure  MPa
 //！       v: specific volume m^3/kg

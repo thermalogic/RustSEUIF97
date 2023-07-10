@@ -6,17 +6,16 @@
  use crate::r2::region2_pT::*;
  
 /// IF97-rev Boundary between Regions 2 and 3
-/// T in K
-/// returns p between regions 2 and 3 in MPa
+///     T in K
+///     returns p between regions 2 and 3 in MPa
 pub fn B23_T2p(T:f64)->f64
 {
     const n23:[f64;3] = [0.34805185628969e3, -0.11671859879975e1, 0.10192970039326e-2];
     n23[0] + (n23[1] + n23[2] * T) * T  
 }
 
-/// IF97-rev Table 5, pag 9
-/// Auxiliary equation for the boundary 2-3
-///    p is pressure in MPa
+/// IF97-rev Table 5, pag 9: Auxiliary equation for the boundary 2-3
+///     p is pressure in MPa
 ///     returns temperature between regions 2 and 3 in K
 pub fn B23_p2T(p:f64)->f64
 {

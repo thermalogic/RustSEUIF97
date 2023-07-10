@@ -1,4 +1,5 @@
-/// shortest addition chains,n>=0
+///  The fast integer power   
+///      The shortest addition chains,n[0,58]
 fn possac(x: f64, n: i32) -> f64 {
     let mut x2: f64;
     let mut x3: f64;

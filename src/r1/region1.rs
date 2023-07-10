@@ -1,5 +1,5 @@
 //！ Region 1 API
-//！pT_reg1 ，ph_reg1,ps_reg1 hs_reg1
+//！    pT_reg1(p,T)，ph_reg1(p,h), ps_reg1(p,s) , hs_reg1(h,s) 
 
 use crate::common::constant::*;
 

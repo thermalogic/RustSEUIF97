@@ -1,12 +1,12 @@
 
 //!    Transport  and Further  Properties
-//!       Dynamic viscosity  Pa.s  dv (mu)   
-//!       Kinematic viscosity  m^2/s    kv     25 
-//!       Thermal conductivity  W/(m.K)     tc  k  26    
-//!       Thermal diffusivity   um^2/s   td        27 
-//!       Prandtl number                  pr         28 
-//!       Refractive index 
-//!       Relative static dialectric sonstant  -待
+//!        Dynamic viscosity  Pa.s  dv (mu)   
+//!        Kinematic viscosity  m^2/s    kv     25 
+//!        Thermal conductivity  W/(m.K)     tc  k  26    
+//!        Thermal diffusivity   um^2/s   td        27 
+//!        Prandtl number                  pr         28 
+//!        Refractive index 
+//!        Relative static dialectric sonstant   
 //！       Surface tension     st   mN/m      29 sigma  [N/m]
   
 use crate::algo::fast_ipower::sac_pow;

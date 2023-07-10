@@ -1,5 +1,5 @@
 //！  Basic Equation of  IAPWS-IF97 Region1
-//！       (p,T)-->vol, u,h,s,enthalpy,cp, cv,w
+//！       (p,T)-->v, u,h,s,cp, cv,w
 //！       T: temperature  K
 //！       P: pressure  Map
 //！       v: specific volume m^3/kg

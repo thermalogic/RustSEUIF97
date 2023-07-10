@@ -1,9 +1,9 @@
 //! Backward Equation for Region 3:
 //!  IAPWS-IF97-S04rev :Supp-phs3-2014.pdf
 //!     (h,s)->p  (3a,3b,3c)
-//!       h : Specific enthalpy [kJ/kg]
-//!       s : Specific entropy [kJ/kgK]
-//!      P : Pressure [MPa]
+//!         h : Specific enthalpy kJ/kg
+//!         s : Specific entropy kJ/kgK
+//!         P : Pressure MPa
 
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;

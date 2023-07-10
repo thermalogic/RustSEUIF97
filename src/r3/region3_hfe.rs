@@ -1,8 +1,8 @@
 
-//! the dimensionless Helmholtz free energy  for Region 3 
+//!  Region 3 :the dimensionless Helmholtz free energy 
 //!     Speciphic Helmholtz free energy.
-//!        tau :dimensionless temperature [K]
-//1        delta: dimensionless density [kg/m3]
+//!        tau :dimensionless temperature K
+//1        delta: dimensionless density kg/m3
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
