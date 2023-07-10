@@ -1,7 +1,3 @@
-
-
-
-// importing common module.
 #![allow(warnings)]
 use assert_approx_eq::assert_approx_eq;
 

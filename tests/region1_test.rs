@@ -1,7 +1,5 @@
 
-// importing common module.
 #![allow(warnings)]
-mod common;
 use assert_approx_eq::assert_approx_eq;
 
 use if97::pt_reg1;
@@ -24,8 +22,6 @@ const w: [f64; 3] = [0.150773921e4, 0.163469054e4, 0.124071337e4];
 
 #[test]
 fn test_pT() {
-    // using common code.
-    common::setup();
     for i in 0..3 {
         let t:f64 = T[i]- 273.15;
         assert_approx_eq!(v[i], if97::pt_reg1(p[i],t, OV), 1.0e-9f64);

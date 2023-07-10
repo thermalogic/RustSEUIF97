@@ -1,7 +1,4 @@
-//cargo test --test region4_test
 #![allow(warnings)]
-// importing common module.
-mod common;
 use assert_approx_eq::assert_approx_eq;
 
 use if97::common::*;
