@@ -1,6 +1,6 @@
 [package]
 name = "if97"
-version = "0.1.6"
+version = "0.1.7"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package"

@@ -66,6 +66,7 @@ fn main() {
 | Specific Volume                       |   m^3/kg    |      v |  OV  |   3        |
 | Specific enthalpy                     |    kJ/kg    |      h |  OH  |   4        |
 | Specific entropy                      |  kJ/(kg·K)  |      s |  OS  |   5        |
+| Specific internal energy              |    kJ/kg    |      u |  OU  |   7        |
 | Specific isobaric heat capacity       |  kJ/(kg·K)  |     cp | OCP  |   8        |
 | Specific isochoric heat capacity      |  kJ/(kg·K)  |     cv | OCV  |   9        |
 | Speed of sound                        |     m/s     |      w |  OW  |   10       |
