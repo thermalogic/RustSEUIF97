@@ -1,9 +1,9 @@
 #![allow(warnings)]
 use assert_approx_eq::assert_approx_eq;
 
+use if97::common::transport_further::surface_tension;
 use if97::common::transport_further::thcond;
 use if97::common::transport_further::viscosity;
-use if97::common::transport_further::surface_tension;
 use if97::common::*;
 
 #[test]
@@ -34,7 +34,7 @@ fn test_viscosity() {
 #[test]
 fn test_thcond() {
     //  Table 4, page 10  T ruo k (mW·m−1·K−1)
-    const data: [[f64;3];4] = [
+    const data: [[f64; 3]; 4] = [
         [298.15, 0.0, 18.4341883],
         [298.15, 998.0, 607.712868],
         [298.15, 1200.0, 799.038144],
@@ -51,19 +51,36 @@ fn test_thcond() {
 
 #[test]
 fn test_surface_tension() {
-// Selected values from table 1 page 4 t  °C  st mNm
-const data: [[f64;2];6] = [
-    [0.01,75.65],
-    [5.0,74.94],
-    [10.0,74.22],
-    [15.0,74.39],
-    [20.0,72.74],
-    [25.0,71.97]];
+    // Selected values from table 1 page 4 t  °C  st mNm
+    const data: [[f64; 2]; 6] = [
+        [0.01, 75.65],
+        [5.0, 74.94],
+        [10.0, 74.22],
+        [15.0, 74.39],
+        [20.0, 72.74],
+        [25.0, 71.97],
+    ];
     for i in 0..6 {
         assert_approx_eq!(
             data[i][1],
-            surface_tension(data[i][0]+273.15) * 1.0e3,
+            surface_tension(data[i][0] + 273.15) * 1.0e3,
             1.0e0f64
+        );
+    }
+}
+
+#[test]
+fn test_static_dielectric() {
+    // rho kg/m³, T K , epsion: Dielectric constant [-]
+    const data: [[f64; 3]; 2] = [
+        [999.242866, 298.15, 78.5907250],
+        [26.0569558, 873.15, 1.12620970],
+    ];
+    for i in 0..2 {
+        assert_approx_eq!(
+            data[i][2],
+            static_dielectric(data[i][0], data[i][1]),
+            1.0e-5f64
         );
     }
 }
