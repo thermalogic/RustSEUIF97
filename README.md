@@ -58,7 +58,7 @@ fn main() {
     
 ## Properties in if97
 
-| Properties                            |    Unit     | symbol | o_id | o_id value | 
+| Propertry                             |    Unit     | symbol | o_id | o_id value | 
 | ------------------------------------- | :---------: | ------:|-----:|-----------:|
 | Pressure                              |     MPa     |      p |  OH  |   0        |
 | Temperature                           |     °C      |      t |  OT  |   1        |
