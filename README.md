@@ -77,5 +77,5 @@ fn main() {
 | Thermal diffusivity                   |   um^2/s    |     td |  OTD |   27       |
 | Prandtl number                        |             |     pr |  OPR |   28       |
 | Surface tension                       |    mN/m     |     st |  OST |   29       |
-| Static Dielectric Constant            |             |    std | OSTD |   30       | 
+| Static Dielectric Constant            |             |    sdc | OSDC |   30       | 
 
