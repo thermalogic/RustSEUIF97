@@ -1,11 +1,11 @@
 
 //!    Transport  and Further  Properties
 //!        Dynamic viscosity  Pa.s  dv (mu)   
-//!        Kinematic viscosity  m^2/s    kv     25 
-//!        Thermal conductivity  W/(m.K)     tc  k  26    
-//!        Thermal diffusivity   um^2/s   td        27 热扩散率
-//!        Prandtl number                  pr         28 
-//!        static dialectric sonstant   sdc - 30 
+//!        Kinematic viscosity  m^2/s    kv    
+//!        Thermal conductivity  W/(m.K)     tc     
+//!        Thermal diffusivity   um^2/s   td     
+//!        Prandtl number                  pr     
+//!        static dialectric sonstant   sdc 
 //！       Surface tension     st   mN/m      29 sigma  [N/m]
 
 use crate::algo::fast_ipower::sac_pow;
@@ -22,7 +22,7 @@ pub fn prandtl_number(dv:f64,cp:f64,tc:f64)->f64
 }
 
 /// Thermal diffusivity 
-///      = Thermal conductivity /(specific isobaric heat capacity*density)
+///    td = Thermal conductivity /(specific isobaric heat capacity*density)
 ///       cp: specific isobaric heat capacity
 ///       tc: Thermal conductivity   W/(m.K) 
 pub fn thermal_diffusivity(tc:f64,cp:f64,d:f64)->f64
@@ -33,9 +33,10 @@ pub fn thermal_diffusivity(tc:f64,cp:f64,d:f64)->f64
  
 /// The Viscosity for IF97
 ///    Parameters
-///       rho :  Density [kg/m³]
-///       T :    Temperature [K]
-///    Returns：  mu : float  Viscosity [Pa·s]
+///       rho :  Density  kg/m³
+///       T :    Temperature K
+///    Returns：
+///       mu : Viscosity Pa·s
 ///     IAPWS, Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary  Water Substance
 ///         http://www.iapws.org/relguide/viscosity.html
 pub fn viscosity(rho:f64, T:f64)->f64
@@ -68,10 +69,10 @@ pub fn viscosity(rho:f64, T:f64)->f64
 
 /// The thermal conductivity
 ///      Parameters
-///         rho :     Density [kg/m³]
-///         T :    Temperature [K]
+///         rho :     Density kg/m³
+///         T :    Temperature K
 ///      Returns 
-///           k : Thermal conductivity [W/mK]
+///         k : Thermal conductivity W/mK
 ///  IAPWS, Release on the IAPWS Formulation 2011 for the Thermal Conductivity  of Ordinary Water Substance
 ///         http://www.iapws.org/relguide/ThCond.html
 pub fn thcond(rho:f64, T:f64)->f64
@@ -110,9 +111,9 @@ pub fn thcond(rho:f64, T:f64)->f64
 
 /// Equation for the surface tension
 ///  Parameters
-///    T :  Temperature [K]
+///    T :  Temperature K
 ///  Returns
-///      sigma :   Surface tension [N/m]
+///      sigma :   Surface tension  N/m
 ///    IAPWS, Revised Release on Surface Tension of Ordinary Water Substance June 2014
 ///           http://www.iapws.org/relguide/Surf-H2O.html
 pub fn surface_tension(T:f64)->f64

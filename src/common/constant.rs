@@ -16,41 +16,22 @@ pub const OD:i32=2;   //  d  Density            kg/m^3
 pub const OV:i32=3;   //  v  Specific Volume    m^3/kg   
 pub const OH:i32=4;   //  h  Specific enthalpy  kJ/kg 
 pub const OS:i32=5;   //  s  Specific entropy   kJ/(kg·K) 
-pub const OE:i32=6;   //  e  Specific exergy    kJ/kg 
-pub const OU:i32=7;   //  u  Specific internal energy  kJ/kg 
-pub const OCP:i32=8;  // cp  Specific isobaric heat capacity  kJ/(kg·K) 
-pub const OCV:i32=9;  // cv  Specific isochoric heat capacity  kJ/(kg·K) 
-pub const OW:i32=10;  //  w  Speed of sound   m/s 
+pub const OU:i32=6;   //  u  Specific internal energy  kJ/kg 
+pub const OCP:i32=7;  // cp  Specific isobaric heat capacity  kJ/(kg·K) 
+pub const OCV:i32=8;  // cv  Specific isochoric heat capacity  kJ/(kg·K) 
+pub const OW:i32=9;  //  w  Speed of sound   m/s 
 
-/// 2 extended  propertry 
-pub const OKS:i32=11;    // ks  Isentropic exponent 
-pub const OF:i32=12;    // f   Specific Helmholtz free energy   kJ/kg 
-pub const OG:i32=13;    //  g  Specific Gibbs free energy kJ/kg 
-pub const OZ:i32=14;    //  z  Compressibility factor 
-pub const OX:i32=15;   // x  Steam quality   
-pub const OR:i32=16;   // r  Region in IF97   
-pub const OEC:i32=17;   // ec Isobaric volume expansion coefficient  1/K  
-pub const OKT:i32=18;   // kt Isothermal compressibility   1/MPa  
+pub const OX:i32=10;   // x  Steam quality   
+pub const OR:i32=11;   // r  Region in IF97   
 
-// 3 Partial derivative
-pub const ODVDT:i32=19;   // dvdt Partial derivative (dV/dT)p  m3/(kg·K)
-pub const ODVDP:i32=20;   // dvdp Partial derivative (dV/dP)T  m3/(kg·MPa)
-pub const ODPDT:i32=21;   // dpdT Partial derivative (dP/dT)v   MPa/K  
-
-// 4 extended  propertry 
-pub const OIJTC:i32=22;   // iJTC Isothermal Joule-Thomson coefficient kJ/(kg·MPa)
-pub const OITCR:i32=23;   // JTC  Joule-Thomson coefficient    K/MPa 
-
-// 5 non-thremal  propertry 
-pub const ODV:i32=24;   // dv Dynamic viscosity  kg/(m·s) or mu(Pa.s)
-pub const OKV:i32=25;   // kv Kinematic viscosity  m^2/s 
-pub const OTC:i32=26;   // tc Thermal conductivity W/(m.K) 
-pub const OTD:i32=27;   // td Thermal diffusivity   um^2/s 
-pub const OPR:i32=28;   // pr Prandtl number  
-pub const OST:i32=29;   // st Surface tension   mN/m  
-pub const OSDC:i32=30;   // Static Dielectric Constant 
-
-
+// 2 transport and further propertry 
+pub const ODV:i32=12;   // dv Dynamic viscosity  kg/(m·s) or mu(Pa.s)
+pub const OKV:i32=13;   // kv Kinematic viscosity  m^2/s 
+pub const OTC:i32=14;   // tc Thermal conductivity W/(m.K) 
+pub const OTD:i32=15;   // td Thermal diffusivity   um^2/s 
+pub const OPR:i32=16;   // pr Prandtl number  
+pub const OST:i32=17;   // st Surface tension   mN/m  
+pub const OSDC:i32=18;   // Static Dielectric Constant 
 
 /// code for error input
 pub const INVALID_VALUE:i32=-9999;

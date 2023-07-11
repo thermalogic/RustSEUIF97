@@ -58,25 +58,25 @@ fn main() {
     
 ## Properties in if97
 
-| Propertry                             |    Unit     | symbol | o_id | o_id value | 
-| ------------------------------------- | :---------: | ------:|-----:|-----------:|
-| Pressure                              |     MPa     |      p |  OH  |   0        |
-| Temperature                           |     °C      |      t |  OT  |   1        |
-| Density                               |   kg/m^3    |      d |  OD  |   2        |
-| Specific Volume                       |   m^3/kg    |      v |  OV  |   3        |
-| Specific enthalpy                     |    kJ/kg    |      h |  OH  |   4        |
-| Specific entropy                      |  kJ/(kg·K)  |      s |  OS  |   5        |
-| Specific internal energy              |    kJ/kg    |      u |  OU  |   7        |
-| Specific isobaric heat capacity       |  kJ/(kg·K)  |     cp | OCP  |   8        |
-| Specific isochoric heat capacity      |  kJ/(kg·K)  |     cv | OCV  |   9        |
-| Speed of sound                        |     m/s     |      w |  OW  |   10       |
-| Steam quality                         |             |      x |  OX  |   15       |
-| Region                                |             |      r |  OR  |   16       |
-| Dynamic viscosity                     |  kg/(m·s)   |     dv |  ODV |   24       |
-| Kinematic viscosity                   |    m^2/s    |     kv |  OKV |   25       |
-| Thermal conductivity                  |   W/(m.K)   |     tc |  OTC |   26       |
-| Thermal diffusivity                   |   um^2/s    |     td |  OTD |   27       |
-| Prandtl number                        |             |     pr |  OPR |   28       |
-| Surface tension                       |    mN/m     |     st |  OST |   29       |
-| Static Dielectric Constant            |             |    sdc | OSDC |   30       | 
+| Propertry                             |    Unit     | symbol | o_id |  
+| ------------------------------------- | :---------: | ------:|-----:|
+| Pressure                              |     MPa     |      p |  OP  |
+| Temperature                           |     °C      |      t |  OT  |
+| Density                               |   kg/m^3    |      d |  OD  |
+| Specific Volume                       |   m^3/kg    |      v |  OV  |
+| Specific enthalpy                     |    kJ/kg    |      h |  OH  |
+| Specific entropy                      |  kJ/(kg·K)  |      s |  OS  |
+| Specific internal energy              |    kJ/kg    |      u |  OU  |
+| Specific isobaric heat capacity       |  kJ/(kg·K)  |     cp | OCP  |
+| Specific isochoric heat capacity      |  kJ/(kg·K)  |     cv | OCV  |
+| Speed of sound                        |     m/s     |      w |  OW  |
+| Steam quality                         |             |      x |  OX  |
+| Region                                |             |      r |  OR  |
+| Dynamic viscosity                     |  kg/(m·s)   |     dv |  ODV |
+| Kinematic viscosity                   |    m^2/s    |     kv |  OKV |
+| Thermal conductivity                  |   W/(m.K)   |     tc |  OTC |
+| Thermal diffusivity                   |   um^2/s    |     td |  OTD |
+| Prandtl number                        |             |     pr |  OPR |
+| Surface tension                       |    mN/m     |     st |  OST |
+| Static Dielectric Constant            |             |    sdc | OSDC | 
 
