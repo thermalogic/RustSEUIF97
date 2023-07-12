@@ -1,5 +1,4 @@
 #![allow(warnings)]
-//use libc;
 pub mod algo;
 pub mod common;
 pub mod r1;
@@ -18,7 +17,7 @@ pub use r4::*;
 pub use r5::*;
 
 
-pub fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
+fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
     let sub_region: i32 = pT_sub_region(p, t + K);
     if o_id == OR {
         return sub_region as f64;
@@ -47,7 +46,8 @@ pub fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
     }
 }
 
-//pub unsafe extern "C" fn pt(p:f64,t:f64) -> f64
+//#[no_mangle]
+// pub unsafe extern "C" fn pt(p:f64,t:f64, o_id: i32)-> f64 { 
 pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     if o_id == OST {
         return surface_tension(t + K);
@@ -91,7 +91,7 @@ pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     }
 }
 
-pub fn ph_thermal(p: f64, h: f64, o_id: i32) -> f64 {
+fn ph_thermal(p: f64, h: f64, o_id: i32) -> f64 {
     let sub_region: i32 = ph_sub_region(p, h);
     if o_id == OR {
         return sub_region as f64;
@@ -163,7 +163,7 @@ pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-pub fn ps_thermal(p: f64, s: f64, o_id: i32) -> f64 {
+fn ps_thermal(p: f64, s: f64, o_id: i32) -> f64 {
     let sub_region: i32 = ps_sub_region(p, s);
     if o_id == OR {
         return sub_region as f64;
@@ -234,7 +234,7 @@ pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-pub fn hs_thermal(h: f64, s: f64, o_id: i32) -> f64 {
+fn hs_thermal(h: f64, s: f64, o_id: i32) -> f64 {
     let sub_region: i32 = hs_sub_region(h, s);
     if o_id == OR {
         return sub_region as f64;

@@ -1,5 +1,6 @@
 [package]
 name = "if97"
+crate-type   = ["rlib", "cdylib"]
 version = "0.2.0"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
