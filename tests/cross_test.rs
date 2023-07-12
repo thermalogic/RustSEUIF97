@@ -14,7 +14,7 @@ use if97::px;
 use if97::tx;
 
 #[test]
-fn test_gross() {
+fn test_cross() {
     let p:f64 = 3.0;
     let t:f64= 300.0-273.15;
     // pt,ph,ps,hs
