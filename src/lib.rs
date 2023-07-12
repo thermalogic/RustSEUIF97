@@ -17,7 +17,7 @@ pub use r3::*;
 pub use r4::*;
 pub use r5::*;
 
-//pub unsafe extern "C" fn pt(p:f64,t:f64) -> f64
+
 pub fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
     let sub_region: i32 = pT_sub_region(p, t + K);
     if o_id == OR {
@@ -47,6 +47,7 @@ pub fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
     }
 }
 
+//pub unsafe extern "C" fn pt(p:f64,t:f64) -> f64
 pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     if o_id == OST {
         return surface_tension(t + K);

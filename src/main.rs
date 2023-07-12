@@ -1,6 +1,6 @@
 #![allow(warnings)]
-use std::time::Instant;
 use std::collections::HashMap;
+use std::time::Instant;
 pub mod algo;
 pub mod common;
 pub mod r1;
@@ -16,7 +16,6 @@ use r3::*;
 use r4::*;
 use r5::*;
 
-
 pub struct TestData {
     pub p: f64,
     pub T: f64,
@@ -28,7 +27,7 @@ pub struct TestData {
     pub w: f64,
 }
 
-fn speed_region1() {
+fn speed_region1(prop_map: HashMap<&str, i32>) {
     // Table 5，Page 9: p,T,v,h,u,s,cp,w
     const p: [f64; 3] = [3.0, 80.0, 3.0];
     const T: [f64; 3] = [300.0, 300.0, 500.0];
@@ -38,42 +37,27 @@ fn speed_region1() {
     const s: [f64; 3] = [0.392294792, 0.368563852, 0.258041912e1];
     const u: [f64; 3] = [0.112324818e3, 0.106448356e3, 0.971934985e3];
     const cp: [f64; 3] = [0.417301218e1, 0.401008987e1, 0.465580682e1];
-    //const cv: [f64; 3] = [0.412120160e1, 0.391736606e1, 0.322139223e1];
     const w: [f64; 3] = [0.150773921e4, 0.163469054e4, 0.124071337e4];
-
-
-    let map = HashMap::from([
-        ("V",OV),
-        ("H", OH),
-        ("U",OU),
-        ("S",OS),
-        ("CP",OCP),
-        ("W",OW)]);
 
     println!("Region 1 ");
 
     let mut p1: f64 = p[0];
     let mut t1: f64 = T[0] - 273.15;
-    println!(" p={} t={} ",  p1, t1);
+    println!(" p={} t={} ", p1, t1);
 
-    for (key, item) in map.iter()
-     {   let value: f64 = pt_reg1(p1, t1, *item);
-        println!("\t {} ={}",key, value);
+    for (key, item) in prop_map.iter() {
+        let value: f64 = pt_reg1(p1, t1, *item);
+        println!("\t {} ={}", key, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
             std::hint::black_box(pt_reg1(p1, t1, *item));
         }
         let elapsed_time = now.elapsed();
-        println!(
-            "\t\t {} Running  {:?}",
-            key, elapsed_time
-        );
+        println!("\t\t {} Running  {:?}", key, elapsed_time);
     }
-
-   
 }
 
-fn speed_region2() {
+fn speed_region2(prop_map: HashMap<&str, i32>) {
     const data: [TestData; 3] = [
         TestData {
             p: 0.0035,
@@ -107,36 +91,24 @@ fn speed_region2() {
         },
     ];
 
-    let map = HashMap::from([
-        ("V",OV),
-        ("H", OH),
-        ("U",OU),
-        ("S",OS),
-        ("CP",OCP),
-        ("W",OW)]);
-
     println!("Region 2 ");
     let mut p: f64 = data[0].p;
     let mut t: f64 = data[0].T - 273.15;
     println!("\t p={} t={} ", p, t);
 
-    for (key, item) in map.iter()
-     {
+    for (key, item) in prop_map.iter() {
         let value: f64 = pt_reg2(p, t, *item);
-        println!("\t {} ={}",key, value);
+        println!("\t {} ={}", key, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
             std::hint::black_box(pt_reg2(p, t, *item));
         }
         let elapsed_time = now.elapsed();
-        println!(
-            "\t\t {} Running  {:?}",
-            key, elapsed_time
-        );
+        println!("\t\t {} Running  {:?}", key, elapsed_time);
     }
 }
 
-fn speed_region3() {
+fn speed_region3(prop_map: HashMap<&str, i32>) {
     // Table 33. Thermodynamic property values calculated from Eq. (28) for selected values of T and  a
     // T,d,p,h,u,s,cp,w
     const tab33: [[f64; 8]; 3] = [
@@ -171,77 +143,88 @@ fn speed_region3() {
             0.760696041E3,
         ],
     ];
-    println!("Region 3 "); 
+    println!("Region 3 ");
     let T: f64 = tab33[0][0];
     let d: f64 = tab33[0][1];
-    println!("\t T={} d={} ",  T, d);
+    println!("\t T={} d={} ", T, d);
 
-    let items: [i32; 6] = [OP, OH, OU, OS, OCP, OW];
-    let names: [String; 6] = [
-        "OP".to_string(),
-        "OH".to_string(),
-        "OU".to_string(),
-        "OS".to_string(),
-        "OCP".to_string(),
-        "OW".to_string(),
-    ];
-
-    for e in 0..6 {
-        let value: f64 = Td_reg3(T, d, items[e]);
-        println!("\t {}={}", names[e], value);
+    for (key, item) in prop_map.iter() {
+        let value: f64 = Td_reg3(T, d, *item);
+        println!("\t {}={}", key, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
-            std::hint::black_box(Td_reg3(T, d, items[e]));
+            std::hint::black_box(Td_reg3(T, d, *item));
         }
         let elapsed_time = now.elapsed();
-        println!(
-            "\t\t {} Running  {:?}",
-            names[e], elapsed_time
-        );
+        println!("\t\t {} Running  {:?}", key, elapsed_time);
     }
 }
 
-fn speed_region5() {
+fn speed_region5(prop_map: HashMap<&str, i32>) {
     // Table 42, page 40 T,p  v,h,u,s,cp,w
-const data:[[f64;8];3] = [
-    [1500.0, 0.5, 1.38455090, 0.521976855e+4, 4527.49310, 9.65408875, 2.61609445, 917.068690],
-    [1500.0, 30.0, 0.0230761299, 5167.23514, 4474.95124, 7.72970133, 2.72724317, 928.548002],
-    [2000.0, 30.0, 0.0311385219, 6571.22604, 5637.07038, 8.53640523, 2.88569882, 1067.36948]];
-
-
-    let map = HashMap::from([
-        ("V",OV),
-        ("H", OH),
-        ("U",OU),
-        ("S",OS),
-        ("CP",OCP),
-        ("W",OW)]);
+    const data: [[f64; 8]; 3] = [
+        [
+            1500.0,
+            0.5,
+            1.38455090,
+            0.521976855e+4,
+            4527.49310,
+            9.65408875,
+            2.61609445,
+            917.068690,
+        ],
+        [
+            1500.0,
+            30.0,
+            0.0230761299,
+            5167.23514,
+            4474.95124,
+            7.72970133,
+            2.72724317,
+            928.548002,
+        ],
+        [
+            2000.0,
+            30.0,
+            0.0311385219,
+            6571.22604,
+            5637.07038,
+            8.53640523,
+            2.88569882,
+            1067.36948,
+        ],
+    ];
 
     println!("Region  5 ");
 
     let mut p1: f64 = data[0][1];
     let mut t1: f64 = data[0][0] - 273.15;
-    println!(" p={} t={} ",  p1, t1);
-    for (key, item) in map.iter()
-     {   let value: f64 = pt_reg5(p1, t1, *item);
-        println!("\t {} ={}",key, value);
+    println!(" p={} t={} ", p1, t1);
+    for (key, item) in prop_map.iter() {
+        let value: f64 = pt_reg5(p1, t1, *item);
+        println!("\t {} ={}", key, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
             std::hint::black_box(pt_reg5(p1, t1, *item));
         }
         let elapsed_time = now.elapsed();
-        println!(
-            "\t\t {} Running  {:?}",
-            key, elapsed_time
-        );
+        println!("\t\t {} Running  {:?}", key, elapsed_time);
     }
-
 }
 
 fn main() {
-    //speed_region1();
-   // speed_region2();
-    speed_region3();
-   // speed_region5();
+    let prop_map: HashMap<&str, i32> = HashMap::from([
+        ("P", OP),
+        ("T", OT),
+        ("V", OV),
+        ("H", OH),
+        ("S", OS),
+        ("U", OU),
+        ("CP", OCP),
+        ("W", OW),
+    ]);
+    speed_region1(prop_map.clone());
+    speed_region2(prop_map.clone());
+    speed_region3(prop_map.clone());
+    speed_region5(prop_map.clone());
 }
-
