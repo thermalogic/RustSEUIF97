@@ -20,8 +20,7 @@ fn test_gross() {
     // pt,ph,ps,hs
     let h=pt(p,t,if97::OH);
     let s=pt(p,t,if97::OS);
-    println!("pt p={:.6} t={:.6} h={:.6} s={:6}",p,t,h,s);    
-    //
+     //
     assert_approx_eq!(t, ph(p,h,if97::OT), 1.0e-6f64);
     assert_approx_eq!(t, ps(p,s,if97::OT), 1.0e-6f64);
     
