@@ -24,7 +24,7 @@ pub fn ph_reg4(p:f64,h:f64, o_id:i32)->f64
    let x:f64 = (h - h1) / (h2 - h1);
    if o_id == OX
    {  return x;}
-   return px(p, x, o_id);
+   return px_reg4(p, x, o_id);
 }
 
 pub fn  ps_reg4(p:f64,s:f64, o_id:i32)->f64
@@ -34,13 +34,13 @@ pub fn  ps_reg4(p:f64,s:f64, o_id:i32)->f64
    let x:f64 = (s - s1) / (s2 - s1);
    if o_id == OX
    {   return x;}
-   return px(p, x, o_id);
+   return px_reg4(p, x, o_id);
 }
 
 pub fn hs_reg4(h:f64,s:f64, o_id:i32)->f64
 {
 
-   // python版本（h,s)  只能计算T<623.15,
+   // for T<623.15 only
    let T:f64 = hs2T_reg4(h, s);
    if o_id == OT
     {  return T-K;}
@@ -55,5 +55,5 @@ pub fn hs_reg4(h:f64,s:f64, o_id:i32)->f64
    if o_id == OX
    {   return x;}
 
-   return px(p, x, o_id);
+   return px_reg4(p, x, o_id);
 }

@@ -1,4 +1,4 @@
-// rustc -O simple.rs --extern if97=../target/release/libif97.rlib
+// rustc -O example1.rs --extern if97=../target/release/libif97.rlib
 #![allow(warnings)]
 fn main() {
     
@@ -11,5 +11,8 @@ fn main() {
     let u=if97::pt(p,t,if97::OU);
     let w=if97::pt(p,t,if97::OW);
     println!("p={} t={} h={} s={} v={}，u={} w={}",p,t,h,s,v,u,w);    
+
+    
+
 }
     
