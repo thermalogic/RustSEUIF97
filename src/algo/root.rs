@@ -44,7 +44,6 @@ pub fn  rtsec1(fun:IF97_EQ, con_var2:f64, fr:f64,x1:f64, x2:f64, mut fl:f64,mut 
         xl=rts;
         fl=f;
         rts += dx;
-        // TODO： 可将解的上下限作为参数带进来，保证迭代过程的解不超上下限
         //rts may out-bounded in region X
         if rts<=0.0
         { 
@@ -54,7 +53,6 @@ pub fn  rtsec1(fun:IF97_EQ, con_var2:f64, fr:f64,x1:f64, x2:f64, mut fl:f64,mut 
         f=fr-fun(rts,con_var2);
         i+=1;
        };
-     //println("rtsec1 i={}",i);
    };
    return rts;
 }
@@ -92,12 +90,10 @@ pub fn  rtsec2(fun:IF97_EQ, con_var1:f64, fr:f64, x1:f64, x2:f64,mut fl:f64,mut 
           xl=rts;
           fl=f;
           rts += dx;
-          // TODO： 可将解的上下限作为参数带进来，保证迭代过程的解不超上下限
           //rts must bounded in region X
           f=fr-fun(con_var1,rts);
           i+=1;
       }
-     // println!("rtsec2 i= {}",i);
   }
   return rts;
 }
