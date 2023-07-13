@@ -61,7 +61,7 @@ pub fn  rtsec1(fun:IF97_EQ, con_var2:f64, fr:f64,x1:f64, x2:f64, mut fl:f64,mut 
 
 ///  rtsec2 :fun(con_var1，x),the result is the second x，x={x1,x2}
 ///     the first con_var1 is constant
-///     fr: the value of func(con_var1,x)果
+///     fr: the value of func(con_var1,x)
 ///     fl: fr-func(con_var1,x1)
 ///     f: fr-func(con_var1,x2)
 ///     rts：the solution of x

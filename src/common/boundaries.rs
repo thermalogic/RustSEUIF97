@@ -1,4 +1,4 @@
-//!  IAWPS-IF97 : Boundary Methods
+//!  IAPWS-IF97 : Boundary Methods
 
  use crate::common::constant::*;
  use crate::algo::fast_ipower::sac_pow;
@@ -7,7 +7,7 @@
  
 /// IF97-rev Boundary between Regions 2 and 3
 ///     T in K
-///     returns p between regions 2 and 3 in MPa
+///     return: p between regions 2 and 3 in MPa
 pub fn B23_T2p(T:f64)->f64
 {
     const n23:[f64;3] = [0.34805185628969e3, -0.11671859879975e1, 0.10192970039326e-2];
@@ -16,7 +16,7 @@ pub fn B23_T2p(T:f64)->f64
 
 /// IF97-rev Table 5, pag 9: Auxiliary equation for the boundary 2-3
 ///     p is pressure in MPa
-///     returns temperature between regions 2 and 3 in K
+///     return: temperature between regions 2 and 3 in K
 pub fn B23_p2T(p:f64)->f64
 {
     const n23:[f64;3] = [0.10192970039326e-2, 0.57254459862746e3, 0.13918839778870e2];
@@ -25,11 +25,11 @@ pub fn B23_p2T(p:f64)->f64
 
 
 /// Check the region in (p,h)
-///   IAPWS-IF97-S03 rev :supp tv(ph,ps)2 2014 supplementary 03 for region 3 
-///     http://www.iapws.org/relguide/Supp-Tv(ph,ps)-2014.pdf, Eq 10
-///
-///    The equation p 3sat(h) describes the saturated liquid line and the
-///    saturated vapor line including the critical point in the enthalpy range (see Figure 3):
+///    IAPWS-IF97-S03 rev :supp tv(ph,ps) 2014 supplementary 03 for region 3 
+///        http://www.iapws.org/relguide/Supp-Tv(ph,ps)-2014.pdf, Eq 10
+
+///  The equation h2p_sat_reg3(h) describes the saturated liquid line and the
+///    saturated vapor line including the critical point in the enthalpy range(see Figure 3):
 pub fn h2p_sat_reg3(h:f64)->f64
 {
     // Table 18 page 18
@@ -53,9 +53,11 @@ pub fn h2p_sat_reg3(h:f64)->f64
     return 22.0 * suma;
 }
 
-/// Check the region in (p,s)
+/// Check the region in (p,s) 
+ 
+///  Define the saturated line, P=f(s) for region 3
 ///     http://www.iapws.org/relguide/Supp-Tv(ph,ps)-2014.pdf, Eq 11
-///     Define the saturated line, P=f(s) for region 3
+///   
 pub fn s2p_sat_reg3(s:f64)->f64
 {
     const I:[i32;10] = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32];
@@ -79,10 +81,9 @@ pub fn s2p_sat_reg3(s:f64)->f64
 }
 
 ///  Equations of (h,s) for the Region Boundaries
-///    http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 3
 
-/// http://www.iapws.org/relguide/Supp-phs3-2014.pdf
-///  Define the saturated line boundary between Region 1 and 4, h=f(s)
+///  Define the saturated line boundary between Region 1 and 4, h=f(s) 
+///      http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 3
 pub fn hs_region_h1_s(s:f64)->f64
 {
 
@@ -111,8 +112,8 @@ pub fn hs_region_h1_s(s:f64)->f64
     return 1700.0* suma;
 }
 
-///  http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 4
-///      the saturated line boundary between Region 4 and 3a, h=f(s)
+///  The saturated line boundary between Region 4 and 3a, h=f(s)
+///     http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 4
 pub fn  hs_region_h3a_s(s:f64) ->f64
 {
     const I:[i32;19] = [0, 0, 0, 0, 2, 3, 4, 4, 5, 5, 6, 7, 7, 7, 10, 10, 10, 32, 32];
@@ -135,8 +136,8 @@ pub fn  hs_region_h3a_s(s:f64) ->f64
     return 1700.0 * suma;
 }
 
-///  http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 5
-///    Define the saturated line boundary between Region 4 and 2a-2b, h=f(s)
+///  Define the saturated line boundary between Region 4 and 2a-2b, h=f(s)
+///    http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 5
 pub fn hs_region_h2ab_s(s:f64)->f64
 {
     
@@ -167,8 +168,8 @@ pub fn hs_region_h2ab_s(s:f64)->f64
     return 2800.0 * suma.exp();
 }
 
-///  http://www.iapws.org/relguide/Supp-phs3-2014.pdf. Eq 6
-///       Define the saturated line boundary between Region 4 and 2c-3b, h=f(s)
+/// Define the saturated line boundary between Region 4 and 2c-3b, h=f(s)
+///     http://www.iapws.org/relguide/Supp-phs3-2014.pdf. Eq 6
 pub fn hs_region_h2c3b_s(s:f64)->f64
 {
     const I:[i32;16] = [0, 0, 0, 1, 1, 5, 6, 7, 8, 8, 12, 16, 22, 22, 24, 36];
@@ -192,8 +193,8 @@ pub fn hs_region_h2c3b_s(s:f64)->f64
     return 2800.0 * sac_pow(suma, 4);
 }
 
-///  http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 7
-///              Define the boundary between Region 1 and 3, h=f(s)
+///  Define the boundary between Region 1 and 3, h=f(s)
+///      http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 7
 pub fn hs_region_h13_s(s:f64)->f64
 {
     if (s < 3.397782955 || s > 3.77828134)
