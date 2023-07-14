@@ -1,13 +1,13 @@
 //! IF97: The High-speed Package of IAPWS-IF97
 //!    (p,t) (p,h) (p,s) (h,s) (p,x) (t,x)
 #![allow(warnings)]
-pub mod algo;
+mod algo;
+mod r1;
+mod r2;
+mod r3;
+mod r4;
+mod r5;
 pub mod common;
-pub mod r1;
-pub mod r2;
-pub mod r3;
-pub mod r4;
-pub mod r5;
 
 pub use common::constant::*;
 pub use common::region::*;

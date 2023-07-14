@@ -1,13 +1,13 @@
 #![allow(warnings)]
 use std::collections::HashMap;
 use std::time::Instant;
-pub mod algo;
-pub mod common;
-pub mod r1;
-pub mod r2;
-pub mod r3;
-pub mod r4;
-pub mod r5;
+mod algo;
+mod common;
+mod r1;
+mod r2;
+mod r3;
+mod r4;
+mod r5;
 
 use common::constant::*;
 use r1::*;
