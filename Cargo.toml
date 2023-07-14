@@ -1,7 +1,7 @@
 [package]
 name = "if97"
-crate-type   = ["rlib", "cdylib"]
-version = "0.2.4"
+crate-type   = ["rlib"]
+version = "0.2.5"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package"
@@ -10,7 +10,7 @@ homepage = "https://github.com/thermalogic/"
 repository = "https://github.com/thermalogic/IF97/"
 license = "MIT"
 keywords = ["IF97", "IAPWS-IF97"]
-categories = ["development-tools","science"]
+categories = ["science"]
 
 [dependencies]
 assert_approx_eq = "1.1.0"

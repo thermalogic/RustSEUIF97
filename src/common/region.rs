@@ -33,8 +33,8 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32
         return INVALID_P;
     }
 
-    // ON TOP: Saturaton lines、critical point等特殊点判断在前
-    // 以后区域判断中没有这些特殊，减少区域判断的复杂度
+    // ON TOP: to check the Saturaton lines、critical point firstly
+    // to reduce the complex
 
     //TODO: Saturaton Pressure Tolerance
     const psatTol: f64 = 1.0e-6;
@@ -44,9 +44,9 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32
             return 4;
         }
     }
-    // TODO: critical point 放在4区,如果放在3区？
+    // the critical point in region 3
     if (T == TC_WATER && p == PC_WATER) {
-        return 4;
+        return 3;
     }
 
     if (T >= 273.15 && T <= 623.15) {
@@ -58,7 +58,7 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32
         }
     };
 
-    // T（623.15,tc_water)之间的饱和线，critical point情况，已在前面处理，这里无需判断，简化了区域判断
+    // T（623.15,tc_water)
     if (T > 623.15 && T <= 863.15) {
         if (p >= P_MIN && p <= B23_T2p(T)) {
             return 2;
@@ -387,3 +387,66 @@ pub fn hs_sub_region(h:f64, s:f64)->i32
     }
     return INVALID_VALUE;
 }
+
+///  Region for extended pairs (p,v),(t,v),(t,s),(t,h)
+///  Region (p,v)
+pub fn pv_sub_region(p:f64, v:f64)->i32
+{
+    return 1
+
+}
+
+/*
+double pvtoreg(double p, double v)
+{
+  double x, t1, vt273, vt1073, vt2273, vt623, vB23, vsw, vss;
+  if ((p < PMIN2) || (p > PMAX2))
+    return (-1);
+  vt273 = R1_pttov(p, 273.15);   // T=273.15
+  vt1073 = R2_pttov(p, 1073.15); // T=1073.15
+  if ((p >= PMIN5) && (p <= PMAX5))
+    vt2273 = R5_pttov(p, 2273.15); // T=2273.15
+  if ((p > 0.000611213) && (p <= PMIN3))
+  {
+    t1 = Ts(p);
+    vsw = R1_pttov(p, t1); //
+    vss = R2_pttov(p, t1); //
+  }
+  else if ((p > PMIN3) && (p <= PMAX3))
+  {
+    vt623 = R1_pttov(p, 623.15); // T=623.15
+    t1 = B23PtoT(p);
+    vB23 = R2_pttov(p, t1); //
+    if (p <= PC)
+    {
+      t1 = Ts(p);
+      vsw = pT2vSatreg3(p, t1, 0);
+      vss = pT2vSatreg3(p, t1, 1);
+    }
+  }
+  if (((p >= PMIN1) && (p <= PMIN3)) && ((v >= vt273) && (v <= vsw)) ||
+      ((p > PMIN3) && (p <= PMAX1)) && ((v >= vt273) && (v <= vt623)))
+  {
+    return (1.0);
+  };
+  if (((p >= PMIN2) && (p <= PMIN3) && (v > vss) && (v <= vt1073)) ||
+      ((p > PMIN3) && (p <= PMAX2) && (v >= vB23) && (v <= vt1073)))
+  {
+    return (2.0);
+  };
+  if (((p > PMIN3) && (p <= PC) && (((v > vt623) && (v < vsw)) || ((v > vss) && (v < vB23)))) ||
+      ((p > PC) && (p <= PMAX3) && (v > vt623) && (v < vB23)))
+  {
+    return (3.0);
+  };
+  if ((p > 0) && (p <= PC) && (v >= vsw) && (v <= vss))
+  {
+    x = (v - vsw) / (vss - vsw);
+    return (6.0 + x);
+  };
+  if ((p > PMIN5) && (p <= PMAX5) && (v > vt1073) && (v <= vt2273))
+  {
+    return (5.0);
+  };
+  return (-1.0);
+}*/
