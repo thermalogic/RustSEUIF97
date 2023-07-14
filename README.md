@@ -2,7 +2,7 @@
 
 IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5~10x speed-up compared to  the `powi()` of the Rust standard library，5x speed-up compared to  the shared library in C using the same fast algorithms.  
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5~10x speed-up compared to  the `powi()` of the Rust standard library，5x speed-up compared to [the shared library in C using the same fast algorithms](https://github.com/thermalogic/SEUIF97).  
 
 The following input pairs are implemented: 
 
