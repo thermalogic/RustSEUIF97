@@ -1,5 +1,5 @@
 //! IF97: The High-speed Package of IAPWS-IF97
-//!    (p,t) (p,h) (p,s) (h,s)（p.x）（t.x）
+//!    (p,t) (p,h) (p,s) (h,s) (p,x) (t,x)
 #![allow(warnings)]
 pub mod algo;
 pub mod common;
