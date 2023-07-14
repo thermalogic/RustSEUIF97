@@ -19,8 +19,6 @@ use crate::r3::region3_p_hs::*;
 
 pub fn Td_reg3(T: f64, d: f64, o_id: i32) -> f64 {
     match o_id {
-        OT => T,
-        OD => d,
         OV => 1.0 / d,
         OP => Td2p_reg3(T, d),
         OH => Td2h_reg3(T, d),
@@ -38,12 +36,6 @@ pub fn td_reg3(t: f64, d: f64, o_id: i32) -> f64 {
 }
 
 pub fn pT_reg3(p: f64, T: f64, o_id: i32) -> f64 {
-    if o_id == OP {
-        return p;
-    }
-    if o_id == OT {
-        return T;
-    }
     let v: f64 = pT2v_reg3(p, T);
     if o_id == OV {
         return v;
@@ -56,23 +48,11 @@ pub fn pT_reg3(p: f64, T: f64, o_id: i32) -> f64 {
 }
 
 pub fn pt_reg3(p: f64, t: f64, o_id: i32) -> f64 {
-    if o_id == OP {
-        return p;
-    }
-    if o_id == OT {
-        return t;
-    }
     let T: f64 = t + 273.15;
     pT_reg3(p, T, o_id)
 }
 
 pub fn ph_reg3(p: f64, h: f64, o_id: i32) -> f64 {
-    if o_id == OP {
-        return p;
-    };
-    if o_id == OH {
-        return h;
-    };
     let v: f64 = ph2v_reg3(p, h);
     if o_id == OV {
         return v;
@@ -90,11 +70,6 @@ pub fn ph_reg3(p: f64, h: f64, o_id: i32) -> f64 {
 
 pub fn ps_reg3(p:f64,s:f64, o_id:i32)->f64
 {
-    if o_id==OP
-    {   return p;};
-    if o_id==OS 
-    {   return s;   };
-
     let v: f64 = ps2v_reg3(p, s);
     if o_id == OV {
         return v;
@@ -112,11 +87,6 @@ pub fn ps_reg3(p:f64,s:f64, o_id:i32)->f64
 
 pub fn hs_reg3(h:f64, s:f64,o_id:i32)->f64
 {
-    if o_id==OH
-     {  return h;}
-    if o_id==OS
-    {   return s;}
-
     let p:f64= hs2p_reg3(h,s);
     if o_id==OP
     {   return p;}

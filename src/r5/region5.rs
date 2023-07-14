@@ -9,8 +9,6 @@ use crate::r5::region5_backward::*;
 pub fn pT_reg5(p: f64, T: f64, o_id: i32) -> f64
 {
     match o_id {
-        OT => T,
-        OP => p,
         OV => pT2v_reg5(p, T),
         OD => 1.0 / pT2v_reg5(p, T),
         OH => pT2h_reg5(p, T),
@@ -19,7 +17,7 @@ pub fn pT_reg5(p: f64, T: f64, o_id: i32) -> f64
         OCV => pT2cv_reg5(p, T),
         OCP => pT2cp_reg5(p, T),
         OW => pT2w_reg5(p, T),
-        OK => pT2k_reg5(p, T), //isentropic exponent
+        // OK => pT2k_reg5(p, T), //isentropic exponent
         _ => INVALID_OUTID as f64,
     }
 }
@@ -31,13 +29,6 @@ pub fn pt_reg5(p:f64,t:f64,o_id:i32) -> f64 {
 
 pub fn ph_reg5(p: f64, h: f64, o_id: i32) -> f64
 {
-    if o_id == OP {
-        return p;
-    };
-    if o_id == OH {
-        return h;
-    };
-
     let T: f64 = ph2T_reg5(p, h);
     if o_id == OT {
         return T-273.15;
@@ -47,13 +38,6 @@ pub fn ph_reg5(p: f64, h: f64, o_id: i32) -> f64
 
 pub fn ps_reg5(p: f64, s: f64, o_id: i32) -> f64
 {
-    if o_id == OP {
-        return p;
-    };
-    if o_id == OS {
-        return s;
-    };
-
     let T: f64 = ps2T_reg5(p, s);
     if o_id == OT {
         return T-273.15;
@@ -64,13 +48,10 @@ pub fn ps_reg5(p: f64, s: f64, o_id: i32) -> f64
 
 pub fn hs_reg5(h: f64, s: f64, o_id: i32) -> f64
 {
-    if o_id == OH {
-        return h;
-    };
-    if o_id == OS {
-        return s;
-    };
-
     let p: f64 = hs2p_reg5(h, s);
+    if o_id==OP
+    {
+        return p;
+    }
     return ph_reg5(p, h, o_id);
 }

@@ -47,11 +47,11 @@ fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
 }
 
 pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
-    if o_id == OST {
-        return surface_tension(t + K);
-    }
     match o_id {
-        OP | OT | OV | OD | OH | OS | OU | OCP | OCV | OW | OR | OX => pt_thermal(p, t, o_id),
+        OP => return p,
+        OT => return t,
+        OV | OD | OH | OS | OU | OCP | OCV | OW | OR | OX => pt_thermal(p, t, o_id),
+        OST => return surface_tension(t + K),
         ODV | OKV | OTC | OSDC => {
             let d: f64 = pt_thermal(p, t, OD);
             let mut value: f64 = 0.0;
@@ -113,7 +113,9 @@ fn ph_thermal(p: f64, h: f64, o_id: i32) -> f64 {
 
 pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     match o_id {
-        OP | OT | OV | OD | OH | OS | OU | OCP | OCV | OW | OR | OX => ph_thermal(p, h, o_id),
+        OP => return p,
+        OH => return h,
+        OT | OV | OD | OS | OU | OCP | OCV | OW | OR | OX => ph_thermal(p, h, o_id),
         OST => {
             let t: f64 = ph_thermal(p, h, OT);
             return surface_tension(t + K);
@@ -183,7 +185,9 @@ fn ps_thermal(p: f64, s: f64, o_id: i32) -> f64 {
 
 pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     match o_id {
-        OP | OT | OV | OD | OH | OS | OU | OCP | OCV | OW | OR | OX => ps_thermal(p, s, o_id),
+        OP => return p,
+        OS => return s,
+        OT | OV | OD | OH | OU | OCP | OCV | OW | OR | OX => ps_thermal(p, s, o_id),
         OST => {
             let t: f64 = ps_thermal(p, s, OT);
             return surface_tension(t + K);
@@ -252,7 +256,9 @@ fn hs_thermal(h: f64, s: f64, o_id: i32) -> f64 {
 
 pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
     match o_id {
-        OP | OT | OV | OD | OH | OS | OU | OCP | OCV | OW | OR | OX => hs_thermal(h, s, o_id),
+        OH => return h,
+        OS => return s,
+        OP | OT | OV | OD | OU | OCP | OCV | OW | OR | OX => hs_thermal(h, s, o_id),
         OST => {
             let t: f64 = hs_thermal(h, s, OT);
             return surface_tension(t + K);

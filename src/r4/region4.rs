@@ -39,7 +39,6 @@ pub fn  ps_reg4(p:f64,s:f64, o_id:i32)->f64
 
 pub fn hs_reg4(h:f64,s:f64, o_id:i32)->f64
 {
-
    // for T<623.15 only
    let T:f64 = hs2T_reg4(h, s);
    if o_id == OT
