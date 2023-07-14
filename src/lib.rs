@@ -9,6 +9,7 @@ mod r4;
 mod r5;
 pub mod common;
 
+pub use common::propertry_id::*;
 pub use common::constant::*;
 pub use common::region::*;
 pub use common::transport_further::*;

@@ -3,6 +3,8 @@
 //！       (p,h) (p,s) (h,s)
 
 use crate::common::constant::*;
+use crate::common::propertry_id::*;
+
 use crate::r4::region4_sat_pT::*;
 use crate::r4::region4_pTx::*;
 use crate::r4::region4_T_hs::*;

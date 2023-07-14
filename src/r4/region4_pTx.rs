@@ -5,6 +5,7 @@
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
+use crate::common::propertry_id::*;
 use crate::r1::region1::*;
 use crate::r1::region1_pT::*;
 use crate::r2::region2::*;

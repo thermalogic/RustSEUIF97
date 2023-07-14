@@ -10,6 +10,7 @@ mod r4;
 mod r5;
 
 use common::constant::*;
+use common::propertry_id::*;
 use r1::*;
 use r2::*;
 use r3::*;

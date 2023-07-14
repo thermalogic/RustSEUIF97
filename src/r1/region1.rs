@@ -2,6 +2,7 @@
 //！    pT_reg1(p,T)，ph_reg1(p,h), ps_reg1(p,s) , hs_reg1(h,s) 
 
 use crate::common::constant::*;
+use crate::common::propertry_id::*;
 
 use crate::r1::region1_T_phps::*;
 use crate::r1::region1_pT::*;
