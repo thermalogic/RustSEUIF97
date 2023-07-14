@@ -17,7 +17,6 @@ pub fn pT_reg5(p: f64, T: f64, o_id: i32) -> f64
         OCV => pT2cv_reg5(p, T),
         OCP => pT2cp_reg5(p, T),
         OW => pT2w_reg5(p, T),
-        // OK => pT2k_reg5(p, T), //isentropic exponent
         _ => INVALID_OUTID as f64,
     }
 }

@@ -93,19 +93,3 @@ pub fn pT2w_reg5(p:f64,T:f64)->f64
 	{	w = 0.0;}
 	return w.sqrt();
 }
-
-/// k:isentropic exponent
-pub fn pT2k_reg5(p:f64,T:f64)->f64
-{  	let tau:f64 = r5Tstar / T;
-	let pi:f64 = p / r5Pstar;
-
-	let dgammar_pi:f64 = gammar_pi_reg5(pi, tau);
-	let dgammar_pi_1:f64 = 1.0+dgammar_pi;
-
-	let a:f64 = dgammar_pi_1*dgammar_pi_1;
-	let b:f64 = 1.0 - pi * pi * gammar_pipi_reg5(pi, tau);
-	let c:f64 = 1.0 + pi * dgammar_pi - tau * pi * gammar_pitau_reg5(pi, tau);
-	let d:f64 = tau * tau * (gamma0_tautau_reg5(tau) + gammar_tautau_reg5(pi, tau));
-	let e:f64 = pi * (gamma0_pi_reg5(pi) + gammar_pi_reg5(pi, tau));
-	return a / (b + (c * c) / d) / e;
-}
