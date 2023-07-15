@@ -1,4 +1,4 @@
-//! propertry ID - o_id
+//! Propertry ID - o_id
 
 /// 1 properties in IAPWS-IF97 Equation
 pub const OP:i32=0;   //  p  Pressure   MPa     

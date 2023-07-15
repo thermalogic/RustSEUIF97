@@ -1,3 +1,4 @@
+//! The common constants and functions
 pub mod constant;
 pub mod propertry_id;
 pub mod region;

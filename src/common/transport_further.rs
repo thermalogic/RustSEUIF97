@@ -1,31 +1,30 @@
 
 //! Transport and Further Properties
-//! 
-//!   Dynamic viscosity    Pa.s      dv (mu)   
-//!   Kinematic viscosity  m^2/s     kv    
-//!   Thermal conductivity W/(m.K)   tc     
-//!   Thermal diffusivity  um^2/s    td     
-//!   Prandtl number                  pr     
-//!   Static dialectric sonstant      sdc 
-//！  Surface tension       mN/m      st   
+//! *  Dynamic viscosity    Pa.s      dv (mu)   
+//! *  Kinematic viscosity  m^2/s     kv    
+//! *  Thermal conductivity W/(m.K)   tc     
+//! *  Thermal diffusivity  um^2/s    td     
+//! *  Prandtl number                  pr     
+//! *  Static dialectric sonstant      sdc 
+//！*  Surface tension       mN/m      st   
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
 
 
 /// Prandtl number=dv*cp/tc
-///    dv: Dynamic viscosity Pa.s 
-///    cp: specific isobaric heat capacity
-///    tc: Thermal conductivity   W/(m.K) 
+/// * dv: Dynamic viscosity Pa.s 
+/// * cp: specific isobaric heat capacity
+/// * tc: Thermal conductivity   W/(m.K) 
 pub fn prandtl_number(dv:f64,cp:f64,tc:f64)->f64
 {
    1.0E+3 * dv *cp /tc
 }
 
 /// Thermal diffusivity 
-///    td = Thermal conductivity /(specific isobaric heat capacity*density)
-///       cp: specific isobaric heat capacity
-///       tc: Thermal conductivity   W/(m.K) 
+/// * td = Thermal conductivity /(specific isobaric heat capacity*density)
+/// * cp: specific isobaric heat capacity
+/// * tc: Thermal conductivity   W/(m.K) 
 pub fn thermal_diffusivity(tc:f64,cp:f64,d:f64)->f64
 {
  return tc / (cp * d);
@@ -33,12 +32,12 @@ pub fn thermal_diffusivity(tc:f64,cp:f64,d:f64)->f64
 
  
 /// The Viscosity for IF97
-///    Parameters
-///       rho :  Density  kg/m³
-///       T :    Temperature K
-///    Returns：
-///       mu : Viscosity Pa·s
-///     IAPWS, Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary  Water Substance
+/// * Parameters
+///    * rho :  Density  kg/m³
+///    * T :    Temperature K
+/// * Returns：
+///    * mu : Viscosity Pa·s
+/// IAPWS, Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary  Water Substance
 ///         <http://www.iapws.org/relguide/viscosity.html>
 pub fn viscosity(rho:f64, T:f64)->f64
 {
@@ -69,12 +68,12 @@ pub fn viscosity(rho:f64, T:f64)->f64
     }
 
 /// The thermal conductivity
-///      Parameters
-///         rho :     Density kg/m³
-///         T :    Temperature K
-///      Returns 
-///         k : Thermal conductivity W/mK
-///  IAPWS, Release on the IAPWS Formulation 2011 for the Thermal Conductivity  of Ordinary Water Substance
+/// * Parameters
+///    *  rho :     Density kg/m³
+///    * T :    Temperature K
+/// *Returns 
+///    * k : Thermal conductivity W/mK
+/// IAPWS, Release on the IAPWS Formulation 2011 for the Thermal Conductivity  of Ordinary Water Substance
 ///         <http://www.iapws.org/relguide/ThCond.html>
 pub fn thcond(rho:f64, T:f64)->f64
 {
@@ -110,12 +109,12 @@ pub fn thcond(rho:f64, T:f64)->f64
     return 1e-3*(L0*L1+L2);
  }
 
-/// Equation for the surface tension
-///  Parameters
-///    T :  Temperature K
-///  Returns
-///      sigma :   Surface tension  N/m
-///    IAPWS, Revised Release on Surface Tension of Ordinary Water Substance June 2014
+/// The surface tension
+///  * Parameters
+///      * T :  Temperature K
+/// * Returns
+///     * sigma :   Surface tension  N/m
+/// IAPWS, Revised Release on Surface Tension of Ordinary Water Substance June 2014
 ///           <http://www.iapws.org/relguide/Surf-H2O.html>
 pub fn surface_tension(T:f64)->f64
 {
@@ -127,13 +126,13 @@ pub fn surface_tension(T:f64)->f64
        { return INVALID_VALUE as f64};
 }
 
-///The Static Dielectric Constant of Ordinary Water Substance 
-/// Parameters
-///      rho : Density [kg/m³]
-///      T :  Temperature [K]
-///    Returns
-///      epsilon : Dielectric constant [-]
-///    IAPWS, Release on the Static Dielectric Constant of Ordinary Water
+/// The Static Dielectric Constant of Ordinary Water Substance 
+///  * Parameters
+///      * rho : Density [kg/m³]
+///      * T :  Temperature [K]
+/// * Returns
+///     * epsilon : Dielectric constant [-]
+/// IAPWS, Release on the Static Dielectric Constant of Ordinary Water
 ///    Substance for Temperatures from 238 K to 873 K and Pressures up to 1000MPa
 //             http://www.iapws.org/relguide/Dielec.html
 pub fn  static_dielectric(rho:f64, T:f64)->f64

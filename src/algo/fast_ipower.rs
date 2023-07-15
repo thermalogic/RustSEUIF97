@@ -1,5 +1,5 @@
-///  The fast integer power   
-///      The shortest addition chains,n[0,58]
+//!  The fast integer power using the shortest addition chains,n[0,58]
+  
 fn possac(x: f64, n: i32) -> f64 {
     let mut x2: f64;
     let mut x3: f64;
@@ -467,6 +467,7 @@ fn possac(x: f64, n: i32) -> f64 {
     }
 }
 
+/// The fast integer power using the shortest addition chains,n[0,58]
 pub fn sac_pow(x: f64, n: i32) -> f64 {
     if n >= 0 {
         return possac(x, n);

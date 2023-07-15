@@ -1,8 +1,5 @@
 //! Check the Region
-//!
-//! Basic input pairs :
-//!  (p,T) (p,h) (p,s) (h,s)  
-//!
+//! * Basic input pairs :  (p,T) (p,h) (p,s) (h,s)  
 
 use crate::common::boundaries::*;
 use crate::common::constant::*;
@@ -211,7 +208,7 @@ pub fn ps_sub_region(p:f64,s:f64)->i32
     return INVALID_VALUE;
 }
 
-///  region 1,2,3,4 (smin ->smax), region 5
+/// Region 1,2,3,4 (smin ->smax), region 5
 pub fn hs_sub_region(h:f64, s:f64)->i32
 {
     let mut T:f64=0.0;
