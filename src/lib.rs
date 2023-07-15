@@ -17,7 +17,7 @@ pub use r3::*;
 pub use r4::*;
 pub use r5::*;
 
-// pt_thermal(p,t,o_id): the propertry of o_id (thermodynamic)
+/// pt_thermal(p,t,o_id) - the propertry of o_id (thermodynamic)
 fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
     let sub_region: i32 = pT_sub_region(p, t + K);
     if o_id == OR {
@@ -46,7 +46,7 @@ fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
     }
 }
 
-///  pt(p,t,o_id): the propertry of o_id (thermodynamic,transport,etc)
+///  pt(p,t,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     match o_id {
         OP => return p,
@@ -89,7 +89,7 @@ pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     }
 }
 
-// ph_thermal(p,h,o_id): the propertry of o_id(thermodynamic)
+/// ph_thermal(p,h,o_id) - the propertry of o_id(thermodynamic)
 fn ph_thermal(p: f64, h: f64, o_id: i32) -> f64 {
     let sub_region: i32 = ph_sub_region(p, h);
     if o_id == OR {
@@ -113,7 +113,7 @@ fn ph_thermal(p: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-///  ph(p,h,o_id): the propertry of o_id (thermodynamic,transport,etc)
+///  ph(p,h,o_id) -  the propertry of o_id (thermodynamic,transport,etc)
 pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     match o_id {
         OP => return p,
@@ -163,7 +163,7 @@ pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-// ps_thermal(p,s,o_id): the propertry of o_id(thermodynamic)
+/// ps_thermal(p,s,o_id) - the propertry of o_id(thermodynamic)
 fn ps_thermal(p: f64, s: f64, o_id: i32) -> f64 {
     let sub_region: i32 = ps_sub_region(p, s);
     if o_id == OR {
@@ -187,7 +187,7 @@ fn ps_thermal(p: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-///  ps(p,s,o_id): the propertry of o_id (thermodynamic,transport,etc)
+///  ps(p,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     match o_id {
         OP => return p,
@@ -236,7 +236,7 @@ pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-// hs_thermal(h,s,o_id): the propertry of o_id(thermodynamic)
+/// hs_thermal(h,s,o_id) - the propertry of o_id(thermodynamic)
 fn hs_thermal(h: f64, s: f64, o_id: i32) -> f64 {
     let sub_region: i32 = hs_sub_region(h, s);
     if o_id == OR {
@@ -260,7 +260,7 @@ fn hs_thermal(h: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-/// hs(h,s,o_id)：the propertry of o_id (thermodynamic,transport,etc)
+/// hs(h,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
     match o_id {
         OH => return h,
@@ -310,12 +310,12 @@ pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-///  px(p,x,o_id)：the propertry of o_id (thermodynamic)
+///  px(p,x,o_id) - the propertry of o_id (thermodynamic)
 pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
     px_reg4(p, x, o_id)
 }
 
-///  tx(t,x,o_id)：the propertry of o_id (thermodynamic)
+///  tx(t,x,o_id) - the propertry of o_id (thermodynamic)
 pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
     Tx_reg4(t + 273.15, x, o_id)
 }
