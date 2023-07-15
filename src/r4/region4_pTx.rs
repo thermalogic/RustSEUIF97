@@ -1,4 +1,4 @@
-//! Region 4 - saturation water, steam and wet steam
+//! Region 4 - Saturation water, steam and wet steam
 //! 
 //!  p,MPa T, K
 //!     p2sat_water, p2sat_steam

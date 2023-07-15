@@ -1,11 +1,8 @@
 
 //! Region 4 - Backward Equation Tsat(h,s)
-//! 
-//！Page25,Page30
-//！    http://www.iapws.org/relguide/Supp-phs3-2014.pdf. Eq 9
-//！    5.3 Backward Equation Tsat(h,s)
-//！          s> 5.210 887 825
-//！    Temperature range is T（273.15,623.15）
+//! * Page25,Page30: 5.3 Backward Equation Tsat(h,s)
+//！   *  s> 5.210 887 825, Temperature range is T(273.15,623.15）
+//！Eq9 <http://www.iapws.org/relguide/Supp-phs3-2014.pdf> 
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
