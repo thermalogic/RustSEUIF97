@@ -1,6 +1,7 @@
-//！ IAPWS-IF97 Backware Equation (H,S)->P for Region 1:
-//！    Supp-PHS12-2014.pdf  June 2014
-
+//！
+//!   Region 1 - Backward Equation(h,s)->p 
+//！
+//！ http://www.iapws.org/relguide/Supp-PHS12-2014.pdf
 
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
@@ -19,9 +20,7 @@ fn ph2s_reg1(p:f64, h:f64)->f64
 }
 
 
-///----------------------------------------------------------------
 ///  Backward equation p(h,s) for region 1
-///----------------------------------------------------------------
 pub fn hs2p_reg1(h:f64, s:f64)->f64
 {
   // Page 5, Table 2 :

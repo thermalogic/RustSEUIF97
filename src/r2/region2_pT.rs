@@ -1,6 +1,8 @@
-//！ Basic Equation of IAPWS-IF97 Region2
-//！   (p,T)-->v, u,h,s,cp, cv,w
-//！      T: temperature  K
+//! Region 2 - Baisic Equation:(p,T)-->v, u,h,s,cp, cv,w 
+//! 
+//!   IAPWS-97(2012) August 2007 : http://www.iapws.org/relguide/IF97-Rev.html
+//!  
+//!      T: temperature  K
 //!       P: pressure  Map
 //!       v: specific volume m^3/kg
 //!       h: specific enthalpy kJ/kg

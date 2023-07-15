@@ -1,4 +1,5 @@
-/// constants of propertry ID - o_id
+//! propertry ID - o_id
+
 /// 1 properties in IAPWS-IF97 Equation
 pub const OP:i32=0;   //  p  Pressure   MPa     
 pub const OT:i32=1;   //  t  Temperature  °C        

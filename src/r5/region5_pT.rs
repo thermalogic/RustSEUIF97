@@ -1,7 +1,7 @@
-//! Region5  Basic Equation
+//! Region 5 - Baisic Equation:(p,T)-->v, u,h,s,cp, cv,w 
+//! 
 //!    http://www.iapws.org/relguide/IF97-Rev.html, Eq 32-34
-//!    P39 (p,T)->v,h,s,cp,cv,w,k 
-//！        T,K   p, MPa       
+//!     P39 (p,T).   T,K   p, MPa       
 	
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;

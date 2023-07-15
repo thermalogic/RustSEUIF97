@@ -1,4 +1,5 @@
-//! Backward Equation for Region 3:
+//! Region 3 - Backward Equation (p,T)->v 
+//! 
 //!    IAPWS-IF97-S05rev 
 //!     (p,T)->v 
 //!          p  pressure MPa

@@ -1,12 +1,13 @@
 
-//!    Transport  and Further  Properties
-//!        Dynamic viscosity  Pa.s  dv (mu)   
-//!        Kinematic viscosity  m^2/s    kv    
-//!        Thermal conductivity  W/(m.K)     tc     
-//!        Thermal diffusivity   um^2/s   td     
-//!        Prandtl number                  pr     
-//!        static dialectric sonstant   sdc 
-//！       Surface tension     st   mN/m      29 sigma  [N/m]
+//! Transport and Further Properties
+//! 
+//!   Dynamic viscosity    Pa.s      dv (mu)   
+//!   Kinematic viscosity  m^2/s     kv    
+//!   Thermal conductivity W/(m.K)   tc     
+//!   Thermal diffusivity  um^2/s    td     
+//!   Prandtl number                  pr     
+//!   Static dialectric sonstant      sdc 
+//！  Surface tension       mN/m      st   
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;

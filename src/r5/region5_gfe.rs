@@ -1,4 +1,4 @@
-//！  Region 5 Basic Equation L the dimensionless Gibbs free energy
+//！  Region 5 Basic Equation： the dimensionless Gibbs free energy
 //！       http://www.iapws.org/relguide/IF97-Rev.html, Eq32-34
 
 use crate::algo::fast_ipower::sac_pow;

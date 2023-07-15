@@ -1,4 +1,6 @@
 
+//! constants
+ 
 /// struct for coefficients and exponents
 pub struct IJnData {
    pub I: i32,

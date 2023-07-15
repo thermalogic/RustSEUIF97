@@ -1,5 +1,6 @@
-//！  Region 3 API:   IAPWS-IF97 and supp release
-//！    Basic Equation of  IAPWS -IF 97 Region3
+//! Region 3 - (p,T),(p,h), (p,s),(h,s)
+//! 
+//！  Basic Equation of  IAPWS -IF 97 Region3
 //！        IAPWS-IF97, R7-97(2012)
 //！             (T,d)-->p,h,u,s,cp,cv,w
 //！    Backward Equation for Region 3:

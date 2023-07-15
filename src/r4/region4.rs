@@ -1,6 +1,6 @@
-
-//！  Region 4 API: 
-//！       (p,h) (p,s) (h,s)
+//!     
+//! Region 4 - (p,h) (p,s) (h,s) (p,x) (t,x)
+//! 
 
 use crate::common::constant::*;
 use crate::common::propertry_id::*;

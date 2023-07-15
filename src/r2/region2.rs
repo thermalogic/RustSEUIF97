@@ -1,4 +1,6 @@
-//！ Region 2 API
+//!     
+//! Region 2 - (p,T),(p,h), (p,s),(h,s)
+//! 
 //！  IAPWS-IF97 and supp release
 //！      1: IF97 IAPWS, R7-97(2012)
 //！            IF97-Rev.pdf: P12-32

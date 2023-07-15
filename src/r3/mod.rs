@@ -1,3 +1,6 @@
+//!     
+//! Region 3 - (p,T),(p,h), (p,s),(h,s)
+//! 
 mod region3_hfe;
 pub mod region3_Td;
 pub mod region3_v_pT;

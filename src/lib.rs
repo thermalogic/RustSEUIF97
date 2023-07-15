@@ -2,11 +2,11 @@
 //!    (p,t) (p,h) (p,s) (h,s) (p,x) (t,x)
 #![allow(warnings)]
 mod algo;
-mod r1;
-mod r2;
-mod r3;
-mod r4;
-mod r5;
+pub mod r1;
+pub mod r2;
+pub mod r3;
+pub mod r4;
+pub mod r5;
 pub mod common;
 
 pub use common::propertry_id::*;

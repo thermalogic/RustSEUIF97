@@ -531,7 +531,7 @@ pub fn ph2T_reg2c(p: f64, h: f64) -> f64 {
     return 1.0 * theta;
 }
 
-/// http://www.iapws.org/relguide/IF97-Rev.html, Eq 21
+// http://www.iapws.org/relguide/IF97-Rev.html, Eq 21
 pub fn enthalpy_2bc(p: f64) -> f64
 {
     const n: [f64; 3] = [0.12809002730136e-3, 0.26526571908428e4, 0.45257578905948e1];

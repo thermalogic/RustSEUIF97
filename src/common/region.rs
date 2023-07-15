@@ -1,8 +1,8 @@
 //! Check the Region
-//!    pT_sub_region
-//!    ph_sub_region
-//!    ps_sub_region
-//!    hs_sub_region
+//!
+//! Basic input pairs :
+//!  (p,T) (p,h) (p,s) (h,s)  
+//!
 
 use crate::common::boundaries::*;
 use crate::common::constant::*;

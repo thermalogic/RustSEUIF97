@@ -1,4 +1,5 @@
-//! Backward Equation for Region 3:
+//! Region 3 - Backward Equation(h,s)->p 
+//! 
 //!  IAPWS-IF97-S04rev :Supp-phs3-2014.pdf
 //!     (h,s)->p  (3a,3b,3c)
 //!         h : Specific enthalpy kJ/kg

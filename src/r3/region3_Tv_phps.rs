@@ -1,4 +1,5 @@
-//! Backward Equation for Region 3:
+//! Region 3 - Backward Equation (p,h)->T,v  (p,s)->T,v
+//! 
 //!   Supp-Tv(ph,ps)3-2014.pdf
 //!        (p,h) -T,v    (p,s)->T,v
  

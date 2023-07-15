@@ -1,7 +1,8 @@
-//! Region 4 saturation and wet
-//!           p, MPa   T,  K
-//!     p2sat_water,   p2sat_steam
-//!     T2sat_water,  T2sat_steam
+//! Region 4 - saturation water, steam and wet steam
+//! 
+//!  p,MPa T, K
+//!     p2sat_water, p2sat_steam
+//!     T2sat_water, T2sat_steam
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;

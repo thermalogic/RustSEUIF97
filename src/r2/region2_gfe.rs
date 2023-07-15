@@ -1,7 +1,9 @@
 //! IAPWS-IF97 Basic Equation for Region 2:
-//！  Release : IF97-rev  August 2007
-//！     The dimensionless Gibbs free energy gamma and its derivatives
-//！        REGION2 G(p,T) EQUATIONS：  Eq.(15), P13
+//！  
+//！ R7-97(2012) August 2007 : http://www.iapws.org/relguide/IF97-Rev.html
+//！
+//！  The dimensionless Gibbs free energy gamma and its derivatives
+//！       The  basic  equation  Eq.(15), P13
 //！            The ideal-gas part ： Eq.(16)
 //！            The residual part ： Eq.(17)
 

@@ -1,3 +1,6 @@
+//!     
+//! Region 4 - (p,h) (p,s) (h,s) (p,x) (t,x)
+//! 
 pub mod region4_sat_pT;
 pub mod region4_pTx;
 pub mod region4_T_hs;

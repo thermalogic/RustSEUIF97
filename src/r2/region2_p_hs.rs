@@ -1,9 +1,11 @@
-//！Region 2:
-//!    Supp-PHS12-2014: (H,S)->P
-//！       6 Backward Equations p(h,s) for Region 2
-//！             hs2preg2(h,s)
-//！        7 Backward Functions T(h,s) for Regions 1 and 2
-//！           p(h,s)- p -> T(p,h) - 待补充
+//！
+//! Region 2 - Backward Equation(h,s)->p 
+//！
+//！  http://www.iapws.org/relguide/Supp-PHS12-2014.pdf
+//!
+//！     Backward Equations p(h,s) for Region 2
+//！             hs2p_reg2(h,s)
+
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;
 use crate::algo::root::rtsec1;

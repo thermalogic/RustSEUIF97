@@ -1,6 +1,8 @@
-//！  IAPWS-IF 97 Backware Equation for Region 1:
-//！    August 2007 IF97: IF97-Rev.pdf: P6-9
-//！          (p,h)->T, (p,s)->T
+//! 
+//! Region 1 - Backward Equation (p,h)->T (p,s)->T 
+//！  R7-97(2012) August 2007 : http://www.iapws.org/relguide/IF97-Rev.html
+//！    
+//！    Page 10 Eq(11) (p,h)->T, Page 11 Eq(13) (p,s)->T
 
 use crate::common::constant::*;
 use crate::algo::fast_ipower::sac_pow;

@@ -1,5 +1,10 @@
-//！  IAPWS-IF97 Region1: Page8 Table 3 thermodynamic  properties 
-//！       (p,T)-->v, u,h,s,cp, cv,w
+//!     
+//! Region 1 - Baisic Equation:(p,T)-->v, u,h,s,cp, cv,w 
+//! 
+//!   IAPWS-97(2012) August 2007 : http://www.iapws.org/relguide/IF97-Rev.html
+//!  
+//!  Page8 Table 3 thermodynamic  properties 
+//!
 //！       T: temperature  K
 //！       P: pressure  Map
 //！       v: specific volume m^3/kg
