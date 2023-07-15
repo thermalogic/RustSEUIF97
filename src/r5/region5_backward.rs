@@ -29,10 +29,10 @@ pub fn ph2T_reg5(p:f64, h:f64)->f64
    let mut T:f64 = -1000.0;
    let mut T1:f64 = 0.5 * (2273.15 + 1073.15);
    let f1:f64 = h - pT2h_reg5(p, T1);
-   if (f1.abs() > ESP)
+   if f1.abs() > ESP
    {
       let mut T2:f64 =-1000.0;
-      if (f1 > 0.0)
+      if f1 > 0.0
        {  T2 = (1.0 + f1 / h) * T1;}
       else
        {  T2 = (1.0 - f1 / h) * T1;}
@@ -105,7 +105,7 @@ pub fn hs2p_reg5(h:f64,s:f64)->f64
 
    let p1:f64 = 0.5 * (PMIN5 + PMAX5);
    let f1:f64 = s - ph2s_reg5(p1, h);
-   if (f1.abs() > ESP)
+   if f1.abs() > ESP
    {
       let mut p2:f64=0.0; 
       if f1 > 0.0

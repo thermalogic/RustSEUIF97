@@ -2,14 +2,11 @@
 //! 
 //！  Basic Equation of  IAPWS -IF 97 Region3
 //！        IAPWS-IF97, R7-97(2012)
-//！             (T,d)-->p,h,u,s,cp,cv,w
-//！    Backward Equation for Region 3:
-//!         IAPWS-IF97-S03rev
-//!             (p,h) -T,v     (p,s)->T,v
-//!         IAPWS-IF97-S04rev
-//!             (h,s)->p      the region methods of Supp-phs3-2014.pdf in mod boundarie
-//!         IAPWS-IF97-S05rev
-//!              (p,T)->d
+//！             (T,d)-> p,h,u,s,cp,cv,w
+//！    Backward Equation for Region 3
+//！        IAPWS-IF97-S03rev  (p,h) T,v  (p,s)T,v
+//！         IAPWS-IF97-S04rev  (h,s)-> p      the region methods of Supp-phs3-2014.pdf in mod boundarie
+//！         IAPWS-IF97-S05rev  (p,T)-> d
 
 use crate::common::constant::*;
 use crate::common::propertry_id::*;

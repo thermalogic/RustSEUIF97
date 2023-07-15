@@ -37,11 +37,11 @@ fn recursion_of_phi_derivatives(delta:f64,tau:f64)->(f64,f64,f64,f64)
       phi_delta /=delta;
       phi_delta += n1 / delta;
 
-      phi_deltadelta /=(delta*delta);
-      phi_deltadelta +=(-n1 / delta / delta);
+      phi_deltadelta /=delta*delta;
+      phi_deltadelta +=-n1 / delta / delta;
 
-      phi_deltatau /=(delta*tau);
-      phi_tautau /=(tau*tau);
+      phi_deltatau /=delta*tau;
+      phi_tautau /=tau*tau;
       return (phi_delta,phi_deltadelta,phi_deltatau,phi_tautau);
 }
 

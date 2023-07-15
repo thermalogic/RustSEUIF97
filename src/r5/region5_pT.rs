@@ -1,6 +1,6 @@
 //! Region 5 - Baisic Equation:(p,T)-->v, u,h,s,cp, cv,w 
 //! 
-//!    http://www.iapws.org/relguide/IF97-Rev.html, Eq 32-34
+//!    <http://www.iapws.org/relguide/IF97-Rev.html>, Eq 32-34
 //!     P39 (p,T).   T,K   p, MPa       
 	
 use crate::algo::fast_ipower::sac_pow;
@@ -89,7 +89,7 @@ pub fn pT2w_reg5(p:f64,T:f64)->f64
 	let d:f64 = tau * tau * (gamma0_tautau_reg5(tau) + gammar_tautau_reg5(pi, tau));
 	
 	let mut w:f64 = RGAS_WATER * T * a / (b + (c * c) / d) * 1000.0;
-	if (w < 0.0)
+	if w < 0.0
 	{	w = 0.0;}
 	return w.sqrt();
 }

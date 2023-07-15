@@ -498,7 +498,7 @@ fn ps2v_3b_reg3(p:f64,s:f64)->f64
 
 pub fn ps2T_reg3(p:f64,s:f64)->f64
 {
-  if (s <= SC_WATER)
+  if s <= SC_WATER
   {
     return ps2T_3a_reg3(p, s);
   }
@@ -511,7 +511,7 @@ pub fn ps2T_reg3(p:f64,s:f64)->f64
 
 pub fn ps2v_reg3(p:f64,s:f64)->f64
 {
-  if (s <= SC_WATER)
+  if s <= SC_WATER
   {
     return ps2v_3a_reg3(p, s);
   }

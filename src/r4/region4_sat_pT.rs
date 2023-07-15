@@ -18,7 +18,7 @@ const n:[f64;10] =[ 0.11670521452767E+04, -0.72421316703206E+06, -0.170738469400
 pub fn p_saturation(T:f64)->f64
 {
     let mut ps:f64=0.0;
-    if (T < 273.15 || T > 647.096) // TC_WATER=647.096
+    if T < 273.15 || T > 647.096 // TC_WATER=647.096
     {    ps = -1.0;}
     else
     {
@@ -35,7 +35,7 @@ pub fn p_saturation(T:f64)->f64
 pub fn T_saturation(p:f64)->f64
 {
     let mut Ts:f64=0.0;
-    if (p < 0.000611212677 || p > 22.064)
+    if p < 0.000611212677 || p > 22.064
      {   Ts = -1.0;}
     else
     {

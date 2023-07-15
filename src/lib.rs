@@ -1,16 +1,17 @@
 //! IF97: The High-speed Package of IAPWS-IF97
 //!    (p,t) (p,h) (p,s) (h,s) (p,x) (t,x)
 #![allow(warnings)]
+//#![warn(missing_docs)]
 pub mod algo;
+pub mod common;
 pub mod r1;
 pub mod r2;
 pub mod r3;
 pub mod r4;
 pub mod r5;
-pub mod common;
 
-pub use common::propertry_id::*;
 pub use common::constant::*;
+pub use common::propertry_id::*;
 pub use common::region::*;
 pub use common::transport_further::*;
 pub use r1::*;
@@ -36,7 +37,7 @@ fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
         2 => pt_reg2(p, t, o_id),
         3 => pt_reg3(p, t, o_id),
         4 => {
-            if ((t + 273.15) == TC_WATER && p == PC_WATER) {
+            if (t + 273.15) == TC_WATER && p == PC_WATER {
                 return td_reg3(t, DC_WATER, o_id);
             } else {
                 return sub_region as f64;

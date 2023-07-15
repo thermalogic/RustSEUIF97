@@ -39,7 +39,7 @@ pub fn thermal_diffusivity(tc:f64,cp:f64,d:f64)->f64
 ///    Returns：
 ///       mu : Viscosity Pa·s
 ///     IAPWS, Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary  Water Substance
-///         http://www.iapws.org/relguide/viscosity.html
+///         <http://www.iapws.org/relguide/viscosity.html>
 pub fn viscosity(rho:f64, T:f64)->f64
 {
  
@@ -61,7 +61,7 @@ pub fn viscosity(rho:f64, T:f64)->f64
      suma = 0.0;
      for i in 0..21
       { 
-          suma += nr[i]*sac_pow((Dr-1.0),I[i])*sac_pow((1.0/Tr-1.0),J[i]);
+          suma += nr[i]*sac_pow(Dr-1.0,I[i])*sac_pow(1.0/Tr-1.0,J[i]);
       }
      let fi1:f64 = (Dr*suma).exp();
      let fi2:f64= 1.0;
@@ -75,7 +75,7 @@ pub fn viscosity(rho:f64, T:f64)->f64
 ///      Returns 
 ///         k : Thermal conductivity W/mK
 ///  IAPWS, Release on the IAPWS Formulation 2011 for the Thermal Conductivity  of Ordinary Water Substance
-///         http://www.iapws.org/relguide/ThCond.html
+///         <http://www.iapws.org/relguide/ThCond.html>
 pub fn thcond(rho:f64, T:f64)->f64
 {
     let d:f64 = rho/DC_WATER;
@@ -116,7 +116,7 @@ pub fn thcond(rho:f64, T:f64)->f64
 ///  Returns
 ///      sigma :   Surface tension  N/m
 ///    IAPWS, Revised Release on Surface Tension of Ordinary Water Substance June 2014
-///           http://www.iapws.org/relguide/Surf-H2O.html
+///           <http://www.iapws.org/relguide/Surf-H2O.html>
 pub fn surface_tension(T:f64)->f64
 {
     if 248.15 <= T && T<= TC_WATER

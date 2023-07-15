@@ -25,8 +25,8 @@ pub fn B23_p2T(p:f64)->f64
 
 
 /// Check the region in (p,h)
-///    IAPWS-IF97-S03 rev :supp tv(ph,ps) 2014 supplementary 03 for region 3 
-///        http://www.iapws.org/relguide/Supp-Tv(ph,ps)-2014.pdf, Eq 10
+///    supp tv(ph,ps) 2014 supplementary 03 for region 3 
+///       Eq 10 <http://www.iapws.org/relguide/Supp-Tv(ph,ps)-2014.pdf>
 
 ///  The equation h2p_sat_reg3(h) describes the saturated liquid line and the
 ///    saturated vapor line including the critical point in the enthalpy range(see Figure 3):
@@ -43,7 +43,7 @@ pub fn h2p_sat_reg3(h:f64)->f64
 
     let hmin_Ps3:f64 = pT2h_reg1(Ps_623, 623.15);
     let hmax_Ps3:f64 = pT2h_reg2(Ps_623, 623.15);
-    if (h < hmin_Ps3 || h > hmax_Ps3)
+    if h < hmin_Ps3 || h > hmax_Ps3
       {  return INVALID_H as f64;}
 
     let nu:f64 = h / 2600.0;
@@ -56,8 +56,7 @@ pub fn h2p_sat_reg3(h:f64)->f64
 /// Check the region in (p,s) 
  
 ///  Define the saturated line, P=f(s) for region 3
-///     http://www.iapws.org/relguide/Supp-Tv(ph,ps)-2014.pdf, Eq 11
-///   
+///    Eq 11 <http://www.iapws.org/relguide/Supp-Tv(ph,ps)-2014.pdf> 
 pub fn s2p_sat_reg3(s:f64)->f64
 {
     const I:[i32;10] = [0, 1, 1, 4, 12, 12, 16, 24, 28, 32];
@@ -70,7 +69,7 @@ pub fn s2p_sat_reg3(s:f64)->f64
     // Check input parameters
     let smin_Ps3:f64 = pT2s_reg1(Ps_623, 623.15);
     let smax_Ps3:f64 = pT2s_reg2(Ps_623, 623.15);
-    if (s < smin_Ps3 || s > smax_Ps3)
+    if s < smin_Ps3 || s > smax_Ps3
     {    return INVALID_S as f64;}
 
     let sigma:f64 = s / 5.2;
@@ -83,7 +82,7 @@ pub fn s2p_sat_reg3(s:f64)->f64
 ///  Equations of (h,s) for the Region Boundaries
 
 ///  Define the saturated line boundary between Region 1 and 4, h=f(s) 
-///      http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 3
+///    Eq 3 <http://www.iapws.org/relguide/Supp-phs3-2014.pdf>
 pub fn hs_region_h1_s(s:f64)->f64
 {
 
@@ -102,7 +101,7 @@ pub fn hs_region_h1_s(s:f64)->f64
                         0.834596332878346e-6, 0.503611916682674e1, 0.655444787064505e2];
 
     // Check input parameters
-    if (s < -1.545495919e-4 || s > 3.77828134)
+    if s < -1.545495919e-4 || s > 3.77828134
        { return INVALID_S as f64;}
 
     let sigma:f64 = s / 3.8;
@@ -113,7 +112,7 @@ pub fn hs_region_h1_s(s:f64)->f64
 }
 
 ///  The saturated line boundary between Region 4 and 3a, h=f(s)
-///     http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 4
+///    Eq 4 <http://www.iapws.org/relguide/Supp-phs3-2014.pdf> 
 pub fn  hs_region_h3a_s(s:f64) ->f64
 {
     const I:[i32;19] = [0, 0, 0, 0, 2, 3, 4, 4, 5, 5, 6, 7, 7, 7, 10, 10, 10, 32, 32];
@@ -126,7 +125,7 @@ pub fn  hs_region_h3a_s(s:f64) ->f64
                         -0.317714386511207e5, -0.945890406632871e5, -0.139273847088690e-5,
                         0.631052532240980];
     // Check input parameters
-    if (s < 3.77828134 || s > SC_WATER)
+    if s < 3.77828134 || s > SC_WATER
     {    return INVALID_S as f64;}
 
     let sigma:f64 = s / 3.8;
@@ -137,7 +136,7 @@ pub fn  hs_region_h3a_s(s:f64) ->f64
 }
 
 ///  Define the saturated line boundary between Region 4 and 2a-2b, h=f(s)
-///    http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 5
+///    Eq 5 <http://www.iapws.org/relguide/Supp-phs3-2014.pdf>
 pub fn hs_region_h2ab_s(s:f64)->f64
 {
     
@@ -157,7 +156,7 @@ pub fn hs_region_h2ab_s(s:f64)->f64
                         -0.175407764869978e33, 0.347581490626396e35, -0.710971318427851e39];
 
     // Check input parameters
-    if (s < 5.85 || s > 9.155759395)
+    if s < 5.85 || s > 9.155759395
     {    return INVALID_S as f64;}
     
     let sigma1:f64 = s / 5.21- 0.513;
@@ -169,7 +168,7 @@ pub fn hs_region_h2ab_s(s:f64)->f64
 }
 
 /// Define the saturated line boundary between Region 4 and 2c-3b, h=f(s)
-///     http://www.iapws.org/relguide/Supp-phs3-2014.pdf. Eq 6
+///    Eq 6 <http://www.iapws.org/relguide/Supp-phs3-2014.pdf>.
 pub fn hs_region_h2c3b_s(s:f64)->f64
 {
     const I:[i32;16] = [0, 0, 0, 1, 1, 5, 6, 7, 8, 8, 12, 16, 22, 22, 24, 36];
@@ -182,7 +181,7 @@ pub fn hs_region_h2c3b_s(s:f64)->f64
                         -0.116994334851995e41];
 
     // Check input parameters
-    if (s < SC_WATER || s > 5.85)
+    if s < SC_WATER || s > 5.85
      {   return INVALID_S as f64;}
 
     let sigma:f64 = s / 5.9;
@@ -194,10 +193,10 @@ pub fn hs_region_h2c3b_s(s:f64)->f64
 }
 
 ///  Define the boundary between Region 1 and 3, h=f(s)
-///      http://www.iapws.org/relguide/Supp-phs3-2014.pdf Eq 7
+///     Eq 7 <http://www.iapws.org/relguide/Supp-phs3-2014.pdf> 
 pub fn hs_region_h13_s(s:f64)->f64
 {
-    if (s < 3.397782955 || s > 3.77828134)
+    if s < 3.397782955 || s > 3.77828134
       {  return INVALID_S as f64 };
 
  
@@ -213,10 +212,11 @@ pub fn hs_region_h13_s(s:f64)->f64
     return 1700.0 * suma;
 }
 
-///  http://www.iapws.org/relguide/Supp-phs3-2014.pdf Page25 Eq 8 
-///  4.6 Equation TB23(h,s) for the Boundary between Regions 2 and 3
-///    Define the boundary between Region 2 and 3, T=f(h,s)
-pub fn hs_region_t_hs(h:f64,s:f64)->f64 // _t23_hs(h, s)
+///  Define the boundary between Region 2 and 3, T=f(h,s)
+///       4.6 Equation TB23(h,s) _t23_hs(h, s)
+///    <http://www.iapws.org/relguide/Supp-phs3-2014.pdf> Page25 Eq 8 
+///    
+pub fn hs_region_t_hs(h:f64,s:f64)->f64 // 
 {
     const I:[i32;25] = [-12, -10, -8, -4, -3, -2, -2, -2, -2, 0, 1, 1, 1, 3, 3, 5, 6, 6, 8, 8,
                      8, 12, 12, 14, 14];
@@ -234,8 +234,8 @@ pub fn hs_region_t_hs(h:f64,s:f64)->f64 // _t23_hs(h, s)
 
    
     // Check input parameters
-    if (s < 5.048096828 || s > 5.260578707 ||
-        h < 2.563592004e3 || h > 2.812942061e3)
+    if s < 5.048096828 || s > 5.260578707 ||
+        h < 2.563592004e3 || h > 2.812942061e3
         { return INVALID_HS as f64;}
 
     let nu:f64 = h / 3000.0;

@@ -94,7 +94,7 @@ pub fn pT2v_sat_reg3(p:f64, T:f64,x:f64)->f64
             }
             else
             {
-                if (p < 21.9316)
+                if p < 21.9316
                  { subRegion = 'u';}
                 else
                  {   subRegion = 'y';}
@@ -103,15 +103,15 @@ pub fn pT2v_sat_reg3(p:f64, T:f64,x:f64)->f64
     }
     else
     {
-        if (p < 20.5)
+        if p < 20.5
         {
             subRegion = 't';
         }
         else
         {
-            if (p < 21.0434)
+            if p < 21.0434
                { subRegion = 'r';}
-            else if (p < 21.9009)
+            else if p < 21.9009
                { subRegion = 'x';}
             else
                { subRegion = 'z';}
@@ -127,7 +127,7 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
 
     let mut subRegion:char;
 
-    if (p > 40.0 && p <= 100.0)
+    if p > 40.0 && p <= 100.0
     {
         let tB:f64 = T_atRegionBoundary(p, "3ab".to_string());
         if T > tB
@@ -145,7 +145,7 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
          {   subRegion = 'c';}
         else if T <= tBab
          {   subRegion = 'd';}
-        else if (T <= tBef)
+        else if T <= tBef
          {   subRegion = 'e';}
         else
           {  subRegion = 'f';}
@@ -162,11 +162,11 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
          {  subRegion = 'c';}
         else if T <= tBgh
           {  subRegion = 'g';}
-        else if (T <= tBef)
+        else if T <= tBef
            { subRegion = 'h';}
-        else if (T <= tBij)
+        else if T <= tBij
             { subRegion = 'i';}
-        else if (T <= tBjk)
+        else if T <= tBjk
             { subRegion = 'j';}
         else
              { subRegion = 'k';}
@@ -239,7 +239,7 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
                 return subRegion;
             }
 
-            if (T > tBrx && T <= tBjk)
+            if T > tBrx && T <= tBjk
             {
                 subRegion = 'r';
                 // 这里的判断算法有点问题，下面这个 subRegion会被重新设定u
@@ -260,11 +260,11 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
 
             if p > 22.11
             {
-                if (T <= tBuv)
+                if T <= tBuv
                     {subRegion = 'u';}
-                else if (T < tBef)
+                else if T < tBef
                   {  subRegion = 'v';}
-                else if (T < tBwx)
+                else if T < tBwx
                    { subRegion = 'w';}
                 else
                    { subRegion = 'x';}
@@ -277,7 +277,7 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
                    { subRegion = 'u';}
                 else if T <= tBef
                   {  subRegion = 'y';}
-                else if (T <= tBwx)
+                else if T <= tBwx
                   {  subRegion = 'z';}
                 else
                    { subRegion = 'x';}
@@ -286,7 +286,7 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
             {
                 let T_sat:f64 =T_saturation(p);
 
-                if (T <= T_sat)
+                if T <= T_sat
                 {
                     if p > 21.93161551
                     {
@@ -300,7 +300,7 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
                 }
                 else
                 {
-                    if (p > 21.90096265)
+                    if p > 21.90096265
                     {
                         if T < tBwx
                           {  subRegion = 'z';}
@@ -312,7 +312,7 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
                 }
             }
         }
-        else if (p > 20.5)
+        else if p > 20.5
         {
             let tBcd = T_atRegionBoundary(p, "3cd".to_string());
             let tBjk = T_atRegionBoundary(p, "3jk".to_string());
@@ -327,7 +327,7 @@ pub fn sub_region3_pT(p:f64,T:f64)->char
             else
                { subRegion = 'k';}
         }
-        else if (p > 19.00881189173929)
+        else if p > 19.00881189173929
         {
             let tBcd = T_atRegionBoundary(p, "3cd".to_string());
             let T_sat:f64 = T_saturation(p);

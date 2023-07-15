@@ -75,7 +75,7 @@ pub fn hs2p3b_reg3(h:f64, s:f64)->f64
 ///  Backward equation for region 3, P=f(h,s) 
 pub fn hs2p_reg3(h:f64, s:f64)->f64
 {
-    if (s <= SC_WATER)
+    if s <= SC_WATER
     {  return hs2p3a_reg3(h, s);}
     else
      { return  hs2p3b_reg3(h, s);}

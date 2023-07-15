@@ -91,7 +91,7 @@ pub fn  hs2T_reg43(h:f64, s:f64)->f64
 
 pub fn hs2T_reg4(h:f64, s:f64)->f64
 {
-    if (s > s4V_623 && s < s4V_273)
+    if s > s4V_623 && s < s4V_273
     {
         return  hs2T_reg43(h, s);
     };
@@ -102,13 +102,13 @@ pub fn hs2T_reg4(h:f64, s:f64)->f64
     let mut PL:f64=0.0;
     let mut Tsat:f64=0.0;
 
-    if (s > s4L_273 && s <= s4L_623)
+    if s > s4L_273 && s <= s4L_623
     {
         p_Low_Bound = P_MIN;
         p_High_Bound =Ps_623;
 
         let mut hL:f64 = -1000.0;
-        while ((hL - h).abs() > 1.0e-04 && (p_High_Bound - p_Low_Bound).abs() > 1.0e-4)
+        while (hL - h).abs() > 1.0e-04 && (p_High_Bound - p_Low_Bound).abs() > 1.0e-4
         {
             PL = 0.5*(p_Low_Bound + p_High_Bound); 
             Tsat = T_saturation(PL);
@@ -120,13 +120,13 @@ pub fn hs2T_reg4(h:f64, s:f64)->f64
         }
     };
 
-    if (s > s4L_623 && s <= SC_WATER)
+    if s > s4L_623 && s <= SC_WATER
     {
         PL = h2p_sat_reg3(h); // liquid , boundaries
         p_Low_Bound = P_MIN;
         p_High_Bound = PL;
     }
-    if (s > SC_WATER && s <= s4V_623)
+    if s > SC_WATER && s <= s4V_623
     {
         PL = h2p_sat_reg3(h); // steam,boundaries
         p_Low_Bound = P_MIN;
@@ -141,7 +141,7 @@ pub fn hs2T_reg4(h:f64, s:f64)->f64
     let mut v4v:f64;
     let mut v4L:f64;
 
-    while ((s - sss).abs() > 1.0e-6)
+    while (s - sss).abs() > 1.0e-6
     {
         p = 0.5 * (p_Low_Bound + p_High_Bound);
 
@@ -161,7 +161,7 @@ pub fn hs2T_reg4(h:f64, s:f64)->f64
             s4L = Td2s_reg3(Tsat, 1.0/v4L);
         };
 
-        sss = (xs * s4v + (1.0 - xs) * s4L);
+        sss = xs * s4v + (1.0 - xs) * s4L;
 
         if sss < s
         {

@@ -1,16 +1,16 @@
 //! Region 2 - Baisic Equation:(p,T)-->v, u,h,s,cp, cv,w 
-//! 
-//!   IAPWS-97(2012) August 2007 : http://www.iapws.org/relguide/IF97-Rev.html
 //!  
-//!      T: temperature  K
-//!       P: pressure  Map
-//!       v: specific volume m^3/kg
-//!       h: specific enthalpy kJ/kg
-//!       u: specific internal energy kJ/kg
-//!       s: specific entropy  kJ/(kg K)
-//!       cp: specific isobaric heat capacity  kJ/(kg K)
-//1       cv: specific isochoric heat capacity kJ/(kg K)
-//！       w:  speed of sound  m/s
+//! IAPWS-97(2012) August 2007 : <http://www.iapws.org/relguide/IF97-Rev.html>
+//! 
+//! * T: temperature K
+//! * P: pressure  Map
+//! * v: specific volume m^3/kg
+//! * h: specific enthalpy kJ/kg
+//! * u: specific internal energy kJ/kg
+//! * s: specific entropy  kJ/(kg K)
+//! * cp: specific isobaric heat capacity  kJ/(kg K)
+//! * cv: specific isochoric heat capacity kJ/(kg K)
+//! * w:  speed of sound  m/s
 
 use crate::algo::fast_ipower::sac_pow;
 use crate::common::constant::*;
@@ -123,9 +123,9 @@ pub fn pT2cv_reg2(p: f64, T: f64) -> f64 {
     }
 
     gammar_pi /= pi;
-    gammar_pitau /= (pi * tau1);
-    gammar_pipi /= (pi * pi);
-    gammar_tautau /= (tau1 * tau1);
+    gammar_pitau /= pi * tau1;
+    gammar_pipi /= pi * pi;
+    gammar_tautau /= tau1 * tau1;
 
     let a: f64 = 1.0 + pi * (gammar_pi - tau * gammar_pitau);
     let b: f64 = a * a / (1.0 - pi * pi * gammar_pipi);
@@ -173,9 +173,9 @@ pub fn pT2w_reg2(p: f64, T: f64) -> f64 {
     }
 
     gammar_pi /= pi;
-    gammar_pitau /= (pi * tau1);
-    gammar_pipi /= (pi * pi);
-    gammar_tautau /= (tau1 * tau1);
+    gammar_pitau /= pi * tau1;
+    gammar_pipi /= pi * pi;
+    gammar_tautau /= tau1 * tau1;
     //println!("gammar_pi {}  {}", gammar_pi_reg2(tau, pi), gammar_pi);
     //println!("gammar_pitau_reg2 {}  {}",gammar_pitau_reg2(tau, pi),gammar_pitau);
     //println!("gammar_pipi_reg2 {}  {}",gammar_pipi_reg2(tau, pi),gammar_pipi);

@@ -26,7 +26,7 @@ pub fn p2sat_water(p: f64, o_id: i32) -> f64 {
         return T;
     }
 
-    if (p >= P_MIN && p <= Ps_623) {
+    if p >= P_MIN && p <= Ps_623 {
         return pT_reg1(p, T, o_id);
     } else {
         // region3
@@ -37,11 +37,11 @@ pub fn p2sat_water(p: f64, o_id: i32) -> f64 {
             v = pT2v_sat_reg3(p, T, 0.0);
         }
 
-        if (o_id == OV) {
+        if o_id == OV {
             return v;
         }
         let d: f64 = 1.0 / v;
-        if (o_id == OD) {
+        if o_id == OD {
             return d;
         }
 
@@ -60,7 +60,7 @@ pub fn p2sat_steam(p: f64, o_id: i32) -> f64 {
         return T-273.15;
     }
 
-    if (p >= P_MIN && p <= Ps_623) {
+    if p >= P_MIN && p <= Ps_623 {
         return pT_reg2(p, T, o_id);
     } else {
         //reg3d =ss
@@ -181,7 +181,7 @@ pub fn px_reg4(p: f64, x: f64, o_id: i32) -> f64 {
                 return p2sat_water(p, o_id);
             } else if x == 1.0 {
                 return p2sat_steam(p, o_id);
-            } else if (x > 0.0 && x < 1.0) {
+            } else if x > 0.0 && x < 1.0 {
                 let r1: f64 = p2sat_water(p, o_id);
                 let r2: f64 = p2sat_steam(p, o_id);
                 r = r1 + x * (r2 - r1);
@@ -207,7 +207,7 @@ pub fn Tx_reg4(T: f64, x: f64, o_id: i32) -> f64 {
     }
 
     let mut r: f64 = 0.0;
-    if (x > 0.0 && x < 1.0) {
+    if x > 0.0 && x < 1.0 {
         let p: f64 = p_saturation(T);
         if o_id == OP {
             return p;
