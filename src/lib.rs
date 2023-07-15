@@ -1,7 +1,7 @@
 //! IF97: The High-speed Package of IAPWS-IF97
 //!    (p,t) (p,h) (p,s) (h,s) (p,x) (t,x)
 #![allow(warnings)]
-mod algo;
+pub mod algo;
 pub mod r1;
 pub mod r2;
 pub mod r3;
