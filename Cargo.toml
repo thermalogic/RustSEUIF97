@@ -1,7 +1,7 @@
 [package]
 name = "if97"
 crate-type   = ["rlib"]
-version = "0.2.9"
+version = "0.3.0"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package"
