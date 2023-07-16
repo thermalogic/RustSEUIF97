@@ -16,10 +16,10 @@ pub const OX:i32=10;   // x  Steam quality
 pub const OR:i32=11;   // r  Region in IF97   
 
 /// 2 transport and further propertries
-pub const ODV:i32=12;   // dv Dynamic viscosity  kg/(m·s) or mu(Pa.s)
+pub const ODV:i32=12;   // dv Dynamic viscosity  kg/(m·s) or Pa.s
 pub const OKV:i32=13;   // kv Kinematic viscosity  m^2/s 
 pub const OTC:i32=14;   // tc Thermal conductivity W/(m.K) 
-pub const OTD:i32=15;   // td Thermal diffusivity   um^2/s 
+pub const OTD:i32=15;   // td Thermal diffusivity  m^2/s 
 pub const OPR:i32=16;   // pr Prandtl number  
-pub const OST:i32=17;   // st Surface tension   mN/m  
-pub const OSDC:i32=18;  // sdc Static Dielectric  constant 
+pub const OST:i32=17;   // st Surface tension   N/m  
+pub const OSDC:i32=18;  // sdc Static Dielectric constant 

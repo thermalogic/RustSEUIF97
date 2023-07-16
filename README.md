@@ -75,8 +75,8 @@ fn main() {
 | Dynamic viscosity                     |  kg/(m·s)   |     dv |  ODV |
 | Kinematic viscosity                   |    m^2/s    |     kv |  OKV |
 | Thermal conductivity                  |   W/(m.K)   |     tc |  OTC |
-| Thermal diffusivity                   |   um^2/s    |     td |  OTD |
+| Thermal diffusivity                   |   m^2/s     |     td |  OTD |
 | Prandtl number                        |             |     pr |  OPR |
-| Surface tension                       |    mN/m     |     st |  OST |
+| Surface tension                       |    N/m      |     st |  OST |
 | Static Dielectric Constant            |             |    sdc | OSDC | 
 

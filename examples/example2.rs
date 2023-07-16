@@ -19,15 +19,15 @@ fn main() {
         ("dv Dynamic viscosity(kg/(m·s))", if97::ODV),
         ("kv Kinematic viscosity(m^2/s)", if97::OKV),
         ("tc Thermal conductivity(W/(m.K))", if97::OTC),
-        ("td Thermal diffusivity(um^2/s)", if97::OTD),
+        ("td Thermal diffusivity(m^2/s)", if97::OTD),
         ("pr Prandtl number", if97::OPR),
-        ("st Surface tension(mN/m)", if97::OST),
+        ("st Surface tension(N/m)", if97::OST),
         ("sdc Static Dielectric Constant", if97::OSDC),
     ];
     let p: f64 = 3.0;
     let t: f64 = 300.0 - 273.15;
     for i in 0..19 {
         let value: f64 = if97::pt(p, t, prop_map[i].1);
-        println!("\t {} = {:.6}", prop_map[i].0, value);
+        println!("\t {} = {:.6e}", prop_map[i].0, value);
     }
 }
