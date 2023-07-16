@@ -158,7 +158,7 @@ fn speed_region3() {
         println!("\t {} = {}", prop_map_3[i].0, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
-            std::hint::black_box(Td_reg3(T, d, prop_map[i].1));
+            std::hint::black_box(Td_reg3(T, d, prop_map_3[i].1));
         }
         let elapsed_time = now.elapsed();
         println!("\t\t {} Running  {:?}", prop_map_3[i].0, elapsed_time);
