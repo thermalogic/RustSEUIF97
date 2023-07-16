@@ -5,7 +5,7 @@
 //! *  Thermal conductivity W/(m.K)   tc     
 //! *  Thermal diffusivity  um^2/s    td     
 //! *  Prandtl number                  pr     
-//! *  Static dialectric sonstant      sdc 
+//! *  Static dialectric constant      sdc 
 //！*  Surface tension       mN/m      st   
 
 use crate::algo::fast_ipower::sac_pow;

@@ -22,4 +22,4 @@ pub const OTC:i32=14;   // tc Thermal conductivity W/(m.K)
 pub const OTD:i32=15;   // td Thermal diffusivity   um^2/s 
 pub const OPR:i32=16;   // pr Prandtl number  
 pub const OST:i32=17;   // st Surface tension   mN/m  
-pub const OSDC:i32=18;  // sdc Static Dielectr
+pub const OSDC:i32=18;  // sdc Static Dielectric  constant 
