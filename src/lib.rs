@@ -312,10 +312,17 @@ pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
 
 ///  px(p,x,o_id) - the propertry of o_id (thermodynamic)
 pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
+    if p > P_MAX4 || p < P_MIN4 || x > 1.0 || x < 0.0 {
+        return INVALID_VALUE as f64;
+    }
     px_reg4(p, x, o_id)
 }
 
 ///  tx(t,x,o_id) - the propertry of o_id (thermodynamic)
 pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
-    Tx_reg4(t + 273.15, x, o_id)
+    let T:f64=t+273.15;
+    if T > T_MAX4 || T< T_MIN4 || x > 1.0 || x < 0.0 {
+        return INVALID_VALUE as f64;
+    }
+    Tx_reg4(T, x, o_id)
 }

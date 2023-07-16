@@ -36,3 +36,9 @@ pub const ht_water: f64 = 0.611783; // the triple point
 pub const Ps_623: f64 = 16.5291642526045; // P_MIN3 Ps_623 = _PSat_T(623.15)  P Saturation at 623.15 K, boundary region 1-3
                                           // T=273.15 Tmin
 pub const P_MIN: f64 = 0.000611212677444; // P_MIN = _PSat_T(273.15)  Minimum pressure
+
+/// Region4  boundary constants
+pub const T_MAX4: f64 = 647.096;
+pub const T_MIN4: f64 = 273.15;
+pub const P_MAX4: f64 = 22.064;
+pub const P_MIN4: f64 = 0.000611212677444;
