@@ -1,21 +1,7 @@
 #![allow(warnings)]
 use std::collections::HashMap;
 use std::time::Instant;
-mod algo;
-mod common;
-mod r1;
-mod r2;
-mod r3;
-mod r4;
-mod r5;
-
-use common::constant::*;
-use common::propertry_id::*;
-use r1::*;
-use r2::*;
-use r3::*;
-use r4::*;
-use r5::*;
+use if97::*;
 
 pub struct TestData {
     pub p: f64,
