@@ -1,4 +1,3 @@
-//! rustc -O example2.rs --extern if97=../target/release/libif97.rlib
 //! The example to get all properties
 #![allow(warnings)]
 fn main() {

@@ -45,7 +45,7 @@ fn test_ps() {
 }
 
 #[test]
-fn test_hs() {
+pub fn test_hs() {
     for i in 0..=2 {
         assert_approx_eq!(
             r1_hspT[i][3] - 273.15,

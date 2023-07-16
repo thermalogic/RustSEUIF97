@@ -2,6 +2,7 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
+
 use if97::common::*;
 use if97::hs2p_reg3;
 use if97::pT2v_reg3;

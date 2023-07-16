@@ -1,4 +1,3 @@
-// rustc -O example3.rs --extern if97=../target/release/libif97.rlib
 #![allow(warnings)]
 fn main() {
     
