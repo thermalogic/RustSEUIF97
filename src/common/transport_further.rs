@@ -126,7 +126,7 @@ pub fn surface_tension(T:f64)->f64
 ///      * T :  Temperature K
 /// IAPWS, Release on the Static Dielectric Constant of Ordinary Water
 ///    Substance for Temperatures from 238 K to 873 K and Pressures up to 1000MPa
-//             http://www.iapws.org/relguide/Dielec.html
+//             <http://www.iapws.org/relguide/Dielec.html>
 pub fn  static_dielectric(rho:f64, T:f64)->f64
 {
     let k:f64 = 1.380658e-23;
