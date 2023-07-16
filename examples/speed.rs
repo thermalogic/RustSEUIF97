@@ -1,7 +1,7 @@
 #![allow(warnings)]
+use if97::*;
 use std::collections::HashMap;
 use std::time::Instant;
-use if97::*;
 
 pub struct TestData {
     pub p: f64,
@@ -14,9 +14,7 @@ pub struct TestData {
     pub w: f64,
 }
 
-const prop_map: [(&str, i32);8] =[
-    ("P", OP),
-    ("T", OT),
+const prop_map: [(&str, i32); 6] = [
     ("V", OV),
     ("H", OH),
     ("S", OS),
@@ -41,14 +39,14 @@ fn speed_region1() {
 
     let mut p1: f64 = p[0];
     let mut t1: f64 = T[0] - 273.15;
-    println!(" p={} t={} ", p1, t1);
+    println!(" p={:.6} t={:.6} ", p1, t1);
 
-    for i in 0..8 {
-        let value: f64 = pt_reg1(p1, t1,prop_map[i].1);
-        println!("\t {} ={}",prop_map[i].0, value);
+    for i in 0..6 {
+        let value: f64 = pt_reg1(p1, t1, prop_map[i].1);
+        println!("\t {} = {}", prop_map[i].0, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
-            std::hint::black_box(pt_reg1(p1, t1,prop_map[i].1));
+            std::hint::black_box(pt_reg1(p1, t1, prop_map[i].1));
         }
         let elapsed_time = now.elapsed();
         println!("\t\t {} Running  {:?}", prop_map[i].0, elapsed_time);
@@ -92,11 +90,11 @@ fn speed_region2() {
     println!("Region 2 ");
     let mut p: f64 = data[0].p;
     let mut t: f64 = data[0].T - 273.15;
-    println!("\t p={} t={} ", p, t);
+    println!(" p={:.6} t={:.6} ", p, t);
 
-    for i in 0..8 {
-        let value: f64 = pt_reg2(p, t,prop_map[i].1);
-        println!("\t {} ={}", prop_map[i].0, value);
+    for i in 0..6 {
+        let value: f64 = pt_reg2(p, t, prop_map[i].1);
+        println!("\t {} = {}", prop_map[i].0, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
             std::hint::black_box(pt_reg2(p, t, prop_map[i].1));
@@ -141,20 +139,29 @@ fn speed_region3() {
             0.760696041E3,
         ],
     ];
+
+    let prop_map_3: [(&str, i32); 6] = [
+        ("P", OP),
+        ("H", OH),
+        ("S", OS),
+        ("U", OU),
+        ("CP", OCP),
+        ("W", OW),
+    ];
     println!("Region 3 ");
     let T: f64 = tab33[0][0];
     let d: f64 = tab33[0][1];
-    println!("\t T={} d={} ", T, d);
+    println!(" t={:.6} d={:.6} ", T - 273.15, d);
 
-    for i in 0..8 {
-        let value: f64 = Td_reg3(T, d, prop_map[i].1);
-        println!("\t {}={}", prop_map[i].0, value);
+    for i in 0..6 {
+        let value: f64 = Td_reg3(T, d, prop_map_3[i].1);
+        println!("\t {} = {}", prop_map_3[i].0, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
             std::hint::black_box(Td_reg3(T, d, prop_map[i].1));
         }
         let elapsed_time = now.elapsed();
-        println!("\t\t {} Running  {:?}", prop_map[i].0, elapsed_time);
+        println!("\t\t {} Running  {:?}", prop_map_3[i].0, elapsed_time);
     }
 }
 
@@ -198,9 +205,9 @@ fn speed_region5() {
     let mut p1: f64 = data[0][1];
     let mut t1: f64 = data[0][0] - 273.15;
     println!(" p={} t={} ", p1, t1);
-    for i in 0..8 {
+    for i in 0..6 {
         let value: f64 = pt_reg5(p1, t1, prop_map[i].1);
-        println!("\t {} ={}", prop_map[i].0, value);
+        println!("\t {} = {}", prop_map[i].0, value);
         let now = Instant::now();
         for _ in 0..100000u128 {
             std::hint::black_box(pt_reg5(p1, t1, prop_map[i].1));
