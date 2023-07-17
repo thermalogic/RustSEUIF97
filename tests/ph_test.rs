@@ -2,10 +2,7 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::common::*;
-use if97::ph;
-use if97::pt;
-use if97::region4_pTx::*;
+use if97::*;
 
 #[test]
 fn test_region1_ph() {
@@ -78,19 +75,15 @@ fn test_region4_ph() {
     let mut x: f64 = 0.0;
     for i in 0..3 {
         let p: f64 = r4_sat_Tp[i][1];
-        h1 = p2sat_water(p, OH);
-        h2 = p2sat_steam(p, OH);
         x = 0.35;
-        h = h1 + x * (h2 - h1);
-        assert_approx_eq!(x, ph(p, h, OX));
+        h = px(p,x,OH);
+       assert_approx_eq!(x, ph(p, h, OX));
     }
 
     for i in 0..3 {
         let p: f64 = r4_sat_pT[i][0];
-        h1 = p2sat_water(p, OH);
-        h2 = p2sat_steam(p, OH);
         x = 0.55;
-        h = h1 + x * (h2 - h1);
+        h = px(p,x,OH);
         assert_approx_eq!(x, ph(p, h, OX));
     }
 }

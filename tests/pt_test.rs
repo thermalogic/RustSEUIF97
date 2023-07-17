@@ -2,8 +2,7 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::common::*;
-use if97::pt;
+use if97::*;
 
 #[test]
 fn test_regino1_pt() {
@@ -15,7 +14,6 @@ fn test_regino1_pt() {
         assert_approx_eq!(r1_pT_data[i].s, pt(p, t, OS), 1.0e-9f64);
         assert_approx_eq!(r1_pT_data[i].u, pt(p, t, OU), 1.0e-6f64);
         assert_approx_eq!(r1_pT_data[i].cp, pt(p, t, OCP), 1.0e-8f64);
-        //assert_approx_eq!(cv[i], pt(p,t, OCV), 1.0e-8f64);
         assert_approx_eq!(r1_pT_data[i].w, if97::pt(p, t, OW), 1.0e-5f64);
     }
 }

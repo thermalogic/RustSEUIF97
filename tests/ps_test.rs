@@ -2,10 +2,7 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::common::*;
-use if97::ps;
-use if97::pt;
-use if97::region4_pTx::*;
+use if97::*;
 
 #[test]
 fn test_region1_ps() {
@@ -78,19 +75,13 @@ fn test_region4_ps() {
     let mut x: f64 = 0.0;
     for i in 0..3 {
         let p: f64 = r4_sat_Tp[i][1];
-        s1 = p2sat_water(p, OS);
-        s2 = p2sat_steam(p, OS);
-        x = 0.35;
-        s = s1 + x * (s2 - s1);
+        s =px(p,x,OS);
         assert_approx_eq!(x, ps(p, s, OX));
     }
 
     for i in 0..3 {
         let p: f64 = r4_sat_pT[i][0];
-        s1 = p2sat_water(p, OS);
-        s2 = p2sat_steam(p, OS);
-        x = 0.55;
-        s = s1 + x * (s2 - s1);
+        s =px(p,x,OS);
         assert_approx_eq!(x, ps(p, s, OX));
     }
 }

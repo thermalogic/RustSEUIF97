@@ -2,10 +2,7 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::common::*;
-use if97::hs;
-use if97::pt;
-use if97::px;
+use if97::*;
 
 #[test]
 fn test_region1_hs() {
@@ -14,12 +11,12 @@ fn test_region1_hs() {
             r1_hspT[i][3] - 273.15,
             hs(r1_hspT[i][0], r1_hspT[i][1], OT),
             1.0e-6f64
-        ); //real diff: `0.13
+        ); 
         assert_approx_eq!(
             r1_hspT[i][2],
             hs(r1_hspT[i][0], r1_hspT[i][1], OP),
             1.0e-6f64
-        ); //  real diff: `0.181
+        );
     }
 }
 

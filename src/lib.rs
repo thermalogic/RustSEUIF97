@@ -2,20 +2,21 @@
 //!    (p,t) (p,h) (p,s) (h,s) (p,x) (t,x)
 #![allow(warnings)]
 //#![warn(missing_docs)]
-pub mod algo;
-pub mod common;
-pub mod r1;
-pub mod r2;
-pub mod r3;
-pub mod r4;
-pub mod r5;
+mod algo;
+mod common;
+mod r1;
+mod r2;
+mod r3;
+mod r4;
+mod r5;
 
-pub use common::*;
-pub use r1::*;
-pub use r2::*;
-pub use r3::*;
-pub use r4::*;
-pub use r5::*;
+pub use common::propertry_id::*;
+use common::*;
+use r1::*;
+use r2::*;
+use r3::*;
+use r4::*;
+use r5::*;
 
 /// pt_thermal(p,t,o_id) - the propertry of o_id (thermodynamic)
 fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
