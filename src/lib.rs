@@ -48,6 +48,20 @@ fn pt_thermal(p: f64, t: f64, o_id: i32) -> f64 {
 }
 
 ///  pt(p,t,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+/// 
+/// # Examples
+///
+/// ```
+/// use if97::*;
+///
+/// let p:f64 = 3.0;
+/// let t:f64= 300.0-273.15;
+/// let h=pt(p,t,OH);
+/// let s=pt(p,t,OS);
+/// let v=pt(p,t,OV);
+/// println!("p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");    
+/// ```
+///
 pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     match o_id {
         OP => return p,
@@ -115,6 +129,18 @@ fn ph_thermal(p: f64, h: f64, o_id: i32) -> f64 {
 }
 
 ///  ph(p,h,o_id) -  the propertry of o_id (thermodynamic,transport,etc)
+///
+/// # Examples
+///
+/// ```
+/// use if97::*;
+///
+/// let p:f64 = 3.0;
+/// let h:f64= 0.115331273e+3;
+/// let t=ph(p,h,OT);
+/// println!("p={p:.6} h={h:.6} t={t:.6}");    
+/// ```
+///
 pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     match o_id {
         OP => return p,
@@ -189,6 +215,17 @@ fn ps_thermal(p: f64, s: f64, o_id: i32) -> f64 {
 }
 
 ///  ps(p,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+///
+/// # Examples
+///
+///```
+/// use if97::*;
+///
+/// let p:f64= 3.0;
+/// let s:f64= 0.392294792;
+/// let t=ps(p,s,OT);
+/// println!("p={p:.6} s={s:.6} t={t:.6}");    
+/// ```
 pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     match o_id {
         OP => return p,
@@ -262,6 +299,19 @@ fn hs_thermal(h: f64, s: f64, o_id: i32) -> f64 {
 }
 
 /// hs(h,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+///
+/// # Examples
+///
+///```
+/// use if97::*;
+///
+/// let h:f64= 0.115331273e+3;;
+/// let s:f64= 0.392294792;
+/// let p=hs(h,s,OP);
+/// let t=hs(h,s,OT);
+/// println!("h={h:.6} s={s:.6} p={p:.6} t={t:.6}");
+/// ```
+///   
 pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
     match o_id {
         OH => return h,
@@ -312,6 +362,19 @@ pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
 }
 
 ///  px(p,x,o_id) - the propertry of o_id (thermodynamic)
+ ///
+///  # Examples
+///
+///```
+///  use if97::*;
+/// 
+///  let p: f64 = 0.1;
+///  let x: f64 = 0.0; // x= 0.0 saturation water ,x=1.0 saturation steam
+///  let t: f64 = px(p, x, OT);
+///  let h: f64 = px(p, x, OH);
+///  println!("px: p={p:.6} x={x:.6} t={t:.6} h={h:.6}");
+///```
+/// 
 pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
     if p > P_MAX4 || p < P_MIN4 || x > 1.0 || x < 0.0 {
         return INVALID_VALUE as f64;
@@ -320,6 +383,18 @@ pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
 }
 
 ///  tx(t,x,o_id) - the propertry of o_id (thermodynamic)
+///
+///  # Examples
+///
+///```
+///  use if97::*;
+/// 
+///  let t: f64 =372.755919-273.15;
+///  let x: f64 = 0.0; // x= 0.0 saturation water ,x=1.0 saturation steam
+///  let p: f64 = tx(t, x, OP);
+///  let h: f64 = tx(t, x, OH);
+///  println!("tx: p={p:.6} x={x:.6} t={t:.6} h={h:.6}");
+/// `
 pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
     let T:f64=t+273.15;
     if T > T_MAX4 || T< T_MIN4 || x > 1.0 || x < 0.0 {

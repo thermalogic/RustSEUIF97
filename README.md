@@ -39,20 +39,19 @@ hs(h:f64,s:f64,o_id::i32)->f64;
 px(p:f64,x:f64,o_id::i32)->f64;
 tx(p:f64,x:f64,o_id::i32)->f64;
 ```
-Examples
+Example
 
 ```rust
-use if97::pt;
+use if97::*;
 fn main() {
     
     let p:f64 = 3.0;
     let t:f64= 300.0-273.15;
    
-    let h=pt(p,t,if97::OH);
-    let s=pt(p,t,if97::OS);
-    let v=pt(p,t,if97::OV);
-    
-    println!("p={} t={} h={} s={} v={}",p,t,h,s,v);    
+    let h=pt(p,t,OH);
+    let s=pt(p,t,OS);
+    let v=pt(p,t,OV);
+    println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");   
 }
 ```
     
