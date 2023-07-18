@@ -2,7 +2,7 @@
 
 // 1 properties in IAPWS-IF97 Equation
 
-/// 0. p Pressure  MPa      
+/// 0. p - Pressure  MPa      
 pub const OP:i32=0;     
 /// 1. t - Temperature  °C  
 pub const OT:i32=1;     
