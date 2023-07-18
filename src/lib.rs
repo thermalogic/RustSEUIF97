@@ -362,8 +362,8 @@ pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
 }
 
 ///  px(p,x,o_id) - the propertry of o_id (thermodynamic)
- ///
-///  # Examples
+///
+/// # Examples
 ///
 ///```
 ///  use if97::*;
@@ -384,7 +384,7 @@ pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
 
 ///  tx(t,x,o_id) - the propertry of o_id (thermodynamic)
 ///
-///  # Examples
+/// # Examples
 ///
 ///```
 ///  use if97::*;
