@@ -15,7 +15,7 @@ fn main() {
         ("cv Specific isochoric heat capacity(kJ/(kg·K))", OCV),
         ("w  Speed of sound(m/s)", OW),
         ("x  Steam quality", OX),
-        ("r  Steam quality", OR),
+        ("r  Region", OR),
         // 2 transport and further propertry
         ("dv Dynamic viscosity(kg/(m·s))", ODV),
         ("kv Kinematic viscosity(m^2/s)", OKV),
