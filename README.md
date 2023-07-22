@@ -106,6 +106,6 @@ fn main() {
 | Isochoric pressure coefficient        |    1/K      |    pc  | OPC   |       31 |
 | Isothermal stress coefficient         |   kg/m³     |   betap| OBETAP|       32 |
 | Fugacity coefficient                  |             |      fi|   OFI |       33 |
-| Fugacity                              |     Mpa     |      fu|   OFU |       34 |
+| Fugacity                              |     MPa     |      fu|   OFU |       34 |
 
 
