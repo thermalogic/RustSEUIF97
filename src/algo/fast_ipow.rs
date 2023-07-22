@@ -1,5 +1,6 @@
-//!  The fast integer power using the shortest addition chains,n[0,58]
-  
+//!  The fast integer power using the shortest addition chains,n[-58,58]
+
+/// the shortest addition chains n[0,58]
 fn possac(x: f64, n: i32) -> f64 {
     let mut x2: f64;
     let mut x3: f64;
@@ -48,32 +49,32 @@ fn possac(x: f64, n: i32) -> f64 {
         2 => x * x,
         3 => {
             x2 = x * x;
-            return x2 * x;
+            x2 * x
         }
         4 => {
             x2 = x * x;
-            return x2 * x2;
+            x2 * x2
         }
         5 => {
             x2 = x * x;
             x3 = x2 * x;
-            return x2 * x3;
+            x2 * x3
         }
         6 => {
             x2 = x * x;
             x3 = x2 * x;
-            return x3 * x3;
+            x3 * x3
         }
         7 => {
             x2 = x * x;
             x3 = x2 * x;
             x5 = x3 * x2;
-            return x5 * x2;
+            x5 * x2
         }
         8 => {
             x2 = x * x;
             x4 = x2 * x2;
-            return x4 * x4;
+            x4 * x4
         }
         9 => {
             x2 = x * x;
@@ -223,7 +224,7 @@ fn possac(x: f64, n: i32) -> f64 {
             x6 = x3 * x3;
             x12 = x6 * x6;
             x15 = x12 * x3;
-            return x15 * x15;
+            x15 * x15
         }
         31 => {
             x2 = x * x;
@@ -353,7 +354,7 @@ fn possac(x: f64, n: i32) -> f64 {
             x23 = x20 * x3;
             return x23 * x23;
         }
-        47=>{
+        47 => {
             x2 = x * x;
             x3 = x2 * x;
             x5 = x2 * x3;
@@ -362,8 +363,8 @@ fn possac(x: f64, n: i32) -> f64 {
             x23 = x20 * x3;
             x46 = x23 * x23;
             return x46 * x;
-        }  
-        48=>{
+        }
+        48 => {
             x2 = x * x;
             x3 = x2 * x;
             x6 = x3 * x3;
@@ -371,7 +372,7 @@ fn possac(x: f64, n: i32) -> f64 {
             x24 = x12 * x12;
             return x24 * x24;
         }
-        49=>{
+        49 => {
             x2 = x * x;
             x4 = x2 * x2;
             x8 = x4 * x4;
@@ -380,16 +381,16 @@ fn possac(x: f64, n: i32) -> f64 {
             x33 = x32 * x;
             return x33 * x16;
         }
-        50=>{
+        50 => {
             x2 = x * x;
             x4 = x2 * x2;
             x8 = x4 * x4;
             x9 = x8 * x;
             x17 = x8 * x9;
             x25 = x17 * x8;
-            return x25 * x25
+            return x25 * x25;
         }
-        51=>{
+        51 => {
             x2 = x * x;
             x3 = x2 * x;
             x6 = x3 * x3;
@@ -398,7 +399,7 @@ fn possac(x: f64, n: i32) -> f64 {
             x48 = x24 * x24;
             return x48 * x3;
         }
-        52=>{
+        52 => {
             x2 = x * x;
             x4 = x2 * x2;
             x5 = x4 * x;
@@ -407,7 +408,8 @@ fn possac(x: f64, n: i32) -> f64 {
             x26 = x13 * x13;
             return x26 * x26;
         }
-        53=>{	x2 = x * x;
+        53 => {
+            x2 = x * x;
             x4 = x2 * x2;
             x8 = x4 * x4;
             x16 = x8 * x8;
@@ -416,7 +418,7 @@ fn possac(x: f64, n: i32) -> f64 {
             x37 = x36 * x;
             return x37 * x16;
         }
-        54=>{
+        54 => {
             x2 = x * x;
             x3 = x2 * x;
             x6 = x3 * x3;
@@ -425,7 +427,7 @@ fn possac(x: f64, n: i32) -> f64 {
             x27 = x24 * x3;
             return x27 * x27;
         }
-        55=>{
+        55 => {
             x2 = x * x;
             x3 = x2 * x;
             x6 = x3 * x3;
@@ -435,7 +437,7 @@ fn possac(x: f64, n: i32) -> f64 {
             x54 = x27 * x27;
             return x54 * x;
         }
-        56=>{
+        56 => {
             x2 = x * x;
             x3 = x2 * x;
             x4 = x2 * x2;
@@ -444,7 +446,8 @@ fn possac(x: f64, n: i32) -> f64 {
             x28 = x14 * x14;
             return x28 * x28;
         }
-        57=>{	x2 = x * x;
+        57 => {
+            x2 = x * x;
             x4 = x2 * x2;
             x8 = x4 * x4;
             x16 = x8 * x8;
@@ -453,7 +456,7 @@ fn possac(x: f64, n: i32) -> f64 {
             x49 = x33 * x16;
             return x49 * x8;
         }
-        58=>{
+        58 => {
             x2 = x * x;
             x4 = x2 * x2;
             x8 = x4 * x4;
@@ -463,11 +466,11 @@ fn possac(x: f64, n: i32) -> f64 {
             x29 = x25 * x4;
             return x29 * x29;
         }
-      _ => x.powi(n)
+        _ => x.powi(n),
     }
 }
 
-/// The fast integer power using the shortest addition chains,n[0,58]
+/// The fast integer power using the shortest addition chains,n[-58,58]
 pub fn sac_pow(x: f64, n: i32) -> f64 {
     if n >= 0 {
         return possac(x, n);

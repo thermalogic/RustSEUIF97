@@ -1,18 +1,15 @@
-//! Region 4 - Saturation water, steam and wet steam
-//! 
+//! Region 4 - saturation water, steam and wet steam
+//!
 //!  p,MPa T, K
 //!     p2sat_water, p2sat_steam
 //!     T2sat_water, T2sat_steam
 
-use crate::algo::fast_ipower::sac_pow;
+use crate::algo::*;
 use crate::common::constant::*;
 use crate::common::propertry_id::*;
-use crate::r1::region1::*;
-use crate::r1::region1_pT::*;
-use crate::r2::region2::*;
-use crate::r2::region2_pT::*;
-use crate::r3::region3::*;
-use crate::r3::region3_v_pT::*;
+use crate::r1::*;
+use crate::r2::*;
+use crate::r3::*;
 use crate::r4::region4_sat_pT::*;
 
 /// saturation water include :region3  pT2v_sat_reg
@@ -57,7 +54,7 @@ pub fn p2sat_steam(p: f64, o_id: i32) -> f64 {
 
     let T: f64 = T_saturation(p);
     if o_id == OT {
-        return T-273.15;
+        return T - 273.15;
     }
 
     if p >= P_MIN && p <= Ps_623 {
@@ -167,55 +164,44 @@ pub fn T2sat_steam(T: f64, o_id: i32) -> f64 {
         return Td_reg3(T, d, o_id);
     }
 }
-
+// T is k
 pub fn px_reg4(p: f64, x: f64, o_id: i32) -> f64 {
-    let mut r: f64 = 0.0;
-    match o_id {
-        OP => return p,
-        OX => return x,
-        OT => {
-            return T_saturation(p) - 273.15;
-        }
-        _ => {
-            if x == 0.0 {
-                return p2sat_water(p, o_id);
-            } else if x == 1.0 {
-                return p2sat_steam(p, o_id);
-            } else if x > 0.0 && x < 1.0 {
-                let r1: f64 = p2sat_water(p, o_id);
-                let r2: f64 = p2sat_steam(p, o_id);
-                r = r1 + x * (r2 - r1);
-            }
-        }
+    // x= 0 or 1， return all properties
+    if x == 0.0 {  
+        return p2sat_water(p, o_id);
+    } else if x == 1.0 {
+        return p2sat_steam(p, o_id);
     }
-    return r;
+    let mut r: f64 = 0.0;
+    let T:f64= T_saturation(p);
+    match o_id {
+        OT => return T - 273.15,
+        OH | OS | OV => {
+            // region 4 x(0,1) return  v,h,s only
+            let mut rl: f64 = 0.0;
+            let mut rv: f64 = 0.0;
+            if T > 623.15 {
+                let dl = 1.0 / pT2v_sat_reg3(p, T, 0.0);
+                rl = Td_reg3(T, dl, o_id);
+                let dv = 1.0 / pT2v_sat_reg3(p, T, 1.0);
+                rv = Td_reg3(T, dv, o_id);
+            } else {
+                rl = pT_reg1(p, T, o_id);
+                rv = pT_reg2(p, T, o_id);
+            }
+            r = rl + x * (rv - rl);
+        }
+        _ => return INVALID_OUTID as f64,
+    }
+    r
 }
 
 pub fn Tx_reg4(T: f64, x: f64, o_id: i32) -> f64 {
-    if o_id == OT {
-        return T;
-    };
-    if o_id == OX {
-        return x;
-    };
-
-    if x == 0.0 {
-        return T2sat_water(T, o_id);
-    }
-    if x == 1.0 {
-        return T2sat_steam(T, o_id);
-    }
-
     let mut r: f64 = 0.0;
-    if x > 0.0 && x < 1.0 {
-        let p: f64 = p_saturation(T);
-        if o_id == OP {
-            return p;
-        };
-
-        let sw: f64 = T2sat_water(T, o_id);
-        let ss: f64 = T2sat_steam(T, o_id);
-        r = sw + x * (ss - sw);
+    let p: f64 = p_saturation(T);
+    if o_id == OP {
+        return p;
+    } else {
+        return px_reg4(p, x, o_id);
     }
-    return r;
 }

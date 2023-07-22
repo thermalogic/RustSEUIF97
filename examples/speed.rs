@@ -1,75 +1,70 @@
 #![allow(warnings)]
-/// Example: speeed
+/// The example to test the  speed
 use if97::*;
 use std::time::Instant;
 
-pub struct TestData {
-    pub p: f64,
-    pub T: f64,
-    pub v: f64,
-    pub h: f64,
-    pub s: f64,
-    pub u: f64,
-    pub cp: f64,
-    pub w: f64,
+const prop_map_pt: [(&str, i32); 6] = [
+    ("V", OV),
+    ("H", OH),
+    ("S", OS),
+    ("U", OU),
+    ("CP", OCP),
+    ("W", OW),
+];
+
+fn speed_experiment(v1: f64, v2: f64, func: fn(f64, f64, i32) -> f64, prop_map: &[(&str, i32)]) {
+    println!(" v1={:.6} v2={:.6} ", v1, v2);
+    for e in prop_map {
+        let value: f64 = func(v1, v2, e.1);
+        println!("\t {} = {}", e.0, value);
+        let now = Instant::now();
+        for _ in 0..100000u128 {
+            std::hint::black_box(func(v1, v2, e.1));
+        }
+        let elapsed_time = now.elapsed();
+        println!("\t\t {} Running  {:?}", e.0, elapsed_time);
+    }
 }
 
-fn main() {
-    const prop_map: [(&str, i32); 6] = [
-        ("V", OV),
+fn speed_region1() {
+    println!("Region 1 ");
+    let p: f64 = 3.0;
+    let t: f64 = 300.0 - 273.15;
+    speed_experiment(p, t, pt, &prop_map_pt);
+}
+
+fn speed_region2() {
+    println!("Region 2 ");
+    let p: f64 = 0.0035;
+    let t: f64 = 300.0 - 273.15;
+    speed_experiment(p, t, pt, &prop_map_pt);
+}
+
+fn speed_region3() {
+    let prop_map_Td: [(&str, i32); 6] = [
+        ("P", OP),
         ("H", OH),
         ("S", OS),
         ("U", OU),
         ("CP", OCP),
         ("W", OW),
     ];
-    const data: [TestData; 3] = [
-        TestData {
-            p: 0.0035,
-            T: 300.0,
-            v: 0.394913866E+02,
-            h: 0.254991145E+04,
-            u: 0.241169160E+04,
-            s: 0.852238967E+01,
-            cp: 0.191300162E+01,
-            w: 0.427920172E+03,
-        },
-        TestData {
-            p: 0.0035,
-            T: 700.0,
-            v: 0.923015898E+02,
-            h: 0.333568375E+04,
-            u: 0.301262819E+04,
-            s: 0.101749996E+02,
-            cp: 0.208141274E+01,
-            w: 0.644289068E+03,
-        },
-        TestData {
-            p: 30.0,
-            T: 700.0,
-            v: 0.542946619E-02,
-            h: 0.263149474E+04,
-            u: 0.246861076E+04,
-            s: 0.517540298E+01,
-            cp: 0.103505092E+02,
-            w: 0.480386523E+03,
-        },
-    ];
+    println!("Region 3 ");
+    let T: f64 = 650.0;
+    let d: f64 = 500.0;
+    speed_experiment(T-273.15, 1.0/d, tv, &prop_map_Td);
+}
 
-    for k in 0..3 {
-        let mut p: f64 = data[k].p;
-        let mut t: f64 = data[k].T - 273.15;
-        println!(" p={:.6} t={:.6} ", p, t);
+fn speed_region5() {
+    println!("Region  5 ");
+    let p: f64 = 0.5;
+    let t: f64 = 1500.0 - 273.15;
+    speed_experiment(p, t, pt, &prop_map_pt);
+}
 
-        for i in 0..6 {
-            let value: f64 = pt(p, t, prop_map[i].1);
-            println!("\t {} = {}", prop_map[i].0, value);
-            let now = Instant::now();
-            for _ in 0..100000u128 {
-                std::hint::black_box(pt(p, t, prop_map[i].1));
-            }
-            let elapsed_time = now.elapsed();
-            println!("\t\t {} Running  {:?}", prop_map[i].0, elapsed_time);
-        }
-    }
+fn main() {
+    speed_region1();
+    speed_region2();
+    speed_region3();
+    speed_region5();
 }

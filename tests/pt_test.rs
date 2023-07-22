@@ -14,7 +14,7 @@ fn test_regino1_pt() {
         assert_approx_eq!(r1_pT_data[i].s, pt(p, t, OS), 1.0e-9f64);
         assert_approx_eq!(r1_pT_data[i].u, pt(p, t, OU), 1.0e-6f64);
         assert_approx_eq!(r1_pT_data[i].cp, pt(p, t, OCP), 1.0e-8f64);
-        assert_approx_eq!(r1_pT_data[i].w, if97::pt(p, t, OW), 1.0e-5f64);
+        assert_approx_eq!(r1_pT_data[i].w, pt(p, t, OW), 1.0e-5f64);
     }
 }
 

@@ -1,22 +1,16 @@
-//! Region 3 - (p,T),(p,h), (p,s),(h,s)
-//! 
-//！  Basic Equation of  IAPWS -IF 97 Region3
-//！        IAPWS-IF97, R7-97(2012)
-//！             (T,d)-> p,h,u,s,cp,cv,w
-//！    Backward Equation for Region 3
-//！        IAPWS-IF97-S03rev  (p,h) T,v  (p,s)T,v
-//！         IAPWS-IF97-S04rev  (h,s)-> p      the region methods of Supp-phs3-2014.pdf in mod boundarie
-//！         IAPWS-IF97-S05rev  (p,T)-> d
+//! Region 3 - (p,T),(p,h), (p,s),(h,s); (p,v),(t,v),(t,h),(t,s)
+//！* Basic Equation of  IAPWS -IF 97 Region3 IAPWS-IF97, R7-97(2012)
+//！    * (T,d)-> p,h,u,s,cp,cv,w
+//！* Backward Equation for Region 3.
+//!    * (p,h)-> T,v   (p,s)->T,v in IAPWS-IF97-S03rev
+//!    * (h,s)-> p  in IAPWS-IF97-S04rev, the region methods of Supp-phs3-2014.pdf in the `boundarie` module
+//!    * (p,T)-> d in IAPWS-IF97-S05rev
 
 use crate::common::constant::*;
 use crate::common::propertry_id::*;
+use crate::r3::*;
 
-use crate::r3::region3_Td::*;
-use crate::r3::region3_Tv_phps::*;
-use crate::r3::region3_v_pT::*;
-use crate::r3::region3_p_hs::*;
-
-
+/// Region 3 : Td_regs - the basic and extended properties
 pub fn Td_reg3(T: f64, d: f64, o_id: i32) -> f64 {
     match o_id {
         OV => 1.0 / d,
@@ -27,7 +21,7 @@ pub fn Td_reg3(T: f64, d: f64, o_id: i32) -> f64 {
         OCV => Td2cv_reg3(T, d),
         OCP => Td2cp_reg3(T, d),
         OW => Td2w_reg3(T, d),
-        _ => INVALID_OUTID as f64,
+        _ => Td_ext_reg3(T, d, o_id), // the extended properties
     }
 }
 
@@ -44,7 +38,7 @@ pub fn pT_reg3(p: f64, T: f64, o_id: i32) -> f64 {
     if o_id == OD {
         return d;
     }
-    return Td_reg3(T, d, o_id);
+    Td_reg3(T, d, o_id)
 }
 
 pub fn pt_reg3(p: f64, t: f64, o_id: i32) -> f64 {
@@ -65,11 +59,10 @@ pub fn ph_reg3(p: f64, h: f64, o_id: i32) -> f64 {
     if o_id == OT {
         return T - K;
     };
-    return Td_reg3(T, d, o_id);
+    Td_reg3(T, d, o_id)
 }
 
-pub fn ps_reg3(p:f64,s:f64, o_id:i32)->f64
-{
+pub fn ps_reg3(p: f64, s: f64, o_id: i32) -> f64 {
     let v: f64 = ps2v_reg3(p, s);
     if o_id == OV {
         return v;
@@ -82,22 +75,71 @@ pub fn ps_reg3(p:f64,s:f64, o_id:i32)->f64
     if o_id == OT {
         return T - K;
     };
-    return  Td_reg3(T, d, o_id);
+    Td_reg3(T, d, o_id)
 }
 
-pub fn hs_reg3(h:f64, s:f64,o_id:i32)->f64
-{
-    let p:f64= hs2p_reg3(h,s);
-    if o_id==OP
-    {   return p;}
-    let T:f64=ph2T_reg3(p,h);
-    if o_id==OT
-    {   return T-273.15;}
-    let v:f64=ph2v_reg3(p,h);
-    if o_id==OV
-    {  return v;}
-    let d=1.0/v;
-    if o_id==OD
-    {  return d;}
-    return Td_reg3(T,d,o_id);
+pub fn hs_reg3(h: f64, s: f64, o_id: i32) -> f64 {
+    let p: f64 = hs2p_reg3(h, s);
+    if o_id == OP {
+        return p;
+    }
+    let T: f64 = ph2T_reg3(p, h);
+    if o_id == OT {
+        return T - 273.15;
+    }
+    let v: f64 = ph2v_reg3(p, h);
+    if o_id == OV {
+        return v;
+    }
+    let d = 1.0 / v;
+    if o_id == OD {
+        return d;
+    }
+    Td_reg3(T, d, o_id)
+}
+
+///  Region3:  (p,v)
+pub fn pv_reg3(p: f64, v: f64, o_id: i32) -> f64 {
+    let d: f64 = 1.0 / v;
+    if o_id == OD {
+        return d;
+    };
+    let T: f64 = pv2T_reg3(p, v);
+    if o_id == OT {
+        return T - K;
+    };
+    Td_reg3(T, d, o_id)
+}
+
+///  Region3:  (t,v)
+pub fn tv_reg3(t: f64, v: f64, o_id: i32) -> f64 {
+    let d: f64 = 1.0 / v;
+    if o_id == OD {
+        return d;
+    };
+    Td_reg3(t + K, d, o_id)
+}
+
+///  Region3:  (t,h)
+pub fn th_reg3(t: f64, h: f64, o_id: i32) -> f64 {
+    let d = Th2d_reg3(t + 273.15, h);
+    if o_id == OD {
+        return d;
+    };
+    if o_id == OV {
+        return 1.0 / d;
+    };
+    Td_reg3(t + K, d, o_id)
+}
+
+///  Region3:  (t,s)
+pub fn ts_reg3(t: f64, s: f64, o_id: i32) -> f64 {
+    let d = Ts2d_reg3(t + 273.15, s);
+    if o_id == OD {
+        return d;
+    };
+    if o_id == OV {
+        return 1.0 / d;
+    };
+    Td_reg3(t + K, d, o_id)
 }

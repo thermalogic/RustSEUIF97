@@ -4,7 +4,7 @@
 //!  *  T  temperature  K
 //!  *  v  density  kg/m3
 
-use crate::algo::fast_ipower::sac_pow;
+use crate::algo::*;
 use crate::common::constant::*;
 use crate::r3::region3_v_subregion_pT::*;
 use crate::r4::region4_sat_pT::*;
@@ -317,15 +317,11 @@ pub fn sub_region3_pT(p: f64, T: f64) -> char {
                 subRegion = 'c';
             } else if T <= tBqu {
                 subRegion = 'q';
-                //这里的判断算法有点问题，下面这个 subRegion会被重新设定u
-                // 简便处理，这个判断后，立即返回
                 return subRegion;
             }
 
             if T > tBrx && T <= tBjk {
                 subRegion = 'r';
-                // 这里的判断算法有点问题，下面这个 subRegion会被重新设定u
-                // 简便处理，这个判断后，立即返回
                 return subRegion;
             }
 
@@ -428,5 +424,5 @@ pub fn sub_region3_pT(p: f64, T: f64) -> char {
 pub fn pT2v_reg3(p: f64, T: f64) -> f64 {
     let sub_region: char = sub_region3_pT(p, T);
     let v: f64 = pT2v_3subreg(p, T, sub_region);
-    return v;
+    v
 }

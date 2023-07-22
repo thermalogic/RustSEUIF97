@@ -1,8 +1,11 @@
 //! Algorithms
 //! * The fast integer power using the shortest addition chains
 //! * The secant method to find the root
-pub mod fast_ipower;
+//! * The helper function to sum the power of function and it's derivative on IJn[(i32,i32,f64)
+pub mod fast_ipow;
 pub mod root;
+pub mod sum_pow;
 
-pub use self::fast_ipower::*;
+pub use self::fast_ipow::*;
 pub use self::root::*;
+pub use self::sum_pow::*;
