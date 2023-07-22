@@ -13,7 +13,7 @@ The following input pairs are implemented:
 
 (t,h) (t,s) (t,v) 
 
-(p,x) (t,x) (h,x) (t,s) 
+(p,x) (t,x) (h,x) (s,x) 
 
 (h,s)  
 ```

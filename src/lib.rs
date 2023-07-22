@@ -16,7 +16,7 @@ The following input pairs are implemented:
 
 (t,h) (t,s) (t,v) 
 
-(p,x) (t,x) (h,x) (t,s) 
+(p,x) (t,x) (h,x) (s,x) 
 
 (h,s)  
 ```
@@ -123,7 +123,7 @@ use r4::*;
 use r5::*;
 
 
-/// pt(p,t,o_id)：the propertry of o_id (thermodynamic,transport,etc)
+/// pt(p,t,o_id) - the propertry of o_id(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -179,7 +179,7 @@ pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     }
 }
 
-/// ph(p,h,o_id)：the propertry of o_id (thermodynamic,transport,etc)
+/// ph(p,h,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -240,7 +240,7 @@ pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-/// ps(p,s,o_id)：the propertry of o_id (thermodynamic,transport,etc)
+/// ps(p,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -299,7 +299,7 @@ pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-/// hs(h,s,o_id)：the propertry of o_id (thermodynamic,transport,etc)
+/// hs(h,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -375,8 +375,6 @@ pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
 ///  println!("px: p={p:.6} x={x:.6} t={t:.6} h={h:.6}");
 ///```
 
-// #[no_mangle]
-// pub unsafe extern "C"  fn px(p: f64, x: f64, o_id: i32) -> f64 {
 pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
     if p > P_MAX4 || p < P_MIN4 || x > 1.0 || x < 0.0 {
         return INVALID_VALUE as f64;
@@ -411,9 +409,7 @@ pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
     Tx_reg4(T, x, o_id)
 }
 
-///  Functions of the  extended input pairs (p,v),(t,v),(t,s),(t,h)
-
-/// The  extended input pair pv(p,v,o_id)
+/// pv(p,v,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -472,7 +468,7 @@ pub fn pv(p: f64, v: f64, o_id: i32) -> f64 {
     }
 }
 
-/// The  extended input pair tv(t,v,o_id)
+/// tv(t,v,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -525,7 +521,7 @@ pub fn tv(t: f64, v: f64, o_id: i32) -> f64 {
     }
 }
 
-/// The  extended input pair th(t,h,o_id)
+/// th(t,h,o_id) - the propertry of o_id(thermodynamic,transport,etc)
 ///  
 /// # Examples
 ///
@@ -578,7 +574,7 @@ pub fn th(t: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-/// The  extended input pair ts(t,s,o_id)
+/// ts(t,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
 ///   
 /// # Examples
 ///
@@ -631,7 +627,7 @@ pub fn ts(t: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-/// The  extended input pair hx(h,x,o_id)
+/// hx(h,x,o_id) - the propertry of o_id (thermodynamic)
 ///
 ///  # Examples
 ///
@@ -656,7 +652,7 @@ pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-/// The  extended input pair sx(s,x,o_id)
+/// sx(s,x,o_id) - the propertry of o_id (thermodynamic)
 ///
 ///  # Examples
 ///
