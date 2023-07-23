@@ -1,11 +1,18 @@
-//! sum the power of function and it's derivative on IJn[(i32,i32,f64)]
-//! * e - the element in IJn[(i32,i32,f64)]
-//! * vi - the item powered by i(index is 0) in IJn[(i32,i32,f64) :vi^e.0
-//! * vj - the item powered by j(index is 1) in IJn[(i32,i32,f64) :vj^e.1
+//! The functions compute the polynomial values of the base variable and it's derivatives
+//!  1. To sum the one product of the powers of base variable and it's derivatives
+//!  2. To sum the multiple products of the powers of base variable and it's derivatives recursively
+//！# Variables
+//! * IJn[(i32,i32,f64)]
+//!     *  e - the element in IJn[k]
+//!     *  n = e.2, i=e.0, j=e.1  
+//! * vi - the base of i=IJn[k][0]
+//! * vj - the base of j=IJn[k][1]
+//!     * power = n * vi^i * i^j = e.2 * vi^e.0 * vj^e.1
 
 use crate::algo::sac_pow;
 
-/// sum the powers of function
+/// sum the product of the powers of vi and vj
+///  * n*vi^i *  vj^j
 pub fn sum_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let mut value: f64 = 0.0;
     for e in IJn {
@@ -14,7 +21,8 @@ pub fn sum_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     value
 }
 
-/// sum the power of the first derivative in vi
+/// sum the product of the power of the derivative (∂f/∂vi) and vj  
+/// * n * (i-1)*vi^(i-1) * vj^j
 pub fn sum_di_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let mut value: f64 = 0.0;
     for e in IJn {
@@ -23,7 +31,8 @@ pub fn sum_di_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     value
 }
 
-/// sum the power of the second derivative in vi
+/// sum the product of the power of the derivative (∂²f/∂²vi) and vj
+/// * n*i*(i-1)*vi^(i-2) * vj^j
 pub fn sum_dii_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let mut value: f64 = 0.0;
     for e in IJn {
@@ -32,7 +41,8 @@ pub fn sum_dii_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     value
 }
 
-/// sum the power of the first derivative in vj
+/// sum the product of the power of vi and  the derivative (∂f/∂vj)
+///  n* vi^i  *j* vj^(j-1)
 pub fn sum_dj_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let mut value: f64 = 0.0;
     for e in IJn {
@@ -41,7 +51,8 @@ pub fn sum_dj_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     value
 }
 
-/// sum the power of the second derivative in vj
+/// sum the product of the power of vi and the derivative (∂²f/∂²vj)
+/// *  n* vi^i  *j*(j-1)* vi^(j-2)
 pub fn sum_djj_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let mut value = 0.0;
     for e in IJn {
@@ -50,7 +61,8 @@ pub fn sum_djj_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     value
 }
 
-/// sum the power of the second derivative in vi and vj
+/// sum the product of the power of the derivative (∂f/∂vi) and (∂f/∂vj)
+///   * n* i*vi^(i-1) *j** vi^(j-1)
 pub fn sum_dij_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let mut value: f64 = 0.0;
     for e in IJn {
@@ -59,7 +71,9 @@ pub fn sum_dij_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     value
 }
 
-///  Fast recursion algorithm of 0 and j derivatives
+/// The recursive method to sum the product of
+///  * the power of vi and vj  
+///  * the power of vi and the derivative (∂f/∂vj)
 pub fn sum_0_j_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
     let mut item: f64 = 0.0;
     let mut sum_0: f64 = 0.0;
@@ -74,7 +88,9 @@ pub fn sum_0_j_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
     (sum_0, sum_j)
 }
 
-///  Fast recursion algorithm of i and j derivatives
+/// The recursive method to sum the product of
+///  * the power of the derivative (∂f/∂vi) and vj
+///  * the power of vi and the derivative (∂f/∂vj)
 pub fn sum_i_j_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
     let mut item: f64 = 0.0;
     let mut sum_i: f64 = 0.0;
@@ -90,7 +106,12 @@ pub fn sum_i_j_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
     (sum_i, sum_j)
 }
 
-/// Fast recursion algorithm of i,ii,ij,jj derivatives
+/// recursion the powers of the derivatives of (∂f/∂vi),(∂²f/∂²vi),(∂²f/∂vi∂vj) and (∂²f/∂²vj)
+/// The recursive method to sum the product of
+///  * the power of the derivative (∂f/∂vi) and vj
+///  * the power of the derivative (∂²f/∂²vi) and vj
+///  * the power of the derivative (∂f/∂vi) and (∂f/∂vi)
+///  * the power of the derivative vi and (∂²f/∂²vj)
 pub fn sum_i_ii_ij_jj_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64, f64, f64) {
     let mut item: f64 = 0.0;
     let mut i_item: f64 = 0.0;

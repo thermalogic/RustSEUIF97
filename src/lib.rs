@@ -9,6 +9,13 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 
 * The comparison results of the computing-time are obtained using the [criterion.rs](https://bheisler.github.io/criterion.rs/book/index.html). 
 
+**The Fast Algorithm**
+
+1. The shortest addition chain computes integer powers of a number.([the paper in chinese](https://github.com/thermalogic/SEUIF97/blob/master/doc/水和水蒸汽热力性质IAPWS-IF97公式的通用计算模型.pdf))
+2. The recursive algorithm computes the polynomial values of the base variable and it's derivatives
+
+In IF97, [35 thermodynamic, transport and  further properties](#properties) can be calculated. 
+
 The following input pairs are implemented: 
 
 ```txt
@@ -29,7 +36,7 @@ fn(f64,f64,i32) -> f64;
 ``````
 
 * the first,second input parameters: the input propertry pairs
-* the third input parameter: the property ID of the calculated property - o_id
+* the third input parameter: the property ID of the calculated property - [o_id](#properties)
 * the return: the calculated property value of o_id
 
 ```rust
@@ -49,7 +56,7 @@ sx(s:f64,x:f64,o_id:i32)->f64
 
 hs(h:f64,s:f64,o_id:i32)->f64
 ```
-Example
+**Example**
 
 ```rust
 use if97::*;
