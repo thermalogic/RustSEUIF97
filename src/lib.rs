@@ -75,10 +75,10 @@ fn main() {
 ## Properties
 
 | Propertry                             |    Unit     | Symbol | o_id  | o_id(i32)|
-| ------------------------------------- | :---------: |:------:|-----:|:--------:|
+| ------------------------------------- | :---------: |:------:|------:|:--------:|
 | Pressure                              |     MPa     |      p |   OP  |       0  |
 | Temperature                           |     °C      |      t |   OT  |       1  |
-| Density                               |   kg/m³     |      d |   OD  |       2  |
+| Density                               |   kg/m³     |      ρ |   OD  |       2  |
 | Specific Volume                       |   m³/kg     |      v |   OV  |       3  |
 | Specific enthalpy                     |    kJ/kg    |      h |   OH  |       4  |
 | Specific entropy                      |  kJ/(kg·K)  |      s |   OS  |       5  |
@@ -87,30 +87,32 @@ fn main() {
 | Specific isobaric heat capacity       |  kJ/(kg·K)  |     cp |  OCP  |       8  |
 | Specific isochoric heat capacity      |  kJ/(kg·K)  |     cv |  OCV  |       9  |
 | Speed of sound                        |     m/s     |      w |   OW  |       10 |
-| Isentropic exponent                   |             |     ks |  OKS  |       11 |
+| Isentropic exponent                   |             |     k  |  OKS  |       11 |
 | Specific Helmholtz free energy        |    kJ/kg    |     f  |   OF  |       12 |
 | Specific Gibbs free energy            |    kJ/kg    |     g  |   OG  |       13 |
 | Compressibility factor                |             |     z  |   OZ  |       14 |
 | Steam quality                         |             |     x  |   OX  |       15 |
-| Region                                |             |      r |   OR  |       16 |
-| Isobaric volume expansion coefficient |     1/K     |     ec |  OEC  |       17 |
-| Isothermal compressibility            |    1/MPa    |     kt |  OKT  |       18 |
-| Partial derivative (∂V/∂T)p           |  m³/(kg·K)  | dvdtcp | ODVDT |       19 |
-| Partial derivative (∂V/∂p)T           | m³/(kg·MPa) | dvdpct | ODVDP |       20 |
-| Partial derivative (∂P/∂T)v           |    MPa/K    | dpdtcv | ODPDT |       21 |
-| Isothermal Joule-Thomson coefficient  | kJ/(kg·MPa) |   iJTC | OIJTC |       22 |
-| Joule-Thomson coefficient             |    K/MPa    |   joule| OJTC  |       23 |
-| Dynamic viscosity                     |   Pa·s      |     dv |  ODV  |       24 |
-| Kinematic viscosity                   |    m²/s    |     kv |  OKV  |       25 |
-| Thermal conductivity                  |   W/(m.K)   |     tc |  OTC  |       26 |
-| Thermal diffusivity                   |    m²/s    |     td |  OTD  |       27 |
-| Prandtl number                        |             |     pr |  OPR  |       28 |
-| Surface tension                       |    N/m      |     st |  OST  |       29 |
-| Static Dielectric Constant            |             |    sdc | OSDC  |       30 |
-| Isochoric pressure coefficient        |    1/K      |    pc  | OPC   |       31 |
-| Isothermal stress coefficient         |   kg/m³     |   betap| OBETAP|       32 |
-| Fugacity coefficient                  |             |      fi|   OFI |       33 |
-| Fugacity                              |     MPa     |      fu|   OFU |       34 |
+| Region                                |             |     r  |   OR  |       16 |
+| Isobari cubic expansion coefficient   |     1/K     |   ɑv   |  OEC  |       17 |
+| Isothermal compressibility            |    1/MPa    |    kT  |  OKT  |       18 |
+| Partial derivative (∂V/∂T)p           |  m³/(kg·K)  |(∂V/∂T)p| ODVDT |       19 |
+| Partial derivative (∂V/∂p)T           | m³/(kg·MPa) |(∂v/∂p)t| ODVDP |       20 |
+| Partial derivative (∂P/∂T)v           |    MPa/K    |(∂p/∂t)v| ODPDT |       21 |
+| Isothermal throttling coefficient     | kJ/(kg·MPa) |   δt   | OIJTC |       22 |
+| Joule-Thomson coefficient             |    K/MPa    |    μ   | OJTC  |       23 |
+| Dynamic viscosity                     |   Pa·s      |    η   |  ODV  |       24 |
+| Kinematic viscosity                   |    m²/s     |    ν   |  OKV  |       25 |
+| Thermal conductivity                  |   W/(m.K)   |    λ   |  OTC  |       26 |
+| Thermal diffusivity                   |    m²/s     |    a   |  OTD  |       27 |
+| Prandtl number                        |             |    Pr  |  OPR  |       28 |
+| Surface tension                       |    N/m      |    σ   |  OST  |       29 |
+| Static Dielectric Constant            |             |    ε   | OSDC  |       30 |
+| Isochoric pressure coefficient        |    1/K      |    β   | OPC   |       31 |
+| Isothermal stress coefficient         |   kg/m³     |    βp  | OBETAP|       32 |
+| Fugacity coefficient                  |             |    fi  |   OFI |       33 |
+| Fugacity                              |     MPa     |     f* |   OFU |       34 |
+| Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|        35|
+
 */
 
 mod algo;

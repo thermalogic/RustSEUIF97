@@ -14,7 +14,7 @@
 pub const OP: i32 = 0;
 /// 1. t - Temperature  °C
 pub const OT: i32 = 1;
-/// 2. d - Density   kg/m³
+/// 2. ρ - Density   kg/m³
 pub const OD: i32 = 2;
 /// 3. v - Specific Volume  m³/kg   
 pub const OV: i32 = 3;
@@ -32,7 +32,7 @@ pub const OCP: i32 = 8;
 pub const OCV: i32 = 9;
 /// 10. w -  Speed of sound   m/s
 pub const OW: i32 = 10;
-/// 11. ks - Isentropic exponent
+/// 11. k - Isentropic exponent
 pub const OKS: i32 = 11;
 /// 12. f - Specific Helmholtz free energy   kJ/kg
 pub const OF: i32 = 12;
@@ -44,39 +44,41 @@ pub const OZ: i32 = 14;
 pub const OX: i32 = 15;
 /// 16. r - Region
 pub const OR: i32 = 16;
-/// 17. ec - Isobaric volume expansion coefficient  1/K
+/// 17. δt - Isobaric cubic expansion coefficient  1/K
 pub const OEC: i32 = 17;
-/// 18. kt - Isothermal compressibility   1/MPa  
+/// 18. kT - Isothermal compressibility   1/MPa  
 pub const OKT: i32 = 18;
-/// 19. dvdtcp - Partial derivative (∂V/∂T)p  m³/(kg·K)
+/// 19. (∂V/∂T)p - Partial derivative   m³/(kg·K)
 pub const ODVDT: i32 = 19;
-/// 20. dvdpct -  Partial derivative (∂V/∂P)T  m³/(kg·MPa)
+/// 20. (∂V/∂P)T -  Partial derivative  m³/(kg·MPa)
 pub const ODVDP: i32 = 20;
-/// 21. dpdtcv - Partial derivative (∂P/∂T)v   MPa/K
+/// 21. (∂p/∂t)v - Partial derivative    MPa/K
 pub const ODPDT: i32 = 21;
-/// 22. iJTC -  Isothermal Joule-Thomson coefficient kJ/(kg·MPa)
+/// 22. δt -  Isothermal throttling coefficient kJ/(kg·MPa)
 pub const OIJTC: i32 = 22;
-/// 23. joule  - Joule-Thomson coefficient   K/MPa
+/// 23. μ - Joule-Thomson coefficient   K/MPa  joule
 pub const OJTC: i32 = 23;
-/// 24. dv - Dynamic viscosity  Pa.s
+/// 24. η - Dynamic viscosity   Pa.s dv 
 pub const ODV: i32 = 24;
-/// 25. kv -  Kinematic viscosity  m²/s
+/// 25. ν -  Kinematic viscosity  m²/s
 pub const OKV: i32 = 25;
-/// 26. tc - Thermal conductivity W/(m.K)
+/// 26. λ - Thermal conductivity  W/(m.K) tc
 pub const OTC: i32 = 26;
-/// 27. td - Thermal diffusivity   m²/s
+/// 27. a - Thermal diffusivity   m²/s
 pub const OTD: i32 = 27;
-/// 28. pr -  Prandtl number
+/// 28. Pr -  Prandtl number
 pub const OPR: i32 = 28;
-/// 29. st - Surface tension   N/m
+/// 29. σ - Surface tension   N/m
 pub const OST: i32 = 29;
-/// 30. sdc - Static Dielectric Constant
+/// 30. ε - Static Dielectric Constant
 pub const OSDC: i32 = 30;
-/// 31. pc - Isochoric pressure coefficient    1/K
+/// 31. β - Isochoric pressure coefficient    1/K
 pub const OPC: i32 = 31;
-/// 32. betap -  Isothermal stress coefficient, kg/m³
+/// 32. βp -  Isothermal stress coefficient, kg/m³
 pub const OBETAP: i32 = 32;
 /// 33. fi-  Fugacity coefficient 
 pub const OFI: i32 = 33;
-/// 34. fu - Fugacity MPa
+/// 34. f* - Fugacity MPa
 pub const OFU: i32 = 34;
+/// 35. αp - Relative pressure coefficient  1/K
+pub const OALFAP: i32 = 35;

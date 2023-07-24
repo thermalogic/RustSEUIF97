@@ -2,52 +2,49 @@
 #![allow(warnings)]
 use if97::*;
 
-const prop_map: [(&str, &str, &str, i32); 35] = [
-    ("p", "Pressure", "MPa", OP),
-    ("t", "Temperature", "°C", OT),
-    ("d", "Density", "kg/m³", OD),
-    ("v", "Specific Volume", "m³/kg", OV),
-    ("h", "Specific enthalpy", "kJ/kg", OH),
-    ("s", "Specific entropy", "kJ/(kg·K)", OS),
-    ("e", "Specific exergy", "kJ/kg", OE),
-    ("u", "Specific internal energy", "kJ/kg", OU),
-    ("cp", "Specific isobaric heat capacity", "kJ/(kg·K)", OCP),
-    ("cv", "Specific isochoric heat capacity", "kJ/(kg·K)", OCV),
-    ("w", "Speed of sound", "m/s", OW),
-    ("ks", "Isentropic exponent", "-", OKS),
-    ("f", "Specific Helmholtz free energy", "kJ/kg", OF),
-    ("g", "Specific Gibbs free energy", "kJ/kg", OG),
-    ("z", "Compressibility factor", "-", OZ),
-    ("x", "Steam quality", "-", OX),
-    ("r", "Region", "-", OR),
-    ("ec", "Isobaric volume expansion coefficient", "1/K", OEC),
-    ("kt", "Isothermal compressibility", "1/MPa", OKT),
-    ("dvctcp", "Partial derivative (∂V/∂T)p", "m³/(kg·K)", ODVDT),
-    (
-        "dvdpct",
-        "Partial derivative (∂V/∂P)T",
+const prop_map: [(&str, &str, i32); 36] = [
+    ("Pressure", "MPa", OP),
+    ("Temperature", "°C", OT),
+    ("Density", "kg/m³", OD),
+    ("Specific Volume", "m³/kg", OV),
+    ("Specific enthalpy", "kJ/kg", OH),
+    ("Specific entropy", "kJ/(kg·K)", OS),
+    ("Specific exergy", "kJ/kg", OE),
+    ("Specific internal energy", "kJ/kg", OU),
+    ("Specific isobaric heat capacity", "kJ/(kg·K)", OCP),
+    ("Specific isochoric heat capacity", "kJ/(kg·K)", OCV),
+    ("Speed of sound", "m/s", OW),
+    ("Isentropic exponent", "-", OKS),
+    ("Specific Helmholtz free energy", "kJ/kg", OF),
+    ("Specific Gibbs free energy", "kJ/kg", OG),
+    ("Compressibility factor", "-", OZ),
+    ("Steam quality", "-", OX),
+    ("Region", "-", OR),
+    ("Isobaric volume expansion coefficient", "1/K", OEC),
+    ("Isothermal compressibility", "1/MPa", OKT),
+    ("Partial derivative (∂V/∂T)p", "m³/(kg·K)", ODVDT),
+    ("Partial derivative (∂V/∂P)T",
         "m³/(kg·MPa)",
         ODVDP,
     ),
-    ("dpdtcv", "Partial derivative (∂P/∂T)v", "MPa/K", ODPDT),
-    (
-        "iJTC",
-        "Isothermal Joule-Thomson coefficient",
+    ( "Partial derivative (∂P/∂T)v", "MPa/K", ODPDT),
+    ("Isothermal Joule-Thomson coefficient",
         "kJ/(kg·MPa)",
         OIJTC,
     ),
-    ("joule", "Joule-Thomson coefficient", "K/MPa", OJTC),
-    ("dv", "Dynamic viscosity", "kg/(m·s)", ODV),
-    ("kv", "Kinematic viscosity", "m²/s", OKV),
-    ("tc", "Thermal conductivity", "W/(m.K)", OTC),
-    ("td", "Thermal diffusivity", "m²/s", OTD),
-    ("pr", "Prandtl number", "-", OPR),
-    ("st", "Surface tension", "N/m", OST),
-    ("sdc", "Static Dielectric Constant", "-", OSDC),
-    ("pc", "Isochoric pressure coefficient", "-", OPC),
-    ("betap", "Isothermal stress coefficient", "kg/m³", OBETAP),
-    ("fi", "Fugacity coefficient", "-", OFI),
-    ("fu", "Fugacity", "Mpa ", OFU),
+    ("Joule-Thomson coefficient", "K/MPa", OJTC),
+    ("Dynamic viscosity", "kg/(m·s)", ODV),
+    ("Kinematic viscosity", "m²/s", OKV),
+    ("Thermal conductivity", "W/(m.K)", OTC),
+    ("Thermal diffusivity", "m²/s", OTD),
+    ("Prandtl number", "-", OPR),
+    ("Surface tension", "N/m", OST),
+    ("Static Dielectric Constant", "-", OSDC),
+    ("Isochoric pressure coefficient", "-", OPC),
+    ("Isothermal stress coefficient", "kg/m³", OBETAP),
+    ("Fugacity coefficient", "-", OFI),
+    ("Fugacity", "Mpa ", OFU),
+    ("Relative pressure coefficient", "1/K", OALFAP),
 ];
 
 /// v1 :the first input value
@@ -61,10 +58,10 @@ fn get_props(v1: f64, v2: f64, func: fn(f64, f64, i32) -> f64) {
     );
     println!("\t|{}|", "─".repeat(78));
     for e in prop_map {
-        let value: f64 = func(v1, v2, e.3);
+        let value: f64 = func(v1, v2, e.2);
         println!(
             "\t| {:2} |  {:40} | {:^12} |{value:>12.5e}  |",
-            e.3, e.1, e.2
+            e.2, e.0, e.1
         );
     }
     println!("\t└{}┘ ", "─".repeat(78));

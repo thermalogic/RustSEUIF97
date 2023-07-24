@@ -25,6 +25,7 @@ pub fn pT_ext_reg2(p: f64, T: f64, o_id: i32) -> f64 {
         OBETAP => pT2batap_reg2(p, T),
         OFI => pT2fi_reg2(p, T),
         OFU => pT2fu_reg2(p, T),
+        OALFAP =>pT2alfap_reg2(p, T),
         _ => INVALID_OUTID as f64,
     }
 }
@@ -173,4 +174,12 @@ pub fn pT2fi_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2fu_reg2(p: f64, T: f64) -> f64 {
     let fi: f64 = pT2fi_reg2(p, T);
     p * fi
+}
+
+/// alfap - Relative pressure coefficient  1/K
+///  * alfap=ec/p/kt
+pub fn pT2alfap_reg2(p: f64, T: f64) -> f64 {
+    let ec: f64 = pT2ec_reg2(p, T);
+    let kt: f64 = pT2kt_reg2(p, T);
+    ec/p/kt
 }

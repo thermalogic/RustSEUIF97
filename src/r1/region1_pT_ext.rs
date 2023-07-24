@@ -1,13 +1,15 @@
 //！Region1: The extended Properties:
 //!  * pT_ext_reg1(p: f64, T: f64, o_id: i32) -> f64
-//! # Properties:
-//!  *  z: Compressibility factor   -
+//! # Properties(17):
+//!
+//!  *  ks: Isentropic exponent
+//!  *  ec: Isobaric cubic expansion coefficient  1/K
+//!  *  kt: Isothermal compressibility, [1/MPa]
+//! 
 //！ *  e: Specific exergy    kJ/kg
+//!  *  z: Compressibility factor   -
 //!  *  f: Specific Helmholtz free energy kJ/kg
 //!  *  g: Specific Gibbs free energy  kJ/kg
-//!  *  ks: Isentropic exponent
-//！ *  kt: Isothermal compressibility, [1/MPa]
-//!  *  ec: Isobaric volume expansion coefficient  1/K
 //!  *  joule : Joule-Thomson coefficient    K/MPa
 //!  *  iJTC: Isothermal Joule-Thomson coefficient kJ/(kg·MPa)
 //!  *  pc:  isochoric pressure coefficient  1/K
@@ -17,6 +19,7 @@
 //！ *  batap ：Isothermal stress coefficient, kg/m³
 //！ *  fi: Fugacity coefficient
 //!  *  fu: Fugacity, MPa
+//!  * alfap: relative pressure coefficient  1/K
 
 use crate::common::*;
 use crate::r1::region1_gfe::*;
@@ -41,6 +44,7 @@ pub fn pT_ext_reg1(p: f64, T: f64, o_id: i32) -> f64 {
         OBETAP => pT2batap_reg1(p, T),
         OFI => pT2fi_reg1(p, T),
         OFU => pT2fu_reg1(p, T),
+        OALFAP => pT2alfap_reg1(p, T),
         _ => INVALID_OUTID as f64,
     }
 }
@@ -173,4 +177,12 @@ pub fn pT2fi_reg1(p: f64, T: f64) -> f64 {
 pub fn pT2fu_reg1(p: f64, T: f64) -> f64 {
     let fi: f64 = pT2fi_reg1(p, T);
     p * fi
+}
+
+/// alfap - Relative pressure coefficient  1/K
+///  * alfap=ec/p/kt
+pub fn pT2alfap_reg1(p: f64, T: f64) -> f64 {
+    let ec: f64 = pT2ec_reg1(p, T);
+    let kt: f64 = pT2kt_reg1(p, T);
+    ec/p/kt
 }
