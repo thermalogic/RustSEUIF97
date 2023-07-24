@@ -14,7 +14,7 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 1. The shortest addition chain computes integer powers of a number.([the paper in chinese](https://github.com/thermalogic/SEUIF97/blob/master/doc/水和水蒸汽热力性质IAPWS-IF97公式的通用计算模型.pdf))
 2. The recursive algorithm computes the polynomial values of the base variable and it's derivatives
 
-In IF97, [35 thermodynamic, transport and  further properties](#properties) can be calculated. 
+In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
 The following input pairs are implemented: 
 
