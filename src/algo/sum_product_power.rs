@@ -1,6 +1,6 @@
-//! The functions compute the polynomial values of the base variable and it's derivatives
-//!  1. To sum the one product of the powers of base variable and it's derivatives
-//!  2. To sum the multiple products of the powers of base variable and it's derivatives recursively
+//! The functions compute the polynomial values of the base variable and its derivatives
+//!  1. To sum the one product of the powers of base variable and its derivatives
+//!  2. To sum the multiple products of the powers of base variable and its derivatives recursively
 //！# Variables
 //! * IJn[(i32,i32,f64)]
 //!     *  e - the element in IJn[k]
