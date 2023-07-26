@@ -130,7 +130,7 @@ pub fn pT2pc_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2e_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gumma = gamma0_reg2(pi,tau) + gammar_pi_reg2(pi,tau);
+    let gumma = gamma0_reg2(pi,tau) + gammar_reg2(pi,tau);
     let gummatau = gamma0_tau_reg2(tau) + gammar_tau_reg2(pi,tau);
     RGAS_WATER * (T * gumma + (T - Tt) * (tau * gummatau - gumma))
 }

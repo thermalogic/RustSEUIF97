@@ -97,7 +97,7 @@ pub fn pT2joule_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
     let g1pi: f64 = gamma_pi_reg1(tau, pi);
-    let v: f64 = 0.001 * RGAS_WATER * T * g1pi / r1pstar;
+    let v: f64 =  RGAS_WATER * T * g1pi / r1pstar;
     let cp: f64 = -RGAS_WATER * tau * tau * gamma_tautau_reg1(tau, pi);
     let TCex_1: f64 = -tau * gamma_pitau_reg1(tau, pi) / g1pi;
     (v / cp) * TCex_1

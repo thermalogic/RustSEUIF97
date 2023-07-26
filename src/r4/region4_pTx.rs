@@ -167,16 +167,16 @@ pub fn T2sat_steam(T: f64, o_id: i32) -> f64 {
 // T is k
 pub fn px_reg4(p: f64, x: f64, o_id: i32) -> f64 {
     // x= 0 or 1， return all properties
-    if x == 0.0 {  
+    if x == 0.0 {
         return p2sat_water(p, o_id);
     } else if x == 1.0 {
         return p2sat_steam(p, o_id);
     }
     let mut r: f64 = 0.0;
-    let T:f64= T_saturation(p);
+    let T: f64 = T_saturation(p);
     match o_id {
         OT => return T - 273.15,
-        OH | OS | OV | OU | OF | OG => {
+        OH | OS | OV | OU | OF | OG | OE => {
             // region 4 x(0,1) return  v,h,s only
             let mut rl: f64 = 0.0;
             let mut rv: f64 = 0.0;
