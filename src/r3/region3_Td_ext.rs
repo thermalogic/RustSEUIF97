@@ -42,7 +42,6 @@ pub fn Td2g_reg3(T: f64, d: f64) -> f64 {
 }
 
 /// the Helmholtz Specific free energy:
-/// fa=u-T*s=R*T(gamma-gamma_pi)
 pub fn Td2f_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
