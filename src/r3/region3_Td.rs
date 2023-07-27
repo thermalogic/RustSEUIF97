@@ -30,14 +30,14 @@ fn recursion_of_phi_derivatives(delta: f64, tau: f64) -> (f64, f64, f64, f64) {
 pub fn Td2p_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    0.001 * d * RGAS_WATER * T * delta * phi_delta_reg3(tau, delta)
+    0.001 * d * RGAS_WATER * T * delta * phi_delta_reg3(delta,tau)
 }
 
 /// speciphic internal energy in region 3 in kJ/kg
 pub fn Td2u_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    RGAS_WATER * T * tau * phi_tau_reg3(tau, delta)
+    RGAS_WATER * T * tau * phi_tau_reg3(delta,tau)
 }
 
 /// speciphic entropy in region 3 in kJ/(kg K)
@@ -80,7 +80,7 @@ pub fn Td2cp_reg3(T: f64, d: f64) -> f64 {
 pub fn Td2cv_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    RGAS_WATER * (-tau * tau * phi_tautau_reg3(tau, delta))
+    RGAS_WATER * (-tau * tau * phi_tautau_reg3(delta,tau))
 }
 
 /// speed of sound in region 3  in m/s

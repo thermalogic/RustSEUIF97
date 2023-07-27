@@ -19,7 +19,7 @@ use crate::r1::region1_gfe::*;
 pub fn pT2v_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    0.001 * RGAS_WATER * T * pi * gamma_pi_reg1(tau, pi) / p
+    0.001 * RGAS_WATER * T * pi * gamma_pi_reg1(pi,tau) / p
 }
 
 /// specific internal energy in region 1
@@ -42,14 +42,14 @@ pub fn pT2s_reg1(p: f64, T: f64) -> f64 {
 pub fn pT2h_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    RGAS_WATER * T * tau * gamma_tau_reg1(tau, pi)
+    RGAS_WATER * T * tau * gamma_tau_reg1(pi,tau)
 }
 
 /// specific isobaric heat capacity in region 1
 pub fn pT2cp_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    -RGAS_WATER * tau * tau * gamma_tautau_reg1(tau, pi)
+    -RGAS_WATER * tau * tau * gamma_tautau_reg1(pi,tau)
 }
 
 /// specific isochoric heat capacity in region 1

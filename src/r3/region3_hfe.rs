@@ -51,37 +51,37 @@ pub const IJn: [(i32, i32, f64); 39] = [
 ];
 
 /// Fundamental equation for region 3
-pub fn phi_reg3(tau: f64, delta: f64) -> f64 {
+pub fn phi_reg3(delta: f64,tau: f64) -> f64 {
     let mut result: f64 = n1 * delta.ln();
     result + sum_power(delta, tau, &IJn)
 }
 
 /// First derivative in delta of fundamental equation for region 3
-pub fn phi_delta_reg3(tau: f64, delta: f64) -> f64 {
+pub fn phi_delta_reg3(delta: f64,tau: f64) -> f64 {
     let mut result: f64 = n1 / delta;
     result + sum_di_power(delta, tau, &IJn)
 }
 
 /// Second derivative in delta of fundamental equation for region 3
-pub fn phi_deltadelta_reg3(tau: f64, delta: f64) -> f64 {
+pub fn phi_deltadelta_reg3(delta: f64,tau: f64) -> f64 {
     let mut result: f64 = -n1 / delta / delta;
     result + sum_dii_power(delta, tau, &IJn)
 }
 
 /// First derivative in tau of fundamental equation for region 3
-pub fn phi_tau_reg3(tau: f64, delta: f64) -> f64 {
+pub fn phi_tau_reg3(delta: f64,tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     sum_dj_power(delta, tau, &IJn)
 }
 
 /// Second derivative in tau of fundamental equation for region 3
-pub fn phi_tautau_reg3(tau: f64, delta: f64) -> f64 {
+pub fn phi_tautau_reg3(delta: f64,tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     sum_djj_power(delta, tau, &IJn)
 }
 
 /// Second derivative in delta and tau of fundamental equation for region 3
-pub fn phi_deltatau_reg3(tau: f64, delta: f64) -> f64 {
+pub fn phi_deltatau_reg3(delta: f64,tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     sum_dij_power(delta, tau, &IJn)
 }

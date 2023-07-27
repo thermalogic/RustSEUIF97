@@ -36,8 +36,8 @@ pub fn Td_ext_reg3(T: f64, d: f64, o_id: i32) -> f64 {
 pub fn Td2g_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    let phi: f64 = phi_reg3(tau, delta);
-    let phidelta = phi_delta_reg3(tau, delta);
+    let phi: f64 = phi_reg3(delta,tau);
+    let phidelta = phi_delta_reg3(delta,tau);
     RGAS_WATER * T * (phi + delta * phidelta)
 }
 
@@ -45,7 +45,7 @@ pub fn Td2g_reg3(T: f64, d: f64) -> f64 {
 pub fn Td2f_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    RGAS_WATER * T * phi_reg3(tau, delta)
+    RGAS_WATER * T * phi_reg3(delta,tau)
 }
 
 /// (dv/dp)T
@@ -53,7 +53,7 @@ pub fn Td2dvdpct_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
     let mut ddeltadpi: f64 =
-        2.0 * phi_delta_reg3(tau, delta) + delta * phi_deltadelta_reg3(tau, delta);
+        2.0 * phi_delta_reg3(delta,tau) + delta * phi_deltadelta_reg3(delta,tau);
     ddeltadpi = d * RGAS_WATER * T * ddeltadpi;
     -1000.0 * DC_WATER / d / d / ddeltadpi
 }
@@ -67,9 +67,9 @@ pub fn Td2kt_reg3(T: f64, d: f64) -> f64 {
 pub fn Td2dvdtcp_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    let ddelta: f64 = phi_delta_reg3(tau, delta);
-    let d1: f64 = ddelta - tau * phi_deltatau_reg3(tau, delta);
-    let d2: f64 = 2.0 * ddelta + delta * phi_deltadelta_reg3(tau, delta);
+    let ddelta: f64 = phi_delta_reg3(delta,tau);
+    let d1: f64 = ddelta - tau * phi_deltatau_reg3(delta,tau);
+    let d2: f64 = 2.0 * ddelta + delta * phi_deltadelta_reg3(delta,tau);
     d1 / d2 / T / d
 }
 
@@ -84,14 +84,14 @@ pub fn Td2joule_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
     let v: f64 = 1.0 / d;
-    let ddelta = phi_delta_reg3(tau, delta);
-    let ddeltatau = phi_deltatau_reg3(tau, delta);
-    let ddeltadelta = phi_deltadelta_reg3(tau, delta);
+    let ddelta = phi_delta_reg3(delta,tau);
+    let ddeltatau = phi_deltatau_reg3(delta,tau);
+    let ddeltadelta = phi_deltadelta_reg3(delta,tau);
 
     let mut cp1: f64 = delta * (ddelta - tau * ddeltatau);
     cp1 *= cp1;
     let cp2 = delta * (2.0 * ddelta + delta * ddeltadelta);
-    let cp = RGAS_WATER * (-1.0 * tau * tau * phi_tautau_reg3(tau, delta) + cp1 / cp2);
+    let cp = RGAS_WATER * (-1.0 * tau * tau * phi_tautau_reg3(delta,tau) + cp1 / cp2);
 
     let d1 = ddelta - tau * ddeltatau; //dpdtcv
     let d2 = 2.0 * ddelta + delta * ddeltadelta; //dvdpct
@@ -114,7 +114,7 @@ pub fn Td2dpdtcv_reg3(T: f64, d: f64) -> f64 {
         * RGAS_WATER
         * d
         * delta
-        * (phi_delta_reg3(tau, delta) - tau * phi_deltatau_reg3(tau, delta))
+        * (phi_delta_reg3(delta,tau) - tau * phi_deltatau_reg3(delta,tau))
 }
 
 /// alfap: Relative pressure coefficient  
@@ -128,9 +128,9 @@ pub fn Td2pc_reg3(T: f64, d: f64) -> f64 {
 pub fn Td2e_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    let phi = phi_reg3(tau, delta);
-    let phidelta = phi_delta_reg3(tau, delta);
-    let phitau = phi_tau_reg3(tau, delta);
+    let phi = phi_reg3(delta,tau);
+    let phidelta = phi_delta_reg3(delta,tau);
+    let phitau = phi_tau_reg3(delta,tau);
     RGAS_WATER * (T * (phi + delta * phidelta) + (T - Tt) * tau * (phitau - phi))
 }
 

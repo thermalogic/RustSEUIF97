@@ -47,32 +47,32 @@ pub const IJn: [(i32, i32, f64); 34] = [
 ];
 
 /// Fundamental equation for region 1
-pub fn gamma_reg1(mut tau: f64, mut pi: f64) -> f64 {
+pub fn gamma_reg1(pi:f64,tau:f64)-> f64 {
     sum_power(7.1 - pi, tau - 1.222, &IJn)
 }
 
 /// First derivative of fundamental equation in pi for region 1
-pub fn gamma_pi_reg1(mut tau: f64, mut pi: f64) -> f64 {
+pub fn gamma_pi_reg1(pi:f64,tau:f64)-> f64 {
      -sum_di_power(7.1 - pi, tau - 1.222, &IJn)
 }
 
 /// Second derivative of fundamental equation in pi for region 1
-pub fn gamma_pipi_reg1(mut tau: f64, mut pi: f64) -> f64 {
+pub fn gamma_pipi_reg1(pi:f64,tau:f64)-> f64 {
     sum_dii_power(7.1 - pi, tau - 1.222, &IJn)
 }
 
 /// First derivative of fundamental equation in tau for region 1
-pub fn gamma_tau_reg1(mut tau: f64, mut pi: f64) -> f64 {
+pub fn gamma_tau_reg1(pi:f64,tau:f64)-> f64 {
     sum_dj_power(7.1 - pi, tau - 1.222, &IJn)
 }
 
 /// Second derivative of fundamental equation in tau for region 1
-pub fn gamma_tautau_reg1(mut tau: f64, mut pi: f64) -> f64 {
+pub fn gamma_tautau_reg1(pi:f64,tau:f64)-> f64 {
     sum_djj_power(7.1 - pi, tau - 1.222, &IJn)
 }
 
 /// Second derivative of fundamental equation in pi and tau for region 1
-pub fn gamma_pitau_reg1(mut tau: f64, mut pi: f64) -> f64 {
+pub fn gamma_pitau_reg1(pi:f64,tau:f64)-> f64 {
     -sum_dij_power(7.1 - pi, tau - 1.222, &IJn)
 }
 
