@@ -59,7 +59,7 @@ pub fn ph2T_3a_reg3(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.240;
     let eta: f64 = h / 2300.0 - 0.615;
-    760.0 * sum_power(pi, eta, &IJn)
+    760.0 * poly_powi(pi, eta, &IJn)
 }
 
 /// (p,h)->T for region 3b
@@ -103,7 +103,7 @@ pub fn ph2T_3b_reg3(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.298;
     let eta: f64 = h / 2800.0 - 0.720;
-    860.0 * sum_power(pi, eta, &IJn)
+    860.0 *  poly_powi(pi, eta, &IJn)
 }
 
 /// Region 3a (p,h)->v
@@ -146,7 +146,7 @@ fn ph2v_3a_reg3(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.128;
     let eta: f64 = h / 2100.0 - 0.727;
-    0.0028 * sum_power(pi, eta, &IJn)
+    0.0028 *  poly_powi(pi, eta, &IJn)
 }
 
 /// (p,h)->v 3b
@@ -187,7 +187,7 @@ pub fn ph2v_3b_reg3(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.0661;
     let eta: f64 = h / 2800.0 - 0.720;
-    0.0088 * sum_power(pi, eta, &IJn)
+    0.0088 * poly_powi(pi, eta, &IJn)
 }
 
 /// Region 3(3a,3b)  (p,h)->T
@@ -248,7 +248,7 @@ pub fn ps2T_3a_reg3(p: f64, s: f64) -> f64 {
     ];
     let pi: f64 = p / 100.0 + 0.240;
     let sigma: f64 = s / 4.4 - 0.703;
-    760.0 * sum_power(pi, sigma, &IJn)
+    760.0 * poly_powi(pi, sigma, &IJn)
 }
 
 /// (p,s)->T   3b  Page 13, Table 12, Page 12 Eq(7)
@@ -286,7 +286,7 @@ fn ps2T_3b_reg3(p: f64, s: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.760;
     let sigma: f64 = s / 5.3 - 0.818;
-    860.0 * sum_power(pi, sigma, &IJn)
+    860.0 * poly_powi(pi, sigma, &IJn)
 }
 
 /// (p,s)->v 3a Page 14, Table 13 Eq(8),
@@ -324,7 +324,7 @@ fn ps2v_3a_reg3(p: f64, s: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.187;
     let sigma: f64 = s / 4.4 - 0.755;
-    0.0028 * sum_power(pi, sigma, &IJn)
+    0.0028 * poly_powi(pi, sigma, &IJn)
 }
 
 /// (p,s)->v  3b Page 14 Table 14, Eq(9)  
@@ -365,7 +365,7 @@ fn ps2v_3b_reg3(p: f64, s: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.298;
     let sigma: f64 = s / 5.3 - 0.816;
-    0.0088 * sum_power(pi, sigma, &IJn)
+    0.0088 * poly_powi(pi, sigma, &IJn)
 }
 
 pub fn ps2T_reg3(p: f64, s: f64) -> f64 {

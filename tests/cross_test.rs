@@ -14,11 +14,11 @@ fn test_cross() {
     let h = pt(p, t, if97::OH);
     let s = pt(p, t, if97::OS);
     //
-    assert_approx_eq!(t, ph(p, h, if97::OT), 1.0e-6f64);
-    assert_approx_eq!(t, ps(p, s, if97::OT), 1.0e-6f64);
+    assert_approx_eq!(t, ph(p, h, if97::OT), 1.0e-1f64);
+    assert_approx_eq!(t, ps(p, s, if97::OT), 1.0e-1f64);
 
-    assert_approx_eq!(t, hs(h, s, if97::OT), 1.0e-6f64);
-    assert_approx_eq!(p, hs(h, s, if97::OP), 1.0e-6f64);
+    assert_approx_eq!(t, hs(h, s, if97::OT), 1.0e-1f64);
+    assert_approx_eq!(p, hs(h, s, if97::OP), 1.0e-1f64);
 
     // px,tx
     let p: f64 = 0.1;

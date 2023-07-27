@@ -11,6 +11,17 @@
 
 use crate::algo::sac_pow;
 
+
+/// using powi() to sum the product of the powers of vi and vj
+///  * n*vi^i *  vj^j
+pub fn poly_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
+    let mut value: f64 = 0.0;
+    for e in IJn {
+        value += e.2 * vi.powi(e.0) * vj.powi(e.1);
+    }
+    value
+}
+
 /// sum the product of the powers of vi and vj
 ///  * n*vi^i *  vj^j
 pub fn sum_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
@@ -20,6 +31,7 @@ pub fn sum_power(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     }
     value
 }
+
 
 /// sum the product of the power of the derivative (∂f/∂vi) and vj  
 /// * n * (i-1)*vi^(i-1) * vj^j

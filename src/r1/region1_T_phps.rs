@@ -35,29 +35,8 @@ pub fn ph2T_reg1(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 1.0;
     let eta: f64 = h / 2500.0 + 1.0;
-    let mut theta: f64 = sum_power(pi, eta, &IJn);
-    // return 1.0 *theta;
-
-    // iteration: refine
-    let T1: f64 = 1.0 * theta;
-    let f1: f64 = h - pT2h_reg1(p, T1);
-    let mut T2: f64;
-    let mut T: f64;
-    if f1.abs() > ESP {
-        if f1 > 0.0 {
-            T2 = (1.0 + f1 / h) * T1;
-        }
-        else {
-            T2 = (1.0 - f1 / h) * T1;
-        }
-
-        let f2: f64 = h - pT2h_reg1(p, T2);
-        T = rtsec2(pT2h_reg1, p, h, T1, T2, f1, f2, ESP, I_MAX);
-    } else {
-        T = T1;
-    };
-
-    return T;
+    let theta: f64 = poly_powi(pi, eta, &IJn);
+    1.0 * theta
 }
 
 ///  Backward equation T(p,s) for region 1
@@ -88,27 +67,6 @@ pub fn ps2T_reg1(p: f64, s: f64) -> f64 {
 
     let pi: f64 = p / 1.0;
     let sigma: f64 = s / 1.0 + 2.0;
-    let mut theta: f64 = sum_power(pi, sigma, &IJn);
-    //return 1.0*theta;
-
-    // iteration: refine
-    let T1: f64 = 1.0 * theta;
-    let f1: f64 = s - pT2s_reg1(p, T1);
-    let T2: f64;
-    let mut T: f64;
-    if f1.abs() > ESP {
-        if f1 > 0.0
-        // pT2s_reg1(p,T1)< s ,the T1< expt T，so， T2=1.05*T1 T（T1,T2)
-        {
-            T2 = (1.0 + f1 / s) * T1;
-        } else {
-            T2 = (1.0 - f1 / s) * T1;
-        }
-
-        let f2: f64 = s - pT2s_reg1(p, T2);
-        T = rtsec2(pT2s_reg1, p, s, T1, T2, f1, f2, ESP, I_MAX);
-    } else {
-        T = T1;
-    }
-    T
+    let theta: f64 = poly_powi(pi, sigma, &IJn);
+    1.0 * theta
 }

@@ -57,10 +57,7 @@ pub fn hs2p_reg2a(h: f64, s: f64) -> f64 {
     let eta: f64 = h / 4200.0 - 0.5;
     let sigma: f64 = s / 12.0 - 1.2;
 
-    let mut pi: f64 = 0.0;
-    for k in 0..29 {
-        pi += IJn[k].2 * sac_pow(eta, IJn[k].0) * sac_pow(sigma, IJn[k].1);
-    }
+    let pi=poly_powi(eta,sigma, &IJn);
     let pi2: f64 = pi * pi;
     return 4.0 * pi2 * pi2;
 }
@@ -111,9 +108,7 @@ pub fn hs2p_reg2b(h: f64, s: f64) -> f64 {
     let eta: f64 = h / 4100.0 - 0.6;
     let sigma: f64 = s / 7.9 - 1.01;
     let mut pi: f64 = 0.0;
-    for k in 0..33 {
-        pi += IJn[k].2 * sac_pow(eta, IJn[k].0) * sac_pow(sigma, IJn[k].1);
-    }
+    let pi=poly_powi(eta,sigma, &IJn);
     let pi2: f64 = pi * pi;
     return 100.0 * pi2 * pi2;
 }
@@ -162,10 +157,7 @@ pub fn hs2p_reg2c(h: f64, s: f64) -> f64 {
 
     let eta: f64 = h / 3500.0 - 0.7;
     let sigma: f64 = s / 5.9 - 1.1;
-    let mut pi: f64 = 0.0;
-    for k in 0..31 {
-        pi += IJn[k].2 * sac_pow(eta, IJn[k].0) * sac_pow(sigma, IJn[k].1);
-    }
+    let pi=poly_powi(eta,sigma, &IJn);
     let pi2: f64 = pi * pi;
     return 100.0 * pi2 * pi2;
 }
@@ -200,23 +192,5 @@ pub fn hs2p_reg2(h: f64, s: f64) -> f64 {
     } else {
         p = hs2p_reg2a(h, s);
     };
-    // return p;
-
-    let mut p1 = p;
-    let f1: f64 = s - ph2s_reg2(p1, h);
-    if f1.abs() > ESP {
-        let mut p2: f64 = 0.0;
-        if f1 > 0.0
-        // pT2sreg1(p,h)< s ,the p1< expt p，so， p2=1.05*p1 p（p1,p2)
-        {
-            p2 = (1.0 + f1 / s) * p1;
-        } else {
-            p2 = (1.0 - f1 / s) * p1;
-        };
-
-        let f2: f64 = s - ph2s_reg2(p2, h);
-
-        p = rtsec1(ph2s_reg2, h, s, p1, p2, f1, f2, ESP, I_MAX);
-    };
-    p
+     p
 }

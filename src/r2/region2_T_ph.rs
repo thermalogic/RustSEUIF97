@@ -47,7 +47,7 @@ pub fn ph2T_reg2a(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 1.0;
     let eta: f64 = h / 2000.0 - 2.1;
-    1.0 * sum_power(pi, eta, &IJn)
+    1.0 * poly_powi(pi, eta, &IJn)
 }
 
 pub fn ph2T_reg2b(p: f64, h: f64) -> f64 {
@@ -95,6 +95,7 @@ pub fn ph2T_reg2b(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 1.0 - 2.0;
     let eta: f64 = h / 2000.0 - 2.6;
+    // sac better 8X
     1.0 * sum_power(pi, eta, &IJn)
 }
 
@@ -130,7 +131,7 @@ pub fn ph2T_reg2c(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 1.0 + 25.0;
     let eta: f64 = h / 2000.0 - 1.8;
-    1.0 * sum_power(pi, eta, &IJn)
+    1.0 * poly_powi(pi, eta, &IJn)
 }
 
 /// Eq21 in <http://www.iapws.org/relguide/IF97-Rev.html>
@@ -151,20 +152,5 @@ pub fn ph2T_reg2(p: f64, h: f64) -> f64 {
     } else {
         T = ph2T_reg2a(p, h);
     }
-    // T
-
-    let T1: f64 = T;
-    let f1: f64 = h - pT2h_reg2(p, T1);
-    if f1.abs() > ESP {
-        let mut T2: f64 = 0.0;
-        if f1 > 0.0 {
-            T2 = (1.0 + f1 / h) * T1;
-        }
-        else {
-            T2 = (1.0 - f1 / h) * T1;
-        }
-        let f2: f64 = h - pT2h_reg2(p, T2);
-        T = rtsec2(pT2h_reg2, p, h, T1, T2, f1, f2, ESP, I_MAX);
-    };
-    T
+    T   
 }

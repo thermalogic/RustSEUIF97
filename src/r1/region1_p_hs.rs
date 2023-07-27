@@ -42,28 +42,6 @@ pub fn hs2p_reg1(h: f64, s: f64) -> f64 {
 
     let eta: f64 = h / 3400.0 + 0.05;
     let sigma: f64 = s / 7.6 + 0.05;
-    let mut pi: f64 = sum_power(eta, sigma, &IJn);
-    // 100.0*pi
-
-    // iteration: refine
-
-    let mut p: f64;
-    let p1 = 100.0 * pi;
-    let f1 = s - ph2s_reg1(p1, h);
-    let mut p2: f64;
-    if f1.abs() > ESP {
-        if f1 > 0.0
-        // pT2sreg1(p,h)< s ,the p1< expt p，so， p2=1.05*p1 p（p1,p2)
-        {
-            p2 = (1.0 + f1 / s) * p1;
-        } else {
-            p2 = (1.0 - f1 / s) * p1;
-        }
-
-        let f2: f64 = s - ph2s_reg1(p2, h);
-        p = rtsec1(ph2s_reg1, h, s, p1, p2, f1, f2, ESP, I_MAX);
-    } else {
-        p = p1;
-    };
-    p
+    let pi: f64 = poly_powi(eta, sigma, &IJn);
+    100.0 * pi
 }
