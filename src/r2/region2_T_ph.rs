@@ -154,25 +154,5 @@ pub fn ph2T_reg2(p: f64, h: f64) -> f64 {
     } else {
         T = ph2T_reg2a(p, h);
     }
-    //println!(" non iter to improve h - pT2h_reg2(p, T) {}",h-pT2h_reg2(p, T));
      T
-/*
-    let T1: f64 = T;
-    let f1: f64 = h - pT2h_reg2(p, T1);
-    //不满足精度要求才迭代改进
-    // println!("h - pT2h_reg2(p, T1) {}",f1);
-    if f1.abs() > ESP {
-        let mut T2: f64 = 0.0;
-        if f1 > 0.0 {
-            T2 = (1.0 + f1 / h) * T1;
-        }
-        // TODO： 1.05 用 1+f1/h 是不是更快，没有测试
-        else {
-            T2 = (1.0 - f1 / h) * T1;
-        }
-        let f2: f64 = h - pT2h_reg2(p, T2);
-        T = rtsec2(pT2h_reg2, p, h, T1, T2, f1, f2, ESP, I_MAX);
-        // println!("h - pT2h_reg2(p, T) {}",h-pT2h_reg2(p, T));
-    };
-    T*/
 }

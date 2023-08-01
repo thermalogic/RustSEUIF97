@@ -5,29 +5,29 @@
 # IF97
 
 IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
- 
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of 
+
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of
 the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
-* The comparison results of the computing-time are obtained using the [criterion.rs](https://bheisler.github.io/criterion.rs/book/index.html). 
+* The comparison results of the computing-time are obtained using the [criterion.rs](https://bheisler.github.io/criterion.rs/book/index.html).
 
 **The Fast Methods**
 
 1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
 2. The recursive method computes the polynomial values of the base variable and its derivatives
 
-In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
+In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated.
 
-The following input pairs are implemented: 
+The following input pairs are implemented:
 
 ```txt
-(p,t) (p,h) (p,s) (p,v) 
+(p,t) (p,h) (p,s) (p,v)
 
-(t,h) (t,s) (t,v) 
+(t,h) (t,s) (t,v)
 
-(p,x) (t,x) (h,x) (s,x) 
+(p,x) (t,x) (h,x) (s,x)
 
-(h,s)  
+(h,s)
 ```
 ## Usage
 
@@ -63,17 +63,17 @@ hs(h:f64,s:f64,o_id:i32)->f64
 ```rust
 use if97::*;
 fn main() {
-    
+
     let p:f64 = 3.0;
     let t:f64= 300.0-273.15;
-   
+
     let h=pt(p,t,OH);
     let s=pt(p,t,OS);
     let v=pt(p,t,OV);
-    println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");   
+    println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");
 }
 ```
-    
+
 ## Properties
 
 | Propertry                             |    Unit     | Symbol | o_id  | o_id(i32)|

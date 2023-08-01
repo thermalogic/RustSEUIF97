@@ -15,7 +15,7 @@ pub fn pT_reg5(p: f64, T: f64, o_id: i32) -> f64 {
         OCV => pT2cv_reg5(p, T),
         OCP => pT2cp_reg5(p, T),
         OW => pT2w_reg5(p, T),
-        _ => pT_ext_reg5(p,T,o_id), //the extended properties
+        _ => pT_ext_reg5(p, T, o_id), //the extended properties
     }
 }
 
@@ -88,4 +88,3 @@ pub fn ts_reg5(t: f64, s: f64, o_id: i32) -> f64 {
     };
     pT_reg5(p, t + 273.15, o_id)
 }
-

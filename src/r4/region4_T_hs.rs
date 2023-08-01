@@ -64,7 +64,6 @@ pub fn hs2T_reg43(h: f64, s: f64) -> f64 {
     if s < s4V_623 {
         return INVALID_S as f64;
     }
-
     let nu: f64 = h / 2800.0 - 0.119;
     let sigma: f64 = s / 9.2 - 1.07;
     let mut suma: f64 = poly_powi(nu, sigma, &IJn);

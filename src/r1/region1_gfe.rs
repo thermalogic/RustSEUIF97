@@ -67,7 +67,7 @@ pub fn gamma_pipi_reg1(pi: f64, tau: f64) -> f64 {
 
 /// First derivative of fundamental equation in tau for region 1
 pub fn gamma_tau_reg1(pi: f64, tau: f64) -> f64 {
-     let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
     poly_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
 }
 

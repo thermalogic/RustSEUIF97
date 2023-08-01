@@ -120,7 +120,6 @@ pub fn gamma0_pitau_reg2() -> f64 {
 pub fn gammar_reg2(pi: f64, tau: f64) -> f64 {
     let steps: [(usize, usize); 3] = [(0, 19), (19, 38), (38, 43)];
     poly_powi_steps(pi, tau - 0.5, &IJn, &steps)
-
 }
 
 /// First derivative in pi of residual part of fundamental equation for region 2
@@ -159,20 +158,19 @@ pub fn gammar_pitau_reg2(pi: f64, tau: f64) -> f64 {
 
 pub fn polys_0_j_powi_reg2(pi: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
-    let (gammar, gammar_tau)=polys_0_j_powi_steps(pi, tau - 0.5, &IJn, &steps);
+    let (gammar, gammar_tau) = polys_0_j_powi_steps(pi, tau - 0.5, &IJn, &steps);
     (gammar, gammar_tau)
 }
 
 pub fn polys_i_j_powi_reg2(pi: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
-    let (gammar, gammar_tau)=polys_i_j_powi_steps(pi, tau - 0.5, &IJn, &steps);
+    let (gammar, gammar_tau) = polys_i_j_powi_steps(pi, tau - 0.5, &IJn, &steps);
     (gammar, gammar_tau)
 }
 
 pub fn polys_i_ii_ij_jj_powi_reg2(pi: f64, tau: f64) -> (f64, f64, f64, f64) {
-   
-    let steps:[(usize, usize); 4] = [(0, 11), (11, 22), (22, 33), (33, 43)];
-    let (gammar_pi, gammar_pipi, gammar_pitau,gammar_tautau) =
-       polys_i_ii_ij_jj_powi_steps(pi, tau - 0.5, &IJn,&steps);
-     (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau)    
+    let steps: [(usize, usize); 4] = [(0, 11), (11, 22), (22, 33), (33, 43)];
+    let (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau) =
+        polys_i_ii_ij_jj_powi_steps(pi, tau - 0.5, &IJn, &steps);
+    (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau)
 }

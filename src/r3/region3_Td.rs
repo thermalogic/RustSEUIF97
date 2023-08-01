@@ -33,7 +33,6 @@ pub fn Td2s_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
     let (poly_phi, poly_tau) = polys_0_j_powi_reg3(delta, tau);
-
     RGAS_WATER * (tau * poly_tau - poly_phi)
 }
 

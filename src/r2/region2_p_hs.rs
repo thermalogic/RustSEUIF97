@@ -179,7 +179,7 @@ pub fn s2h_reg2_ab(s: f64) -> f64 {
     ];
     let sigma: f64 = s / 1.0;
     let eta: f64 = n[0] + sigma * (n[1] + sigma * (n[2] + n[3] * sigma));
-    return eta * 1.0;
+    eta * 1.0
 }
 
 pub fn hs2p_reg2(h: f64, s: f64) -> f64 {
@@ -195,22 +195,4 @@ pub fn hs2p_reg2(h: f64, s: f64) -> f64 {
         p = hs2p_reg2a(h, s);
     };
     p
-
-    /*let mut p1 = p;
-    let f1: f64 = s - ph2s_reg2(p1, h);
-    if f1.abs() > ESP {
-        let mut p2: f64 = 0.0;
-        if f1 > 0.0
-        // pT2sreg1(p,h)< s ,the p1< expt p，so， p2=1.05*p1 p（p1,p2)
-        {
-            p2 = (1.0 + f1 / s) * p1;
-        } else {
-            p2 = (1.0 - f1 / s) * p1;
-        };
-
-        let f2: f64 = s - ph2s_reg2(p2, h);
-
-        p = rtsec1(ph2s_reg2, h, s, p1, p2, f1, f2, ESP, I_MAX);
-    };
-    p*/
 }

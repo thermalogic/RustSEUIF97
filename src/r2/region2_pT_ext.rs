@@ -13,7 +13,7 @@ pub fn pT_ext_reg2(p: f64, T: f64, o_id: i32) -> f64 {
         OF => pT2f_reg2(p, T),
         OG => pT2g_reg2(p, T),
         OZ => pT2z_reg2(p, T),
-         OKT => pT2kt_reg2(p, T),
+        OKT => pT2kt_reg2(p, T),
         OEC => pT2ec_reg2(p, T),
         OJTC => pT2joule_reg2(p, T),
         OIJTC => pT2iJTC_reg2(p, T),
@@ -25,7 +25,7 @@ pub fn pT_ext_reg2(p: f64, T: f64, o_id: i32) -> f64 {
         OBETAP => pT2batap_reg2(p, T),
         OFI => pT2fi_reg2(p, T),
         OFU => pT2fu_reg2(p, T),
-        OALFAP =>pT2alfap_reg2(p, T),
+        OALFAP => pT2alfap_reg2(p, T),
         _ => INVALID_OUTID as f64,
     }
 }
@@ -47,14 +47,12 @@ pub fn pT2ec_reg2(p: f64, T: f64) -> f64 {
     d * pT2dvdtcp_reg2(p, T)
 }
 
-
-
 /// kt Isothermal compressibility 1/MPa
 pub fn pT2kt_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gummapipi: f64 = gamma0_pipi_reg2(pi) + gammar_pipi_reg2(pi,tau);
-    let gummapi: f64 = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau);
+    let gummapipi: f64 = gamma0_pipi_reg2(pi) + gammar_pipi_reg2(pi, tau);
+    let gummapi: f64 = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi, tau);
     -(gummapipi / gummapi)
 }
 
@@ -63,7 +61,7 @@ pub fn pT2kt_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2g_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    RGAS_WATER * T * (gamma0_reg2(pi,tau) + gammar_reg2(pi,tau))
+    RGAS_WATER * T * (gamma0_reg2(pi, tau) + gammar_reg2(pi, tau))
 }
 
 /// the Helmholtz Specific free energy:
@@ -73,8 +71,8 @@ pub fn pT2f_reg2(p: f64, T: f64) -> f64 {
     let pi: f64 = p;
     RGAS_WATER
         * T
-        * (gamma0_reg2(pi,tau) + gammar_reg2(pi,tau)
-            - p * (gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau)))
+        * (gamma0_reg2(pi, tau) + gammar_reg2(pi, tau)
+            - p * (gamma0_pi_reg2(pi) + gammar_pi_reg2(pi, tau)))
 }
 
 /// joule ： Joule-Thomson coefficient    K/MPa
@@ -82,9 +80,9 @@ pub fn pT2f_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2joule_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gummapi = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau);
-    let gummatautau = gamma0_tautau_reg2(pi,tau) + gammar_tautau_reg2(pi,tau);
-    let gummapitau = gamma0_pitau_reg2() + gammar_pitau_reg2(pi,tau);
+    let gummapi = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi, tau);
+    let gummatautau = gamma0_tautau_reg2(pi, tau) + gammar_tautau_reg2(pi, tau);
+    let gummapitau = gamma0_pitau_reg2() + gammar_pitau_reg2(pi, tau);
     let v = RGAS_WATER * T * gummapi;
     let cp = -RGAS_WATER * tau * tau * gummatautau;
     let TCex_1 = -tau * gummapitau / gummapi;
@@ -95,7 +93,7 @@ pub fn pT2joule_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2dvdpct_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gummapipi: f64 = gamma0_pipi_reg2(pi) + gammar_pipi_reg2(pi,tau);
+    let gummapipi: f64 = gamma0_pipi_reg2(pi) + gammar_pipi_reg2(pi, tau);
     0.001 * RGAS_WATER * T * gummapipi
 }
 
@@ -103,13 +101,10 @@ pub fn pT2dvdpct_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2dvdtcp_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gummapi: f64 = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau);
-    let gummapitau: f64 = gamma0_pitau_reg2() + gammar_pitau_reg2(pi,tau);
+    let gummapi: f64 = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi, tau);
+    let gummapitau: f64 = gamma0_pitau_reg2() + gammar_pitau_reg2(pi, tau);
     0.001 * RGAS_WATER * (gummapi - tau * gummapitau)
 }
-
-
-
 
 //  Isothermal throttling coefficient
 ///  iJTC Isothermal Joule-Thomson coefficient kJ/(kg·MPa)
@@ -117,7 +112,7 @@ pub fn pT2dvdtcp_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2iJTC_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gummapitau = gamma0_pitau_reg2() + gammar_pitau_reg2(pi,tau);
+    let gummapitau = gamma0_pitau_reg2() + gammar_pitau_reg2(pi, tau);
     0.001 * RGAS_WATER * r2Tstar * gummapitau
 }
 
@@ -129,9 +124,9 @@ pub fn pT2iJTC_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2dpdtcv_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gummapi = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau);
-    let gummapitau = gamma0_pitau_reg2() + gammar_pitau_reg2(pi,tau);
-    let gummapipi = gamma0_pipi_reg2(pi) + gammar_pipi_reg2(pi,tau);
+    let gummapi = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi, tau);
+    let gummapitau = gamma0_pitau_reg2() + gammar_pitau_reg2(pi, tau);
+    let gummapipi = gamma0_pipi_reg2(pi) + gammar_pipi_reg2(pi, tau);
     1.0 * (gummapitau * r2Tstar - gummapi * T) / (T * T * gummapipi)
 }
 
@@ -144,8 +139,8 @@ pub fn pT2pc_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2e_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gumma = gamma0_reg2(pi,tau) + gammar_reg2(pi,tau);
-    let gummatau = gamma0_tau_reg2(tau) + gammar_tau_reg2(pi,tau);
+    let gumma = gamma0_reg2(pi, tau) + gammar_reg2(pi, tau);
+    let gummatau = gamma0_tau_reg2(tau) + gammar_tau_reg2(pi, tau);
     RGAS_WATER * (T * gumma + (T - Tt) * (tau * gummatau - gumma))
 }
 
@@ -154,8 +149,6 @@ pub fn pT2z_reg2(p: f64, T: f64) -> f64 {
     let v: f64 = pT2v_reg2(p, T);
     1000.0 * p * v / RGAS_WATER / T
 }
-
-
 
 /// batap Isothermal stress coefficient, kg/m³
 ///  (-1.0/p)*(dp/dv)T
@@ -173,7 +166,7 @@ pub fn pT2fi_reg2(p: f64, T: f64) -> f64 {
     let g: f64 = pT2g_reg2(p, T);
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let g0: f64 = T * RGAS_WATER * gamma0_reg2(pi,tau);
+    let g0: f64 = T * RGAS_WATER * gamma0_reg2(pi, tau);
     ((g - g0) / RGAS_WATER / T).exp()
 }
 
@@ -189,5 +182,5 @@ pub fn pT2fu_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2alfap_reg2(p: f64, T: f64) -> f64 {
     let ec: f64 = pT2ec_reg2(p, T);
     let kt: f64 = pT2kt_reg2(p, T);
-    ec/p/kt
+    ec / p / kt
 }
