@@ -111,31 +111,11 @@ pub fn polys_i_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
 pub fn polys_i_ii_ij_jj_powi_reg3(delta: f64, tau: f64) -> (f64, f64, f64, f64) {
     let mut phi_delta: f64 = n1 / delta;
     let mut phi_deltadelta = -n1 / delta / delta;
-  
-    let steps: [(usize, usize); 4] = [(0, 10), (10, 20), (20, 30), (30, 39)];
-    let mut item: f64 = 0.0;
-    let mut delta_item: f64 = 0.0;
 
-    let mut sub_phi_delta: f64 = 0.0;
-    let mut sub_phi_deltadelta: f64 = 0.0;
-    let mut phi_deltatau: f64 = 0.0;
-    let mut phi_tautau: f64 = 0.0;
-    for m in 0..steps.len() {
-        for k in steps[m].0..steps[m].1 {
-            item = IJn[k].2 * delta.powi(IJn[k].0) * tau.powi(IJn[k].1);
-            delta_item = IJn[k].0 as f64 * item;
-            sub_phi_delta += delta_item;
-            sub_phi_deltadelta += (IJn[k].0 - 1) as f64 * delta_item;
-            phi_deltatau += IJn[k].1 as f64 * delta_item;
-            phi_tautau += (IJn[k].1 * (IJn[k].1 - 1)) as f64 * item;
-        }
-    }
-    phi_delta += (sub_phi_delta / delta);
-    phi_deltadelta += (sub_phi_deltadelta / delta / delta);
-    (
-        phi_delta,
-        phi_deltadelta,
-        phi_deltatau / delta / tau,
-        phi_tautau / tau / tau,
-    )
+    let steps: [(usize, usize); 4] = [(0, 10), (10, 20), (20, 30), (30, 39)];
+    let (sub_phi_delta, sub_phi_deltadelta, phi_deltatau, phi_tautau) =
+        polys_i_ii_ij_jj_powi_steps(delta, tau, &IJn, &steps);
+    phi_delta += sub_phi_delta;
+    phi_deltadelta += sub_phi_deltadelta;
+    (phi_delta, phi_deltadelta, phi_deltatau, phi_tautau)
 }

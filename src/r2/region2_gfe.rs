@@ -170,30 +170,9 @@ pub fn polys_i_j_powi_reg2(pi: f64, tau: f64) -> (f64, f64) {
 }
 
 pub fn polys_i_ii_ij_jj_powi_reg2(pi: f64, tau: f64) -> (f64, f64, f64, f64) {
-    let tau1: f64 = tau - 0.5;
-    let steps: [(usize, usize); 4] = [(0, 11), (11, 22), (22, 33), (33, 43)];
-    let mut item: f64 = 0.0;
-    let mut pi_item: f64 = 0.0;
-
-    let mut gammar_pi: f64 = 0.0;
-    let mut gammar_pipi: f64 = 0.0;
-    let mut gammar_pitau: f64 = 0.0;
-    let mut gammar_tautau: f64 = 0.0;
-    for m in 0..steps.len() {
-        for k in steps[m].0..steps[m].1 {
-            item = IJn[k].2 * pi.powi(IJn[k].0) * tau1.powi(IJn[k].1);
-            pi_item = IJn[k].0 as f64 * item;
-            gammar_pi += pi_item;
-            gammar_pipi += (IJn[k].0 - 1) as f64 * pi_item;
-            gammar_pitau += IJn[k].1 as f64 * pi_item;
-            gammar_tautau += (IJn[k].1 * (IJn[k].1 - 1)) as f64 * item;
-        }
-    }
-    (
-        gammar_pi / pi,
-        gammar_pipi / pi / pi,
-        gammar_pitau / pi / tau1,
-        gammar_tautau / tau1 / tau1,
-    )
    
+    let steps:[(usize, usize); 4] = [(0, 11), (11, 22), (22, 33), (33, 43)];
+    let (gammar_pi, gammar_pipi, gammar_pitau,gammar_tautau) =
+       polys_i_ii_ij_jj_powi_steps(pi, tau - 0.5, &IJn,&steps);
+     (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau)    
 }

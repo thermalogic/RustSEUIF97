@@ -10,6 +10,7 @@
 //!   * power = n * vi^i * i^j =  IJn[k].2 * vi^ IJn[k].0 * vj^ IJn[k].1
 //!
 
+#[inline(always)]
 pub fn poly_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
     for m in 0..steps.len() {
@@ -20,6 +21,7 @@ pub fn poly_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usiz
     value
 }
 
+#[inline(always)]
 pub fn poly_i_powi_steps(
     vi: f64,
     vj: f64,
@@ -35,6 +37,7 @@ pub fn poly_i_powi_steps(
     value
 }
 
+#[inline(always)]
 pub fn poly_ii_powi_steps(
     vi: f64,
     vj: f64,
@@ -53,6 +56,7 @@ pub fn poly_ii_powi_steps(
     value
 }
 
+#[inline(always)]
 pub fn poly_ij_powi_steps(
     vi: f64,
     vj: f64,
@@ -72,6 +76,7 @@ pub fn poly_ij_powi_steps(
     value / vi / vj
 }
 
+#[inline(always)]
 pub fn poly_j_powi_steps(
     vi: f64,
     vj: f64,
@@ -89,6 +94,7 @@ pub fn poly_j_powi_steps(
 
 /// the polynomial of vi and the derivative (∂²f/∂²vj)
 /// *  n* vi^i  *j*(j-1)* vi^(j-2)
+#[inline(always)] 
 pub fn poly_jj_powi_steps(
     vi: f64,
     vj: f64,
@@ -112,6 +118,7 @@ pub fn poly_jj_powi_steps(
 /// The recursive method to get the polynomials
 ///  * the power of vi and vj  
 ///  * the power of vi and the derivative (∂f/∂vj)
+#[inline(always)] 
 pub fn polys_0_j_powi_steps(
     vi: f64,
     vj: f64,
@@ -133,6 +140,7 @@ pub fn polys_0_j_powi_steps(
     (poly_0, poly_j)
 }
 
+#[inline(always)]
 pub fn polys_i_j_powi_steps(
     vi: f64,
     vj: f64,
@@ -155,6 +163,7 @@ pub fn polys_i_j_powi_steps(
     (poly_i, poly_j)
 }
 
+#[inline(always)]
 pub fn polys_i_ij_powi_steps(
     vi: f64,
     vj: f64,
@@ -175,6 +184,7 @@ pub fn polys_i_ij_powi_steps(
     (poly_i, poly_ij)
 }
 
+#[inline(always)]
 pub fn polys_i_ii_powi_steps(
     vi: f64,
     vj: f64,
@@ -196,6 +206,7 @@ pub fn polys_i_ii_powi_steps(
     (poly_i, poly_ii)
 }
 
+#[inline(always)]
 pub fn polys_i_ii_ij_powi_steps(
     vi: f64,
     vj: f64,
@@ -224,6 +235,7 @@ pub fn polys_i_ii_ij_powi_steps(
     (poly_i, poly_ii, poly_ij)
 }
 
+#[inline(always)]
 pub fn polys_i_ii_ij_jj_powi_steps(
     vi: f64,
     vj: f64,
