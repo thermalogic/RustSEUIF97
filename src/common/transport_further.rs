@@ -70,7 +70,7 @@ pub fn viscosity(rho: f64, T: f64) -> f64 {
         (5, 6, -5.93264e-4),
     ];
 
-    suma = poly(1.0 / Tr - 1.0, Dr - 1.0, &ijH);
+    suma = poly_powi(1.0 / Tr - 1.0, Dr - 1.0, &ijH);
     let fi1: f64 = (Dr * suma).exp();
     let fi2: f64 = 1.0;
     fi0 * fi1 * fi2 * 1.0e-6

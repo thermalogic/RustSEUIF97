@@ -19,26 +19,6 @@ pub fn poly_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     value
 }
 
-/// the polynomials of vi and vj
-///  * n*vi^i *  vj^j
-pub fn poly(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
-    let mut value: f64 = 0.0;
-    for e in IJn {
-        value += e.2 * vi.powi(e.0) * vj.powi(e.1);
-    }
-    value
-}
-
-/// the polynomial of the derivative (∂f/∂vi) and vj  
-/// * n * (i-1)*vi^(i-1) * vj^j
-pub fn poly_i(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
-    let mut value: f64 = 0.0;
-    for e in IJn {
-        value += e.2 * e.0 as f64 * vi.powi(e.0 - 1) * vj.powi(e.1);
-    }
-    value
-}
-
 /// the polynomial of the derivative (∂f/∂vi) and vj  
 /// * n * (i-1)*vi^(i-1) * vj^j
 pub fn poly_i_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {

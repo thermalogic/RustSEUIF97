@@ -29,7 +29,7 @@ fn pT2v_sum(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para) -> f64 {
     //for item in IJn {
     //    v += item.2 * sac_pow(p1, item.0) * sac_pow(t1, item.1);
     //}
-    let v:f64=poly(p1,t1,&IJn);
+    let v:f64=poly_powi(p1,t1,&IJn);
     v.powf(d.e) * d.VS
 }
 
@@ -799,7 +799,7 @@ pub fn pT2v_3n(p: f64, T: f64) -> f64 {
     ];
     let p1: f64 = p / 23.0 - 0.976;
     let t1: f64 = T / 650.0 - 0.997;
-    let mut v: f64 = poly(p1, t1, &IJn);
+    let mut v: f64 = poly_powi(p1, t1, &IJn);
     v.exp() * 0.0031
 }
 
