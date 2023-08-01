@@ -64,13 +64,13 @@ fn test_region4_ps() {
     let mut x: f64 = 0.0;
     for i in 0..3 {
         let p: f64 = r4_sat_Tp[i][1];
-        s =px(p,x,OS);
+        s = px(p, x, OS);
         assert_approx_eq!(x, ps(p, s, OX));
     }
 
     for i in 0..3 {
         let p: f64 = r4_sat_pT[i][0];
-        s =px(p,x,OS);
+        s = px(p, x, OS);
         assert_approx_eq!(x, ps(p, s, OX));
     }
 }

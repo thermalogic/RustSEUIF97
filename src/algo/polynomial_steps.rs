@@ -94,7 +94,7 @@ pub fn poly_j_powi_steps(
 
 /// the polynomial of vi and the derivative (∂²f/∂²vj)
 /// *  n* vi^i  *j*(j-1)* vi^(j-2)
-#[inline(always)] 
+#[inline(always)]
 pub fn poly_jj_powi_steps(
     vi: f64,
     vj: f64,
@@ -118,7 +118,7 @@ pub fn poly_jj_powi_steps(
 /// The recursive method to get the polynomials
 ///  * the power of vi and vj  
 ///  * the power of vi and the derivative (∂f/∂vj)
-#[inline(always)] 
+#[inline(always)]
 pub fn polys_0_j_powi_steps(
     vi: f64,
     vj: f64,

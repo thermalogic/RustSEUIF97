@@ -58,7 +58,7 @@ pub const ODPDT: i32 = 21;
 pub const OIJTC: i32 = 22;
 /// 23. μ - Joule-Thomson coefficient   K/MPa  joule
 pub const OJTC: i32 = 23;
-/// 24. η - Dynamic viscosity   Pa.s dv 
+/// 24. η - Dynamic viscosity   Pa.s dv
 pub const ODV: i32 = 24;
 /// 25. ν -  Kinematic viscosity  m²/s
 pub const OKV: i32 = 25;
@@ -76,7 +76,7 @@ pub const OSDC: i32 = 30;
 pub const OPC: i32 = 31;
 /// 32. βp -  Isothermal stress coefficient, kg/m³
 pub const OBETAP: i32 = 32;
-/// 33. fi-  Fugacity coefficient 
+/// 33. fi-  Fugacity coefficient
 pub const OFI: i32 = 33;
 /// 34. f* - Fugacity MPa
 pub const OFU: i32 = 34;

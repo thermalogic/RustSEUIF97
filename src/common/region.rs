@@ -481,7 +481,7 @@ pub fn pv_sub_region(p: f64, v: f64) -> i32 {
 
 ///  Region (t,v)
 pub fn tv_sub_region(t: f64, v: f64) -> i32 {
-    let T:f64=t+273.15;
+    let T: f64 = t + 273.15;
     if (T < 273.15) || (T > 2273.15) {
         return INVALID_VALUE;
     }
@@ -558,7 +558,7 @@ pub fn tv_sub_region(t: f64, v: f64) -> i32 {
 
 /// Region (t,h)
 pub fn th_sub_region(t: f64, h: f64) -> i32 {
-    let T:f64=t+273.15;
+    let T: f64 = t + 273.15;
     if T < 273.15 || T > 2273.15 {
         return INVALID_VALUE;
     }
@@ -657,7 +657,7 @@ pub fn th_sub_region(t: f64, h: f64) -> i32 {
 
 ///  Region (t,s)
 pub fn ts_sub_region(t: f64, s: f64) -> i32 {
-    let T:f64=t+273.15;
+    let T: f64 = t + 273.15;
     if (T < 273.15) || (T > 2273.15) {
         return INVALID_T;
     }

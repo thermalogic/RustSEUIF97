@@ -108,7 +108,6 @@ pub fn Tv2p_reg1(T: f64, v: f64) -> f64 {
     let p2: f64 = 1.05 * p1;
     let f1: f64 = v - pT2v_reg1(p1, T);
     let f: f64 = v - pT2v_reg1(p2, T);
-    // ridder1(R1_pttov_ct, t, v, p1, p2, f1, f);
     let p: f64 = rtsec1(pT2v_reg1, T, v, p1, p2, f1, f, ESP, I_MAX);
     return p;
 }
@@ -149,7 +148,7 @@ pub fn Th2p_reg1(T: f64, h: f64) -> f64 {
 ///  * p: pressure  MPa
 pub fn Ts2p_reg1(T: f64, s: f64) -> f64 {
     let pmin1: f64 = p_saturation(T);
-    let mut p1: f64 = pmin1; // // 取等温线上最小压力和最大压力作迭代初值
+    let mut p1: f64 = pmin1; // 
     let mut s1: f64 = pT2s_reg1(p1, T);
     let mut f1: f64 = s - s1;
     let p2: f64 = P_MAX1;

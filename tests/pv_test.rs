@@ -29,7 +29,7 @@ fn test_pv_region3() {
     for i in 0..3 {
         let T: f64 = r3_Td[i][0];
         let d: f64 = r3_Td[i][1];
-        let p = tv(T-273.15, 1.0/d, OP);
+        let p = tv(T - 273.15, 1.0 / d, OP);
         assert_approx_eq!(r3_Td[i][0] - 273.15, pv(p, 1.0 / d, OT), 1.0e-3f64)
     }
 }
@@ -42,7 +42,7 @@ fn test_pv_region4() {
     let x: f64 = 0.35;
     for i in 0..3 {
         let p: f64 = r4_sat_Tp[i][1];
-        v = px(p,x,OV);
+        v = px(p, x, OV);
         assert_approx_eq!(x, pv(p, v, OX));
     }
 }

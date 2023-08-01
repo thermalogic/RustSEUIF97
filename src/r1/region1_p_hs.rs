@@ -43,5 +43,5 @@ pub fn hs2p_reg1(h: f64, s: f64) -> f64 {
     let eta: f64 = h / 3400.0 + 0.05;
     let sigma: f64 = s / 7.6 + 0.05;
     let pi: f64 = poly_powi(eta, sigma, &IJn);
-    100.0*pi
+    100.0 * pi
 }
