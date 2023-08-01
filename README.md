@@ -8,7 +8,7 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 
 **The Fast Methods**
 
-1. The multi-step method to unleash the full power of the compiler optimizations while using using `powi()` with the `for` loop
+1. The multi-step method unleashes the full power of the compiler optimizations while using using `powi()` with the `for` loop
 2. The recursive  method computes the polynomial values of the base variable and its derivatives
 
 In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 

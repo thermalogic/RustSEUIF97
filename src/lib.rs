@@ -13,8 +13,8 @@ the Rust standard library in the `for`loop directly when computing the basic equ
 
 **The Fast Methods**
 
-1. The multi-step method to unleash the full power of the compiler optimizations while using `powi()` with the `for` loop
-2. The recursive  method computes the polynomial values of the base variable and its derivatives
+1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+2. The recursive method computes the polynomial values of the base variable and its derivatives
 
 In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
