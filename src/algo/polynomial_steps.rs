@@ -207,35 +207,6 @@ pub fn polys_i_ii_powi_steps(
 }
 
 #[inline(always)]
-pub fn polys_i_ii_ij_powi_steps(
-    vi: f64,
-    vj: f64,
-    IJn: &[(i32, i32, f64)],
-    steps: &[(usize, usize)],
-) -> (f64, f64, f64) {
-    let mut item: f64 = 0.0;
-    let mut i_item: f64 = 0.0;
-    let mut poly_i: f64 = 0.0;
-    let mut poly_ii: f64 = 0.0;
-    let mut poly_ij: f64 = 0.0;
-
-    for m in 0..steps.len() {
-        for k in steps[m].0..steps[m].1 {
-            item = IJn[k].2 * vi.powi(IJn[k].0) * vj.powi(IJn[k].1);
-            // i_item = IJn[k].0 as f64 * item;
-            poly_i += IJn[k].0 as f64 * item;
-            poly_ii += IJn[k].0 as f64 * (IJn[k].0 - 1) as f64 * item;
-            poly_ij += IJn[k].0 as f64 * IJn[k].1 as f64 * item;
-        }
-    }
-
-    poly_i /= vi;
-    poly_ii /= (vi * vi);
-    poly_ij /= (vi * vj);
-    (poly_i, poly_ii, poly_ij)
-}
-
-#[inline(always)]
 pub fn polys_i_ii_ij_jj_powi_steps(
     vi: f64,
     vj: f64,
