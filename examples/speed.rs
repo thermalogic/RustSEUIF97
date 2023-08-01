@@ -16,13 +16,12 @@ fn speed_experiment(v1: f64, v2: f64, func: fn(f64, f64, i32) -> f64, prop_map: 
     println!(" v1={:.6} v2={:.6} ", v1, v2);
     for e in prop_map {
         let value: f64 = func(v1, v2, e.1);
-        println!("\t {} = {}", e.0, value);
-        let now = Instant::now();
+         let now = Instant::now();
         for _ in 0..100000u128 {
             std::hint::black_box(func(v1, v2, e.1));
         }
         let elapsed_time = now.elapsed();
-        println!("\t\t {} Running  {:?}", e.0, elapsed_time);
+        println!("\t {} = {} \n\t\t Running  {:?}", e.0,value, elapsed_time);
     }
 }
 
