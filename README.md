@@ -2,13 +2,13 @@
 
 IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 10-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
 * The comparison results of the computing-time are obtained using the [criterion.rs](https://bheisler.github.io/criterion.rs/book/index.html). 
 
 **The Fast Methods**
 
-1. The multi-step method to enable the compiler optimizations for using `powi()` in the `for` loop
+1. The multi-step method to unleash the full power of the compiler optimizations while using using `powi()` with the `for` loop
 2. The recursive  method computes the polynomial values of the base variable and its derivatives
 
 In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
