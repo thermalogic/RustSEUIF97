@@ -4,6 +4,7 @@
 
 use crate::algo::*;
 use crate::common::constant::*;
+use crate::r3::*;
 
 //  Initialize coefphicients and exponents for region 3(Table 30, page 30)
 pub const n1: f64 = 0.10658070028513e1;
@@ -51,37 +52,90 @@ pub const IJn: [(i32, i32, f64); 39] = [
 ];
 
 /// Fundamental equation for region 3
-pub fn phi_reg3(delta: f64,tau: f64) -> f64 {
+pub fn phi_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = n1 * delta.ln();
-    result + sum_power(delta, tau, &IJn)
+    let steps: [(usize, usize); 2] = [(0, 19), (19, 38)];
+    result + poly_powi_steps(delta, tau, &IJn, &steps)
 }
 
 /// First derivative in delta of fundamental equation for region 3
-pub fn phi_delta_reg3(delta: f64,tau: f64) -> f64 {
+pub fn phi_delta_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = n1 / delta;
-    result + sum_di_power(delta, tau, &IJn)
+    let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    result + poly_i_powi_steps(delta, tau, &IJn, &steps)
 }
 
 /// Second derivative in delta of fundamental equation for region 3
-pub fn phi_deltadelta_reg3(delta: f64,tau: f64) -> f64 {
+pub fn phi_deltadelta_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = -n1 / delta / delta;
-    result + sum_dii_power(delta, tau, &IJn)
+    let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    result + poly_ii_powi_steps(delta, tau, &IJn, &steps)
 }
 
 /// First derivative in tau of fundamental equation for region 3
-pub fn phi_tau_reg3(delta: f64,tau: f64) -> f64 {
+pub fn phi_tau_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = 0.0;
-    sum_dj_power(delta, tau, &IJn)
+    let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    poly_j_powi_steps(delta, tau, &IJn, &steps)
 }
 
 /// Second derivative in tau of fundamental equation for region 3
-pub fn phi_tautau_reg3(delta: f64,tau: f64) -> f64 {
+pub fn phi_tautau_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = 0.0;
-    sum_djj_power(delta, tau, &IJn)
+    let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    poly_jj_powi_steps(delta, tau, &IJn, &steps)
 }
 
 /// Second derivative in delta and tau of fundamental equation for region 3
-pub fn phi_deltatau_reg3(delta: f64,tau: f64) -> f64 {
+pub fn phi_deltatau_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = 0.0;
-    sum_dij_power(delta, tau, &IJn)
+    let steps: [(usize, usize); 3] = [(0, 17), (17, 34), (34, 39)];
+    poly_ij_powi_steps(delta, tau, &IJn, &steps)
+}
+
+//---------- multiple -------------------------
+pub fn polys_0_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
+    let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
+    let (poly_phi, poly_tau) = polys_0_j_powi_steps(delta, tau, &IJn, &steps);
+    (poly_phi + n1 * delta.ln(), poly_tau)
+}
+
+pub fn polys_i_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
+    let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
+    let (poly_delta, poly_tau) = polys_i_j_powi_steps(delta, tau, &IJn, &steps);
+    (poly_delta + n1 / delta, poly_tau)
+}
+
+/// Fast recursion algorithm of phi and its derivatives
+///          phi_delta, deltatau, deltadelta, tautau
+pub fn polys_i_ii_ij_jj_powi_reg3(delta: f64, tau: f64) -> (f64, f64, f64, f64) {
+    let mut phi_delta: f64 = n1 / delta;
+    let mut phi_deltadelta = -n1 / delta / delta;
+  
+    let steps: [(usize, usize); 4] = [(0, 10), (10, 20), (20, 30), (30, 39)];
+    let mut item: f64 = 0.0;
+    let mut delta_item: f64 = 0.0;
+
+    let mut sub_phi_delta: f64 = 0.0;
+    let mut sub_phi_deltadelta: f64 = 0.0;
+    let mut phi_deltatau: f64 = 0.0;
+    let mut phi_tautau: f64 = 0.0;
+    for m in 0..steps.len() {
+        for k in steps[m].0..steps[m].1 {
+            item = IJn[k].2 * delta.powi(IJn[k].0) * tau.powi(IJn[k].1);
+            delta_item = IJn[k].0 as f64 * item;
+            sub_phi_delta += delta_item;
+            sub_phi_deltadelta += (IJn[k].0 - 1) as f64 * delta_item;
+            phi_deltatau += IJn[k].1 as f64 * delta_item;
+            phi_tautau += (IJn[k].1 * (IJn[k].1 - 1)) as f64 * item;
+        }
+    }
+    phi_delta += (sub_phi_delta / delta);
+    phi_deltadelta += (sub_phi_deltadelta / delta / delta);
+    (
+        phi_delta,
+        phi_deltadelta,
+        phi_deltatau / delta / tau,
+        phi_tautau / tau / tau,
+    )
 }

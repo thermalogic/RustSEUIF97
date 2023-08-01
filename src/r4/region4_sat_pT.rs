@@ -31,7 +31,8 @@ pub fn p_saturation(T: f64) -> f64 {
         let aco: f64 = del * (del + n[0]) + n[1];
         let bco: f64 = del * (n[2] * del + n[3]) + n[4];
         let cco: f64 = del * (n[5] * del + n[6]) + n[7];
-        ps = sac_pow(2.0 * cco / (-bco + (bco * bco - 4.0 * aco * cco).sqrt()), 4);
+        let a:f64=2.0 * cco / (-bco + (bco * bco - 4.0 * aco * cco).sqrt());
+        ps =a.powi(4);
     }
     ps
 }

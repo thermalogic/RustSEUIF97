@@ -4,6 +4,7 @@
 
 use crate::algo::*;
 use crate::common::constant::*;
+use crate::r1::*;
 
 pub const r1pstar: f64 = 16.53; // MPa
 pub const r1Tstar: f64 = 1386.0; // K
@@ -47,32 +48,93 @@ pub const IJn: [(i32, i32, f64); 34] = [
 ];
 
 /// Fundamental equation for region 1
-pub fn gamma_reg1(pi:f64,tau:f64)-> f64 {
-    sum_power(7.1 - pi, tau - 1.222, &IJn)
+pub fn gamma_reg1(pi: f64, tau: f64) -> f64 {
+    let steps: [(usize, usize); 2] = [(0, 19), (19, 34)];
+    poly_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
 }
 
 /// First derivative of fundamental equation in pi for region 1
-pub fn gamma_pi_reg1(pi:f64,tau:f64)-> f64 {
-     -sum_di_power(7.1 - pi, tau - 1.222, &IJn)
+pub fn gamma_pi_reg1(pi: f64, tau: f64) -> f64 {
+    let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    -poly_i_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
 }
 
 /// Second derivative of fundamental equation in pi for region 1
-pub fn gamma_pipi_reg1(pi:f64,tau:f64)-> f64 {
-    sum_dii_power(7.1 - pi, tau - 1.222, &IJn)
+pub fn gamma_pipi_reg1(pi: f64, tau: f64) -> f64 {
+    let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    poly_ii_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
 }
 
 /// First derivative of fundamental equation in tau for region 1
-pub fn gamma_tau_reg1(pi:f64,tau:f64)-> f64 {
-    sum_dj_power(7.1 - pi, tau - 1.222, &IJn)
+pub fn gamma_tau_reg1(pi: f64, tau: f64) -> f64 {
+     let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    poly_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
 }
 
 /// Second derivative of fundamental equation in tau for region 1
-pub fn gamma_tautau_reg1(pi:f64,tau:f64)-> f64 {
-    sum_djj_power(7.1 - pi, tau - 1.222, &IJn)
+pub fn gamma_tautau_reg1(pi: f64, tau: f64) -> f64 {
+    // let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    let steps: [(usize, usize); 3] = [(0, 15), (15, 26), (26, 34)];
+    poly_jj_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
 }
 
 /// Second derivative of fundamental equation in pi and tau for region 1
-pub fn gamma_pitau_reg1(pi:f64,tau:f64)-> f64 {
-    -sum_dij_power(7.1 - pi, tau - 1.222, &IJn)
+pub fn gamma_pitau_reg1(pi: f64, tau: f64) -> f64 {
+    let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    -poly_ij_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
 }
 
+// ------------------- multiple -------------------------------------
+pub fn polys_i_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
+    let steps: [(usize, usize); 3] = [(0, 16), (16, 26), (26, 34)];
+    let (d_pi, d_tau) = polys_i_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    (-d_pi, d_tau)
+}
+
+pub fn polys_i_ii_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
+    let steps: [(usize, usize); 3] = [(0, 14), (14, 26), (26, 34)];
+    let (poly_pi, poly_pipi) = polys_i_ii_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    (-poly_pi, poly_pipi) // 7.1 - pi1,so -d_pi ,-d_pitau
+}
+
+pub fn polys_0_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
+    let steps: [(usize, usize); 2] = [(0, 16), (16, 34)];
+    polys_0_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+}
+
+pub fn polys_i_ij_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
+    let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    let (ploy_pi, ploy_pitau) = polys_i_ij_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    (-ploy_pi, -ploy_pitau) // 7.1 - pi1,so -d_pi ,-d_pitau
+}
+
+/// Fast recursion algorithm
+pub fn polys_i_ii_ij_jj_powi_reg1(pi: f64, tau: f64) -> (f64, f64, f64, f64) {
+    let steps: [(usize, usize); 4] = [(0, 11), (11, 20), (20, 28), (28, 34)];
+
+    let pi1 = 7.1 - pi;
+    let tau1 = tau - 1.222;
+    let mut item: f64 = 0.0;
+    let mut pi_item: f64 = 0.0;
+
+    let mut poly_pi: f64 = 0.0;
+    let mut poly_pipi: f64 = 0.0;
+    let mut poly_pitau: f64 = 0.0;
+    let mut poly_tautau: f64 = 0.0;
+    for m in 0..steps.len() {
+        for k in steps[m].0..steps[m].1 {
+            item = IJn[k].2 * pi1.powi(IJn[k].0) * tau1.powi(IJn[k].1);
+            pi_item = IJn[k].0 as f64 * item;
+            poly_pi += pi_item;
+            poly_pipi += (IJn[k].0 - 1) as f64 * pi_item;
+            poly_pitau += IJn[k].1 as f64 * pi_item;
+            poly_tautau += (IJn[k].1 * (IJn[k].1 - 1)) as f64 * item;
+        }
+    }
+    (
+        -poly_pi / pi,
+        poly_pipi / pi / pi,
+        -poly_pitau / pi / tau1,
+        poly_tautau / tau1 / tau1,
+    )
+}

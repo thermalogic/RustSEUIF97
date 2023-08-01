@@ -58,6 +58,11 @@ pub fn hs_reg4(h: f64, s: f64, o_id: i32) -> f64 {
     px_reg4(p, x, o_id)
 }
 
+/// Region 4 - The extended input pair
+///       (p,v) ->x
+///       (t,h),(t,s),(t,v)->x
+///   x: Steam quality
+
 ///  (p,v) ->x
 pub fn pv_reg4(p: f64, v: f64, o_id: i32) -> f64 {
     let x: f64 = pv2x_reg4(p, v);
@@ -92,6 +97,71 @@ pub fn ts_reg4(t: f64, s: f64, o_id: i32) -> f64 {
         return x;
     }
     Tx_reg4(t + 273.15, x, o_id)
+}
+
+/// helper of (h,x),(s,x) -failed!
+fn helper_hxsx_reg4(y: f64, x: f64, y_id: i32) -> f64 {
+    let mut T: f64 = 0.0;
+    let mut T1: f64 = T_MIN4 + 0.01;
+    let mut T2: f64 = 0.5 * (T_MIN4 + T_MAX4);
+    let sw1: f64 = T2sat_water(T1, y_id);
+    let ss1: f64 = T2sat_steam(T1, y_id);
+    let sw2: f64 = T2sat_water(T2, y_id);
+    let ss2: f64 = T2sat_steam(T2, y_id);
+    let mut x1: f64 = (y - sw1) / (ss1 - sw1);
+    let mut x2: f64 = (y - sw2) / (ss2 - sw2);
+    let mut ft: f64 = x - x1;
+    let mut f: f64 = x - x2;
+    let mut swap: f64 = 0.0;
+
+    let mut pt: f64 = 0.0;
+    if ft.abs() < f.abs() {
+        T = T1;
+        pt = T2;
+        swap = ft;
+        ft = f;
+        f = swap;
+    } else {
+        pt = T1;
+        T = T2;
+    };
+    let mut again_t: bool = true;
+    let mut n: i32 = 0;
+    let mut dt: f64 = 0.0;
+    let mut xx: f64 = 0.0;
+    let mut sw: f64 = 0.0;
+    let mut ss: f64 = 0.0;
+
+    while again_t {
+        dt = (pt - T) * f / (f - ft);
+        pt = T;
+        ft = f;
+        T += dt;
+        if (T > T_MIN4) && (T < T_MAX4) {
+            sw = T2sat_water(T, y_id);
+            ss = T2sat_steam(T, y_id);
+            xx = (y - sw) / (ss - sw);
+            f = x - xx;
+        } else {
+            if T < T_MIN4 {
+                T = T_MIN4;
+            } else if T > T_MAX4 {
+                T = T_MAX4;
+            }
+        };
+        if f.abs() > 0.001 {
+            n += 1;
+        } else {
+            again_t = false;
+        }
+        if n > 10000 {
+            again_t = false;
+        };
+    }
+    if n > 10000 {
+        return INVALID_VALUE as f64;
+    }
+    T
 }
 
 /// function for getting the steam quality,residuals: x(T,y)-x
@@ -144,6 +214,7 @@ fn bisection_reg4(
 
 /// (h,x,o_id)
 pub fn hx_reg4(h: f64, x: f64, o_id: i32) -> f64 {
+    //let T: f64 = helper_hxsx_reg4(h, x, OH);
     let mut Tl: f64 = T_MIN4;
     let mut Tr: f64 = T_MAX4;
     let T: f64 = bisection_reg4(x, h, OH, Tl, Tr, 0.00001, 1000);
@@ -155,6 +226,7 @@ pub fn hx_reg4(h: f64, x: f64, o_id: i32) -> f64 {
 
 /// (s,x,o_id)
 pub fn sx_reg4(s: f64, x: f64, o_id: i32) -> f64 {
+    //let T: f64 = helper_hxsx_reg4(s, x, OS);
     let mut Tl: f64 = T_MIN4;
     let mut Tr: f64 = T_MAX4;
     let T: f64 = bisection_reg4(x, s, OS, Tl, Tr, 0.00001, 1000);

@@ -5,9 +5,9 @@
 //!  *  ks: Isentropic exponent
 //!  *  ec: Isobaric cubic expansion coefficient  1/K
 //!  *  kt: Isothermal compressibility, [1/MPa]
-//! 
-//！ *  e: Specific exergy    kJ/kg
+//!
 //!  *  z: Compressibility factor   -
+//！ *  e: Specific exergy    kJ/kg
 //!  *  f: Specific Helmholtz free energy kJ/kg
 //!  *  g: Specific Gibbs free energy  kJ/kg
 //!  *  joule : Joule-Thomson coefficient    K/MPa
@@ -21,6 +21,7 @@
 //!  *  fu: Fugacity, MPa
 //!  * alfap: relative pressure coefficient  1/K
 
+use crate::algo::*;
 use crate::common::*;
 use crate::r1::region1_gfe::*;
 use crate::r1::region1_pT::*;
@@ -31,7 +32,7 @@ pub fn pT_ext_reg1(p: f64, T: f64, o_id: i32) -> f64 {
         OF => pT2f_reg1(p, T),
         OG => pT2g_reg1(p, T),
         OZ => pT2z_reg1(p, T),
-        OKS => pT2ks_reg1(p, T),
+        OKS => pT2k_reg1(p, T),
         OKT => pT2kt_reg1(p, T),
         OEC => pT2ec_reg1(p, T),
         OJTC => pT2joule_reg1(p, T),
@@ -53,7 +54,7 @@ pub fn pT_ext_reg1(p: f64, T: f64, o_id: i32) -> f64 {
 pub fn pT2g_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    RGAS_WATER * T * gamma_reg1(pi,tau)
+    RGAS_WATER * T * gamma_reg1(tau, pi)
 }
 
 /// the Helmholtz Specific free energy:
@@ -61,33 +62,36 @@ pub fn pT2g_reg1(p: f64, T: f64) -> f64 {
 pub fn pT2f_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    RGAS_WATER * T * (gamma_reg1(pi,tau) - pi * gamma_pi_reg1(pi,tau))
+    RGAS_WATER * T * (gamma_reg1(tau, pi) - pi * gamma_pi_reg1(tau, pi))
 }
 
 /// kt Isothermal compressibility 1/Mpa
-// * kt=-(1.0/V)*(dv/dp)T
+// * kt=-(1.0/V)*(∂v/dv)T
 pub fn pT2kt_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    -gamma_pipi_reg1(pi,tau) / gamma_pi_reg1(pi,tau) / r1pstar
+
+    let (d_pi, d_pipi) = polys_i_ii_powi_reg1(pi, tau);
+    -d_pipi / d_pi / r1pstar
 }
 
-/// ec Isobaric volume expansion coefficient  1/K
+/// ec Isobaric cubic expansion coefficient // Isobaric volume expansion coefficient  1/K
 /// Coefficient of thermal expansion,
-/// * α=(1.0/V)*(dv/dT)p
+/// * αv=(1.0/v)*(∂v/∂T)p
 pub fn pT2ec_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    1.0 / T - tau * gamma_pitau_reg1(pi,tau) / gamma_pi_reg1(pi,tau) / T
+    let (d_pi, d_pitau) = polys_i_ij_powi_reg1(pi, tau);
+    1.0 / T - tau * (-d_pitau) / (-d_pi) / T
 }
 
 /// Region 1 - (dp/dt)v  MPa/K
 pub fn pT2dpdtcv_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    let gamma_pitau: f64 = gamma_pitau_reg1(pi,tau);
-    let gamma_pi: f64 = gamma_pi_reg1(pi,tau);
-    let gamma_pipi: f64 = gamma_pipi_reg1(pi,tau);
+    let gamma_pitau: f64 = gamma_pitau_reg1(tau, pi);
+    let gamma_pi: f64 = gamma_pi_reg1(tau, pi);
+    let gamma_pipi: f64 = gamma_pipi_reg1(tau, pi);
     r1pstar * (gamma_pitau * r1Tstar - gamma_pi * T) / (T * T * gamma_pipi)
 }
 
@@ -96,10 +100,10 @@ pub fn pT2dpdtcv_reg1(p: f64, T: f64) -> f64 {
 pub fn pT2joule_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    let g1pi: f64 = gamma_pi_reg1(pi,tau);
-    let v: f64 =  RGAS_WATER * T * g1pi / r1pstar;
-    let cp: f64 = -RGAS_WATER * tau * tau * gamma_tautau_reg1(pi,tau);
-    let TCex_1: f64 = -tau * gamma_pitau_reg1(pi,tau) / g1pi;
+    let g1pi: f64 = gamma_pi_reg1(tau, pi);
+    let v: f64 = RGAS_WATER * T * g1pi / r1pstar;
+    let cp: f64 = -RGAS_WATER * tau * tau * gamma_tautau_reg1(tau, pi);
+    let TCex_1: f64 = -tau * gamma_pitau_reg1(tau, pi) / g1pi;
     (v / cp) * TCex_1
 }
 
@@ -109,21 +113,21 @@ pub fn pT2joule_reg1(p: f64, T: f64) -> f64 {
 pub fn pT2iJTC_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    0.001 * RGAS_WATER * r1Tstar * gamma_pitau_reg1(pi,tau) / r1pstar
+    0.001 * RGAS_WATER * r1Tstar * gamma_pitau_reg1(tau, pi) / r1pstar
 }
 
 /// dvdp Partial derivative (dV/dP)T  m3/(kg·MPa)
 pub fn pT2dvdpct_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    0.001 * RGAS_WATER * T * gamma_pipi_reg1(pi,tau) / r1pstar / r1pstar
+    0.001 * RGAS_WATER * T * gamma_pipi_reg1(tau, pi) / r1pstar / r1pstar
 }
 
 // (dv/dT)p m3/(kg.K)
 pub fn pT2dvdTcp_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    0.001 * RGAS_WATER * (gamma_pi_reg1(pi,tau) - tau * gamma_pitau_reg1(pi,tau)) / r1pstar
+    0.001 * RGAS_WATER * (gamma_pi_reg1(tau, pi) - tau * gamma_pitau_reg1(tau, pi)) / r1pstar
 }
 
 /// z: Compressibility factor  
@@ -132,9 +136,9 @@ pub fn pT2z_reg1(p: f64, T: f64) -> f64 {
     1000.0 * p * v / RGAS_WATER / T
 }
 
-/// ks:Isentropic exponent OKIE
-/// * ks= -(v/p)*/1000*(dp/dv)
-pub fn pT2ks_reg1(p: f64, T: f64) -> f64 {
+/// k:Isentropic exponent OKIE
+/// * k= -(v/p)*/1000*(dp/dv)s
+pub fn pT2k_reg1(p: f64, T: f64) -> f64 {
     let v: f64 = pT2v_reg1(p, T);
     let w: f64 = pT2w_reg1(p, T);
     1.0E-6 * w * w / v / p
@@ -150,8 +154,8 @@ pub fn pT2pc_reg1(p: f64, T: f64) -> f64 {
 pub fn pT2e_reg1(p: f64, T: f64) -> f64 {
     let tau: f64 = r1Tstar / T;
     let pi: f64 = p / r1pstar;
-    let gumma: f64 = gamma_reg1(pi,tau);
-    let gumma_tau: f64 = gamma_tau_reg1(pi,tau);
+    let gumma: f64 = gamma_reg1(tau, pi);
+    let gumma_tau: f64 = gamma_tau_reg1(tau, pi);
     RGAS_WATER * (T * gumma + (T - 273.16) * (tau * gumma_tau - gumma))
 }
 
@@ -184,5 +188,5 @@ pub fn pT2fu_reg1(p: f64, T: f64) -> f64 {
 pub fn pT2alfap_reg1(p: f64, T: f64) -> f64 {
     let ec: f64 = pT2ec_reg1(p, T);
     let kt: f64 = pT2kt_reg1(p, T);
-    ec/p/kt
+    ec / p / kt
 }

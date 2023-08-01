@@ -55,6 +55,9 @@ pub fn hs_reg2(h: f64, s: f64, o_id: i32) -> f64 {
     ph_reg2(p, h, o_id)
 }
 
+/// IAPWS-IF97 Region 2 : The extended input pair
+/// *  (p,v)  (t,v),(t,h),(t,s)
+
 /// Region 2 : (p,v)
 pub fn pv_reg2(p: f64, v: f64, o_id: i32) -> f64 {
     let T: f64 = pv2T_reg2(p, v);

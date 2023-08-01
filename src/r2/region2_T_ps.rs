@@ -72,9 +72,9 @@ pub fn ps2T_reg2a(p: f64, s: f64) -> f64 {
 
     let mut theta: f64 = 0.0;
     for k in IJn {
-        // sac better
-        theta += k.2 * pi.powf(k.0) * sac_pow(sigma, k.1); // IJn[k].0 is float
-                                                           //theta += k.2 * pi.powf(k.0) * sigma.powi(k.1); // IJn[k].0 is float
+        theta += k.2 * pi.powf(k.0) * sigma.powi(k.1); // IJn[k].0 is float
+                                                           // theta += IJn[k].2* pi.powf(IJn[k].0) * sigma.powi(IJn[k].1); // IJn[k].0) is float
+
     }
     1.0 * theta
 }
@@ -130,8 +130,11 @@ pub fn ps2T_reg2b(p: f64, s: f64) -> f64 {
 
     let pi: f64 = p / 1.0;
     let sigma: f64 = 10.0 - s / 0.7853;
-    // sac better 6X
-    1.0 * sum_power(pi, sigma, &IJn)
+    // sac better 7X 16
+    // 1.0 * poly(pi, sigma, &IJn)
+    // powi_two_range 4ms
+    let steps: [(usize, usize); 2] = [(0,22), (22, 44)];
+    1.0*poly_powi_steps(pi,sigma,&IJn,&steps)
 }
 
 pub fn ps2T_reg2c(p: f64, s: f64) -> f64 {
@@ -186,4 +189,24 @@ pub fn ps2T_reg2(p: f64, s: f64) -> f64 {
         T = ps2T_reg2a(p, s);
     }
     T
+    /*
+    // interation refine
+    let mut T1: f64 = T;
+    let f1: f64 = s - pT2s_reg2(p, T1);
+
+    if f1.abs() > ESP {
+        let mut T2: f64 = 0.0;
+        if f1 > 0.0
+        // pT2sreg1(p,T1)< s ,the T1< expt T，so， T2=1.05*T1 T（T1,T2)
+        {
+            T2 = (1.0 + f1 / s) * T1;
+        } else {
+            T2 = (1.0 - f1 / s) * T1;
+        }
+
+        let f2: f64 = s - pT2s_reg2(p, T2);
+
+        T = rtsec2(pT2s_reg2, p, s, T1, T2, f1, f2, ESP, I_MAX);
+    };
+    return T;*/
 }

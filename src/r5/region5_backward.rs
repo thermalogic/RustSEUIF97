@@ -9,6 +9,12 @@ use crate::common::constant::*;
 use crate::r5::region5_pT::*;
 
 pub fn ph2T_reg5(p: f64, h: f64) -> f64 {
+    // TODO:  插值求迭代初值方法
+    // double  hmin =pT2hreg2(p,1073.15);
+    // double  hmax = pT2hreg5(p,2273.15);
+    //  T1=1073.15+(2273.15-1073.15)*(h-hmin)/(hmax-hmin);
+    //  求迭代初值方法2： 以三相点为起点,采用与理想气体的对比关系求迭代初值
+
     let mut T: f64 = -1000.0;
     let mut T1: f64 = 0.5 * (2273.15 + 1073.15);
     let f1: f64 = h - pT2h_reg5(p, T1);
@@ -37,6 +43,11 @@ pub fn ph2T_reg5(p: f64, h: f64) -> f64 {
 }
 
 pub fn ps2T_reg5(p: f64, s: f64) -> f64 {
+    //TODO: 插值求迭代初值方法1
+    // double  smin =pT2sreg2(p,1073.15);
+    // double  smax = pT2sreg5(p,2273.15);
+    // T1=1073.15+(2273.15-1073.15)*(s-smin)/(smax-smin);
+
     let mut T: f64 = -1000.0;
     let T1: f64 = 0.5 * (2273.15 + 1073.15); // Get initial value
     let f1: f64 = s - pT2s_reg5(p, T1);
@@ -71,6 +82,13 @@ fn ph2s_reg5(p: f64, h: f64) -> f64 {
 }
 
 pub fn hs2p_reg5(h: f64, s: f64) -> f64 {
+    // TODO:  迭代初始值，可测试那个更好?
+    // 也可以计算smin,smax,2元插值得到更接近的p1
+    // 测试表明：更复杂的方法计算迭代初始数值并不更好
+    //double  hmin =pT2hreg5(PMIN5,1073.15);
+    //double  hmax =pT2hreg5(PMAX5,2273.15);
+    //p1=PMIN5+(PMAX5-PMIN5)*(h-hmin)/(hmax-hmin);
+
     let mut p: f64 = -1000.0;
 
     let p1: f64 = 0.5 * (P_MIN5 + P_MAX5);

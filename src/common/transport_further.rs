@@ -1,11 +1,12 @@
 //! Transport and Further Properties(7)
 //! *  Dynamic viscosity    Pa.s      dv    
-//! *  Kinematic viscosity  m²/s     kv    
+//! *  Kinematic viscosity  m^2/s     kv    
 //! *  Thermal conductivity W/(m.K)   tc     
-//! *  Thermal diffusivity  m²2/s     td     
+//! *  Thermal diffusivity  m^2/s     td     
 //! *  Prandtl number                 pr     
 //! *  Static dialectric sonstant     sdc
 //！*  Surface tension       N/m       st
+//! 待加： the ionization constant of ordinary water
 
 use crate::algo::*;
 use crate::common::constant::*;
@@ -27,7 +28,6 @@ pub fn thermal_diffusivity(tc: f64, cp: f64, d: f64) -> f64 {
     1.0e-3 * tc / (cp * d)
 }
 
-
 /// Viscosity  kg/(m·s)
 /// * Parameters
 ///    * rho :  Density  kg/m³
@@ -41,7 +41,7 @@ pub fn viscosity(rho: f64, T: f64) -> f64 {
     let no: [f64; 4] = [1.67752, 2.20462, 0.6366564, -0.241605];
     let mut suma: f64 = 0.0;
     for i in 0..4 {
-        suma += no[i] / sac_pow(Tr, i as i32)
+        suma += no[i] / Tr.powi(i as i32)
     }
     let fi0: f64 = 100.0 * Tr.sqrt() / suma;
 
@@ -70,13 +70,13 @@ pub fn viscosity(rho: f64, T: f64) -> f64 {
         (5, 6, -5.93264e-4),
     ];
 
-    suma = sum_power(1.0 / Tr - 1.0, Dr - 1.0, &ijH);
+    suma = poly(1.0 / Tr - 1.0, Dr - 1.0, &ijH);
     let fi1: f64 = (Dr * suma).exp();
     let fi2: f64 = 1.0;
     fi0 * fi1 * fi2 * 1.0e-6
 }
 
-/// Thermal conductivity  W/mK
+/// Thermal conductivity  λ W/mK
 ///   * rho :  Density kg/m³
 ///   * T :  Temperature K
 /// IAPWS, Release on the IAPWS Formulation 2011 for the Thermal Conductivity  of Ordinary Water Substance
@@ -94,7 +94,7 @@ pub fn thcond(rho: f64, T: f64) -> f64 {
     ];
     let mut suma: f64 = 0.0;
     for i in 0..5 {
-        suma += no[i] / sac_pow(Tr, i as i32);
+        suma += no[i] /Tr.powi(i as i32);
     }
     let L0 = Tr.sqrt() / suma;
     // Page 6 Table 2.  Coefficients Lij in Eq(17)
@@ -144,9 +144,9 @@ pub fn thcond(rho: f64, T: f64) -> f64 {
     for i in 0..5 {
         let mut suma2: f64 = 0.0;
         for j in 0..6 {
-            suma2 += nij[i][j] * sac_pow(d - 1.0, j as i32);
+            suma2 += nij[i][j] * (d - 1.0).powi(j as i32);
         }
-        suma += sac_pow(1.0 / Tr - 1.0, i as i32) * suma2
+        suma += (1.0 / Tr - 1.0).powi(i as i32) * suma2
     }
     let L1: f64 = (d * suma).exp();
 
@@ -202,7 +202,7 @@ pub fn static_dielectric(rho: f64, T: f64) -> f64 {
 
     let mut g: f64 = 1.0 + n[11] * d / (TC_WATER / 228.0 / Tr - 1.0).powf(1.2);
     for i in 0..11 {
-        g += n[i] * sac_pow(d, I[i]) * Tr.powf(J[i]);
+        g += n[i] * d.powi(I[i]) * Tr.powf(J[i]);
     }
 
     let A: f64 = Na * mu * mu * rho * g / M / epsilon0 / k / T;
@@ -210,3 +210,41 @@ pub fn static_dielectric(rho: f64, T: f64) -> f64 {
     let c: f64 = 9.0 + 2.0 * A + 18.0 * B + A * A + 10.0 * A * B + 9.0 * B * B;
     (1.0 + A + 5.0 * B + c.sqrt()) / 4.0 / (1. - B)
 }
+
+/*
+double Kw(double rho,double  T)
+/*
+  "Equation for the ionization constant of ordinary water
+   rho : float     Density [kg/m³]
+   T : float     Temperature [K]
+   pKw : float    Ionization constant in -log10(kw) [-]
+
+   Raises -1000 If input isn't in limit
+       * 0 ≤ ρ ≤ 1250
+       * 273.15 ≤ T ≤ 1073.15
+    _Kw(1000, 300)   13.906565
+
+   References
+   ----------
+   IAPWS, Release on the Ionization Constant of H2O,
+   http://www.iapws.org/relguide/Ionization.pdf
+*/
+{  // Check input parameters
+   if (rho < 0 || rho > 1250 || T < 273.15 || T > 1073.15）
+         return -1000;
+
+   // The internal method of calculation use rho in g/cm³
+   double d = rho/1000.0;
+   //Water molecular weight different
+   double Mw = 18.015268;
+   double gamma[4] = {6.1415e-1, 4.825133e4, -6.770793e4, 1.01021e7};
+
+   double pKg = 0;
+   for(int i=0; i<4; i++)
+       pKg += gamma[i]/pow(T,i);
+
+   double Q = d*exp(-0.864671+8659.19/T-22786.2/pow(T,2)*pow(d,(2./3)));
+   double pKw = -12*(log10(1+Q)-Q/(Q+1)*d*(0.642044-56.8534/T-0.375754*d)) +
+                pKg+2*log10(Mw/1000)
+   return pKw;
+}   */

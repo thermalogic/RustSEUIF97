@@ -48,6 +48,11 @@ pub fn hs2p3a_reg3(h: f64, s: f64) -> f64 {
 
     let nu: f64 = h / 2300.0 - 1.01;
     let sigma: f64 = s / 4.4 - 0.75;
+    //let mut suma: f64 = 0.0;
+    //for i in 0..33 {
+    //    suma += IJn[i].2 * sac_pow(nu, IJn[i].0) * sac_pow(sigma, IJn[i].1);
+   // }
+   // 99.0 * suma
     99.0 * poly_powi(nu,sigma,&IJn)
 }
 
@@ -93,7 +98,7 @@ pub fn hs2p3b_reg3(h: f64, s: f64) -> f64 {
 
     let nu: f64 = h / 2800.0 - 0.681;
     let sigma: f64 = s / 5.3 - 0.792;
-    16.6 /poly_powi(nu,sigma,&IJn)
+    16.6 / poly_powi(nu,sigma,&IJn)
 }
 
 ///  Backward equation for region 3, P=f(h,s)

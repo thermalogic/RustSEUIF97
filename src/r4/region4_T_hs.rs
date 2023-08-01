@@ -1,5 +1,5 @@
 //! Region 4 - Backward Equation Tsat(h,s)
-//!！Page25,Page30 Eq 9: <http://www.iapws.org/relguide/Supp-phs3-2014.pdf> 
+//!！Page25,Page30 Eq 9: <http://www.iapws.org/relguide/Supp-phs3-2014.pdf>
 //！*  5.3 Backward Equation Tsat(h,s)
 //！   * s> 5.210 887 825
 //！   * Temperature range is T（273.15,623.15）
@@ -67,7 +67,7 @@ pub fn hs2T_reg43(h: f64, s: f64) -> f64 {
 
     let nu: f64 = h / 2800.0 - 0.119;
     let sigma: f64 = s / 9.2 - 1.07;
-    let mut suma: f64 =poly_powi(nu, sigma, &IJn);
+    let mut suma: f64 = poly_powi(nu, sigma, &IJn);
     550.0 * suma
 }
 

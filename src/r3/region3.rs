@@ -98,6 +98,9 @@ pub fn hs_reg3(h: f64, s: f64, o_id: i32) -> f64 {
     Td_reg3(T, d, o_id)
 }
 
+/// IAPWS-IF97 Region3: The extended input pair
+/// * (p,v) (t,v), (t,h),(t,s)
+
 ///  Region3:  (p,v)
 pub fn pv_reg3(p: f64, v: f64, o_id: i32) -> f64 {
     let d: f64 = 1.0 / v;

@@ -103,11 +103,11 @@ pub fn ph2T_3b_reg3(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.298;
     let eta: f64 = h / 2800.0 - 0.720;
-    860.0 *  poly_powi(pi, eta, &IJn)
+    860.0 * poly_powi(pi, eta, &IJn)
 }
 
 /// Region 3a (p,h)->v
-fn ph2v_3a_reg3(p: f64, h: f64) -> f64 {
+pub fn ph2v_3a_reg3(p: f64, h: f64) -> f64 {
     //Page9 Table 6. Coefficients and exponents of the  equation v3a(p,h) for subregion 3a in its dimensionless form, Eq. (4)
     const IJn: [(i32, i32, f64); 32] = [
         (-12, 6, 5.29944062966028e-3),
@@ -146,7 +146,7 @@ fn ph2v_3a_reg3(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 100.0 + 0.128;
     let eta: f64 = h / 2100.0 - 0.727;
-    0.0028 *  poly_powi(pi, eta, &IJn)
+    0.0028 * poly_powi(pi, eta, &IJn)
 }
 
 /// (p,h)->v 3b
@@ -252,7 +252,7 @@ pub fn ps2T_3a_reg3(p: f64, s: f64) -> f64 {
 }
 
 /// (p,s)->T   3b  Page 13, Table 12, Page 12 Eq(7)
-fn ps2T_3b_reg3(p: f64, s: f64) -> f64 {
+pub fn ps2T_3b_reg3(p: f64, s: f64) -> f64 {
     const IJn: [(i32, i32, f64); 28] = [
         (-12, 1, 0.527111701601660E+00),
         (-12, 3, -0.401317830052742E+02),
@@ -290,7 +290,7 @@ fn ps2T_3b_reg3(p: f64, s: f64) -> f64 {
 }
 
 /// (p,s)->v 3a Page 14, Table 13 Eq(8),
-fn ps2v_3a_reg3(p: f64, s: f64) -> f64 {
+pub fn ps2v_3a_reg3(p: f64, s: f64) -> f64 {
     const IJn: [(i32, i32, f64); 28] = [
         (-12, 10, 0.795544074093975E+02),
         (-12, 12, -0.238261242984590E+04),
@@ -328,7 +328,7 @@ fn ps2v_3a_reg3(p: f64, s: f64) -> f64 {
 }
 
 /// (p,s)->v  3b Page 14 Table 14, Eq(9)  
-fn ps2v_3b_reg3(p: f64, s: f64) -> f64 {
+pub fn ps2v_3b_reg3(p: f64, s: f64) -> f64 {
     const IJn: [(i32, i32, f64); 31] = [
         (-12, 0, 0.591599780322238E-04),
         (-12, 1, -0.185465997137856E-02),

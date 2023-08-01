@@ -48,6 +48,8 @@ pub fn hs_reg5(h: f64, s: f64, o_id: i32) -> f64 {
     ph_reg5(p, h, o_id)
 }
 
+/// Region 5 : The extended input pair: (p,v), (t,v),(t,h),(t,s)
+
 ///  Region 5 :(p,v)
 pub fn pv_reg5(p: f64, v: f64, o_id: i32) -> f64 {
     let T: f64 = pv2T_reg5(p, v);

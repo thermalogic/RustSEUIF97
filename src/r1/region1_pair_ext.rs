@@ -145,11 +145,11 @@ pub fn Th2p_reg1(T: f64, h: f64) -> f64 {
 
 /// Region 1  (T,s)->p using the secant method
 ///  * T: temperature  K
-///  * s: specific entropy  kJ/(kg.K)
+///  * s: specific entropy  kJ/(kg K)
 ///  * p: pressure  MPa
 pub fn Ts2p_reg1(T: f64, s: f64) -> f64 {
     let pmin1: f64 = p_saturation(T);
-    let mut p1: f64 = pmin1; 
+    let mut p1: f64 = pmin1; // // 取等温线上最小压力和最大压力作迭代初值
     let mut s1: f64 = pT2s_reg1(p1, T);
     let mut f1: f64 = s - s1;
     let p2: f64 = P_MAX1;

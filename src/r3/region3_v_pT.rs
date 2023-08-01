@@ -113,12 +113,12 @@ pub fn T_atRegionBoundary(p: f64, boundary: &str) -> f64 {
     match boundary {
         "3ab" => {
             for i in 1..=5 {
-                T += n3ab[i] * sac_pow(p.ln(), I3ab[i]);
+                T += n3ab[i] * p.ln().powi(I3ab[i]);
             }
         }
         "3op" => {
             for i in 1..=5 {
-                T += n3op[i] * sac_pow(p.ln(), I3op[i]);
+                T += n3op[i] * p.ln().powi(I3op[i]);
             }
         }
         "3ef" => {
@@ -126,47 +126,47 @@ pub fn T_atRegionBoundary(p: f64, boundary: &str) -> f64 {
         }
         "3cd" => {
             for i in 1..=4 {
-                T += n3cd[i] * sac_pow(p, I3cd[i]);
+                T += n3cd[i] * p.powi(I3cd[i]);
             }
         }
         "3gh" => {
             for i in 1..=5 {
-                T += n3gh[i] * sac_pow(p, I3gh[i]);
+                T += n3gh[i] * p.powi(I3gh[i]);
             }
         }
         "3ij" => {
             for i in 1..=5 {
-                T += n3ij[i] * sac_pow(p, I3ij[i]);
+                T += n3ij[i] * p.powi(I3ij[i]);
             }
         }
         "3jk" => {
             for i in 1..=5 {
-                T += n3jk[i] * sac_pow(p, I3jk[i]);
+                T += n3jk[i] * p.powi(I3jk[i]);
             }
         }
         "3mn" => {
             for i in 1..=4 {
-                T += n3mn[i] * sac_pow(p, I3mn[i]);
+                T += n3mn[i] * p.powi(I3mn[i]);
             }
         }
         "3qu" => {
             for i in 1..=4 {
-                T += n3qu[i] * sac_pow(p, I3qu[i]);
+                T += n3qu[i] * p.powi(I3qu[i]);
             }
         }
         "3rx" => {
             for i in 1..=4 {
-                T += n3rx[i] * sac_pow(p, I3rx[i]);
+                T += n3rx[i] * p.powi(I3rx[i]);
             }
         }
         "3uv" => {
             for i in 1..=4 {
-                T += n3uv[i] * sac_pow(p, I3uv[i]);
+                T += n3uv[i] * p.powi(I3uv[i]);
             }
         }
         "3wx" => {
             for i in 1..=5 {
-                T += n3wx[i] * sac_pow(p.ln(), I3wx[i]);
+                T += n3wx[i] * p.ln().powi(I3wx[i]);
             }
         }
         _ => (),
@@ -317,11 +317,15 @@ pub fn sub_region3_pT(p: f64, T: f64) -> char {
                 subRegion = 'c';
             } else if T <= tBqu {
                 subRegion = 'q';
+                //这里的判断算法有点问题，下面这个 subRegion会被重新设定u
+                // 简便处理，这个判断后，立即返回
                 return subRegion;
             }
 
             if T > tBrx && T <= tBjk {
                 subRegion = 'r';
+                // 这里的判断算法有点问题，下面这个 subRegion会被重新设定u
+                // 简便处理，这个判断后，立即返回
                 return subRegion;
             }
 
@@ -424,5 +428,5 @@ pub fn sub_region3_pT(p: f64, T: f64) -> char {
 pub fn pT2v_reg3(p: f64, T: f64) -> f64 {
     let sub_region: char = sub_region3_pT(p, T);
     let v: f64 = pT2v_3subreg(p, T, sub_region);
-    v
+    return v;
 }

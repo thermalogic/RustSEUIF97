@@ -17,8 +17,8 @@ pub fn pT2v_reg5(p: f64, T: f64) -> f64 {
 pub fn pT2u_reg5(p: f64, T: f64) -> f64 {
     let pi: f64 = p / r5Pstar;
     let tau: f64 = r5Tstar / T;
-    
-    let (sum_gammar_pi,sum_gammar_tau)=sum_i_j_power(pi,tau,&IJn);
+   
+    let (sum_gammar_pi,sum_gammar_tau)=polys_i_j(pi,tau,&IJn);
     let a: f64 = tau * (gamma0_tau_reg5(tau) + sum_gammar_tau)
     - pi * (gamma0_pi_reg5(pi) + sum_gammar_pi);
     RGAS_WATER * T * a
@@ -28,8 +28,8 @@ pub fn pT2u_reg5(p: f64, T: f64) -> f64 {
 pub fn pT2s_reg5(p: f64, T: f64) -> f64 {
     let pi: f64 = p / r5Pstar;
     let tau: f64 = r5Tstar / T;
-     
-    let (sum_gammar,sum_gammar_tau)=sum_0_j_power(pi,tau,&IJn);
+   
+    let (sum_gammar,sum_gammar_tau)=polys_0_j(pi,tau,&IJn);
     let a:f64=tau* (gamma0_tau_reg5(tau) + sum_gammar_tau) - (gamma0_reg5(pi, tau) + sum_gammar);
     
     RGAS_WATER * a
@@ -53,9 +53,9 @@ pub fn pT2cp_reg5(p: f64, T: f64) -> f64 {
 pub fn pT2cv_reg5(p: f64, T: f64) -> f64 {
     let pi: f64 = p / r5Pstar;
     let tau: f64 = r5Tstar / T;
- 
+
     let (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau) =
-    sum_i_ii_ij_jj_power(pi, tau,&IJn);
+    polys_i_ii_ij_jj(pi, tau,&IJn);
     
     let a: f64 = -tau * tau * (gamma0_tautau_reg5(tau) + gammar_tautau);
     let b: f64 = 1.0 + pi * gammar_pi - tau * pi * gammar_pitau;
@@ -68,7 +68,7 @@ pub fn pT2w_reg5(p: f64, T: f64) -> f64 {
     let pi: f64 = p / r5Pstar;
 
     let (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau) =
-    sum_i_ii_ij_jj_power(pi, tau,&IJn);
+    polys_i_ii_ij_jj(pi, tau,&IJn);
 
     let temp: f64 = pi * gammar_pi;
     let a: f64 = 1.0 + temp * (2.0 + temp);

@@ -9,11 +9,11 @@ use crate::r2::region2_pT::*;
 /// the extended properties
 pub fn pT_ext_reg2(p: f64, T: f64, o_id: i32) -> f64 {
     match o_id {
+        OKS => pT2ks_reg2(p, T),
         OF => pT2f_reg2(p, T),
         OG => pT2g_reg2(p, T),
         OZ => pT2z_reg2(p, T),
-        OKS => pT2ks_reg2(p, T),
-        OKT => pT2kt_reg2(p, T),
+         OKT => pT2kt_reg2(p, T),
         OEC => pT2ec_reg2(p, T),
         OJTC => pT2joule_reg2(p, T),
         OIJTC => pT2iJTC_reg2(p, T),
@@ -28,6 +28,34 @@ pub fn pT_ext_reg2(p: f64, T: f64, o_id: i32) -> f64 {
         OALFAP =>pT2alfap_reg2(p, T),
         _ => INVALID_OUTID as f64,
     }
+}
+
+/// ks: Isentropic exponent
+/// * k= -(v/p)*/1000*(dp/dv)
+pub fn pT2ks_reg2(p: f64, T: f64) -> f64 {
+    let v: f64 = pT2v_reg2(p, T);
+    let w: f64 = pT2w_reg2(p, T);
+    1.0E-6 * w * w / v / p
+}
+
+///  αv: region2 ec Isobaric cubic expansion coefficient  1/K
+/// * αv=(1.0/v)*(∂v/∂T)p ( The book 2019,Page 28)
+pub fn pT2ec_reg2(p: f64, T: f64) -> f64 {
+    let tau: f64 = r2Tstar / T;
+    let pi: f64 = p;
+    let d: f64 = 1.0 / pT2v_reg2(p, T);
+    d * pT2dvdtcp_reg2(p, T)
+}
+
+
+
+/// kt Isothermal compressibility 1/MPa
+pub fn pT2kt_reg2(p: f64, T: f64) -> f64 {
+    let tau: f64 = r2Tstar / T;
+    let pi: f64 = p;
+    let gummapipi: f64 = gamma0_pipi_reg2(pi) + gammar_pipi_reg2(pi,tau);
+    let gummapi: f64 = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau);
+    -(gummapipi / gummapi)
 }
 
 /// the specific Gibbs free energy
@@ -49,13 +77,18 @@ pub fn pT2f_reg2(p: f64, T: f64) -> f64 {
             - p * (gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau)))
 }
 
-/// kt Isothermal compressibility 1/MPa
-pub fn pT2kt_reg2(p: f64, T: f64) -> f64 {
+/// joule ： Joule-Thomson coefficient    K/MPa
+/// *  (dt/dp)h
+pub fn pT2joule_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    let gummapipi: f64 = gamma0_pipi_reg2(pi) + gammar_pipi_reg2(pi,tau);
-    let gummapi: f64 = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau);
-    -(gummapipi / gummapi)
+    let gummapi = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau);
+    let gummatautau = gamma0_tautau_reg2(pi,tau) + gammar_tautau_reg2(pi,tau);
+    let gummapitau = gamma0_pitau_reg2() + gammar_pitau_reg2(pi,tau);
+    let v = RGAS_WATER * T * gummapi;
+    let cp = -RGAS_WATER * tau * tau * gummatautau;
+    let TCex_1 = -tau * gummapitau / gummapi;
+    (v / cp) * TCex_1
 }
 
 ///(dv/dp)t
@@ -75,27 +108,8 @@ pub fn pT2dvdtcp_reg2(p: f64, T: f64) -> f64 {
     0.001 * RGAS_WATER * (gummapi - tau * gummapitau)
 }
 
-/// region2 ec Isobaric volume expansion coefficient  1/K
-pub fn pT2ec_reg2(p: f64, T: f64) -> f64 {
-    let tau: f64 = r2Tstar / T;
-    let pi: f64 = p;
-    let d: f64 = 1.0 / pT2v_reg2(p, T);
-    d * pT2dvdtcp_reg2(p, T)
-}
 
-/// joule ： Joule-Thomson coefficient    K/MPa
-/// *  (dt/dp)h
-pub fn pT2joule_reg2(p: f64, T: f64) -> f64 {
-    let tau: f64 = r2Tstar / T;
-    let pi: f64 = p;
-    let gummapi = gamma0_pi_reg2(pi) + gammar_pi_reg2(pi,tau);
-    let gummatautau = gamma0_tautau_reg2(pi,tau) + gammar_tautau_reg2(pi,tau);
-    let gummapitau = gamma0_pitau_reg2() + gammar_pitau_reg2(pi,tau);
-    let v = RGAS_WATER * T * gummapi;
-    let cp = -RGAS_WATER * tau * tau * gummatautau;
-    let TCex_1 = -tau * gummapitau / gummapi;
-    (v / cp) * TCex_1
-}
+
 
 //  Isothermal throttling coefficient
 ///  iJTC Isothermal Joule-Thomson coefficient kJ/(kg·MPa)
@@ -141,13 +155,7 @@ pub fn pT2z_reg2(p: f64, T: f64) -> f64 {
     1000.0 * p * v / RGAS_WATER / T
 }
 
-/// ks: Isentropic exponent
-/// * ks= -(v/p)*/1000*(dp/dv)
-pub fn pT2ks_reg2(p: f64, T: f64) -> f64 {
-    let v: f64 = pT2v_reg2(p, T);
-    let w: f64 = pT2w_reg2(p, T);
-    1.0E-6 * w * w / v / p
-}
+
 
 /// batap Isothermal stress coefficient, kg/m³
 ///  (-1.0/p)*(dp/dv)T

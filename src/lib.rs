@@ -1,18 +1,20 @@
 #![allow(warnings)]
 //#![warn(missing_docs)]
+//#![feature(test)]
 /*!
 # IF97
 
 IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-15x speed-up compared to  the `powi()` of the Rust standard library when computing the basic equations of Region 1,2,3.
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 10-20x speed-up compared to  using the `powi()` of 
+the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
 * The comparison results of the computing-time are obtained using the [criterion.rs](https://bheisler.github.io/criterion.rs/book/index.html). 
 
-**The Fast Algorithm**
+**The Fast Methods**
 
-1. The shortest addition chain computes integer powers of a number.([the paper in chinese](https://github.com/thermalogic/SEUIF97/blob/master/doc/水和水蒸汽热力性质IAPWS-IF97公式的通用计算模型.pdf))
-2. The recursive algorithm computes the polynomial values of the base variable and its derivatives
+1. The multi-step method to enable the compiler optimizations for using `powi()` in the `for` loop
+2. The recursive  method computes the polynomial values of the base variable and its derivatives
 
 In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
@@ -131,8 +133,7 @@ use r3::*;
 use r4::*;
 use r5::*;
 
-
-/// pt(p,t,o_id) - the propertry of o_id(thermodynamic,transport,etc)
+/// pt(p,t,o_id)：the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -147,6 +148,8 @@ use r5::*;
 /// println!("p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");    
 /// ```
 ///
+//--------------------------------------------------------------------------------
+
 pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     match o_id {
         OP => return p,
@@ -188,7 +191,7 @@ pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     }
 }
 
-/// ph(p,h,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+/// ph(p,h,o_id)：the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -249,7 +252,7 @@ pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-/// ps(p,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+/// ps(p,s,o_id)：the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -308,7 +311,7 @@ pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-/// hs(h,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+/// hs(h,s,o_id)：the propertry of o_id (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -384,6 +387,8 @@ pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
 ///  println!("px: p={p:.6} x={x:.6} t={t:.6} h={h:.6}");
 ///```
 
+// #[no_mangle]
+// pub unsafe extern "C"  fn px(p: f64, x: f64, o_id: i32) -> f64 {
 pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
     if p > P_MAX4 || p < P_MIN4 || x > 1.0 || x < 0.0 {
         return INVALID_VALUE as f64;
@@ -418,7 +423,9 @@ pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
     Tx_reg4(T, x, o_id)
 }
 
-/// pv(p,v,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+///  Functions of the  extended input pairs (p,v),(t,v),(t,s),(t,h)
+
+/// The  extended input pair pv(p,v,o_id)
 ///
 /// # Examples
 ///
@@ -477,7 +484,7 @@ pub fn pv(p: f64, v: f64, o_id: i32) -> f64 {
     }
 }
 
-/// tv(t,v,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+/// The  extended input pair tv(t,v,o_id)
 ///
 /// # Examples
 ///
@@ -530,7 +537,7 @@ pub fn tv(t: f64, v: f64, o_id: i32) -> f64 {
     }
 }
 
-/// th(t,h,o_id) - the propertry of o_id(thermodynamic,transport,etc)
+/// The  extended input pair th(t,h,o_id)
 ///  
 /// # Examples
 ///
@@ -583,7 +590,7 @@ pub fn th(t: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-/// ts(t,s,o_id) - the propertry of o_id (thermodynamic,transport,etc)
+/// The  extended input pair ts(t,s,o_id)
 ///   
 /// # Examples
 ///
@@ -636,7 +643,7 @@ pub fn ts(t: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-/// hx(h,x,o_id) - the propertry of o_id (thermodynamic)
+/// The  extended input pair hx(h,x,o_id)
 ///
 ///  # Examples
 ///
@@ -661,7 +668,7 @@ pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-/// sx(s,x,o_id) - the propertry of o_id (thermodynamic)
+/// The  extended input pair sx(s,x,o_id)
 ///
 ///  # Examples
 ///
