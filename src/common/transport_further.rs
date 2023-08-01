@@ -94,7 +94,7 @@ pub fn thcond(rho: f64, T: f64) -> f64 {
     ];
     let mut suma: f64 = 0.0;
     for i in 0..5 {
-        suma += no[i] /Tr.powi(i as i32);
+        suma += no[i] / Tr.powi(i as i32);
     }
     let L0 = Tr.sqrt() / suma;
     // Page 6 Table 2.  Coefficients Lij in Eq(17)
@@ -149,7 +149,6 @@ pub fn thcond(rho: f64, T: f64) -> f64 {
         suma += (1.0 / Tr - 1.0).powi(i as i32) * suma2
     }
     let L1: f64 = (d * suma).exp();
-
     let L2: f64 = 0.0;
     1e-3 * (L0 * L1 + L2)
 }
@@ -210,41 +209,3 @@ pub fn static_dielectric(rho: f64, T: f64) -> f64 {
     let c: f64 = 9.0 + 2.0 * A + 18.0 * B + A * A + 10.0 * A * B + 9.0 * B * B;
     (1.0 + A + 5.0 * B + c.sqrt()) / 4.0 / (1. - B)
 }
-
-/*
-double Kw(double rho,double  T)
-/*
-  "Equation for the ionization constant of ordinary water
-   rho : float     Density [kg/m³]
-   T : float     Temperature [K]
-   pKw : float    Ionization constant in -log10(kw) [-]
-
-   Raises -1000 If input isn't in limit
-       * 0 ≤ ρ ≤ 1250
-       * 273.15 ≤ T ≤ 1073.15
-    _Kw(1000, 300)   13.906565
-
-   References
-   ----------
-   IAPWS, Release on the Ionization Constant of H2O,
-   http://www.iapws.org/relguide/Ionization.pdf
-*/
-{  // Check input parameters
-   if (rho < 0 || rho > 1250 || T < 273.15 || T > 1073.15）
-         return -1000;
-
-   // The internal method of calculation use rho in g/cm³
-   double d = rho/1000.0;
-   //Water molecular weight different
-   double Mw = 18.015268;
-   double gamma[4] = {6.1415e-1, 4.825133e4, -6.770793e4, 1.01021e7};
-
-   double pKg = 0;
-   for(int i=0; i<4; i++)
-       pKg += gamma[i]/pow(T,i);
-
-   double Q = d*exp(-0.864671+8659.19/T-22786.2/pow(T,2)*pow(d,(2./3)));
-   double pKw = -12*(log10(1+Q)-Q/(Q+1)*d*(0.642044-56.8534/T-0.375754*d)) +
-                pKg+2*log10(Mw/1000)
-   return pKw;
-}   */
