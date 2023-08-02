@@ -181,6 +181,13 @@ pub fn pair_transport(
                 let tc: f64 = thcond(d, T);
                 prandtl_number(dv, cp, tc)
             }
+            PAIRS::pT => {
+                let d = 1.0 / v2;
+                let dv: f64 = viscosity(d, v2);
+                let cp: f64 = fn_thermal(v1, v2, OCP, reg);
+                let tc: f64 = thcond(d, v2);
+                prandtl_number(dv, cp, tc)
+            }
             PAIRS::pv => {
                 let d = 1.0 / v2;
                 let T = fn_thermal(v1, v2, OT, reg) + 273.15;
