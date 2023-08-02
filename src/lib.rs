@@ -33,8 +33,8 @@ The following input pairs are implemented:
 * [1.1.4](https://crates.io/crates/if97/1.1.4) - Add the optional parameter of `region` to computer the properties of the specified region quickly
 
 * [1.1.3](https://crates.io/crates/if97/1.1.3) - The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
- 
-* [1.0.9](https://crates.io/crates/if97/1.0.9) - The shortest addition chain computes integer powers of a number to provide the stable speed performance under the various hardware and software platforms  
+
+* [1.0.9](https://crates.io/crates/if97/1.0.9) - The shortest addition chain computes integer powers of a number to provide the stable speed performance under the various hardware and software platforms
 
 ## Usage
 
@@ -152,35 +152,34 @@ use r3::*;
 use r4::*;
 use r5::*;
 
-
 /// the paramters: <br/>
 ///   `o_id`: the propertry of id;<br/>
 ///   `region`: the region in the IAPWS-IF97,**optional**
-pub struct  o_id_region_args {
+pub struct o_id_region_args {
     o_id: i32,
     region: i32,
 }
 
-impl Default for  o_id_region_args {
+impl Default for o_id_region_args {
     fn default() -> Self {
-         o_id_region_args { o_id: 0, region: 6 }
+        o_id_region_args { o_id: 0, region: 6 }
     }
 }
 
-impl From<i32> for  o_id_region_args {
-    fn from(o_id:i32) -> Self {
+impl From<i32> for o_id_region_args {
+    fn from(o_id: i32) -> Self {
         Self {
-            o_id:o_id,
+            o_id: o_id,
             ..Self::default()
         }
     }
 }
 
-impl From<(i32,i32)> for  o_id_region_args {
-    fn from((o_id,region):(i32,i32)) -> Self {
+impl From<(i32, i32)> for o_id_region_args {
+    fn from((o_id, region): (i32, i32)) -> Self {
         Self {
-            o_id:o_id,
-            region: region          
+            o_id: o_id,
+            region: region,
         }
     }
 }
@@ -203,11 +202,11 @@ impl From<(i32,i32)> for  o_id_region_args {
 ///
 pub fn pt<R>(p: f64, t: f64, o_id_reg: R) -> f64
 where
-    R: Into< o_id_region_args>,
+    R: Into<o_id_region_args>,
 {
-    let args =  o_id_reg.into();
-    let reg:i32 = args.region;
-    let o_id:i32= args.o_id;
+    let args = o_id_reg.into();
+    let reg: i32 = args.region;
+    let o_id: i32 = args.o_id;
     match o_id {
         OP => return p,
         OT => return t,
@@ -250,7 +249,7 @@ where
 
 /// ph(p,h,o_id) - the propertry of `o_id` (thermodynamic,transport,etc)<br/>
 /// ph(p,h,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
-/// 
+///
 /// # Examples
 ///
 /// ```
@@ -264,13 +263,13 @@ where
 /// println!("p={p:.6} h={h:.6} t={t:.6} s={s:.6}");    
 /// ```
 ///
-pub fn ph<R>(p: f64, h: f64, o_id_reg:R) -> f64
+pub fn ph<R>(p: f64, h: f64, o_id_reg: R) -> f64
 where
-    R: Into< o_id_region_args>,
+    R: Into<o_id_region_args>,
 {
-    let args =  o_id_reg.into();
+    let args = o_id_reg.into();
     let reg: i32 = args.region;
-    let o_id:i32=args.o_id;
+    let o_id: i32 = args.o_id;
     match o_id {
         OP => return p,
         OH => return h,
@@ -332,13 +331,13 @@ where
 /// let h=ps(p,s,(OH,1));
 /// println!("p={p:.6} s={s:.6} t={t:.6} h={h:6}");    
 /// ```
-pub fn ps<R>(p: f64, s: f64, o_id_reg:R) -> f64
+pub fn ps<R>(p: f64, s: f64, o_id_reg: R) -> f64
 where
-    R: Into< o_id_region_args>,
+    R: Into<o_id_region_args>,
 {
-    let args =  o_id_reg.into();
+    let args = o_id_reg.into();
     let reg: i32 = args.region;
-    let o_id:i32= args.o_id;
+    let o_id: i32 = args.o_id;
     match o_id {
         OP => return p,
         OS => return s,
@@ -387,7 +386,7 @@ where
 
 /// hs(h,s,o_id) - the propertry of `o_id` (thermodynamic,transport,etc)<br/>
 /// hs(h,s,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
-/// 
+///
 /// # Examples
 ///
 ///```
@@ -401,13 +400,13 @@ where
 /// println!("h={h:.6} s={s:.6} p={p:.6} t={t:.6}");
 /// ```
 ///   
-pub fn hs<R>(h: f64, s: f64, o_id_reg:R) -> f64
+pub fn hs<R>(h: f64, s: f64, o_id_reg: R) -> f64
 where
-    R: Into< o_id_region_args>,
+    R: Into<o_id_region_args>,
 {
-    let args =  o_id_reg.into();
+    let args = o_id_reg.into();
     let reg: i32 = args.region;
-    let o_id:i32= args.o_id;
+    let o_id: i32 = args.o_id;
     match o_id {
         OH => return h,
         OS => return s,
@@ -522,13 +521,13 @@ pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
 /// let h=pv(p,v,(OH,1));
 /// println!("p={p:.6} v={v:.6} t={t:.6}");    
 /// ```
-pub fn pv<R>(p: f64, v: f64, o_id_reg:R) -> f64
+pub fn pv<R>(p: f64, v: f64, o_id_reg: R) -> f64
 where
-    R: Into< o_id_region_args>,
+    R: Into<o_id_region_args>,
 {
-    let args =  o_id_reg.into();
+    let args = o_id_reg.into();
     let reg: i32 = args.region;
-    let o_id:i32= args.o_id;
+    let o_id: i32 = args.o_id;
     match o_id {
         OP => return p,
         OV => return v,
@@ -586,17 +585,17 @@ where
 /// let t:f64=300.0-273.15;
 /// let v:f64= 0.100215168e-2;
 /// let p=tv(t,v,OP);
-/// //set the regiion 
+/// //set the regiion
 /// let s=tv(t,v,(OS,1);
 /// println!("t={p:.6} v={v:.6} p={p:.6} s={s:.6}");    
 /// ```
-pub fn tv<R>(t: f64, v: f64, o_id_reg:R) -> f64
+pub fn tv<R>(t: f64, v: f64, o_id_reg: R) -> f64
 where
-    R: Into< o_id_region_args>,
+    R: Into<o_id_region_args>,
 {
-    let args =  o_id_reg.into();
+    let args = o_id_reg.into();
     let reg: i32 = args.region;
-    let o_id:i32= args.o_id;
+    let o_id: i32 = args.o_id;
     match o_id {
         OT => return t,
         OV => return v,
@@ -652,13 +651,13 @@ where
 /// let s=th(t,h,(OS,1));
 /// println!("t={p:.6} h={h:.6} p={p:.6} s={s:.6}");    
 /// ```
-pub fn th<R>(t: f64, h: f64, o_id_reg:R) -> f64
+pub fn th<R>(t: f64, h: f64, o_id_reg: R) -> f64
 where
-    R: Into< o_id_region_args>,
+    R: Into<o_id_region_args>,
 {
-    let args =  o_id_reg.into();
+    let args = o_id_reg.into();
     let reg: i32 = args.region;
-    let o_id:i32= args.o_id;
+    let o_id: i32 = args.o_id;
     match o_id {
         OT => return t,
         OH => return h,
@@ -714,13 +713,13 @@ where
 /// let h=ts(t,s,(OH,1));
 /// println!("t={p:.6} s={s:.6} p={p:.6} h={h:.6}");    
 /// ```
-pub fn ts<R>(t: f64, s: f64, o_id_reg:R) -> f64
+pub fn ts<R>(t: f64, s: f64, o_id_reg: R) -> f64
 where
-    R: Into< o_id_region_args>,
+    R: Into<o_id_region_args>,
 {
-    let args =  o_id_reg.into();
+    let args = o_id_reg.into();
     let reg: i32 = args.region;
-    let o_id:i32= args.o_id;
+    let o_id: i32 = args.o_id;
     match o_id {
         OT => return t,
         OS => return s,

@@ -111,30 +111,6 @@ pub fn polys_i_ij_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
 /// Fast recursion algorithm
 pub fn polys_i_ii_ij_jj_powi_reg1(pi: f64, tau: f64) -> (f64, f64, f64, f64) {
     let steps: [(usize, usize); 4] = [(0, 11), (11, 20), (20, 28), (28, 34)];
-
-    let pi1 = 7.1 - pi;
-    let tau1 = tau - 1.222;
-    let mut item: f64 = 0.0;
-    let mut pi_item: f64 = 0.0;
-
-    let mut poly_pi: f64 = 0.0;
-    let mut poly_pipi: f64 = 0.0;
-    let mut poly_pitau: f64 = 0.0;
-    let mut poly_tautau: f64 = 0.0;
-    for m in 0..steps.len() {
-        for k in steps[m].0..steps[m].1 {
-            item = IJn[k].2 * pi1.powi(IJn[k].0) * tau1.powi(IJn[k].1);
-            pi_item = IJn[k].0 as f64 * item;
-            poly_pi += pi_item;
-            poly_pipi += (IJn[k].0 - 1) as f64 * pi_item;
-            poly_pitau += IJn[k].1 as f64 * pi_item;
-            poly_tautau += (IJn[k].1 * (IJn[k].1 - 1)) as f64 * item;
-        }
-    }
-    (
-        -poly_pi / pi,
-        poly_pipi / pi / pi,
-        -poly_pitau / pi / tau1,
-        poly_tautau / tau1 / tau1,
-    )
+    let (ploy_pi, ploy_pipi,ploy_pitau,ploy_tautau) = polys_i_ii_ij_jj_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    (-ploy_pi, ploy_pipi,-ploy_pitau,ploy_tautau) 
 }
