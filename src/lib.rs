@@ -1,6 +1,5 @@
 #![allow(warnings)]
 //#![warn(missing_docs)]
-//#![feature(test)]
 /*!
 # IF97
 
@@ -29,34 +28,52 @@ The following input pairs are implemented:
 
 (h,s)
 ```
+## Release Notes
+
+* [1.1.4](https://crates.io/crates/if97/1.1.4) - Add the optional variable of `region` to computer the properties of the specified region quickly
+
+* [1.1.3](https://crates.io/crates/if97/1.1.3) - The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+ 
+* [1.0.9](https://crates.io/crates/if97/1.0.9) - The shortest addition chain computes integer powers of a number to provide the stable speed performance under the various hardware and software platforms  
+
 ## Usage
 
 The type of functions are provided in the if97 package:
 
 ```rust
-fn(f64,f64,i32) -> f64;
+struct  o_id_region_args {
+    o_id: i32,
+    region: i32,
+}
+
+fn<R>(f64,f64,R) -> f64
+where
+    R: Into<o_id_region_args>,
 ``````
 
-* the first,second input parameters: the input propertry pairs
-* the third input parameter: the property ID of the calculated property - [o_id](#properties)
-* the return: the calculated property value of o_id
+* the first,second input parameters(f64) : the input propertry pairs
+* the third and fourth input parametes<R>:
+   * the third : the property ID of the calculated property - [o_id](#properties)
+   * the fourth `option` parameter: the region of IAPWS-IF97
+* the return(f64): the calculated property value of o_id
 
 ```rust
-pt(p:f64,t:f64,o_id:i32)->f64
-ph(p:f64,h:f64,o_id:i32)->f64
-ps(p:f64,s:f64,o_id:i32)->f64
-pv(p:f64,v:f64,o_id:i32)->f64
+pt<R>(p:f64,t:f64,o_id_region:R)->f64
+ph<R>(p:f64,h:f64,o_id_region:R)->f64
+ps<R>(p:f64,s:f64,o_id_region:R)->f64
+pv<R>(p:f64,v:f64,o_id_region:R)->f64
 
-th(t:f64,h:f64,o_id:i32)->f64
-ts(t:f64,s:f64,o_id:i32)->f64
-tv(t:f64,v:f64,o_id:i32)->f64
+th<R>(t:f64,h:f64,o_id_region:R)->f64
+ts<R>(t:f64,s:f64,o_id_region:R)->f64
+tv<R>(t:f64,v:f64,o_id_region:R)->f64
+
+hs<R>(h:f64,s:f64,o_id_region:R)->f64
 
 px(p:f64,x:f64,o_id:i32)->f64
 tx(p:f64,x:f64,o_id:i32)->f64
 hx(h:f64,x:f64,o_id:i32)->f64
 sx(s:f64,x:f64,o_id:i32)->f64
 
-hs(h:f64,s:f64,o_id:i32)->f64
 ```
 **Example**
 
@@ -69,8 +86,10 @@ fn main() {
 
     let h=pt(p,t,OH);
     let s=pt(p,t,OS);
-    let v=pt(p,t,OV);
+    // set the region
+    let v=pt(p,t,(OV,1));
     println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");
+
 }
 ```
 
@@ -133,7 +152,41 @@ use r3::*;
 use r4::*;
 use r5::*;
 
-/// pt(p,t,o_id)：the propertry of o_id (thermodynamic,transport,etc)
+
+/// the paramters: <br/>
+///   `o_id`: the propertry of id;<br/>
+///   `region`: the region in the IAPWS-IF97,**optional**
+pub struct  o_id_region_args {
+    o_id: i32,
+    region: i32,
+}
+
+impl Default for  o_id_region_args {
+    fn default() -> Self {
+         o_id_region_args { o_id: 0, region: 6 }
+    }
+}
+
+impl From<i32> for  o_id_region_args {
+    fn from(o_id:i32) -> Self {
+        Self {
+            o_id:o_id,
+            ..Self::default()
+        }
+    }
+}
+
+impl From<(i32,i32)> for  o_id_region_args {
+    fn from((o_id,region):(i32,i32)) -> Self {
+        Self {
+            o_id:o_id,
+            region: region          
+        }
+    }
+}
+
+/// pt(p,t,o_id) - the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// pt(p,t,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -143,20 +196,24 @@ use r5::*;
 /// let p:f64 = 3.0;
 /// let t:f64= 300.0-273.15;
 /// let h=pt(p,t,OH);
-/// let s=pt(p,t,OS);
-/// let v=pt(p,t,OV);
-/// println!("p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");    
+/// // set the region
+/// let s=pt(p,t,(OS,1));
+/// println!("p={p:.6} t={t:.6} h={h:.6} s={s:.6}");    
 /// ```
 ///
-//--------------------------------------------------------------------------------
-
-pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
+pub fn pt<R>(p: f64, t: f64, o_id_reg: R) -> f64
+where
+    R: Into< o_id_region_args>,
+{
+    let args =  o_id_reg.into();
+    let reg:i32 = args.region;
+    let o_id:i32= args.o_id;
     match o_id {
         OP => return p,
         OT => return t,
         OST => return surface_tension(t + K),
         ODV | OKV | OTC | OSDC => {
-            let d: f64 = pt_thermal(p, t, OD);
+            let d: f64 = pt_thermal(p, t, OD, reg);
             let mut value: f64 = 0.0;
             if o_id == ODV || o_id == OKV {
                 value = viscosity(d, t + 273.15);
@@ -175,8 +232,8 @@ pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
             value
         }
         OPR | OTD => {
-            let d: f64 = pt_thermal(p, t, OD);
-            let cp: f64 = pt_thermal(p, t, OCP);
+            let d: f64 = pt_thermal(p, t, OD, reg);
+            let cp: f64 = pt_thermal(p, t, OCP, reg);
             let tc: f64 = thcond(d, t + 273.15);
             let mut value: f64 = 0.0;
             if o_id == OTD {
@@ -187,12 +244,13 @@ pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
             }
             value
         }
-        _ => pt_thermal(p, t, o_id),
+        _ => pt_thermal(p, t, o_id, reg),
     }
 }
 
-/// ph(p,h,o_id)：the propertry of o_id (thermodynamic,transport,etc)
-///
+/// ph(p,h,o_id) - the propertry of `o_id` (thermodynamic,transport,etc)<br/>
+/// ph(p,h,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// 
 /// # Examples
 ///
 /// ```
@@ -201,20 +259,28 @@ pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
 /// let p:f64 = 3.0;
 /// let h:f64= 0.115331273e+3;
 /// let t=ph(p,h,OT);
-/// println!("p={p:.6} h={h:.6} t={t:.6}");    
+/// // set the region
+/// let s=ph(p,h,(OS,1));
+/// println!("p={p:.6} h={h:.6} t={t:.6} s={s:.6}");    
 /// ```
 ///
-pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
+pub fn ph<R>(p: f64, h: f64, o_id_reg:R) -> f64
+where
+    R: Into< o_id_region_args>,
+{
+    let args =  o_id_reg.into();
+    let reg: i32 = args.region;
+    let o_id:i32=args.o_id;
     match o_id {
         OP => return p,
         OH => return h,
         OST => {
-            let t: f64 = ph_thermal(p, h, OT);
+            let t: f64 = ph_thermal(p, h, OT, reg);
             return surface_tension(t + K);
         }
         ODV | OKV | OTC | OSDC => {
-            let d: f64 = ph_thermal(p, h, OD);
-            let t: f64 = ph_thermal(p, h, OT);
+            let d: f64 = ph_thermal(p, h, OD, reg);
+            let t: f64 = ph_thermal(p, h, OT, reg);
             let mut value: f64 = 0.0;
             if o_id == ODV || o_id == OKV {
                 value = viscosity(d, t + 273.15);
@@ -233,10 +299,10 @@ pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
             value
         }
         OPR | OTD => {
-            let d: f64 = ph_thermal(p, h, OD);
-            let t: f64 = ph_thermal(p, h, OT);
+            let d: f64 = ph_thermal(p, h, OD, reg);
+            let t: f64 = ph_thermal(p, h, OT, reg);
 
-            let cp: f64 = ph_thermal(p, h, OCP);
+            let cp: f64 = ph_thermal(p, h, OCP, reg);
             let tc: f64 = thcond(d, t + 273.15);
 
             let mut value: f64 = 0.0;
@@ -248,12 +314,12 @@ pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
             }
             value
         }
-        _ => ph_thermal(p, h, o_id),
+        _ => ph_thermal(p, h, o_id, reg),
     }
 }
 
-/// ps(p,s,o_id)：the propertry of o_id (thermodynamic,transport,etc)
-///
+/// ps(p,s,o_id) - the propertry of `o_id` (thermodynamic,transport,etc)<br/>
+/// ps(p,s,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 /// # Examples
 ///
 ///```
@@ -262,19 +328,27 @@ pub fn ph(p: f64, h: f64, o_id: i32) -> f64 {
 /// let p:f64= 3.0;
 /// let s:f64= 0.392294792;
 /// let t=ps(p,s,OT);
-/// println!("p={p:.6} s={s:.6} t={t:.6}");    
+/// // set the region
+/// let h=ps(p,s,(OH,1));
+/// println!("p={p:.6} s={s:.6} t={t:.6} h={h:6}");    
 /// ```
-pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
+pub fn ps<R>(p: f64, s: f64, o_id_reg:R) -> f64
+where
+    R: Into< o_id_region_args>,
+{
+    let args =  o_id_reg.into();
+    let reg: i32 = args.region;
+    let o_id:i32= args.o_id;
     match o_id {
         OP => return p,
         OS => return s,
         OST => {
-            let t: f64 = ps_thermal(p, s, OT);
+            let t: f64 = ps_thermal(p, s, OT, reg);
             return surface_tension(t + K);
         }
         ODV | OKV | OTC | OSDC => {
-            let d: f64 = ps_thermal(p, s, OD);
-            let t: f64 = ps_thermal(p, s, OT);
+            let d: f64 = ps_thermal(p, s, OD, reg);
+            let t: f64 = ps_thermal(p, s, OT, reg);
             let mut value: f64 = 0.0;
             if o_id == ODV || o_id == OKV {
                 value = viscosity(d, t + 273.15);
@@ -293,10 +367,10 @@ pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
             value
         }
         OPR | OTD => {
-            let d: f64 = ps_thermal(p, s, OD);
-            let t: f64 = ps_thermal(p, s, OT);
+            let d: f64 = ps_thermal(p, s, OD, reg);
+            let t: f64 = ps_thermal(p, s, OT, reg);
 
-            let cp: f64 = ps_thermal(p, s, OCP);
+            let cp: f64 = ps_thermal(p, s, OCP, reg);
             let tc: f64 = thcond(d, t + 273.15);
             let mut value: f64 = 0.0;
             if o_id == OTD {
@@ -307,12 +381,13 @@ pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
             }
             value
         }
-        _ => ps_thermal(p, s, o_id),
+        _ => ps_thermal(p, s, o_id, reg),
     }
 }
 
-/// hs(h,s,o_id)：the propertry of o_id (thermodynamic,transport,etc)
-///
+/// hs(h,s,o_id) - the propertry of `o_id` (thermodynamic,transport,etc)<br/>
+/// hs(h,s,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// 
 /// # Examples
 ///
 ///```
@@ -321,21 +396,28 @@ pub fn ps(p: f64, s: f64, o_id: i32) -> f64 {
 /// let h:f64= 0.115331273e+3;;
 /// let s:f64= 0.392294792;
 /// let p=hs(h,s,OP);
-/// let t=hs(h,s,OT);
+/// // set the region
+/// let t=hs(h,s,(OT,1));
 /// println!("h={h:.6} s={s:.6} p={p:.6} t={t:.6}");
 /// ```
 ///   
-pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
+pub fn hs<R>(h: f64, s: f64, o_id_reg:R) -> f64
+where
+    R: Into< o_id_region_args>,
+{
+    let args =  o_id_reg.into();
+    let reg: i32 = args.region;
+    let o_id:i32= args.o_id;
     match o_id {
         OH => return h,
         OS => return s,
         OST => {
-            let t: f64 = hs_thermal(h, s, OT);
+            let t: f64 = hs_thermal(h, s, OT, reg);
             return surface_tension(t + K);
         }
         ODV | OKV | OTC | OSDC => {
-            let d: f64 = hs_thermal(h, s, OD);
-            let t: f64 = hs_thermal(h, s, OT);
+            let d: f64 = hs_thermal(h, s, OD, reg);
+            let t: f64 = hs_thermal(h, s, OT, reg);
             let mut value: f64 = 0.0;
             if o_id == ODV || o_id == OKV {
                 value = viscosity(d, t + 273.15);
@@ -354,10 +436,10 @@ pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
             value
         }
         OPR | OTD => {
-            let d: f64 = hs_thermal(h, s, OD);
-            let t: f64 = hs_thermal(h, s, OT);
+            let d: f64 = hs_thermal(h, s, OD, reg);
+            let t: f64 = hs_thermal(h, s, OT, reg);
 
-            let cp: f64 = hs_thermal(h, s, OCP);
+            let cp: f64 = hs_thermal(h, s, OCP, reg);
             let tc: f64 = thcond(d, t + 273.15);
             let mut value: f64 = 0.0;
             if o_id == OTD {
@@ -369,11 +451,11 @@ pub fn hs(h: f64, s: f64, o_id: i32) -> f64 {
             value
         }
 
-        _ => hs_thermal(h, s, o_id),
+        _ => hs_thermal(h, s, o_id, reg),
     }
 }
 
-///  px(p,x,o_id) - the propertry of o_id (thermodynamic)
+///  px(p,x,o_id) - the propertry of `o_id` (thermodynamic)
 ///
 ///  # Examples
 ///
@@ -401,7 +483,7 @@ pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-///  tx(t,x,o_id) - the propertry of o_id (thermodynamic)
+///  tx(t,x,o_id) - the propertry of `o_id` (thermodynamic)
 ///
 ///  # Examples
 ///
@@ -423,9 +505,10 @@ pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
     Tx_reg4(T, x, o_id)
 }
 
-///  Functions of the  extended input pairs (p,v),(t,v),(t,s),(t,h)
+//  Functions of the  extended input pairs (p,v),(t,v),(t,s),(t,h)
 
-/// The  extended input pair pv(p,v,o_id)
+/// pv(p,v,o_id) - the propertry of `o_id`(thermodynamic,transport,etc)<br/>
+/// pv(p,v,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -435,19 +518,27 @@ pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
 /// let p:f64= 3.0;
 /// let v:f64= 0.100215168e-2;
 /// let t=pv(p,v,OT);
+/// //set the region
+/// let h=pv(p,v,(OH,1));
 /// println!("p={p:.6} v={v:.6} t={t:.6}");    
 /// ```
-pub fn pv(p: f64, v: f64, o_id: i32) -> f64 {
+pub fn pv<R>(p: f64, v: f64, o_id_reg:R) -> f64
+where
+    R: Into< o_id_region_args>,
+{
+    let args =  o_id_reg.into();
+    let reg: i32 = args.region;
+    let o_id:i32= args.o_id;
     match o_id {
         OP => return p,
         OV => return v,
         OST => {
-            let t: f64 = pv_thermal(p, v, OT);
+            let t: f64 = pv_thermal(p, v, OT, reg);
             return surface_tension(t + K);
         }
         ODV | OKV | OTC | OSDC => {
             let d: f64 = 1.0 / v;
-            let t: f64 = pv_thermal(p, v, OT);
+            let t: f64 = pv_thermal(p, v, OT, reg);
             let mut value: f64 = 0.0;
             if o_id == ODV || o_id == OKV {
                 value = viscosity(d, t + 273.15);
@@ -467,9 +558,9 @@ pub fn pv(p: f64, v: f64, o_id: i32) -> f64 {
         }
         OPR | OTD => {
             let d: f64 = 1.0 / v;
-            let t: f64 = pv_thermal(p, v, OT);
+            let t: f64 = pv_thermal(p, v, OT, reg);
 
-            let cp: f64 = pv_thermal(p, v, OCP);
+            let cp: f64 = pv_thermal(p, v, OCP, reg);
             let tc: f64 = thcond(d, t + 273.15);
             let mut value: f64 = 0.0;
             if o_id == OTD {
@@ -480,11 +571,12 @@ pub fn pv(p: f64, v: f64, o_id: i32) -> f64 {
             }
             value
         }
-        _ => pv_thermal(p, v, o_id),
+        _ => pv_thermal(p, v, o_id, reg),
     }
 }
 
-/// The  extended input pair tv(t,v,o_id)
+/// tv(t,v,o_id) - the propertry of `o_id`(thermodynamic,transport,etc)<br/>
+/// tv(t,v,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -494,9 +586,17 @@ pub fn pv(p: f64, v: f64, o_id: i32) -> f64 {
 /// let t:f64=300.0-273.15;
 /// let v:f64= 0.100215168e-2;
 /// let p=tv(t,v,OP);
-/// println!("t={p:.6} v={v:.6} p={p:.6}");    
+/// //set the regiion 
+/// let s=tv(t,v,(OS,1);
+/// println!("t={p:.6} v={v:.6} p={p:.6} s={s:.6}");    
 /// ```
-pub fn tv(t: f64, v: f64, o_id: i32) -> f64 {
+pub fn tv<R>(t: f64, v: f64, o_id_reg:R) -> f64
+where
+    R: Into< o_id_region_args>,
+{
+    let args =  o_id_reg.into();
+    let reg: i32 = args.region;
+    let o_id:i32= args.o_id;
     match o_id {
         OT => return t,
         OV => return v,
@@ -522,7 +622,7 @@ pub fn tv(t: f64, v: f64, o_id: i32) -> f64 {
         }
         OPR | OTD => {
             let d: f64 = 1.0 / v;
-            let cp: f64 = tv_thermal(t, v, OCP);
+            let cp: f64 = tv_thermal(t, v, OCP, reg);
             let tc: f64 = thcond(d, t + 273.15);
             let mut value: f64 = 0.0;
             if o_id == OTD {
@@ -533,11 +633,12 @@ pub fn tv(t: f64, v: f64, o_id: i32) -> f64 {
             }
             value
         }
-        _ => tv_thermal(t, v, o_id),
+        _ => tv_thermal(t, v, o_id, reg),
     }
 }
 
-/// The  extended input pair th(t,h,o_id)
+/// th(t,h,o_id) - the propertry of `o_id`(thermodynamic,transport,etc)<br/>
+/// th(t,h,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///  
 /// # Examples
 ///
@@ -547,15 +648,23 @@ pub fn tv(t: f64, v: f64, o_id: i32) -> f64 {
 /// let t:f64=300.0-273.15;
 /// let h:f64=0.115331273e+3;
 /// let p=th(t,h,OP);
-/// println!("t={p:.6} h={h:.6} p={p:.6}");    
+/// // set the region
+/// let s=th(t,h,(OS,1));
+/// println!("t={p:.6} h={h:.6} p={p:.6} s={s:.6}");    
 /// ```
-pub fn th(t: f64, h: f64, o_id: i32) -> f64 {
+pub fn th<R>(t: f64, h: f64, o_id_reg:R) -> f64
+where
+    R: Into< o_id_region_args>,
+{
+    let args =  o_id_reg.into();
+    let reg: i32 = args.region;
+    let o_id:i32= args.o_id;
     match o_id {
         OT => return t,
         OH => return h,
         OST => return surface_tension(t + K),
         ODV | OKV | OTC | OSDC => {
-            let d: f64 = th_thermal(t, h, OD);
+            let d: f64 = th_thermal(t, h, OD, reg);
             let mut value: f64 = 0.0;
             if o_id == ODV || o_id == OKV {
                 value = viscosity(d, t + 273.15);
@@ -574,8 +683,8 @@ pub fn th(t: f64, h: f64, o_id: i32) -> f64 {
             value
         }
         OPR | OTD => {
-            let d: f64 = th_thermal(t, h, OD);
-            let cp: f64 = th_thermal(t, h, OCP);
+            let d: f64 = th_thermal(t, h, OD, reg);
+            let cp: f64 = th_thermal(t, h, OCP, reg);
             let tc: f64 = thcond(d, t + 273.15);
             let mut value: f64 = 0.0;
             if o_id == OTD {
@@ -586,11 +695,12 @@ pub fn th(t: f64, h: f64, o_id: i32) -> f64 {
             }
             value
         }
-        _ => th_thermal(t, h, o_id),
+        _ => th_thermal(t, h, o_id, reg),
     }
 }
 
-/// The  extended input pair ts(t,s,o_id)
+/// ts(t,s,o_id) - the propertry of `o_id`(thermodynamic,transport,etc)<br/>
+/// ts(t,s,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///   
 /// # Examples
 ///
@@ -600,15 +710,23 @@ pub fn th(t: f64, h: f64, o_id: i32) -> f64 {
 /// let t:f64=300.0-273.15;
 /// let s:f64=0.392294792;
 /// let p=ts(t,s,OP);
-/// println!("t={p:.6} s={s:.6} p={p:.6}");    
+/// // set the region
+/// let h=ts(t,s,(OH,1));
+/// println!("t={p:.6} s={s:.6} p={p:.6} h={h:.6}");    
 /// ```
-pub fn ts(t: f64, s: f64, o_id: i32) -> f64 {
+pub fn ts<R>(t: f64, s: f64, o_id_reg:R) -> f64
+where
+    R: Into< o_id_region_args>,
+{
+    let args =  o_id_reg.into();
+    let reg: i32 = args.region;
+    let o_id:i32= args.o_id;
     match o_id {
         OT => return t,
         OS => return s,
         OST => return surface_tension(t + K),
         ODV | OKV | OTC | OSDC => {
-            let d: f64 = ts_thermal(t, s, OD);
+            let d: f64 = ts_thermal(t, s, OD, reg);
             let mut value: f64 = 0.0;
             if o_id == ODV || o_id == OKV {
                 value = viscosity(d, t + 273.15);
@@ -627,8 +745,8 @@ pub fn ts(t: f64, s: f64, o_id: i32) -> f64 {
             value
         }
         OPR | OTD => {
-            let d: f64 = ts_thermal(t, s, OD);
-            let cp: f64 = ts_thermal(t, s, OCP);
+            let d: f64 = ts_thermal(t, s, OD, reg);
+            let cp: f64 = ts_thermal(t, s, OCP, reg);
             let tc: f64 = thcond(d, t + 273.15);
             let mut value: f64 = 0.0;
             if o_id == OTD {
@@ -639,11 +757,11 @@ pub fn ts(t: f64, s: f64, o_id: i32) -> f64 {
             }
             value
         }
-        _ => ts_thermal(t, s, o_id),
+        _ => ts_thermal(t, s, o_id, reg),
     }
 }
 
-/// The  extended input pair hx(h,x,o_id)
+/// hx(h,x,o_id) - the propertry of `o_id`(thermodynamic)
 ///
 ///  # Examples
 ///
@@ -668,7 +786,7 @@ pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-/// The  extended input pair sx(s,x,o_id)
+/// sx(s,x,o_id):the propertry of `o_id`(thermodynamic)
 ///
 ///  # Examples
 ///

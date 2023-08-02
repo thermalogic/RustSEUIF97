@@ -13,8 +13,10 @@ fn main() {
     let mut h = pt(p, t, OH);
     let mut s = pt(p, t, OS);
     let mut v = pt(p, t, OV);
-    let u = pt(p, t, OU);
-    let w = pt(p, t, OW);
+     // set the region 1
+    let u = pt(p, t, (OU, 1));
+    let w = pt(p, t, (OW, 1));
+ 
     println!("pt: p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6},u={u:.6} w={w:.6}");
 
     t = ph(p, h, OT);

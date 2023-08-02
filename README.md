@@ -25,6 +25,14 @@ The following input pairs are implemented:
 (h,s)  
 ```
 
+## Release Notes
+
+* [1.1.4](https://crates.io/crates/if97/1.1.4) - Add the optional variable of `region` to computer the properties of the specified region quickly
+
+* [1.1.3](https://crates.io/crates/if97/1.1.3) - The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+ 
+* [1.0.9](https://crates.io/crates/if97/1.0.9)  - The shortest addition chain computes integer powers of a number to provide the stable speed performance under the various hardware and software platforms  
+
 ## Usage
 
 Install the crate
@@ -36,29 +44,39 @@ cargo add if97
 The type of functions are provided in the if97 package:
 
 ```rust
-fn(f64,f64,i32) -> f64
+struct  o_id_region_args {
+   o_id: i32,
+   region: i32,
+}
+
+fn<R>(f64,f64,R) -> f64
+where
+    R: Into<o_id_region_args>,
 ``````
 
-* the first,second input parameters: the input propertry pairs
-* the third input parameter: the property ID of the calculated property - [o_id](#properties)
-* the return: the calculated property value of o_id
+* the first,second input parameters(f64) : the input propertry pairs
+* the third and fourth input parametes<R>:
+   * the third : the property ID of the calculated property - [o_id](#properties)
+   * the fourth `option` parameter: the region of IAPWS-IF97
+* the return(f64): the calculated property value of o_id
 
 ```rust
-pt(p:f64,t:f64,o_id:i32)->f64
-ph(p:f64,h:f64,o_id:i32)->f64
-ps(p:f64,s:f64,o_id:i32)->f64
-pv(p:f64,v:f64,o_id:i32)->f64
+pt<R>(p:f64,t:f64,o_id_region:R)->f64
+ph<R>(p:f64,h:f64,o_id_region:R)->f64
+ps<R>(p:f64,s:f64,o_id_region:R)->f64
+pv<R>(p:f64,v:f64,o_id_region:R)->f64
 
-th(t:f64,h:f64,o_id:i32)->f64
-ts(t:f64,s:f64,o_id:i32)->f64
-tv(t:f64,v:f64,o_id:i32)->f64
+th<R>(t:f64,h:f64,o_id_region:R)->f64
+ts<R>(t:f64,s:f64,o_id_region:R)->f64
+tv<R>(t:f64,v:f64,o_id_region:R)->f64
+
+hs<R>(h:f64,s:f64,o_id_region:R)->f64
 
 px(p:f64,x:f64,o_id:i32)->f64
 tx(p:f64,x:f64,o_id:i32)->f64
 hx(h:f64,x:f64,o_id:i32)->f64
 sx(s:f64,x:f64,o_id:i32)->f64
 
-hs(h:f64,s:f64,o_id:i32)->f64
 ```
 **Example**
 
@@ -71,7 +89,8 @@ fn main() {
    
     let h=pt(p,t,OH);
     let s=pt(p,t,OS);
-    let v=pt(p,t,OV);
+    // set the region
+    let v=pt(p,t,(OV,1));
     println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");   
 }
 ```
