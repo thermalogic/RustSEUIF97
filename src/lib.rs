@@ -586,7 +586,7 @@ where
 /// let v:f64= 0.100215168e-2;
 /// let p=tv(t,v,OP);
 /// //set the regiion
-/// let s=tv(t,v,(OS,1);
+/// let s=tv(t,v,(OS,1));
 /// println!("t={p:.6} v={v:.6} p={p:.6} s={s:.6}");    
 /// ```
 pub fn tv<R>(t: f64, v: f64, o_id_reg: R) -> f64
