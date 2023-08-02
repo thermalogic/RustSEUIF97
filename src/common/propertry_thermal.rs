@@ -29,7 +29,7 @@ use crate::r5::region5::*;
 type REGION_EQ = fn(f64, f64) -> i32;
 type PROP_EQ = fn(f64, f64, i32) -> f64;
 
-/// The common method ofcd input pairs except (p,t)
+/// The common method of input pairs
 pub fn pair_thermal(
     v1: f64,
     v2: f64,
@@ -67,36 +67,20 @@ pub fn pair_thermal(
     }
 }
 
-/// pt_thermal(p,t,o_id)：the propertry of o_id (basic and extended thermodynamic)
-pub fn pt_thermal(p: f64, t: f64, o_id: i32, reg: i32) -> f64 {
-    let mut sub_region: i32 = reg;
-    if reg == 6 {
-        sub_region =  pT_sub_region(p,t+273.15);
-    }
-    if o_id == OR {
-        return sub_region as f64;
-    };
-    if o_id == OX {
-        match sub_region {
-            1 => return 0.0,
-            2 | 3 | 5 => return 1.0,
-            _ => return INVALID_VALUE as f64,
-        }
-    }
-    match sub_region {
-        1 => pt_reg1(p, t, o_id),
-        2 => pt_reg2(p, t, o_id),
-        3 => pt_reg3(p, t, o_id),
-        4 => {
-            if (t + 273.15) == TC_WATER && p == PC_WATER {
-                return td_reg3(t, DC_WATER, o_id);
-            } else {
-                return sub_region as f64;
-            }
-        }
-        5 => pt_reg5(p, t, o_id),
-        _ => sub_region as f64,
-    }
+/// pT_thermal(p,T,o_id)：the propertry of o_id (basic and extended thermodynamic)
+pub fn pT_thermal(p: f64, T: f64, o_id: i32, reg: i32) -> f64 {
+    pair_thermal(
+        p,
+        T,
+        o_id,
+        pT_sub_region,
+        pT_reg1,
+        pT_reg2,
+        pT_reg3,
+        pT_reg4,
+        pT_reg5,
+        reg,
+    )
 }
 
 /// ph_thermal(p,h,o_id)：the propertry of o_id (basic and extended thermodynamic)

@@ -5,6 +5,7 @@
 
 use crate::common::constant::*;
 use crate::common::propertry_id::*;
+use crate::r3::*;
 use crate::r4::*;
 
 pub fn p_sat(t: f64) -> f64 {
@@ -15,6 +16,14 @@ pub fn t_sat(p: f64) -> f64 {
     T_saturation(p) - K
 }
 
+/// for TC_WATER && p == PC_WATER
+pub fn pT_reg4(p: f64, T: f64, o_id: i32) -> f64 {
+    if T == TC_WATER && p == PC_WATER {
+        return Td_reg3(TC_WATER, DC_WATER, o_id);
+    } else {
+        return 4.0 as f64;
+    }
+}
 
 pub fn ph_reg4(p: f64, h: f64, o_id: i32) -> f64 {
     let h1: f64 = p2sat_water(p, OH);

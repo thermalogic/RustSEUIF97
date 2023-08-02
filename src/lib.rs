@@ -207,43 +207,44 @@ where
     let args = o_id_reg.into();
     let reg: i32 = args.region;
     let o_id: i32 = args.o_id;
+    let T:f64=t+273.15;
     match o_id {
         OP => return p,
         OT => return t,
         OST => return surface_tension(t + K),
         ODV | OKV | OTC | OSDC => {
-            let d: f64 = pt_thermal(p, t, OD, reg);
+            let d: f64 = pT_thermal(p, T, OD, reg);
             let mut value: f64 = 0.0;
             if o_id == ODV || o_id == OKV {
-                value = viscosity(d, t + 273.15);
+                value = viscosity(d, T);
                 if o_id == OKV {
                     value /= d; // Kinematic viscosity=Dynamic viscosity/density
                 }
             } else {
                 if o_id == OTC {
-                    value = thcond(d, t + 273.15)
+                    value = thcond(d, T)
                 } else {
                     if o_id == OSDC {
-                        value = static_dielectric(d, t + 273.15);
+                        value = static_dielectric(d, T);
                     };
                 }
             };
             value
         }
         OPR | OTD => {
-            let d: f64 = pt_thermal(p, t, OD, reg);
-            let cp: f64 = pt_thermal(p, t, OCP, reg);
-            let tc: f64 = thcond(d, t + 273.15);
+            let d: f64 = pT_thermal(p, T, OD, reg);
+            let cp: f64 = pT_thermal(p, T, OCP, reg);
+            let tc: f64 = thcond(d, T);
             let mut value: f64 = 0.0;
             if o_id == OTD {
                 value = thermal_diffusivity(tc, cp, d);
             } else if o_id == OPR {
-                let dv: f64 = viscosity(d, t + 273.15);
+                let dv: f64 = viscosity(d, T);
                 value = prandtl_number(dv, cp, tc);
             }
             value
         }
-        _ => pt_thermal(p, t, o_id, reg),
+        _ => pT_thermal(p, T, o_id, reg),
     }
 }
 
