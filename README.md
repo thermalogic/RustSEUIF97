@@ -44,7 +44,7 @@ cargo add if97
 The type of functions are provided in the if97 package:
 
 ```rust
-struct  o_id_region_args {
+struct o_id_region_args {
    o_id: i32,
    region: i32,
 }

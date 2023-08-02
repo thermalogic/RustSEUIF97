@@ -41,7 +41,7 @@ The following input pairs are implemented:
 The type of functions are provided in the if97 package:
 
 ```rust
-struct  o_id_region_args {
+struct o_id_region_args {
     o_id: i32,
     region: i32,
 }
@@ -786,7 +786,7 @@ pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-/// sx(s,x,o_id):the propertry of `o_id`(thermodynamic)
+/// sx(s,x,o_id) - the propertry of `o_id`(thermodynamic)
 ///
 ///  # Examples
 ///
