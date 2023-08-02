@@ -30,7 +30,7 @@ The following input pairs are implemented:
 ```
 ## Release Notes
 
-* [1.1.4](https://crates.io/crates/if97/1.1.4) - Add the optional variable of `region` to computer the properties of the specified region quickly
+* [1.1.4](https://crates.io/crates/if97/1.1.4) - Add the optional parameter of `region` to computer the properties of the specified region quickly
 
 * [1.1.3](https://crates.io/crates/if97/1.1.3) - The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
  
