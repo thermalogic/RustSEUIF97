@@ -95,10 +95,8 @@ pub fn ph2T_reg2b(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 1.0 - 2.0;
     let eta: f64 = h / 2000.0 - 2.6;
-    // sac better : powi -266, sac 18
-   // 1.0 * poly_powi(pi, eta, &IJn)
-   let steps: [(usize, usize); 2] = [(0, 24), (24, 38)];
-    1.0*poly_powi_steps(pi,eta,&IJn,&steps)
+    let steps: [(usize, usize); 2] = [(0, 24), (24, 38)];
+    1.0 * poly_powi_steps(pi, eta, &IJn, &steps)
 }
 
 pub fn ph2T_reg2c(p: f64, h: f64) -> f64 {
@@ -154,5 +152,5 @@ pub fn ph2T_reg2(p: f64, h: f64) -> f64 {
     } else {
         T = ph2T_reg2a(p, h);
     }
-     T
+    T
 }
