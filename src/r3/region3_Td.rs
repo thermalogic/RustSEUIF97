@@ -17,7 +17,7 @@ use crate::r3::region3_hfe::*;
 pub fn Td2p_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    let phi_delta =phi_delta_reg3(delta, tau);
+    let phi_delta = phi_delta_reg3(delta, tau);
     0.001 * d * RGAS_WATER * T * delta * phi_delta
 }
 

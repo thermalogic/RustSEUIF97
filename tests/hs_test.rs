@@ -11,12 +11,12 @@ fn test_region1_hs() {
             r1_hspT[i][3] - 273.15,
             hs(r1_hspT[i][0], r1_hspT[i][1], OT),
             1.0e-1f64
-        ); 
+        );
         assert_approx_eq!(
             r1_hspT[i][2],
             hs(r1_hspT[i][0], r1_hspT[i][1], OP),
             1.0e-1f64
-        ); 
+        );
     }
 }
 

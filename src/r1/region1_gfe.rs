@@ -111,6 +111,7 @@ pub fn polys_i_ij_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
 /// Fast recursion algorithm
 pub fn polys_i_ii_ij_jj_powi_reg1(pi: f64, tau: f64) -> (f64, f64, f64, f64) {
     let steps: [(usize, usize); 4] = [(0, 11), (11, 20), (20, 28), (28, 34)];
-    let (ploy_pi, ploy_pipi,ploy_pitau,ploy_tautau) = polys_i_ii_ij_jj_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
-    (-ploy_pi, ploy_pipi,-ploy_pitau,ploy_tautau) 
+    let (ploy_pi, ploy_pipi, ploy_pitau, ploy_tautau) =
+        polys_i_ii_ij_jj_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    (-ploy_pi, ploy_pipi, -ploy_pitau, ploy_tautau)
 }

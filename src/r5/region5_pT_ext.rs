@@ -178,5 +178,5 @@ pub fn pT2fu_reg5(p: f64, T: f64) -> f64 {
 pub fn pT2alfap_reg5(p: f64, T: f64) -> f64 {
     let ec: f64 = pT2ec_reg5(p, T);
     let kt: f64 = pT2kt_reg5(p, T);
-    ec/p/kt
+    ec / p / kt
 }

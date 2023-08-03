@@ -1,8 +1,8 @@
 #![allow(warnings)]
 /// The simple example for all input pairs
-/// *  (p,t) (p,h) (p,s) (p,v) 
-/// *  (t,h) (t,s) (t,v) 
-/// *  (p,x) (t,x) (h,x) (t,s) 
+/// *  (p,t) (p,h) (p,s) (p,v)
+/// *  (t,h) (t,s) (t,v)
+/// *  (p,x) (t,x) (h,x) (t,s)
 /// *  (h,s)
 ///   
 use if97::*;
@@ -13,10 +13,10 @@ fn main() {
     let mut h = pt(p, t, OH);
     let mut s = pt(p, t, OS);
     let mut v = pt(p, t, OV);
-     // set the region 1
+    // set the region 1
     let u = pt(p, t, (OU, 1));
     let w = pt(p, t, (OW, 1));
- 
+
     println!("pt: p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6},u={u:.6} w={w:.6}");
 
     t = ph(p, h, OT);
@@ -28,17 +28,17 @@ fn main() {
     p = hs(h, s, OP);
     t = hs(h, s, OT);
     println!("hs: h={h:.6} s={s:.6} p={p:.6} t={t:.6}");
-    // extended 
-    t=pv(p,v,OT);
-    println!("pv: p={p:.6} v={v:.6} t={t:.6}");  
-    p=tv(t,v,OP);
+    // extended
+    t = pv(p, v, OT);
+    println!("pv: p={p:.6} v={v:.6} t={t:.6}");
+    p = tv(t, v, OP);
     println!("tv t={t:.6} v={v:.6} p={p:.6}");
-    
-    p=th(t,h,OP);
-    println!("th: t={p:.6} h={h:.6} p={p:.6}");    
-     
-    p=ts(t,s,OP);
-    println!("ts: t={p:.6} s={s:.6} p={p:.6}"); 
+
+    p = th(t, h, OP);
+    println!("th: t={p:.6} h={h:.6} p={p:.6}");
+
+    p = ts(t, s, OP);
+    println!("ts: t={p:.6} s={s:.6} p={p:.6}");
 
     // px,tx
     let x: f64 = 0.3; // x= 0.0 saturation water ,x=1.0 saturation steam

@@ -177,9 +177,9 @@ pub fn Td2fu_reg3(T: f64, d: f64) -> f64 {
 
 /// alfap - Relative pressure coefficient  1/K
 ///  * alfap=ec/p/kt
-pub fn Td2alfap_reg3(T: f64,d:f64) -> f64 {
-    let p: f64 = Td2p_reg3(T,d);
-    let ec: f64 = Td2ec_reg3(T,d);
-    let kt: f64 = Td2kt_reg3(T,d);
-    ec/p/kt
+pub fn Td2alfap_reg3(T: f64, d: f64) -> f64 {
+    let p: f64 = Td2p_reg3(T, d);
+    let ec: f64 = Td2ec_reg3(T, d);
+    let kt: f64 = Td2kt_reg3(T, d);
+    ec / p / kt
 }

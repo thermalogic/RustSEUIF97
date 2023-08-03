@@ -68,7 +68,8 @@ pub fn pair_transport(
                 fn_thermal(v1, v2, OT, reg) + 273.15,
             ),
         },
-        OKV => match pair {// d,T
+        OKV => match pair {
+            // d,T
             PAIRS::tv => v2 * viscosity(1.0 / v2, v1 + 273.15),
             PAIRS::th | PAIRS::ts => {
                 let d = fn_thermal(v1, v2, OD, reg);
@@ -89,7 +90,8 @@ pub fn pair_transport(
             }
         },
 
-        OTC => match pair { //d,T
+        OTC => match pair {
+            //d,T
             PAIRS::tv => thcond(1.0 / v2, v1 + 273.15),
             PAIRS::th | PAIRS::ts => {
                 let d = fn_thermal(v1, v2, OD, reg);
@@ -110,7 +112,8 @@ pub fn pair_transport(
                 thcond(d, T)
             }
         },
-        OSDC => match pair {// d,T
+        OSDC => match pair {
+            // d,T
             PAIRS::tv => static_dielectric(1.0 / v2, v1 + 273.15),
             PAIRS::th | PAIRS::ts => {
                 let d = fn_thermal(v1, v2, OD, reg);

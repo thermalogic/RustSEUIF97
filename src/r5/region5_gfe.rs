@@ -75,32 +75,29 @@ pub const IJn: [(i32, i32, f64); 6] = [
 ];
 
 pub fn gammar_reg5(pi: f64, tau: f64) -> f64 {
-    poly_powi(pi,tau,&IJn)
-
+    poly_powi(pi, tau, &IJn)
 }
 
 // Table 41. The residual part gammar of the dimensionless Gibbs free energy and its derivatives a according to Eq. (34)
 
 /// The residual part gammar of the dimensionless Gibbs free energy
 pub fn gammar_pi_reg5(pi: f64, tau: f64) -> f64 {
-    poly_i_powi(pi,tau,&IJn)
+    poly_i_powi(pi, tau, &IJn)
 }
 
 pub fn gammar_pipi_reg5(pi: f64, tau: f64) -> f64 {
-     poly_ii_powi(pi,tau,&IJn)
-
+    poly_ii_powi(pi, tau, &IJn)
 }
 
 pub fn gammar_tau_reg5(pi: f64, tau: f64) -> f64 {
-     poly_j_powi(pi,tau,&IJn)
+    poly_j_powi(pi, tau, &IJn)
 }
-
 
 /// region5 39p
 pub fn gammar_tautau_reg5(pi: f64, tau: f64) -> f64 {
-    poly_jj_powi(pi,tau,&IJn)
+    poly_jj_powi(pi, tau, &IJn)
 }
 
 pub fn gammar_pitau_reg5(pi: f64, tau: f64) -> f64 {
-    poly_ij_powi(pi,tau,&IJn)
+    poly_ij_powi(pi, tau, &IJn)
 }

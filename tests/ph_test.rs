@@ -11,7 +11,7 @@ fn test_region1_ph() {
             r1_phT[i][2] - 273.15,
             ph(r1_phT[i][0], r1_phT[i][1], OT),
             1.0e-1f64
-        ); 
+        );
     }
 }
 
@@ -76,14 +76,14 @@ fn test_region4_ph() {
     for i in 0..3 {
         let p: f64 = r4_sat_Tp[i][1];
         x = 0.35;
-        h = px(p,x,OH);
-       assert_approx_eq!(x, ph(p, h, OX));
+        h = px(p, x, OH);
+        assert_approx_eq!(x, ph(p, h, OX));
     }
 
     for i in 0..3 {
         let p: f64 = r4_sat_pT[i][0];
         x = 0.55;
-        h = px(p,x,OH);
+        h = px(p, x, OH);
         assert_approx_eq!(x, ph(p, h, OX));
     }
 }

@@ -418,10 +418,10 @@ pub fn sub_region3_pT(p: f64, T: f64) -> char {
             }
         }
     }
-   subRegion
+    subRegion
 }
 
 pub fn pT2v_reg3(p: f64, T: f64) -> f64 {
     let sub_region: char = sub_region3_pT(p, T);
-    pT2v_3subreg(p, T, sub_region)    
+    pT2v_3subreg(p, T, sub_region)
 }

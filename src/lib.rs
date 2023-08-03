@@ -1,4 +1,5 @@
 #![allow(warnings)]
+#![allow(clippy::approx_constant)]
 //#![warn(missing_docs)]
 /*!
 # IF97
@@ -479,7 +480,7 @@ pub fn ts<R>(t: f64, s: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let (o_id,reg)=o_id_reg_info( o_id_reg);
+    let (o_id, reg) = o_id_reg_info(o_id_reg);
     let T: f64 = t + 273.15;
     match o_id {
         OT => return t,
