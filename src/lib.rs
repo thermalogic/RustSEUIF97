@@ -184,6 +184,16 @@ impl From<(i32, i32)> for o_id_region_args {
     }
 }
 
+fn o_id_reg_info<R>(o_id_reg: R) -> (i32, i32)
+where
+    R: Into<o_id_region_args>,
+{
+    let args = o_id_reg.into();
+    let o_id: i32 = args.o_id;
+    let reg: i32 = args.region;
+    (o_id, reg)
+}
+
 /// pt(p,t,o_id) - the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 /// pt(p,t,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
@@ -204,16 +214,13 @@ pub fn pt<R>(p: f64, t: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let args = o_id_reg.into();
-    let reg: i32 = args.region;
-    let o_id: i32 = args.o_id;
+    let (o_id, reg) = o_id_reg_info(o_id_reg);
     let T: f64 = t + 273.15;
     match o_id {
         OP => return p,
         OT => return t,
-        OST| ODV | OKV | OTC | OSDC| OPR | OTD =>
-        {
-            pair_transport(p,T,o_id,PAIRS::pT,pT_thermal,reg)
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
+            pair_transport(p, T, o_id, PAIRS::pT, pT_thermal, reg)
         }
         _ => pT_thermal(p, T, o_id, reg),
     }
@@ -239,15 +246,12 @@ pub fn ph<R>(p: f64, h: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let args = o_id_reg.into();
-    let reg: i32 = args.region;
-    let o_id: i32 = args.o_id;
+    let (o_id, reg) = o_id_reg_info(o_id_reg);
     match o_id {
         OP => return p,
         OH => return h,
-        OST| ODV | OKV | OTC | OSDC| OPR | OTD =>
-        {
-            pair_transport(p,h,o_id,PAIRS::ph,ph_thermal,reg)
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
+            pair_transport(p, h, o_id, PAIRS::ph, ph_thermal, reg)
         }
         _ => ph_thermal(p, h, o_id, reg),
     }
@@ -271,15 +275,12 @@ pub fn ps<R>(p: f64, s: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let args = o_id_reg.into();
-    let reg: i32 = args.region;
-    let o_id: i32 = args.o_id;
+    let (o_id, reg) = o_id_reg_info(o_id_reg);
     match o_id {
         OP => return p,
         OS => return s,
-        OST| ODV | OKV | OTC | OSDC| OPR | OTD =>
-        {
-            pair_transport(p,s,o_id,PAIRS::ps,ps_thermal,reg)
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
+            pair_transport(p, s, o_id, PAIRS::ps, ps_thermal, reg)
         }
         _ => ps_thermal(p, s, o_id, reg),
     }
@@ -305,15 +306,12 @@ pub fn hs<R>(h: f64, s: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let args = o_id_reg.into();
-    let reg: i32 = args.region;
-    let o_id: i32 = args.o_id;
+    let (o_id, reg) = o_id_reg_info(o_id_reg);
     match o_id {
         OH => return h,
         OS => return s,
-        OST| ODV | OKV | OTC | OSDC| OPR | OTD =>
-        {
-            pair_transport(h,s,o_id,PAIRS::hs,hs_thermal,reg)
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
+            pair_transport(h, s, o_id, PAIRS::hs, hs_thermal, reg)
         }
         _ => hs_thermal(h, s, o_id, reg),
     }
@@ -390,15 +388,12 @@ pub fn pv<R>(p: f64, v: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let args = o_id_reg.into();
-    let reg: i32 = args.region;
-    let o_id: i32 = args.o_id;
+    let (o_id, reg) = o_id_reg_info(o_id_reg);
     match o_id {
         OP => return p,
         OV => return v,
-        OST| ODV | OKV | OTC | OSDC| OPR | OTD =>
-        {
-            pair_transport(p,v,o_id,PAIRS::pv,pv_thermal,reg)
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
+            pair_transport(p, v, o_id, PAIRS::pv, pv_thermal, reg)
         }
         _ => pv_thermal(p, v, o_id, reg),
     }
@@ -423,15 +418,12 @@ pub fn tv<R>(t: f64, v: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let args = o_id_reg.into();
-    let reg: i32 = args.region;
-    let o_id: i32 = args.o_id;
+    let (o_id, reg) = o_id_reg_info(o_id_reg);
     match o_id {
         OT => return t,
         OV => return v,
-        OST| ODV | OKV | OTC | OSDC| OPR | OTD =>
-        {
-            pair_transport(t,v,o_id,PAIRS::tv,tv_thermal,reg)
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
+            pair_transport(t, v, o_id, PAIRS::tv, tv_thermal, reg)
         }
         _ => tv_thermal(t, v, o_id, reg),
     }
@@ -456,16 +448,13 @@ pub fn th<R>(t: f64, h: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let args = o_id_reg.into();
-    let reg: i32 = args.region;
-    let o_id: i32 = args.o_id;
+    let (o_id, reg) = o_id_reg_info(o_id_reg);
     let T: f64 = t + 273.15;
     match o_id {
         OT => return t,
         OH => return h,
-        OST| ODV | OKV | OTC | OSDC| OPR | OTD =>
-        {
-            pair_transport(t,h,o_id,PAIRS::th,th_thermal,reg)
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
+            pair_transport(t, h, o_id, PAIRS::th, th_thermal, reg)
         }
         _ => th_thermal(t, h, o_id, reg),
     }
@@ -490,16 +479,13 @@ pub fn ts<R>(t: f64, s: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
 {
-    let args = o_id_reg.into();
-    let reg: i32 = args.region;
-    let o_id: i32 = args.o_id;
+    let (o_id,reg)=o_id_reg_info( o_id_reg);
     let T: f64 = t + 273.15;
     match o_id {
         OT => return t,
         OS => return s,
-        OST| ODV | OKV | OTC | OSDC| OPR | OTD =>
-        {
-            pair_transport(t,s,o_id,PAIRS::ts,ts_thermal,reg)
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
+            pair_transport(t, s, o_id, PAIRS::ts, ts_thermal, reg)
         }
         _ => ts_thermal(t, s, o_id, reg),
     }

@@ -94,7 +94,7 @@ pub fn polys_i_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
 pub fn polys_i_ii_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 3] = [(0, 14), (14, 26), (26, 34)];
     let (poly_pi, poly_pipi) = polys_i_ii_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
-    (-poly_pi, poly_pipi) // 7.1 - pi1,so -d_pi ,-d_pitau
+    (-poly_pi, poly_pipi) // 7.1 - pi1,-> -d_pi
 }
 
 pub fn polys_0_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
@@ -105,7 +105,7 @@ pub fn polys_0_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
 pub fn polys_i_ij_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
     let (ploy_pi, ploy_pitau) = polys_i_ij_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
-    (-ploy_pi, -ploy_pitau) // 7.1 - pi1,so -d_pi ,-d_pitau
+    (-ploy_pi, -ploy_pitau) // 7.1 - pi1,so -> -d_pi ,-d_pitau
 }
 
 /// Fast recursion algorithm

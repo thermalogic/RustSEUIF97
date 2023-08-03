@@ -135,6 +135,7 @@ pub fn pT2dpdtcv_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2pc_reg2(p: f64, T: f64) -> f64 {
     (1.0 / p) * pT2dpdtcv_reg2(p, T)
 }
+
 ///  e  Specific exergy    kJ/kg
 pub fn pT2e_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
