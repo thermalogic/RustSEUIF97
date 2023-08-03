@@ -11,8 +11,8 @@ use crate::r4::region4_sat_pT::*;
 
 /// struct for sub-region (p,T)->v
 #[rustfmt::skip]
-struct para { pub PS: f64,  pub TS: f64, pub VS: f64,
-              pub a: f64, pub b: f64,  pub c: f64,  pub d: f64,  pub e: f64}
+struct para { PS: f64,  TS: f64, VS: f64,
+              a: f64,  b: f64, c: f64,  d: f64, e: f64}
 
 /// The helper function to sum the sub-region (p,T)->v
 fn pT2v_sum(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para) -> f64 {
