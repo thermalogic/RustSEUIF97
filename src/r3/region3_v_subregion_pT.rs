@@ -1141,6 +1141,6 @@ pub fn pT2v_3subreg(p: f64, T: f64, sub_region: char) -> f64 {
         'x' => pT2v_3x(p, T),
         'y' => pT2v_3y(p, T),
         'z' => pT2v_3z(p, T),
-        _ => -1000.0,
+        _ => INVALID_VALUE as f64,
     }
 }
