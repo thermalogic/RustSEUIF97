@@ -6,12 +6,9 @@
 //! *  Prandtl number                 pr     
 //! *  Static dialectric sonstant     sdc
 //！*  Surface tension       N/m       st
-//! 待加： the ionization constant of ordinary water
 
 use crate::algo::*;
 use crate::common::constant::*;
-
-
 
 /// Prandtl number=dv*cp/tc
 /// * dv: Dynamic viscosity Pa.s
