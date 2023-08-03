@@ -69,7 +69,6 @@ pub fn ps2T_reg2a(p: f64, s: f64) -> f64 {
 
     let pi: f64 = p / 1.0;
     let sigma: f64 = s / 2.0 - 2.0;
-
     let mut theta: f64 = 0.0;
     for k in IJn {
         theta += k.2 * pi.powf(k.0) * sigma.powi(k.1); // IJn[k].0 is float

@@ -56,8 +56,6 @@ pub fn hs2p_reg2a(h: f64, s: f64) -> f64 {
 
     let eta: f64 = h / 4200.0 - 0.5;
     let sigma: f64 = s / 12.0 - 1.2;
-
-    let mut pi: f64 = 0.0;
     let pi: f64 = poly_powi(eta, sigma, &IJn);
     let pi2: f64 = pi * pi;
     4.0 * pi2 * pi2
@@ -108,7 +106,6 @@ pub fn hs2p_reg2b(h: f64, s: f64) -> f64 {
     ];
     let eta: f64 = h / 4100.0 - 0.6;
     let sigma: f64 = s / 7.9 - 1.01;
-    let mut pi: f64 = 0.0;
     let pi: f64 = poly_powi(eta, sigma, &IJn);
     let pi2: f64 = pi * pi;
     100.0 * pi2 * pi2
@@ -158,7 +155,6 @@ pub fn hs2p_reg2c(h: f64, s: f64) -> f64 {
 
     let eta: f64 = h / 3500.0 - 0.7;
     let sigma: f64 = s / 5.9 - 1.1;
-    let mut pi: f64 = 0.0;
     let pi: f64 = poly_powi(eta, sigma, &IJn);
     let pi2: f64 = pi * pi;
     100.0 * pi2 * pi2

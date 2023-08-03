@@ -206,5 +206,5 @@ pub fn static_dielectric(rho: f64, T: f64) -> f64 {
     let A: f64 = Na * mu * mu * rho * g / M / epsilon0 / k / T;
     let B: f64 = Na * alfa * rho / 3.0 / M / epsilon0;
     let c: f64 = 9.0 + 2.0 * A + 18.0 * B + A * A + 10.0 * A * B + 9.0 * B * B;
-    (1.0 + A + 5.0 * B + c.sqrt()) / 4.0 / (1. - B)
+    (1.0 + A + 5.0 * B + c.sqrt()) / 4.0 / (1.0 - B)
 }
