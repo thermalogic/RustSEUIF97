@@ -10,16 +10,9 @@ use crate::common::constant::*;
 use crate::r4::region4_sat_pT::*;
 
 /// struct for sub-region (p,T)->v
-struct para {
-    pub PS: f64,
-    pub TS: f64,
-    pub VS: f64,
-    pub a: f64,
-    pub b: f64,
-    pub c: f64,
-    pub d: f64,
-    pub e: f64,
-}
+#[rustfmt::skip]
+struct para { pub PS: f64,  pub TS: f64, pub VS: f64,
+              pub a: f64, pub b: f64,  pub c: f64,  pub d: f64,  pub e: f64}
 
 /// The helper function to sum the sub-region (p,T)->v
 fn pT2v_sum(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para) -> f64 {
@@ -63,8 +56,8 @@ pub fn pT2v_3a(p: f64, T: f64) -> f64 {
         (2, 2, 0.797441793901017e-1),
     ];
     #[rustfmt::skip]
-    let d = para { PS: 100.0, TS: 760.0, VS: 0.0024,
-                         a: 0.085,   b: 0.817,  c: 1.0,   d: 1.0,  e: 1.0, };
+    let d = para { PS: 100.0,  TS: 760.0,  VS: 0.0024,
+                         a: 0.085,   b: 0.817,   c: 1.0,   d: 1.0,  e: 1.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -148,8 +141,8 @@ pub fn pT2v_3c(p: f64, T: f64) -> f64 {
         (8, 1, 4.38319858566475e-02),
     ];
     #[rustfmt::skip]
-    let d:para=para {  PS: 40.0,   TS: 690.0,  VS: 0.0022,
-                       a: 0.259,    b: 0.903,   c: 1.0,   d: 1.0,  e: 1.0,
+    let d:para=para { PS: 40.0,   TS: 690.0,  VS: 0.0022,
+                      a: 0.259,    b: 0.903,   c: 1.0,   d: 1.0,  e: 1.0,
     };
     pT2v_sum(p, T, &IJn, d)
 }
@@ -196,8 +189,8 @@ pub fn pT2v_3d(p: f64, T: f64) -> f64 {
         (3, 0, 5.51478022765087e-03),
     ];
     #[rustfmt::skip]
-    let d:para=para { PS: 40.0, TS: 690.0, VS: 0.0029,
-                      a: 0.559,  b: 0.939,  c: 1.0,  d: 1.0,   e: 4.0, };
+    let d:para=para { PS: 40.0,  TS: 690.0,  VS: 0.0029,
+                      a: 0.559,   b: 0.939,   c: 1.0,  d: 1.0,   e: 4.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -235,7 +228,7 @@ pub fn pT2v_3e(p: f64, T: f64) -> f64 {
     ];
     #[rustfmt::skip]
     let d:para=para { PS: 40.0,   TS: 710.0,   VS: 0.0032,
-                    a: 0.587,       b: 0.918,    c: 1.0,     d: 1.0,    e: 1.0, };
+                      a: 0.587,    b: 0.918,    c: 1.0,     d: 1.0,    e: 1.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -285,8 +278,8 @@ pub fn pT2v_3f(p: f64, T: f64) -> f64 {
         (32, -12, -4.86632965074563e-10),
     ];
     #[rustfmt::skip]
-    let d:para= para { PS: 40.0,  TS: 730.0,   VS: 0.0064,
-                        a: 0.587,  b: 0.891,   c: 0.5,   d: 1.0,   e: 4.0, };
+    let d:para= para { PS: 40.0,   TS: 730.0,   VS: 0.0064,
+                        a: 0.587,   b: 0.891,     c: 0.5,   d: 1.0,   e: 4.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -421,8 +414,8 @@ pub fn pT2v_3i(p: f64, T: f64) -> f64 {
         (36, -8, 6.58110546759474e+01),
     ];
     #[rustfmt::skip]
-    let d:para=para { PS: 25.0, TS: 660.0,  VS: 0.0041,
-                      a: 0.910,        b: 0.984,        c: 0.5,        d: 1.0,        e: 4.0, };
+    let d:para=para { PS: 25.0,  TS: 660.0,  VS: 0.0041,
+                      a: 0.910,   b: 0.984,   c: 0.5,    d: 1.0,   e: 4.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -460,7 +453,7 @@ pub fn pT2v_3j(p: f64, T: f64) -> f64 {
     ];
     #[rustfmt::skip]
     let d:para=para { PS: 25.0,  TS: 670.0,   VS: 0.0054,
-                     a: 0.875,   b: 0.964,    c: 0.5,    d: 1.0,   e: 4.0,};
+                      a: 0.875,   b: 0.964,    c: 0.5,    d: 1.0,   e: 4.0,};
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -503,7 +496,7 @@ pub fn pT2v_3k(p: f64, T: f64) -> f64 {
     ];
     #[rustfmt::skip]
     let d:para = para { PS: 25.0,  TS: 680.0,  VS: 0.0077,
-                      a: 0.802,   b: 0.935,   c: 1.0,   d: 1.0,   e: 1.0, };
+                        a: 0.802,   b: 0.935,   c: 1.0,   d: 1.0,   e: 1.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -554,7 +547,7 @@ pub fn pT2v_3l(p: f64, T: f64) -> f64 {
         (14, 10, 6.42794932373694e+32),
     ];
     #[rustfmt::skip]
-    let d:para = para {PS: 24.0, TS: 650.0,   VS: 0.0026,
+    let d:para = para {PS: 24.0,  TS: 650.0,   VS: 0.0026,
                         a: 0.908,  b: 0.989,    c: 1.0,    d: 1.0,  e: 4.0, };
     pT2v_sum(p, T, &IJn, d)
 }
@@ -603,7 +596,7 @@ pub fn pT2v_3m(p: f64, T: f64) -> f64 {
         (24, 36, 4.79817895699239e+64),
     ];
     #[rustfmt::skip]
-    let d:para =para { PS: 23.0, TS: 650.0,  VS: 0.0028,
+    let d:para =para { PS: 23.0, TS: 650.0,   VS: 0.0028,
                        a: 1.0,    b: 0.997,    c: 1.0,    d: 0.25,    e: 1.0, };
     pT2v_sum(p, T, &IJn, d)
 }
@@ -685,8 +678,8 @@ pub fn pT2v_3o(p: f64, T: f64) -> f64 {
         (24, -12, -5.16720236575302e-11),
     ];
     #[rustfmt::skip]
-    let d: para = para {  PS: 23.0,  TS: 650.0,   VS: 0.0034,
-                        a: 0.974,    b: 0.996,    c: 0.5,     d: 1.0,    e: 1.0,  };
+    let d: para = para { PS: 23.0,  TS: 650.0,   VS: 0.0034,
+                         a: 0.974,    b: 0.996,   c: 0.5,    d: 1.0,   e: 1.0,  };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -721,7 +714,7 @@ pub fn pT2v_3p(p: f64, T: f64) -> f64 {
         (36, -12, -3.45042834640005e-04),
     ];
     #[rustfmt::skip]
-    let d: para =  para { PS: 23.0,    TS: 650.0,   VS: 0.0041,
+    let d: para =  para { PS: 23.0,   TS: 650.0,   VS: 0.0041,
                           a: 0.972,   b: 0.997,    c: 0.5,    d: 1.0,     e: 1.0, };
     pT2v_sum(p, T, &IJn, d)
 }
@@ -754,8 +747,8 @@ pub fn pT2v_3q(p: f64, T: f64) -> f64 {
         (1, 3, -3.19114969006533e+03),
     ];
     #[rustfmt::skip]
-    let d:para=para {  PS: 23.0,  TS: 650.0,   VS: 0.0022,
-        a: 0.848,   b: 0.983,     c: 1.0,        d: 1.0,     e: 4.0,};
+    let d:para=para {  PS: 23.0,    TS: 650.0,   VS: 0.0022,
+                         a: 0.848,   b: 0.983,     c: 1.0,   d: 1.0,  e: 4.0,};
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -790,8 +783,8 @@ pub fn pT2v_3r(p: f64, T: f64) -> f64 {
         (14, -12, 3.77501980025469e-09),
     ];
     #[rustfmt::skip]
-    let d:para=para { PS: 23.0,      TS: 650.0,     VS: 0.0054,
-        a: 0.874,        b: 0.982,        c: 1.0,         d: 1.0,         e: 1.0, };
+    let d:para=para { PS: 23.0,   TS: 650.0,   VS: 0.0054,
+                      a: 0.874,    b: 0.982,     c: 1.0,    d: 1.0,  e: 1.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -828,8 +821,8 @@ pub fn pT2v_3s(p: f64, T: f64) -> f64 {
         (14, 24, 9.50898170425042e+53),
     ];
     #[rustfmt::skip]
-    let d:para=para { PS: 21.0, TS: 640.0, VS: 0.0022,
-        a: 0.886, b: 0.990,  c: 1.0, d: 1.0, e: 4.0, };
+    let d:para=para { PS: 21.0,  TS: 640.0,  VS: 0.0022,
+                       a: 0.886,  b: 0.990,   c: 1.0,  d: 1.0,  e: 4.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -918,7 +911,7 @@ pub fn pT2v_3u(p: f64, T: f64) -> f64 {
     ];
     #[rustfmt::skip]
     let d=para { PS: 23.0,    TS: 650.0,   VS: 0.0026,
-                        a: 0.902,   b: 0.988,     c: 1.0,       d: 1.0,       e: 1.0, };
+                        a: 0.902,   b: 0.988,     c: 1.0,    d: 1.0,   e: 1.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -965,8 +958,8 @@ pub fn pT2v_3v(p: f64, T: f64) -> f64 {
         (14, 1, 2.47761392329058e+26),
     ];
     #[rustfmt::skip]
-    let d: para = para { PS: 23.0,   TS: 650.0, VS: 0.0031,
-                         a: 0.960,    b: 0.995,        c: 1.0,        d: 1.0,        e: 1.0, };
+    let d: para = para { PS: 23.0,   TS: 650.0,  VS: 0.0031,
+                         a: 0.960,    b: 0.995,   c: 1.0,   d: 1.0,  e: 1.0, };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -1009,8 +1002,8 @@ pub fn pT2v_3w(p: f64, T: f64) -> f64 {
         (10, -8, 8.58133791857099e-06),
     ];
     #[rustfmt::skip]
-    let d: para = para{PS: 23.0,    TS: 650.0,   VS: 0.0039,
-                        a: 0.959,    b: 0.995,    c: 1.0,    d: 1.0,    e: 4.0,};
+    let d: para = para{PS: 23.0,   TS: 650.0,   VS: 0.0039,
+                        a: 0.959,   b: 0.995,    c: 1.0,    d: 1.0,    e: 4.0,};
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -1054,8 +1047,8 @@ pub fn pT2v_3x(p: f64, T: f64) -> f64 {
         (14, -6, 4.30867658061468e+06),
     ];
     #[rustfmt::skip]
-    let d: para = para { PS: 23.0, TS: 650.0,        VS: 0.0049,
-                         a: 0.910,   b: 0.988,        c: 1.0,        d: 1.0,        e: 1.0,  };
+    let d: para = para { PS: 23.0,  TS: 650.0,  VS: 0.0049,
+                         a: 0.910,   b: 0.988,   c: 1.0,   d: 1.0,   e: 1.0,  };
     pT2v_sum(p, T, &IJn, d)
 }
 
@@ -1115,8 +1108,8 @@ pub fn pT2v_3z(p: f64, T: f64) -> f64 {
         (8, -4, 3.9453604949707e+06),
     ];
     #[rustfmt::skip]
-    let d: para =para { PS: 22.0, TS: 650.0,   VS: 0.0038,
-                        a: 0.993,      b: 0.994,        c: 1.0,        d: 1.0,        e: 4.0,    };
+    let d: para =para { PS: 22.0,  TS: 650.0,   VS: 0.0038,
+                        a: 0.993,   b: 0.994,    c: 1.0,   d: 1.0,   e: 4.0};
     pT2v_sum(p, T, &IJn, d)
 }
 
