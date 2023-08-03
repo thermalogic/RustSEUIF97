@@ -54,7 +54,7 @@ pub const IJn: [(i32, i32, f64); 39] = [
 /// Fundamental equation for region 3
 pub fn phi_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = n1 * delta.ln();
-    let steps: [(usize, usize); 2] = [(0, 19), (19, 38)];
+    let steps: [(usize, usize); 2] = [(0, 19), (19, 39)];
     result + poly_powi_steps(delta, tau, &IJn, &steps)
 }
 
