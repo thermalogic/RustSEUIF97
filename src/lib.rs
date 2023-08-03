@@ -163,14 +163,17 @@ pub struct o_id_region_args {
 
 impl Default for o_id_region_args {
     fn default() -> Self {
-        o_id_region_args { o_id: 0, region: 6 }
+        o_id_region_args {
+            o_id: 0,
+            region: 6,
+        }
     }
 }
 
 impl From<i32> for o_id_region_args {
     fn from(o_id: i32) -> Self {
         Self {
-            o_id: o_id,
+            o_id,
             ..Self::default()
         }
     }
@@ -179,8 +182,8 @@ impl From<i32> for o_id_region_args {
 impl From<(i32, i32)> for o_id_region_args {
     fn from((o_id, region): (i32, i32)) -> Self {
         Self {
-            o_id: o_id,
-            region: region,
+            o_id,
+            region,
         }
     }
 }
@@ -220,9 +223,7 @@ where
     match o_id {
         OP => return p,
         OT => return t,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
-            pair_transport(p, T, o_id, PAIRS::pT, pT_thermal, reg)
-        }
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(p, T, o_id, PAIRS::pT, pT_thermal, reg),
         _ => pT_thermal(p, T, o_id, reg),
     }
 }
@@ -251,9 +252,7 @@ where
     match o_id {
         OP => return p,
         OH => return h,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
-            pair_transport(p, h, o_id, PAIRS::ph, ph_thermal, reg)
-        }
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(p, h, o_id, PAIRS::ph, ph_thermal, reg),
         _ => ph_thermal(p, h, o_id, reg),
     }
 }
@@ -280,9 +279,7 @@ where
     match o_id {
         OP => return p,
         OS => return s,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
-            pair_transport(p, s, o_id, PAIRS::ps, ps_thermal, reg)
-        }
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(p, s, o_id, PAIRS::ps, ps_thermal, reg),
         _ => ps_thermal(p, s, o_id, reg),
     }
 }
@@ -311,9 +308,7 @@ where
     match o_id {
         OH => return h,
         OS => return s,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
-            pair_transport(h, s, o_id, PAIRS::hs, hs_thermal, reg)
-        }
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(h, s, o_id, PAIRS::hs, hs_thermal, reg),
         _ => hs_thermal(h, s, o_id, reg),
     }
 }
@@ -393,9 +388,7 @@ where
     match o_id {
         OP => return p,
         OV => return v,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
-            pair_transport(p, v, o_id, PAIRS::pv, pv_thermal, reg)
-        }
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(p, v, o_id, PAIRS::pv, pv_thermal, reg),
         _ => pv_thermal(p, v, o_id, reg),
     }
 }
@@ -423,9 +416,7 @@ where
     match o_id {
         OT => return t,
         OV => return v,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
-            pair_transport(t, v, o_id, PAIRS::tv, tv_thermal, reg)
-        }
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(t, v, o_id, PAIRS::tv, tv_thermal, reg),
         _ => tv_thermal(t, v, o_id, reg),
     }
 }
@@ -454,9 +445,7 @@ where
     match o_id {
         OT => return t,
         OH => return h,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
-            pair_transport(t, h, o_id, PAIRS::th, th_thermal, reg)
-        }
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(t, h, o_id, PAIRS::th, th_thermal, reg),
         _ => th_thermal(t, h, o_id, reg),
     }
 }
@@ -485,9 +474,7 @@ where
     match o_id {
         OT => return t,
         OS => return s,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => {
-            pair_transport(t, s, o_id, PAIRS::ts, ts_thermal, reg)
-        }
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(t, s, o_id, PAIRS::ts, ts_thermal, reg),
         _ => ts_thermal(t, s, o_id, reg),
     }
 }

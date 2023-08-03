@@ -463,9 +463,7 @@ pub fn pv_sub_region(p: f64, v: f64) -> i32 {
     {
         return 2;
     };
-    if ((p > P_MIN3)
-        && (p <= PC_WATER)
-        && (((v > vt623) && (v < vsw)) || ((v > vss) && (v < vB23))))
+    if ((p > P_MIN3) && (p <= PC_WATER) && (((v > vt623) && (v < vsw)) || ((v > vss) && (v < vB23))))
         || ((p > PC_WATER) && (p <= P_MAX3) && (v > vt623) && (v < vB23))
     {
         return 3;
@@ -538,9 +536,7 @@ pub fn tv_sub_region(t: f64, v: f64) -> i32 {
     {
         return 2;
     };
-    if ((T > T_MIN3)
-        && (T <= TC_WATER)
-        && (((v > vss) && (v < vB23)) || ((v >= vp100) && (v < vsw))))
+    if ((T > T_MIN3) && (T <= TC_WATER) && (((v > vss) && (v < vB23)) || ((v >= vp100) && (v < vsw))))
         || ((T > TC_WATER) && (T <= T_MAX3) && (v >= vp100) && (v < vB23))
     {
         return 3;
@@ -719,9 +715,7 @@ pub fn ts_sub_region(t: f64, s: f64) -> i32 {
     {
         return 2;
     };
-    if ((T > T_MIN3)
-        && (T <= TC_WATER)
-        && (((s > sss) && (s < sB23)) || ((s >= sp100) && (s < ssw))))
+    if ((T > T_MIN3) && (T <= TC_WATER) && (((s > sss) && (s < sB23)) || ((s >= sp100) && (s < ssw))))
         || ((T > TC_WATER) && (T <= T_MAX3) && (s >= sp100) && (s < sB23))
     {
         return 3;

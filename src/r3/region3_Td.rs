@@ -48,8 +48,7 @@ pub fn Td2h_reg3(T: f64, d: f64) -> f64 {
 pub fn Td2cp_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    let (phi_delta, phi_deltadelta, phi_deltatau, phi_tautau) =
-        polys_i_ii_ij_jj_powi_reg3(delta, tau);
+    let (phi_delta, phi_deltadelta, phi_deltatau, phi_tautau) = polys_i_ii_ij_jj_powi_reg3(delta, tau);
 
     let mut a: f64 = delta * (phi_delta - tau * phi_deltatau);
     a *= a;
@@ -68,8 +67,7 @@ pub fn Td2cv_reg3(T: f64, d: f64) -> f64 {
 pub fn Td2w_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    let (phi_delta, phi_deltadelta, phi_deltatau, phi_tautau) =
-        polys_i_ii_ij_jj_powi_reg3(delta, tau);
+    let (phi_delta, phi_deltadelta, phi_deltatau, phi_tautau) = polys_i_ii_ij_jj_powi_reg3(delta, tau);
 
     let mut a: f64 = delta * phi_delta - delta * tau * phi_deltatau;
     a *= a;

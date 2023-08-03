@@ -7,11 +7,7 @@ use if97::*;
 #[test]
 fn test_region1_ph() {
     for i in 0..3 {
-        assert_approx_eq!(
-            r1_phT[i][2] - 273.15,
-            ph(r1_phT[i][0], r1_phT[i][1], OT),
-            1.0e-1f64
-        );
+        assert_approx_eq!(r1_phT[i][2] - 273.15, ph(r1_phT[i][0], r1_phT[i][1], OT), 1.0e-1f64);
     }
 }
 

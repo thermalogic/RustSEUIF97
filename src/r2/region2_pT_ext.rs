@@ -69,10 +69,7 @@ pub fn pT2g_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2f_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    RGAS_WATER
-        * T
-        * (gamma0_reg2(pi, tau) + gammar_reg2(pi, tau)
-            - p * (gamma0_pi_reg2(pi) + gammar_pi_reg2(pi, tau)))
+    RGAS_WATER * T * (gamma0_reg2(pi, tau) + gammar_reg2(pi, tau) - p * (gamma0_pi_reg2(pi) + gammar_pi_reg2(pi, tau)))
 }
 
 /// joule ： Joule-Thomson coefficient    K/MPa

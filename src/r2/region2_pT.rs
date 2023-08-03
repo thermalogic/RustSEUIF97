@@ -56,9 +56,7 @@ pub fn pT2u_reg2(p: f64, T: f64) -> f64 {
     let pi: f64 = p;
 
     let (gammar_pi, gammar_tau) = polys_i_j_powi_reg2(pi, tau);
-    RGAS_WATER
-        * T
-        * (tau * (gamma0_tau_reg2(tau) + gammar_tau) - pi * (gamma0_pi_reg2(pi) + gammar_pi))
+    RGAS_WATER * T * (tau * (gamma0_tau_reg2(tau) + gammar_tau) - pi * (gamma0_pi_reg2(pi) + gammar_pi))
 }
 
 pub fn pT2cp_reg2(p: f64, T: f64) -> f64 {

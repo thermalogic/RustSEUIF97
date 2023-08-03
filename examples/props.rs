@@ -46,17 +46,11 @@ const prop_map: [(&str, &str, i32); 36] = [
 /// func: the function to get properties
 fn get_props(v1: f64, v2: f64, func: fn(f64, f64, i32) -> f64) {
     println!("\t┌{}┐", "─".repeat(78));
-    println!(
-        "\t| {:2} |  {:^40} | {:^13}| {:^12} |",
-        "No", "Propertry", "Unit", "Value"
-    );
+    println!("\t| {:2} |  {:^40} | {:^13}| {:^12} |", "No", "Propertry", "Unit", "Value");
     println!("\t|{}|", "─".repeat(78));
     for e in prop_map {
         let value: f64 = func(v1, v2, e.2);
-        println!(
-            "\t| {:2} |  {:40} | {:^12} |{value:>12.5e}  |",
-            e.2, e.0, e.1
-        );
+        println!("\t| {:2} |  {:40} | {:^12} |{value:>12.5e}  |", e.2, e.0, e.1);
     }
     println!("\t└{}┘ ", "─".repeat(78));
 }

@@ -43,10 +43,7 @@ pub fn pT2g_reg5(p: f64, T: f64) -> f64 {
 pub fn pT2f_reg5(p: f64, T: f64) -> f64 {
     let tau: f64 = r5Tstar / T;
     let pi: f64 = p / r5Pstar;
-    RGAS_WATER
-        * T
-        * (gamma0_reg5(pi, tau) + gammar_reg5(pi, tau)
-            - p * (gamma0_pi_reg5(pi) + gammar_pi_reg5(pi, tau)))
+    RGAS_WATER * T * (gamma0_reg5(pi, tau) + gammar_reg5(pi, tau) - p * (gamma0_pi_reg5(pi) + gammar_pi_reg5(pi, tau)))
 }
 
 /// kt: Isothermal compressibility, [1/MPa]

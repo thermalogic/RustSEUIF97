@@ -3,22 +3,9 @@
 use if97::*;
 use std::time::Instant;
 
-const prop_map_pt: [(&str, i32); 6] = [
-    ("V", OV),
-    ("H", OH),
-    ("S", OS),
-    ("U", OU),
-    ("CP", OCP),
-    ("W", OW),
-];
+const prop_map_pt: [(&str, i32); 6] = [("V", OV), ("H", OH), ("S", OS), ("U", OU), ("CP", OCP), ("W", OW)];
 
-fn speed_experiment(
-    v1: f64,
-    v2: f64,
-    func: fn(f64, f64, (i32, i32)) -> f64,
-    prop_map: &[(&str, i32)],
-    reg: i32,
-) {
+fn speed_experiment(v1: f64, v2: f64, func: fn(f64, f64, (i32, i32)) -> f64, prop_map: &[(&str, i32)], reg: i32) {
     println!(" v1={:.6} v2={:.6} ", v1, v2);
     for e in prop_map {
         let value: f64 = func(v1, v2, (e.1, reg));
@@ -46,14 +33,7 @@ fn speed_region2() {
 }
 
 fn speed_region3() {
-    let prop_map_Td: [(&str, i32); 6] = [
-        ("P", OP),
-        ("H", OH),
-        ("S", OS),
-        ("U", OU),
-        ("CP", OCP),
-        ("W", OW),
-    ];
+    let prop_map_Td: [(&str, i32); 6] = [("P", OP), ("H", OH), ("S", OS), ("U", OU), ("CP", OCP), ("W", OW)];
     println!("Region 3 ");
     let T: f64 = 650.0;
     let d: f64 = 500.0;

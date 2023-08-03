@@ -7,16 +7,8 @@ use if97::*;
 #[test]
 fn test_region1_hs() {
     for i in 0..=2 {
-        assert_approx_eq!(
-            r1_hspT[i][3] - 273.15,
-            hs(r1_hspT[i][0], r1_hspT[i][1], OT),
-            1.0e-1f64
-        );
-        assert_approx_eq!(
-            r1_hspT[i][2],
-            hs(r1_hspT[i][0], r1_hspT[i][1], OP),
-            1.0e-1f64
-        );
+        assert_approx_eq!(r1_hspT[i][3] - 273.15, hs(r1_hspT[i][0], r1_hspT[i][1], OT), 1.0e-1f64);
+        assert_approx_eq!(r1_hspT[i][2], hs(r1_hspT[i][0], r1_hspT[i][1], OP), 1.0e-1f64);
     }
 }
 
@@ -64,11 +56,7 @@ fn test_region5_hs() {
 
 #[test]
 fn test_region4_hs() {
-    const hsT: [[f64; 3]; 3] = [
-        [1800.0, 5.3, 346.8475498],
-        [2400.0, 6.0, 425.1373305],
-        [2500.0, 5.5, 522.5579013],
-    ];
+    const hsT: [[f64; 3]; 3] = [[1800.0, 5.3, 346.8475498], [2400.0, 6.0, 425.1373305], [2500.0, 5.5, 522.5579013]];
 
     let mut h: f64 = 0.0;
     let mut h1: f64 = 0.0;

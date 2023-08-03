@@ -52,8 +52,7 @@ pub fn Td2f_reg3(T: f64, d: f64) -> f64 {
 pub fn Td2dvdpct_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    let mut ddeltadpi: f64 =
-        2.0 * phi_delta_reg3(delta, tau) + delta * phi_deltadelta_reg3(delta, tau);
+    let mut ddeltadpi: f64 = 2.0 * phi_delta_reg3(delta, tau) + delta * phi_deltadelta_reg3(delta, tau);
     ddeltadpi = d * RGAS_WATER * T * ddeltadpi;
     -1000.0 * DC_WATER / d / d / ddeltadpi
 }
@@ -110,11 +109,7 @@ pub fn Td2iJTC_reg3(T: f64, d: f64) -> f64 {
 pub fn Td2dpdtcv_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
-    0.001
-        * RGAS_WATER
-        * d
-        * delta
-        * (phi_delta_reg3(delta, tau) - tau * phi_deltatau_reg3(delta, tau))
+    0.001 * RGAS_WATER * d * delta * (phi_delta_reg3(delta, tau) - tau * phi_deltatau_reg3(delta, tau))
 }
 
 /// alfap: Relative pressure coefficient  

@@ -181,15 +181,7 @@ fn Ty2x_residuals(T: f64, x: f64, y: f64, y_id: i32) -> f64 {
 }
 
 /// Bisection for the root : Ty2x_residuals(T,x, y, y_id)=0
-fn bisection_reg4(
-    x: f64,
-    y: f64,
-    y_id: i32,
-    mut Tl: f64,
-    mut Tr: f64,
-    tol: f64,
-    maxiter: i32,
-) -> f64 {
+fn bisection_reg4(x: f64, y: f64, y_id: i32, mut Tl: f64, mut Tr: f64, tol: f64, maxiter: i32) -> f64 {
     let mut T: f64 = 0.0;
     let mut fl: f64 = Ty2x_residuals(Tl, x, y, y_id); // residual for left  bound
     let mut fr: f64 = Ty2x_residuals(Tr, x, y, y_id); //resdiual for right bound

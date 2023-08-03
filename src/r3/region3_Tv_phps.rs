@@ -9,12 +9,7 @@ use crate::r3::region3_v_subregion_pT::*;
 fn p2h_3ab(p: f64) -> f64 {
     //Page 6 Table 2. the coefficients of the equation h3ab(p) inits dimensionless form, Eq. (1)
     //  for defining the boundary /between subregions 3a and 3b
-    const n: [f64; 4] = [
-        0.201464004206875E+04,
-        0.374696550136983E+01,
-        -0.219921901054187E-01,
-        0.875131686009950E-04,
-    ];
+    const n: [f64; 4] = [0.201464004206875E+04, 0.374696550136983E+01, -0.219921901054187E-01, 0.875131686009950E-04];
     let pi: f64 = p / 1.0;
     let eta: f64 = n[0] + pi * (n[1] + pi * (n[2] + n[3] * pi));
     eta * 1.0

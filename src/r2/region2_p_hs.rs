@@ -167,12 +167,7 @@ pub fn hs2p_reg2c(h: f64, s: f64) -> f64 {
 /// Define the boundary between Region 2a and 2b, h=f(s)
 ///    Supp-PHS12-2014.pdf, Eq 2
 pub fn s2h_reg2_ab(s: f64) -> f64 {
-    let n: [f64; 4] = [
-        -0.349898083432139E+04,
-        0.257560716905876E+04,
-        -0.421073558227969E+03,
-        0.276349063799944E+02,
-    ];
+    let n: [f64; 4] = [-0.349898083432139E+04, 0.257560716905876E+04, -0.421073558227969E+03, 0.276349063799944E+02];
     let sigma: f64 = s / 1.0;
     let eta: f64 = n[0] + sigma * (n[1] + sigma * (n[2] + n[3] * sigma));
     eta * 1.0

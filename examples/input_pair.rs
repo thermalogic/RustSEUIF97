@@ -14,29 +14,11 @@ fn main() {
 
     println!("\tpt\n\t   p={:.6} t={:.6} h={:.6} s={:6}", p, t, h, s);
     // ph ->t
-    println!(
-        "\tph\n\t   p={:.6} t={:.6} h={:.6} s={:6}",
-        p,
-        ph(p, h, OT),
-        h,
-        s
-    );
+    println!("\tph\n\t   p={:.6} t={:.6} h={:.6} s={:6}", p, ph(p, h, OT), h, s);
     // ps ->t
-    println!(
-        "\tps\n\t   p={:.6} t={:.6} h={:.6} s={:6}",
-        p,
-        ps(p, s, OT),
-        h,
-        s
-    );
+    println!("\tps\n\t   p={:.6} t={:.6} h={:.6} s={:6}", p, ps(p, s, OT), h, s);
     // hs ->t,p
-    println!(
-        "\ths\n\t   p={:.6} t={:.6} h={:.6} s={:6}",
-        hs(h, s, OP),
-        hs(h, s, OT),
-        h,
-        s
-    );
+    println!("\ths\n\t   p={:.6} t={:.6} h={:.6} s={:6}", hs(h, s, OP), hs(h, s, OT), h, s);
 
     //extened (t,s) ->p
     println!("\tpt\n\t   p={:.6} t={:.6}  s={:.6}", p, t, s);
@@ -59,44 +41,20 @@ fn main() {
     let t_sat: f64 = px(p, 0.0, OT);
     let h_sat_w: f64 = px(p, 0.0, OH);
     let h_sat_s: f64 = px(p, 1.0, OH);
-    println!(
-        "\tpx\n\t   p_sat={:.6} t_sat={:.6} h_sat_w={:.6} h_sat_s={:6}",
-        p, t_sat, h_sat_w, h_sat_s
-    );
+    println!("\tpx\n\t   p_sat={:.6} t_sat={:.6} h_sat_w={:.6} h_sat_s={:6}", p, t_sat, h_sat_w, h_sat_s);
     //tx
     let p_sat: f64 = tx(t_sat, 0.0, OP);
     let h_sat_w: f64 = tx(t_sat, 0.0, OH);
     let h_sat_s: f64 = tx(t_sat, 1.0, OH);
-    println!(
-        "\ttx\n\t   p_sat={:.6} t_sat={:.6} h_sat_w={:.6} h_sat_s={:6}",
-        p_sat, t_sat, h_sat_w, h_sat_s
-    );
+    println!("\ttx\n\t   p_sat={:.6} t_sat={:.6} h_sat_w={:.6} h_sat_s={:6}", p_sat, t_sat, h_sat_w, h_sat_s);
 
     let x: f64 = 0.6;
     // (h,x)->p,t
     let hxv: f64 = px(p, x, OH);
-    println!(
-        "\tpx\n\t   p={:.6} t_sat={:.6} x={:.6} h={:.6}",
-        p, t_sat, x, hxv
-    );
-    println!(
-        "\thx\n\t   p={:.6} t_sat={:.6} x={:.6} h={:.6}",
-        hx(hxv, x, OP),
-        hx(hxv, x, OT),
-        x,
-        hxv
-    );
+    println!("\tpx\n\t   p={:.6} t_sat={:.6} x={:.6} h={:.6}", p, t_sat, x, hxv);
+    println!("\thx\n\t   p={:.6} t_sat={:.6} x={:.6} h={:.6}", hx(hxv, x, OP), hx(hxv, x, OT), x, hxv);
     // (s,x)->p,t
     let sxv: f64 = px(p, x, OS);
-    println!(
-        "\tpx\n\t   p_sat={:.6} t_sat={:.6} x={:.6} s={:.6}",
-        p, t_sat, x, sxv
-    );
-    println!(
-        "\tsx\n\t   p_sat={:.6} t_sat={:.6} x={:.6} s={:.6}",
-        sx(sxv, x, OP),
-        sx(sxv, x, OT),
-        x,
-        sxv
-    );
+    println!("\tpx\n\t   p_sat={:.6} t_sat={:.6} x={:.6} s={:.6}", p, t_sat, x, sxv);
+    println!("\tsx\n\t   p_sat={:.6} t_sat={:.6} x={:.6} s={:.6}", sx(sxv, x, OP), sx(sxv, x, OT), x, sxv);
 }
