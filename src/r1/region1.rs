@@ -1,12 +1,20 @@
 //! Region 1 - (p,T),(p,h), (p,s),(h,s); (p,v),(t,v),(t,h),(t,s)
 
-use crate::common::constant::*;
 use crate::common::propertry_id::*;
+use crate::common::*;
 
 use crate::r1::*;
 
-/// Region 1 : pT_reg1 - basic and extended properties
+/// Region 1 : pT_reg1 all properties
 pub fn pT_reg1(p: f64, T: f64, o_id: i32) -> f64 {
+    match o_id {
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport_reg(p, T, o_id, PAIRS::pT, pT_thermal_reg1),
+        _ => pT_thermal_reg1(p, T, o_id), // the extended properties
+    }
+}
+
+/// Region 1 : pT_thermal_reg1 - basic and extended properties
+pub fn pT_thermal_reg1(p: f64, T: f64, o_id: i32) -> f64 {
     match o_id {
         OV => pT2v_reg1(p, T),
         OD => 1.0 / pT2v_reg1(p, T),

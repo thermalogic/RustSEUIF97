@@ -9,10 +9,19 @@
 
 use crate::common::constant::*;
 use crate::common::propertry_id::*;
+use crate::common::*;
 use crate::r2::*;
 
-/// Region 2 : pT_reg2 - the basic and extended properties
+/// Region 2 : pT_reg1 all properties
 pub fn pT_reg2(p: f64, T: f64, o_id: i32) -> f64 {
+    match o_id {
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport_reg(p, T, o_id, PAIRS::pT, pT_thermal_reg2),
+        _ => pT_thermal_reg2(p, T, o_id), // the extended properties
+    }
+}
+
+/// Region 2 : pT_thermal_reg2 - the basic and extended properties
+pub fn pT_thermal_reg2(p: f64, T: f64, o_id: i32) -> f64 {
     match o_id {
         OV => pT2v_reg2(p, T),
         OD => 1.0 / pT2v_reg2(p, T),

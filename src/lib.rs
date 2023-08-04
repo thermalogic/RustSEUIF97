@@ -223,8 +223,7 @@ where
     match o_id {
         OP => return p,
         OT => return t,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(p, T, o_id, PAIRS::pT, pT_thermal, reg),
-        _ => pT_thermal(p, T, o_id, reg),
+        _ => pair_properties(p, T, o_id, pT_sub_region, pT_reg1, pT_reg2, pT_reg3, pT_reg4, pT_reg5, reg),
     }
 }
 
@@ -252,8 +251,7 @@ where
     match o_id {
         OP => return p,
         OH => return h,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(p, h, o_id, PAIRS::ph, ph_thermal, reg),
-        _ => ph_thermal(p, h, o_id, reg),
+        _ => pair_properties(p, h, o_id, ph_sub_region, ph_reg1, ph_reg2, ph_reg3, ph_reg4, ph_reg5, reg),
     }
 }
 
@@ -279,8 +277,7 @@ where
     match o_id {
         OP => return p,
         OS => return s,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(p, s, o_id, PAIRS::ps, ps_thermal, reg),
-        _ => ps_thermal(p, s, o_id, reg),
+        _ => pair_properties(p, s, o_id, ps_sub_region, ps_reg1, ps_reg2, ps_reg3, ps_reg4, ps_reg5, reg),
     }
 }
 
@@ -308,8 +305,7 @@ where
     match o_id {
         OH => return h,
         OS => return s,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(h, s, o_id, PAIRS::hs, hs_thermal, reg),
-        _ => hs_thermal(h, s, o_id, reg),
+        _ => pair_properties(h, s, o_id, hs_sub_region, hs_reg1, hs_reg2, hs_reg3, hs_reg4, hs_reg5, reg),
     }
 }
 
@@ -388,8 +384,7 @@ where
     match o_id {
         OP => return p,
         OV => return v,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(p, v, o_id, PAIRS::pv, pv_thermal, reg),
-        _ => pv_thermal(p, v, o_id, reg),
+        _ => pair_properties(p, v, o_id, pv_sub_region, pv_reg1, pv_reg2, pv_reg3, pv_reg4, pv_reg5, reg),
     }
 }
 
@@ -416,8 +411,7 @@ where
     match o_id {
         OT => return t,
         OV => return v,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(t, v, o_id, PAIRS::tv, tv_thermal, reg),
-        _ => tv_thermal(t, v, o_id, reg),
+        _ => pair_properties(t, v, o_id, tv_sub_region, tv_reg1, tv_reg2, tv_reg3, tv_reg4, tv_reg5, reg),
     }
 }
 
@@ -445,8 +439,7 @@ where
     match o_id {
         OT => return t,
         OH => return h,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(t, h, o_id, PAIRS::th, th_thermal, reg),
-        _ => th_thermal(t, h, o_id, reg),
+        _ => pair_properties(t, h, o_id, th_sub_region, th_reg1, th_reg2, th_reg3, th_reg4, th_reg5, reg),
     }
 }
 
@@ -474,8 +467,7 @@ where
     match o_id {
         OT => return t,
         OS => return s,
-        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport(t, s, o_id, PAIRS::ts, ts_thermal, reg),
-        _ => ts_thermal(t, s, o_id, reg),
+        _ => pair_properties(t, s, o_id, ts_sub_region, ts_reg1, ts_reg2, ts_reg3, ts_reg4, ts_reg5, reg),
     }
 }
 

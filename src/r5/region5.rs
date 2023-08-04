@@ -1,11 +1,19 @@
 //! Region 5 - (p,T),(p,h), (p,s),(h,s); (p,v),(t,v),(t,h),(t,s)
 
-use crate::common::constant::*;
 use crate::common::propertry_id::*;
+use crate::common::*;
 use crate::r5::*;
 
-/// Region5 : pT_regs - the basic and extended properties
+/// Region 5 : pT_reg5 all properties
 pub fn pT_reg5(p: f64, T: f64, o_id: i32) -> f64 {
+    match o_id {
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport_reg(p, T, o_id, PAIRS::pT, pT_thermal_reg5),
+        _ => pT_thermal_reg5(p, T, o_id), // the extended properties
+    }
+}
+
+/// Region5 : pT_thermal_reg5 - the basic and extended properties
+pub fn pT_thermal_reg5(p: f64, T: f64, o_id: i32) -> f64 {
     match o_id {
         OV => pT2v_reg5(p, T),
         OD => 1.0 / pT2v_reg5(p, T),

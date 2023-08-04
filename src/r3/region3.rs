@@ -6,12 +6,20 @@
 //!    * (h,s)-> p  in IAPWS-IF97-S04rev, the region methods of Supp-phs3-2014.pdf in the `boundarie` module
 //!    * (p,T)-> d in IAPWS-IF97-S05rev
 
-use crate::common::constant::*;
 use crate::common::propertry_id::*;
+use crate::common::*;
 use crate::r3::*;
 
-/// Region 3 : Td_regs - the basic and extended properties
+/// Region 3 : Td_regs - all  properties
 pub fn Td_reg3(T: f64, d: f64, o_id: i32) -> f64 {
+    match o_id {
+        OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport_reg(T, d, o_id, PAIRS::Td, Td_thermal_reg3),
+        _ => Td_thermal_reg3(T, d, o_id), // the extended properties
+    }
+}
+
+/// Region 3 : Td_thermal_regs - the basic and extended properties
+pub fn Td_thermal_reg3(T: f64, d: f64, o_id: i32) -> f64 {
     match o_id {
         OV => 1.0 / d,
         OP => Td2p_reg3(T, d),
