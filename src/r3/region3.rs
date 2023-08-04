@@ -14,7 +14,7 @@ use crate::r3::*;
 pub fn Td_reg3(T: f64, d: f64, o_id: i32) -> f64 {
     match o_id {
         OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport_reg(T, d, o_id, PAIRS::Td, Td_thermal_reg3),
-        _ => Td_thermal_reg3(T, d, o_id), // the extended properties
+        _ => Td_thermal_reg3(T, d, o_id), // the  basic and extended properties
     }
 }
 

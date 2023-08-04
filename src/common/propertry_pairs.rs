@@ -28,7 +28,6 @@ use crate::r5::region5::*;
 
 type REGION_EQ = fn(f64, f64) -> i32;
 type PROP_EQ = fn(f64, f64, i32) -> f64;
-type THERMAL_REG_EQ = fn(f64, f64, i32) -> f64;
 
 pub enum PAIRS {
     pT,
@@ -37,7 +36,7 @@ pub enum PAIRS {
 
 /// The common method to get the transport properties of input pairs for each region
 /// * (p,T) - 1,2,5; (T,d) -3
-pub fn pair_transport_reg(v1: f64, v2: f64, o_id: i32, pair: PAIRS, fn_thermal: THERMAL_REG_EQ) -> f64 {
+pub fn pair_transport_reg(v1: f64, v2: f64, o_id: i32, pair: PAIRS, fn_thermal: PROP_EQ) -> f64 {
     match o_id {
         OST => match pair {
             PAIRS::Td => surface_tension(v1),
