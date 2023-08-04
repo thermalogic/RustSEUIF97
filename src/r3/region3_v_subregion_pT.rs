@@ -21,6 +21,14 @@ fn pT2v_sum(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para) -> f64 {
     let v: f64 = poly_powi(p1, t1, &IJn);
     v.powf(d.e) * d.VS
 }
+/// for big array
+/// * 3d -35
+fn pT2v_sum_steps(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para, steps: &[(usize, usize)]) -> f64 {
+    let p1: f64 = (p / d.PS - d.a).powf(d.c);
+    let t1: f64 = (T / d.TS - d.b).powf(d.d);
+    let v: f64 = poly_powi_steps(p1, t1, &IJn, &steps);
+    v.powf(d.e) * d.VS
+}
 
 pub fn pT2v_3a(p: f64, T: f64) -> f64 {
     const IJn: [(i32, i32, f64); 30] = [
@@ -191,7 +199,8 @@ pub fn pT2v_3d(p: f64, T: f64) -> f64 {
     #[rustfmt::skip]
     let d:para=para { PS: 40.0,  TS: 690.0,  VS: 0.0029,
                       a: 0.559,   b: 0.939,   c: 1.0,  d: 1.0,   e: 4.0, };
-    pT2v_sum(p, T, &IJn, d)
+    let steps: [(usize, usize); 2] = [(0, 17), (17, 38)];
+    pT2v_sum_steps(p, T, &IJn, d, &steps)
 }
 
 pub fn pT2v_3e(p: f64, T: f64) -> f64 {
@@ -280,7 +289,8 @@ pub fn pT2v_3f(p: f64, T: f64) -> f64 {
     #[rustfmt::skip]
     let d:para= para { PS: 40.0,   TS: 730.0,   VS: 0.0064,
                         a: 0.587,   b: 0.891,     c: 0.5,   d: 1.0,   e: 4.0, };
-    pT2v_sum(p, T, &IJn, d)
+    let steps: [(usize, usize); 3] = [(0, 17), (17, 30), (30, 42)];
+    pT2v_sum_steps(p, T, &IJn, d, &steps)
 }
 
 pub fn pT2v_3g(p: f64, T: f64) -> f64 {
@@ -327,7 +337,8 @@ pub fn pT2v_3g(p: f64, T: f64) -> f64 {
     #[rustfmt::skip]
     let d:para=para { PS: 25.0,   TS: 660.0,   VS: 0.0027,
                     a: 0.872,      b: 0.971,    c: 1.0,     d: 1.0,    e: 4.0, };
-    pT2v_sum(p, T, &IJn, d)
+    let steps: [(usize, usize); 2] = [(0, 19), (19, 38)];
+    pT2v_sum_steps(p, T, &IJn, d, &steps)
 }
 
 pub fn pT2v_3h(p: f64, T: f64) -> f64 {
@@ -416,7 +427,8 @@ pub fn pT2v_3i(p: f64, T: f64) -> f64 {
     #[rustfmt::skip]
     let d:para=para { PS: 25.0,  TS: 660.0,  VS: 0.0041,
                       a: 0.910,   b: 0.984,   c: 0.5,    d: 1.0,   e: 4.0, };
-    pT2v_sum(p, T, &IJn, d)
+    let steps: [(usize, usize); 3] = [(0, 17), (17, 30), (30, 42)];
+    pT2v_sum_steps(p, T, &IJn, d, &steps)
 }
 
 pub fn pT2v_3j(p: f64, T: f64) -> f64 {
@@ -549,7 +561,8 @@ pub fn pT2v_3l(p: f64, T: f64) -> f64 {
     #[rustfmt::skip]
     let d:para = para {PS: 24.0,  TS: 650.0,   VS: 0.0026,
                         a: 0.908,  b: 0.989,    c: 1.0,    d: 1.0,  e: 4.0, };
-    pT2v_sum(p, T, &IJn, d)
+    let steps: [(usize, usize); 3] = [(0, 17), (17, 30), (30, 42)];
+    pT2v_sum_steps(p, T, &IJn, d, &steps)
 }
 
 pub fn pT2v_3m(p: f64, T: f64) -> f64 {
@@ -598,7 +611,8 @@ pub fn pT2v_3m(p: f64, T: f64) -> f64 {
     #[rustfmt::skip]
     let d:para =para { PS: 23.0, TS: 650.0,   VS: 0.0028,
                        a: 1.0,    b: 0.997,    c: 1.0,    d: 0.25,    e: 1.0, };
-    pT2v_sum(p, T, &IJn, d)
+    let steps: [(usize, usize); 2] = [(0, 17), (17, 40)];
+    pT2v_sum_steps(p, T, &IJn, d, &steps)
 }
 
 pub fn pT2v_3n(p: f64, T: f64) -> f64 {
@@ -646,7 +660,8 @@ pub fn pT2v_3n(p: f64, T: f64) -> f64 {
     ];
     let p1: f64 = p / 23.0 - 0.976;
     let t1: f64 = T / 650.0 - 0.997;
-    let mut v: f64 = poly_powi(p1, t1, &IJn);
+    let steps: [(usize, usize); 2] = [(0, 19), (19, 39)];
+    let mut v: f64 = poly_powi_steps(p1, t1, &IJn, &steps);
     v.exp() * 0.0031
 }
 
@@ -912,7 +927,8 @@ pub fn pT2v_3u(p: f64, T: f64) -> f64 {
     #[rustfmt::skip]
     let d=para { PS: 23.0,    TS: 650.0,   VS: 0.0026,
                         a: 0.902,   b: 0.988,     c: 1.0,    d: 1.0,   e: 1.0, };
-    pT2v_sum(p, T, &IJn, d)
+    let steps: [(usize, usize); 2] = [(0, 19), (19, 38)];
+    pT2v_sum_steps(p, T, &IJn, d, &steps)
 }
 
 pub fn pT2v_3v(p: f64, T: f64) -> f64 {
@@ -960,7 +976,8 @@ pub fn pT2v_3v(p: f64, T: f64) -> f64 {
     #[rustfmt::skip]
     let d: para = para { PS: 23.0,   TS: 650.0,  VS: 0.0031,
                          a: 0.960,    b: 0.995,   c: 1.0,   d: 1.0,  e: 1.0, };
-    pT2v_sum(p, T, &IJn, d)
+    let steps: [(usize, usize); 2] = [(0, 19), (19, 39)];
+    pT2v_sum_steps(p, T, &IJn, d, &steps)
 }
 
 pub fn pT2v_3w(p: f64, T: f64) -> f64 {
