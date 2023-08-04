@@ -9,7 +9,8 @@ use crate::r1::*;
 pub fn pT_reg1(p: f64, T: f64, o_id: i32) -> f64 {
     match o_id {
         OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport_reg(p, T, o_id, PAIRS::pT, pT_thermal_reg1),
-        _ => pT_thermal_reg1(p, T, o_id), // the  basic and extended properties
+        _ => pT_thermal_reg1(p, T, o_id), // the basic and extended properties
+    }
 }
 
 /// Region 1 : pT_thermal_reg1 - basic and extended properties
