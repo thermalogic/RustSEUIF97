@@ -1,4 +1,5 @@
 #![allow(warnings)]
+#![allow(non_snake_case)]
 #![allow(clippy::approx_constant)]
 //#![warn(missing_docs)]
 /*!
@@ -41,7 +42,7 @@ The following input pairs are implemented:
 
 The type of functions are provided in the if97 package:
 
-```rust
+```txt
 struct o_id_region_args {
     o_id: i32,
     region: i32,
@@ -58,7 +59,7 @@ where
    * the fourth `option` parameter: the region of IAPWS-IF97
 * the return(f64): the calculated property value of o_id
 
-```rust
+```txt
 pt<R>(p:f64,t:f64,o_id_region:R)->f64
 ph<R>(p:f64,h:f64,o_id_region:R)->f64
 ps<R>(p:f64,s:f64,o_id_region:R)->f64
