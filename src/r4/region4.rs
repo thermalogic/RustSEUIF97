@@ -150,7 +150,6 @@ fn bisection_reg4(x: f64, y: f64, y_id: i32, mut Tl: f64, mut Tr: f64, tol: f64,
 
 /// (h,x,o_id)
 pub fn hx_reg4(h: f64, x: f64, o_id: i32) -> f64 {
-    //let T: f64 = helper_hxsx_reg4(h, x, OH);
     let mut Tl: f64 = T_MIN4;
     let mut Tr: f64 = T_MAX4;
     let T: f64 = bisection_reg4(x, h, OH, Tl, Tr, 0.00001, 1000);
@@ -162,7 +161,6 @@ pub fn hx_reg4(h: f64, x: f64, o_id: i32) -> f64 {
 
 /// (s,x,o_id)
 pub fn sx_reg4(s: f64, x: f64, o_id: i32) -> f64 {
-    //let T: f64 = helper_hxsx_reg4(s, x, OS);
     let mut Tl: f64 = T_MIN4;
     let mut Tr: f64 = T_MAX4;
     let T: f64 = bisection_reg4(x, s, OS, Tl, Tr, 0.00001, 1000);
