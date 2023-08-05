@@ -1,4 +1,5 @@
 #![allow(warnings)]
+// allow snake case for using the thermodynamics notation
 #![allow(non_snake_case)]
 #![allow(clippy::approx_constant)]
 //#![warn(missing_docs)]
