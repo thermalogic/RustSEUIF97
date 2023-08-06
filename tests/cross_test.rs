@@ -1,10 +1,6 @@
-//
-//  cross test
-//
 #![allow(warnings)]
+///  cross test
 use assert_approx_eq::assert_approx_eq;
-mod common;
-use common::*;
 use if97::*;
 #[test]
 fn test_cross() {

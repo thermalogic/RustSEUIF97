@@ -59,11 +59,7 @@ fn test_region4_hs() {
     const hsT: [[f64; 3]; 3] = [[1800.0, 5.3, 346.8475498], [2400.0, 6.0, 425.1373305], [2500.0, 5.5, 522.5579013]];
 
     let mut h: f64 = 0.0;
-    let mut h1: f64 = 0.0;
-    let mut h2: f64 = 0.0;
     let mut s: f64 = 0.0;
-    let mut s1: f64 = 0.0;
-    let mut s2: f64 = 0.0;
     let mut x: f64 = 0.0;
 
     let mut p: f64 = 0.0;
@@ -77,13 +73,9 @@ fn test_region4_hs() {
     for i in 0..2 {
         p = r4_sat_Tp[i][1];
         T = r4_sat_Tp[i][0];
-        s1 = px(p, 0.0, OS);
-        s2 = px(p, 1.0, OS);
-        h1 = px(p, 0.0, OH);
-        h2 = px(p, 1.0, OH);
-        x = 0.60;
-        s = s1 + x * (s2 - s1);
-        h = h1 + x * (h2 - h1);
+        x=0.6;
+        s = px(p, x, OS);
+        h = px(p, x, OH);
         assert_approx_eq!(T - 273.15, hs(h, s, OT), 1.0e-3f64);
         assert_approx_eq!(p, hs(h, s, OP), 1.0e-3f64);
         assert_approx_eq!(x, hs(h, s, OX), 1.0e-3f64);
@@ -92,13 +84,9 @@ fn test_region4_hs() {
     for i in 0..2 {
         p = r4_sat_pT[i][0];
         T = r4_sat_pT[i][1];
-        s1 = px(p, 0.0, OS);
-        s2 = px(p, 1.0, OS);
-        h1 = px(p, 0.0, OH);
-        h2 = px(p, 1.0, OH);
         x = 0.05;
-        s = s1 + x * (s2 - s1);
-        h = h1 + x * (h2 - h1);
+        s = px(p, x, OS);
+        h = px(p, x, OH);
         assert_approx_eq!(T - 273.15, hs(h, s, OT), 1.0e-2f64);
         assert_approx_eq!(p, hs(h, s, OP), 1.0e-3f64);
         assert_approx_eq!(x, hs(h, s, OX), 1.0e-3f64);
