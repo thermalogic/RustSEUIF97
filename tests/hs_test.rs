@@ -73,7 +73,7 @@ fn test_region4_hs() {
     for i in 0..2 {
         p = r4_sat_Tp[i][1];
         T = r4_sat_Tp[i][0];
-        x=0.6;
+        x = 0.6;
         s = px(p, x, OS);
         h = px(p, x, OH);
         assert_approx_eq!(T - 273.15, hs(h, s, OT), 1.0e-3f64);
