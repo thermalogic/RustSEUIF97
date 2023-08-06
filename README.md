@@ -1,6 +1,6 @@
 # IF97
 
-[![Build test](https://github.com/thermalogic/IF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/IF97/actions/workflows/rust.yml)  ![docs.rs](https://img.shields.io/docsrs/if97/1.1.9) 
+ ![docs.rs](https://img.shields.io/docsrs/if97) [![Build test](https://github.com/thermalogic/IF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/IF97/actions/workflows/rust.yml) 
 
 IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
@@ -15,7 +15,7 @@ In IF97, [36 thermodynamic, transport and  further properties](#properties) can 
 
 The following input pairs are implemented: 
 
-```
+```txt
 (p,t) (p,h) (p,s) (p,v) 
 
 (t,h) (t,s) (t,v) 
@@ -27,7 +27,7 @@ The following input pairs are implemented:
 
 ## Release Notes
 
-* [1.1.9](https://crates.io/crates/if97/1.1.9) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+* [1.2.0](https://crates.io/crates/if97/1.2.0) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
    * Add the optional parameter of `region` to computer the properties of the specified region quickly
 
 * [1.0.9](https://crates.io/crates/if97/1.0.9)  - The shortest addition chain computes integer powers of a number to provide the stable speed performance under the various hardware and software platforms  
@@ -42,7 +42,7 @@ cargo add if97
 
 The type of functions are provided in the if97 package:
 
-```rust
+```txt
 struct o_id_region_args {
    o_id: i32,
    region: i32,
@@ -59,7 +59,7 @@ where
    * the fourth `option` parameter: the region of IAPWS-IF97
 * the return(f64): the calculated property value of o_id
 
-```rust
+```txt
 pt<R>(p:f64,t:f64,o_id_region:R)->f64
 ph<R>(p:f64,h:f64,o_id_region:R)->f64
 ps<R>(p:f64,s:f64,o_id_region:R)->f64
