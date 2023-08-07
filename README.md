@@ -27,6 +27,9 @@ The following input pairs are implemented:
 
 ## Release Notes
 
+* [1.3.0](https://crates.io/crates/if97/1.3.0) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+   * Add the C binding for the Rust IF97 library
+
 * [1.2.1](https://crates.io/crates/if97/1.2.1) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
    * Add the optional parameter of `region` to computer the properties of the specified region quickly
 
@@ -91,6 +94,56 @@ fn main() {
     // set the region
     let v=pt(p,t,(OV,1));
     println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");   
+}
+```
+
+## The C binding 
+
+**Building the dynamic link library**
+
+```bash
+cargo build -r --features c_api 
+```
+
+**The functions in C**
+```c
+double pt(double p,double t,short o_id);
+double ph(double p,double h,short o_id);
+double ps(double p,double s,short o_id);
+double pv(double p,double v,short o_id);
+
+double tv(double t,double v,short o_id);
+double th(double t,double h,short o_id);
+double ts(double t,double s,short o_id);
+
+double hs(double h,double s,short o_id);
+
+double px(double p,double x,short o_id);
+double tx(double t,double x,short o_id);
+double hx(double h,double x,short o_id);
+double sx(double s,double x,short o_id);
+```
+
+**Example**
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#define OH 4
+#define OS 5
+
+extern double pt(double p,double t,short o_id);
+
+int main(void)
+{
+    double p = 16.0;
+    double t = 530.0;
+    double h = pt(p, t, OH);
+    double s = pt(p, t, OD);
+    printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
+    return EXIT_SUCCESS;
 }
 ```
     
