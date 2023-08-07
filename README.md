@@ -2,7 +2,7 @@
 
  ![docs.rs](https://img.shields.io/docsrs/if97) [![Build test](https://github.com/thermalogic/IF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/IF97/actions/workflows/rust.yml) 
 
-IF97 is the high-speed package of IAPWS-IF97 in Rust. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
+IF97 is the high-speed package of IAPWS-IF97 in Rust with C binding feature. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
@@ -27,8 +27,8 @@ The following input pairs are implemented:
 
 ## Release Notes
 
-* [1.3.0](https://crates.io/crates/if97/1.3.0) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
-   * Add the C binding for the Rust IF97 library
+* [1.3.1](https://crates.io/crates/if97/1.3.1) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+   * Add the C binding feature
 
 * [1.2.1](https://crates.io/crates/if97/1.2.1) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
    * Add the optional parameter of `region` to computer the properties of the specified region quickly
