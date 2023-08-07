@@ -209,9 +209,9 @@ pub fn hs_region_h2ab_s(s: f64) -> f64 {
         return INVALID_S as f64;
     }
 
-    let sigma1: f64 = s / 5.21 - 0.513;
+    let sigma1: f64 = s / 5.21;
     let sigma2: f64 = s / 9.2 - 0.524;
-    let mut suma: f64 = poly_powi(1.0 / sigma1, sigma2, &IJn);
+    let mut suma: f64 = poly_powi(1.0 / sigma1 - 0.513, sigma2, &IJn);
     2800.0 * suma.exp()
 }
 
@@ -297,7 +297,7 @@ pub fn hs_region_t_hs(h: f64, s: f64) -> f64 // _t23_hs(h, s)
         (12, -12, 0.261907376402688E-05),
         (12, -1, -0.291626417025961E+05),
         (14, -12, 0.140660774926165E-04),
-        (14, -1, 0.783237062349385E+07),
+        (14, 1, 0.783237062349385E+07),
     ];
     // Check input parameters
     if s < 5.048096828 || s > 5.260578707 || h < 2.563592004e3 || h > 2.812942061e3 {
