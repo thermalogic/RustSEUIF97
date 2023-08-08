@@ -17,9 +17,9 @@ public class if97
     
 }
 
-namespace demo_seuif97
+namespace demo_if97
 {
-    class demo_seuif97
+    class demo_if97
     {
 
         static void Main(string[] args)
