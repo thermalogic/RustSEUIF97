@@ -111,7 +111,7 @@ pub fn pair_properties(
     reg: i32,
 ) -> f64 {
     let mut sub_region: i32 = reg;
-    if reg == 6 {
+    if reg == REGION_NONE {
         sub_region = fr(v1, v2)
     }
     if o_id == OR {

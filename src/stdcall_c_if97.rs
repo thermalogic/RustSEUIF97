@@ -12,7 +12,7 @@ use crate::r5::*;
 #[no_mangle]
 pub unsafe extern "stdcall" fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     let T: f64 = t + 273.15;
-    let reg: i32 = 6;
+    let reg: i32=REGION_NONE;
     match o_id {
         OP => return p,
         OT => return t,
@@ -23,7 +23,7 @@ pub unsafe extern "stdcall" fn pt(p: f64, t: f64, o_id: i32) -> f64 {
 /// double ph(double p,double h,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 #[no_mangle]
 pub unsafe extern "stdcall" fn ph(p: f64, h: f64, o_id: i32) -> f64 {
-    let reg: i32 = 6;
+    let reg: i32=REGION_NONE;
     match o_id {
         OP => return p,
         OH => return h,
@@ -34,7 +34,7 @@ pub unsafe extern "stdcall" fn ph(p: f64, h: f64, o_id: i32) -> f64 {
 /// double ps(double p,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 #[no_mangle]
 pub unsafe extern "stdcall" fn ps(p: f64, s: f64, o_id: i32) -> f64 {
-    let reg: i32 = 6;
+    let reg: i32=REGION_NONE;
     match o_id {
         OP => return p,
         OS => return s,
@@ -45,7 +45,7 @@ pub unsafe extern "stdcall" fn ps(p: f64, s: f64, o_id: i32) -> f64 {
 /// double hs(double h,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 #[no_mangle]
 pub unsafe extern "stdcall" fn hs(h: f64, s: f64, o_id: i32) -> f64 {
-    let reg: i32 = 6;
+    let reg: i32=REGION_NONE;
     match o_id {
         OH => return h,
         OS => return s,
@@ -80,7 +80,7 @@ pub unsafe extern "stdcall" fn tx(t: f64, x: f64, o_id: i32) -> f64 {
 /// double pv(double p,double v,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 #[no_mangle]
 pub unsafe extern "stdcall" fn pv(p: f64, v: f64, o_id: i32) -> f64 {
-    let reg: i32 = 6;
+    let reg: i32=REGION_NONE;
     match o_id {
         OP => return p,
         OV => return v,
@@ -91,7 +91,7 @@ pub unsafe extern "stdcall" fn pv(p: f64, v: f64, o_id: i32) -> f64 {
 /// double tv(double t,double v,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 #[no_mangle]
 pub unsafe extern "stdcall" fn tv(t: f64, v: f64, o_id: i32) -> f64 {
-    let reg: i32 = 6;
+    let reg: i32=REGION_NONE;
     match o_id {
         OT => return t,
         OV => return v,
@@ -102,7 +102,7 @@ pub unsafe extern "stdcall" fn tv(t: f64, v: f64, o_id: i32) -> f64 {
 /// double th(double t,double h,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 #[no_mangle]
 pub unsafe extern "stdcall" fn th(t: f64, h: f64, o_id: i32) -> f64 {
-    let reg: i32 = 6;
+    let reg: i32=REGION_NONE;
 
     let T: f64 = t + 273.15;
     match o_id {
@@ -115,7 +115,7 @@ pub unsafe extern "stdcall" fn th(t: f64, h: f64, o_id: i32) -> f64 {
 /// double ts(double t,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 #[no_mangle]
 pub unsafe extern "stdcall" fn ts(t: f64, s: f64, o_id: i32) -> f64 {
-    let reg: i32 = 6;
+    let reg: i32=REGION_NONE;
     let T: f64 = t + 273.15;
     match o_id {
         OT => return t,

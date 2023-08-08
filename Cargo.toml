@@ -18,7 +18,6 @@ crate-type = ["rlib","cdylib"]
 cdecl=[]
 stdcall=[]
 
-
 [dev-dependencies]
 assert_approx_eq = "1.1.0"
 criterion = { version = "0.5.1", features = ["html_reports"] }
