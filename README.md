@@ -2,7 +2,7 @@
 
  ![docs.rs](https://img.shields.io/docsrs/if97) [![Build test](https://github.com/thermalogic/IF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/IF97/actions/workflows/rust.yml) 
 
-IF97 is the high-speed package of IAPWS-IF97 in Rust with C binding feature. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
+IF97 is the high-speed package of IAPWS-IF97 in Rust with C binding. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
@@ -92,7 +92,7 @@ fn main() {
 **Building the dynamic link library**
 
 ```bash
-cargo build -r --features c_api 
+cargo build -r 
 ```
 
 **The functions in C**

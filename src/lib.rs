@@ -21,8 +21,7 @@ use r3::*;
 use r4::*;
 use r5::*;
 
-mod rust_if97;
+pub mod rust_if97;
 pub use rust_if97::*;
 
-#[cfg(feature = "c_api")]
 pub mod c_if97;
