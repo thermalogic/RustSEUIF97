@@ -21,7 +21,7 @@ use r3::*;
 use r4::*;
 use r5::*;
 
-pub mod rust_if97;
+mod rust_if97;
 pub use rust_if97::*;
 
 pub mod c_if97;

@@ -1,5 +1,6 @@
 //  The Rust example of using a Library 
 //  rustc -O demo.rs --extern if97=../target/release/libif97.rlib
+#![allow(warnings)]
 fn main() {
     
     let p:f64 = 3.0;
