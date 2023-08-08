@@ -121,7 +121,9 @@ double hx(double h,double x,short o_id);
 double sx(double s,double x,short o_id);
 ```
 
-**Example**
+**Examples**
+
+*  [./demo_using_lib/]([./demo_using_lib/]): C,Python,C#, Excel VBA
 
 ```c
 #include <stdlib.h>
@@ -143,6 +145,8 @@ int main(void)
     return EXIT_SUCCESS;
 }
 ```
+
+
     
 ## Properties
 
