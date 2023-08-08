@@ -20,7 +20,7 @@ impl Default for o_id_region_args {
     fn default() -> Self {
         o_id_region_args {
             o_id: 0,
-            region: 6,
+            region: REGION_NONE,
         }
     }
 }
