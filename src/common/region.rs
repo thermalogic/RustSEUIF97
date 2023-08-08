@@ -25,7 +25,7 @@ use crate::r5::region5_pT::*;
 use crate::r5::region5_ph_ps_hs::*;
 
 /// const for none region input
-pub const REGION_NONE:i32=10;
+pub const REGION_NONE: i32 = 10;
 
 /// T in up-order  to check region，
 ///    p in MPa ,  T in K, returns the region
