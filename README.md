@@ -91,8 +91,15 @@ fn main() {
 
 **Building the dynamic link library**
 
+* cdecl
+
 ```bash
-cargo build -r 
+cargo build -r --features cdecl
+```
+* stdcall: Win32 API functions
+
+```bash
+cargo build -r --features stdcall
 ```
 
 **The functions in C**

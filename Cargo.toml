@@ -1,6 +1,6 @@
 [package]
 name = "if97"
-version = "1.3.3"
+version = "1.3.4"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package"
@@ -13,6 +13,11 @@ categories = ["science"]
 
 [lib]
 crate-type = ["rlib","cdylib"]
+
+[features]
+cdecl=[]
+stdcall=[]
+
 
 [dev-dependencies]
 assert_approx_eq = "1.1.0"

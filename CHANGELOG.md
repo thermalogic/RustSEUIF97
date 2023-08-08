@@ -1,7 +1,9 @@
 ## Release Notes
 
-* [1.3.3](https://crates.io/crates/if97/1.3.3) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
-   * Add the C binding
+* [1.3.4](https://crates.io/crates/if97/1.3.4) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+   * Add the C binding with two calling conventions
+     * cdecl 
+     * stdcall: Win32 API functions
 
 * [1.2.1](https://crates.io/crates/if97/1.2.1) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
    * Add the optional parameter of `region` to computer the properties of the specified region quickly

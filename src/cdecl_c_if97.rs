@@ -1,4 +1,4 @@
-//!  The C API
+//!  The C API: cdecl
 //!
 use crate::algo::*;
 use crate::common::*;
@@ -10,7 +10,7 @@ use crate::r5::*;
 
 /// double pt(double p,double t,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
 #[no_mangle]
-pub unsafe extern "C" fn pt(p: f64, t: f64, o_id: i32) -> f64 {
+pub unsafe extern "stdcall" fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     let T: f64 = t + 273.15;
     let reg: i32 = 6;
     match o_id {

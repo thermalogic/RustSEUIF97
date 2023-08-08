@@ -24,4 +24,8 @@ use r5::*;
 mod rust_if97;
 pub use rust_if97::*;
 
-pub mod c_if97;
+#[cfg(feature = "cdecl")]
+pub mod cdecl_c_if97;
+
+#[cfg(feature = "stdcall")]
+pub mod stdcall_c_if97;
