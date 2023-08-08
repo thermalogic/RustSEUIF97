@@ -25,16 +25,6 @@ The following input pairs are implemented:
 (h,s)  
 ```
 
-## Release Notes
-
-* [1.3.1](https://crates.io/crates/if97/1.3.1) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
-   * Add the C binding feature
-
-* [1.2.1](https://crates.io/crates/if97/1.2.1) -  The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
-   * Add the optional parameter of `region` to computer the properties of the specified region quickly
-
-* [1.0.9](https://crates.io/crates/if97/1.0.9)  - The shortest addition chain computes integer powers of a number to provide the stable speed performance under the various hardware and software platforms  
-
 ## Usage
 
 Install the crate
@@ -141,7 +131,7 @@ int main(void)
     double p = 16.0;
     double t = 530.0;
     double h = pt(p, t, OH);
-    double s = pt(p, t, OD);
+    double s = pt(p, t, OS);
     printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
     return EXIT_SUCCESS;
 }
