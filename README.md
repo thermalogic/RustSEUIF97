@@ -13,7 +13,7 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 
 In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
-The following input pairs are implemented: 
+The following 12 input pairs are implemented: 
 
 ```txt
 (p,t) (p,h) (p,s) (p,v) 
