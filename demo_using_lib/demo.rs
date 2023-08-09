@@ -1,4 +1,4 @@
-//  The Rust example of using a Library 
+//  The Rust example of using the if97 library 
 //  rustc -O demo.rs --extern if97=../target/release/libif97.rlib
 #![allow(warnings)]
 fn main() {

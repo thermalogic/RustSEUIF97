@@ -1,5 +1,6 @@
 /*
-  The Java example with Java Native Access(JNA)
+   The Java example with Java Native Access(JNA) to call the if87 shared library
+
      https://github.com/java-native-access/jna
      
    Download JNA: https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar

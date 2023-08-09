@@ -1,5 +1,5 @@
 /*
-   The C example to call the shared library
+   The C example to call the  if97 shared library
      gcc demo.c -o demo  -L../target/release  -Wl,-rpath=../target/release  -lif97 -lm
 */
 

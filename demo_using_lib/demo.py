@@ -1,5 +1,5 @@
 """
-The Python example to call the shared library
+The Python example to call the if97 shared library
 
 Author:   Cheng Maohua
 Email:    cmh@seu.edu.cn
