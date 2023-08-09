@@ -35,7 +35,7 @@ pub fn ph2T_reg1(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 1.0;
     let eta: f64 = h / 2500.0 + 1.0;
-    let mut theta: f64 = poly_powi(pi, eta, &IJn);
+    let theta: f64 = poly_powi(pi, eta, &IJn);
     1.0 * theta
 }
 

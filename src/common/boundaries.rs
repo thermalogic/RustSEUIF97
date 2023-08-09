@@ -55,7 +55,7 @@ pub fn h2p_sat_reg3(h: f64) -> f64 {
     }
 
     let nu: f64 = h / 2600.0;
-    let mut suma: f64 = poly_powi(nu - 1.02, nu - 0.608, &IJn);
+    let suma: f64 = poly_powi(nu - 1.02, nu - 0.608, &IJn);
     22.0 * suma
 }
 
@@ -85,7 +85,7 @@ pub fn s2p_sat_reg3(s: f64) -> f64 {
     }
 
     let sigma: f64 = s / 5.2;
-    let mut suma: f64 = poly_powi(sigma - 1.03, sigma - 0.699, &IJn);
+    let suma: f64 = poly_powi(sigma - 1.03, sigma - 0.699, &IJn);
     22.0 * suma
 }
 
@@ -130,7 +130,7 @@ pub fn hs_region_h1_s(s: f64) -> f64 {
     }
 
     let sigma: f64 = s / 3.8;
-    let mut suma: f64 = poly_powi(sigma - 1.09, sigma + 0.366e-4, &IJn);
+    let suma: f64 = poly_powi(sigma - 1.09, sigma + 0.366e-4, &IJn);
     1700.0 * suma
 }
 
@@ -164,7 +164,7 @@ pub fn hs_region_h3a_s(s: f64) -> f64 {
     }
 
     let sigma: f64 = s / 3.8;
-    let mut suma: f64 = poly_powi(sigma - 1.09, sigma + 0.366e-4, &IJn);
+    let suma: f64 = poly_powi(sigma - 1.09, sigma + 0.366e-4, &IJn);
     1700.0 * suma
 }
 
@@ -211,7 +211,7 @@ pub fn hs_region_h2ab_s(s: f64) -> f64 {
 
     let sigma1: f64 = s / 5.21;
     let sigma2: f64 = s / 9.2 - 0.524;
-    let mut suma: f64 = poly_powi(1.0 / sigma1 - 0.513, sigma2, &IJn);
+    let suma: f64 = poly_powi(1.0 / sigma1 - 0.513, sigma2, &IJn);
     2800.0 * suma.exp()
 }
 
@@ -243,7 +243,7 @@ pub fn hs_region_h2c3b_s(s: f64) -> f64 {
     }
 
     let sigma: f64 = s / 5.9;
-    let mut suma: f64 = poly_powi(sigma - 1.02, sigma - 0.726, &IJn);
+    let suma: f64 = poly_powi(sigma - 1.02, sigma - 0.726, &IJn);
     2800.0 * suma.powi(4)
 }
 
@@ -264,7 +264,7 @@ pub fn hs_region_h13_s(s: f64) -> f64 {
     };
 
     let sigma: f64 = s / 3.8;
-    let mut suma: f64 = poly_powi(sigma - 0.884, sigma - 0.864, &IJn);
+    let suma: f64 = poly_powi(sigma - 0.884, sigma - 0.864, &IJn);
     1700.0 * suma
 }
 
@@ -306,6 +306,6 @@ pub fn hs_region_t_hs(h: f64, s: f64) -> f64 // _t23_hs(h, s)
 
     let nu: f64 = h / 3000.0;
     let sigma: f64 = s / 5.3;
-    let mut suma: f64 = poly_powi(nu - 0.727, sigma - 0.864, &IJn);
+    let suma: f64 = poly_powi(nu - 0.727, sigma - 0.864, &IJn);
     900.0 * suma
 }
