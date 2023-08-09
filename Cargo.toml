@@ -10,7 +10,7 @@ repository = "https://github.com/thermalogic/IF97/"
 license = "MIT"
 keywords = ["IF97", "IAPWS-IF97"]
 categories = ["science"]
-exclude=["*.jar","*.class"]
+exclude=["/dynamic_lib"]
 
 [lib]
 crate-type = ["rlib","cdylib"]

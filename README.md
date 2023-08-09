@@ -102,6 +102,12 @@ cargo build -r --features cdecl
 cargo build -r --features stdcall
 ```
 
+The convenient compiled dynamic link libraries are provided in the [./dynamic_lib/](./dynamic_lib/)
+
+ - `if97.dll`: [Windows64](./dynamic_lib/windows_x64/)  and [Windows32](./dynamic_lib/windows_x86/) 
+
+ - `libif97.so`: [Linux64](./dynamic_lib/linux_x64/)
+
 **The functions in C**
 ```c
 double pt(double p,double t,short o_id);
