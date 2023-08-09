@@ -1,9 +1,9 @@
 [package]
 name = "if97"
-version = "1.3.8"
+version = "1.3.9"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
-description = "The high-speed IAPWS-IF97 package with C bcarinding"
+description = "The high-speed IAPWS-IF97 package with C binding"
 readme = "README.md"
 homepage = "https://github.com/thermalogic/"
 repository = "https://github.com/thermalogic/IF97/"
