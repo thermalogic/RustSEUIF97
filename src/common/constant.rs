@@ -40,7 +40,6 @@ pub const H_MIN: f64 = -0.1;
 pub const S_MAX: f64 = 18.992; // 1.0E-8, 2273.15
 pub const S_MIN: f64 = -0.008583; // 100,273.15
 
-
 /// Region1  boundary constants
 pub const P01: f64 = 16.53;
 pub const T01: f64 = 1386.0;
