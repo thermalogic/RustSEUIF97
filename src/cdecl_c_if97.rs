@@ -103,8 +103,6 @@ pub unsafe extern "C" fn tv(t: f64, v: f64, o_id: i32) -> f64 {
 #[no_mangle]
 pub unsafe extern "C" fn th(t: f64, h: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
-
-    let T: f64 = t + 273.15;
     match o_id {
         OT => return t,
         OH => return h,
@@ -116,7 +114,6 @@ pub unsafe extern "C" fn th(t: f64, h: f64, o_id: i32) -> f64 {
 #[no_mangle]
 pub unsafe extern "C" fn ts(t: f64, s: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
-    let T: f64 = t + 273.15;
     match o_id {
         OT => return t,
         OS => return s,

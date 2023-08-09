@@ -290,7 +290,6 @@ where
     R: Into<o_id_region_args>,
 {
     let (o_id, reg) = o_id_reg_info(o_id_reg);
-    let T: f64 = t + 273.15;
     match o_id {
         OT => return t,
         OH => return h,
@@ -318,7 +317,6 @@ where
     R: Into<o_id_region_args>,
 {
     let (o_id, reg) = o_id_reg_info(o_id_reg);
-    let T: f64 = t + 273.15;
     match o_id {
         OT => return t,
         OS => return s,
