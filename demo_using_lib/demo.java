@@ -1,9 +1,11 @@
 /*
   The Java example with Java Native Access(JNA)
      https://github.com/java-native-access/jna
-  
-  javac -cp jna.jar demo.java
-  java -cp .;jna.jar demo
+     
+   Download JNA: https://repo1.maven.org/maven2/net/java/dev/jna/jna/5.13.0/jna-5.13.0.jar
+
+    javac -cp jna.jar demo.java
+    java -cp .;jna.jar demo
  */
 import com.sun.jna.Native;
 import com.sun.jna.Library;
