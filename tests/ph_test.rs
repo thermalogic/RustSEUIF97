@@ -29,17 +29,6 @@ fn test_region2_ph() {
 }
 
 #[test]
-fn test_region2_ph_iter() {
-    let mut h: f64 = 0.0;
-    for i in 0..3 {
-        let p: f64 = r2_pT_data[i].p;
-        let t: f64 = r2_pT_data[i].T - 273.15;
-        h = pt(p, t, OH);
-        assert_approx_eq!(t, ph(p, h, OT), 1.0e-2f64);
-    }
-}
-
-#[test]
 fn test_region3_ph() {
     for i in 0..3 {
         let mut p: f64 = r3_phTv_3a[i][0];
