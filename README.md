@@ -123,7 +123,7 @@ double sx(double s,double x,short o_id);
 
 **Examples**
 
-*  [./demo_using_lib/](./demo_using_lib/): C, Python, C#, Excel VBA, Java，Fortran
+*  [./demo_using_lib/](./demo_using_lib/): C, Python, C#, Excel VBA, Java, Fortran
 
 ```c
 #include <stdlib.h>
