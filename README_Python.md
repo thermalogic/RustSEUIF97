@@ -51,13 +51,12 @@ sx(s,x,o_id)
 
 ```python
   import seuif97
-
-  p，t=16.10,535.10
-  t = seuif97.ph(p, h, 1)
-  s = seuif97.ph(p, h, 5)
-  v = seuif97.ph(p, h, 3)
-  print("(p,h),t,s,v:",
-       "{:>.2f}\t {:>.2f}\t {:>.2f}\t {:>.3f}\t {:>.4f}".format(p, h, t, s, v))
+  
+  p=16
+  t=535.1
+  h=pt(p,t,4)
+  s=pt(p,t,5)
+  print(f"p:{p}, t={t} h={h:.3f} s={s:.3f}")
 ```
     
 ## Properties
