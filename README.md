@@ -2,7 +2,7 @@
 
  ![docs.rs](https://img.shields.io/docsrs/if97) [![Build test](https://github.com/thermalogic/IF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/IF97/actions/workflows/rust.yml) 
 
-IF97 is the high-speed package of IAPWS-IF97 in Rust with C binding. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
+IF97 is the high-speed package of IAPWS-IF97 in Rust with C and Python binding. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
@@ -152,7 +152,27 @@ int main(void)
 }
 ```
 
+## The Python binding 
 
+* **Note**: The name of Python package in PyPi is **seuif97**
+
+**Install**
+
+```bash
+pip install seuif97
+```
+
+**Example**
+
+```python
+from seuif97 import *
+
+p=16
+t=535.1
+h=pt(p,t,4)
+s=pt(p,t,5)
+print(f"p:{p}, t={t} h={h:.3f} s={s:.3f}")
+```
     
 ## Properties
 
