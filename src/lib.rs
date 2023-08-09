@@ -29,3 +29,6 @@ pub mod cdecl_c_if97;
 
 #[cfg(feature = "stdcall")]
 pub mod stdcall_c_if97;
+
+#[cfg(feature = "python")]
+pub mod python_if97;

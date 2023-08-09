@@ -1,5 +1,8 @@
 /target
 /Cargo.lock
+/python/seuif97.egg-info
+/dist
+/build
 *.exe
 *.pdb
 *.jar
