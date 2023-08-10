@@ -10,15 +10,15 @@ repository = "https://github.com/thermalogic/IF97/"
 license = "MIT"
 keywords = ["IF97", "IAPWS-IF97"]
 categories = ["science"]
-exclude=["/dynamic_lib"]
+exclude = ["/dynamic_lib"]
 
 [lib]
 name = "if97"
-crate-type = ["rlib","cdylib"]
+crate-type = ["rlib", "cdylib"]
 
 [features]
-cdecl=[]
-stdcall=[]
+cdecl = []
+stdcall = []
 python = ["pyo3"]
 
 [dependencies.pyo3]
@@ -34,5 +34,3 @@ criterion = { version = "0.5.1", features = ["html_reports"] }
 [[bench]]
 name = "if97_speed_benchmark"
 harness = false
-
-
