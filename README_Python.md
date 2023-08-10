@@ -50,13 +50,16 @@ sx(s,x,o_id)
 ## Examples
 
 ```python
-  import seuif97
-  
-  p=16
-  t=535.1
-  h=pt(p,t,4)
-  s=pt(p,t,5)
-  print(f"p:{p}, t={t} h={h:.3f} s={s:.3f}")
+from seuif97 import *
+
+OH=4
+OS=5
+
+p=16
+t=535.1
+h=pt(p,t,OH)
+s=pt(p,t,OS)
+print(f"p:{p}, t={t} h={h:.3f} s={s:.3f}")
 ```
     
 ## Properties
