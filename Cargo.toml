@@ -1,6 +1,6 @@
 [package]
 name = "if97"
-version = "1.4.2"
+version = "1.4.3"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package with C and Python binding"
@@ -32,5 +32,5 @@ assert_approx_eq = "1.1.0"
 criterion = { version = "0.5.1", features = ["html_reports"] }
 
 [[bench]]
-name = "if97_speed_benchmark"
+name = "speed_benchmark"
 harness = false

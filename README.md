@@ -154,18 +154,16 @@ int main(void)
 
 ## The Python binding 
 
-* **Note**: The name of Python package in PyPi is **seuif97**
-
 **Install**
 
 ```bash
-pip install seuif97
+pip install if97
 ```
 
 **Examples**
 
 ```python
-from seuif97 import *
+from if97 import *
 
 OH=4
 OS=5

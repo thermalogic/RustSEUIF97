@@ -144,7 +144,7 @@ fn sx(s: f64, x: f64, o_id: i32) -> f64 {
 }
 
 #[pymodule]
-fn seuif97(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+fn if97(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(pt, m)?)?;
     m.add_function(wrap_pyfunction!(ph, m)?)?;
     m.add_function(wrap_pyfunction!(ps, m)?)?;
