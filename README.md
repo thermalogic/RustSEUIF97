@@ -162,7 +162,7 @@ int main(void)
 pip install seuif97
 ```
 
-**Example**
+**Examples**
 
 ```python
 from seuif97 import *
@@ -176,7 +176,10 @@ h=pt(p,t,OH)
 s=pt(p,t,OS)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
-    
+[T-S Diagram](./demo_seuif97/Diagram_T-S.py)
+
+![T-S Diagram](./img/T-S.jpg)
+   
 ## Properties
 
 | Propertry                             |    Unit     | Symbol | o_id  | o_id(i32)|

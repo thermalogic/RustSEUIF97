@@ -1,6 +1,6 @@
 [package]
 name = "if97"
-version = "1.4.1"
+version = "1.4.2"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package with C and Python binding"
