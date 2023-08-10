@@ -1,9 +1,14 @@
 # seuif97
 
-The **seuif97** is the Python API of the high-speed IAPWS-IF97 package in Rust
-
-It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.   
+The **seuif97** is the Python API of the high-speed IAPWS-IF97 package in Rust. It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.   
  
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
+
+**The Fast Methods**
+
+1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+2. The recursive  method computes the polynomial values of the base variable and its derivatives
+
 In seuif97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
 The following 12 input pairs are implemented:
@@ -55,11 +60,11 @@ from seuif97 import *
 OH=4
 OS=5
 
-p=16
+p=16.0
 t=535.1
 h=pt(p,t,OH)
 s=pt(p,t,OS)
-print(f"p:{p}, t={t} h={h:.3f} s={s:.3f}")
+print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
     
 ## Properties
