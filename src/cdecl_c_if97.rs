@@ -70,19 +70,17 @@ pub unsafe extern "C" fn px(p: f64, x: f64, o_id: i32) -> f64 {
 /// double tx(double t,double x,short o_id) - the propertry of `o_id` (thermodynamic)
 #[no_mangle]
 pub unsafe extern "C" fn tx(t: f64, x: f64, o_id: i32) -> f64 {
-    if (o_id==OT)
-    {
-        return t;
-    } 
-    if (o_id==OX)
-    {
-        return x;
-    } 
-    let T: f64 = t + 273.15;
-    if T > T_MAX4 || T < T_MIN4 || x > 1.0 || x < 0.0 {
-        return INVALID_VALUE as f64;
+    match o_id {
+        OT => return t,
+        OX => return x,
+        _ => {
+            let T: f64 = t + 273.15;
+            if T > T_MAX4 || T < T_MIN4 || x > 1.0 || x < 0.0 {
+                return INVALID_VALUE as f64;
+            }
+            Tx_reg4(T, x, o_id)
+        }
     }
-    Tx_reg4(T, x, o_id)
 }
 
 /// double pv(double p,double v,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>

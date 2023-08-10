@@ -28,7 +28,7 @@ pub fn p2sat_water(p: f64, o_id: i32) -> f64 {
     } else {
         // region3
         let mut v: f64 = 0.0;
-        if (p -PC_WATER).abs()<FLOAT_ERROR {
+        if (p - PC_WATER).abs() < FLOAT_ERROR {
             v = 1.0 / 322.0;
         } else {
             v = pT2v_sat_reg3(p, T, 0.0);
@@ -62,7 +62,7 @@ pub fn p2sat_steam(p: f64, o_id: i32) -> f64 {
     } else {
         //reg3d =ss
         let mut v: f64 = 0.0;
-        if (p -PC_WATER).abs()<FLOAT_ERROR {
+        if (p - PC_WATER).abs() < FLOAT_ERROR {
             let v: f64 = 1.0 / 322.0;
         } else {
             let v: f64 = pT2v_sat_reg3(p, T, 1.0);
@@ -85,7 +85,7 @@ pub fn T2sat_water(T: f64, o_id: i32) -> f64 {
     }
 
     let mut p: f64 = 0.0;
-    if (T - TC_WATER).abs() < FLOAT_ERROR  {
+    if (T - TC_WATER).abs() < FLOAT_ERROR {
         p = PC_WATER;
     } else {
         p = p_saturation(T);
