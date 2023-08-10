@@ -174,7 +174,7 @@ h=pt(p,t,OH)
 s=pt(p,t,OS)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
-[T-S Diagram](./demo_seuif97/Diagram_T-S.py)
+[T-S Diagram](./demo_using_lib/Diagram_T-S.py)
 
 ![T-S Diagram](./img/T-S.jpg)
    
