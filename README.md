@@ -167,11 +167,14 @@ pip install seuif97
 ```python
 from seuif97 import *
 
-p=16
+OH=4
+OS=5
+
+p=16.0
 t=535.1
-h=pt(p,t,4)
-s=pt(p,t,5)
-print(f"p:{p}, t={t} h={h:.3f} s={s:.3f}")
+h=pt(p,t,OH)
+s=pt(p,t,OS)
+print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
     
 ## Properties
