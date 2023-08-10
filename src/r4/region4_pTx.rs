@@ -28,7 +28,7 @@ pub fn p2sat_water(p: f64, o_id: i32) -> f64 {
     } else {
         // region3
         let mut v: f64 = 0.0;
-        if p == PC_WATER {
+        if (p -PC_WATER).abs()<FLOAT_ERROR {
             v = 1.0 / 322.0;
         } else {
             v = pT2v_sat_reg3(p, T, 0.0);
@@ -62,7 +62,7 @@ pub fn p2sat_steam(p: f64, o_id: i32) -> f64 {
     } else {
         //reg3d =ss
         let mut v: f64 = 0.0;
-        if p == PC_WATER {
+        if (p -PC_WATER).abs()<FLOAT_ERROR {
             let v: f64 = 1.0 / 322.0;
         } else {
             let v: f64 = pT2v_sat_reg3(p, T, 1.0);
@@ -85,7 +85,7 @@ pub fn T2sat_water(T: f64, o_id: i32) -> f64 {
     }
 
     let mut p: f64 = 0.0;
-    if T == TC_WATER {
+    if (T - TC_WATER).abs() < FLOAT_ERROR  {
         p = PC_WATER;
     } else {
         p = p_saturation(T);
@@ -99,7 +99,7 @@ pub fn T2sat_water(T: f64, o_id: i32) -> f64 {
     } else {
         // region3
         let mut v: f64 = 0.0;
-        if T == TC_WATER {
+        if (T - TC_WATER).abs() < FLOAT_ERROR {
             if o_id == OS {
                 return SC_WATER;
             };
@@ -126,9 +126,8 @@ pub fn T2sat_steam(T: f64, o_id: i32) -> f64 {
     if o_id == OT {
         return T;
     }
-
     let mut p: f64 = 0.0;
-    if T == TC_WATER {
+    if (T - TC_WATER).abs() < FLOAT_ERROR {
         p = PC_WATER;
     } else {
         p = p_saturation(T);
@@ -142,7 +141,7 @@ pub fn T2sat_steam(T: f64, o_id: i32) -> f64 {
     } else {
         //region3
         let mut v: f64 = 0.0;
-        if T == TC_WATER {
+        if (T - TC_WATER).abs() < FLOAT_ERROR {
             if o_id == OS {
                 return SC_WATER;
             }
@@ -201,7 +200,30 @@ pub fn Tx_reg4(T: f64, x: f64, o_id: i32) -> f64 {
     let p: f64 = p_saturation(T);
     if o_id == OP {
         return p;
-    } else {
-        return px_reg4(p, x, o_id);
+    };
+    if x == 0.0 {
+        return T2sat_water(T, o_id);
+    } else if x == 1.0 {
+        return T2sat_steam(T, o_id);
     }
+    let mut r: f64 = 0.0;
+    match o_id {
+        OH | OS | OV | OU | OF | OG | OE => {
+            // region 4 x(0,1) return  v,h,s only
+            let mut rl: f64 = 0.0;
+            let mut rv: f64 = 0.0;
+            if T > 623.15 {
+                let dl = 1.0 / pT2v_sat_reg3(p, T, 0.0);
+                rl = Td_reg3(T, dl, o_id);
+                let dv = 1.0 / pT2v_sat_reg3(p, T, 1.0);
+                rv = Td_reg3(T, dv, o_id);
+            } else {
+                rl = pT_reg1(p, T, o_id);
+                rv = pT_reg2(p, T, o_id);
+            }
+            r = rl + x * (rv - rl);
+        }
+        _ => return INVALID_OUTID as f64,
+    }
+    r
 }

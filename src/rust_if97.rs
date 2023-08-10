@@ -207,6 +207,14 @@ pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
 /// ```
 ///
 pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
+    if (o_id==OT)
+    {
+        return t;
+    } 
+    if (o_id==OX)
+    {
+        return x;
+    } 
     let T: f64 = t + 273.15;
     if T > T_MAX4 || T < T_MIN4 || x > 1.0 || x < 0.0 {
         return INVALID_VALUE as f64;

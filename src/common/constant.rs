@@ -10,6 +10,8 @@ pub const INVALID_H: i32 = -2103;
 pub const INVALID_PT: i32 = -2201;
 pub const INVALID_HS: i32 = -2202;
 
+pub const FLOAT_ERROR:f64 =1.0e-6;
+
 /// constants  
 pub const K: f64 = 273.15;
 pub const RGAS_WATER: f64 = 0.461526; //gas constant in KJ/(kg K)

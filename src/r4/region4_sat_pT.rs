@@ -22,8 +22,7 @@ const n: [f64; 10] = [
 /// saturation pressure, MPa
 pub fn p_saturation(T: f64) -> f64 {
     let mut ps: f64 = 0.0;
-    if T < 273.15 || T > 647.096
-    // TC_WATER=647.096
+    if T < 273.15 || T> T_MAX4
     {
         ps = INVALID_VALUE as f64;
     } else {
