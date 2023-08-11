@@ -1,5 +1,5 @@
 !
-!  The Fortran example to call  the seuif97 library
+!  The Fortran example to call  the shared library
 !     make -f mfortran.mk
 !
 

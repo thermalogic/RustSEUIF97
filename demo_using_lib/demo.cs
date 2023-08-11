@@ -1,5 +1,5 @@
 /*
-The C# example to call the if97 shared library on Windows x64 
+The C# example to call the shared library on Windows x64 
 
   csc -out:demo.exe demo.cs /platform:"x64"
 

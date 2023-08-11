@@ -1,6 +1,6 @@
 
 /*
-   The Java example with Java Native Access(JNA) to call the seuif97 shared library
+   The Java example with Java Native Access(JNA) to call the shared library
 
      https://github.com/java-native-access/jna
      

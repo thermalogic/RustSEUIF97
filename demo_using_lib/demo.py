@@ -1,5 +1,5 @@
 """
-The Python example to call the seuif97 shared library
+The Python example to call the shared library
 
 Author:   Cheng Maohua
 Email:    cmh@seu.edu.cn

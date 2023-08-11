@@ -1,4 +1,4 @@
-//  The Rust example of using the seuif97 library 
+//  The Rust example of using the shared library 
 //  rustc -O demo.rs --extern seuif97=../target/release/libseuif97.rlib
 #![allow(warnings)]
 fn main() {
