@@ -44,7 +44,7 @@ struct o_id_region_args {
 fn<R>(f64,f64,R) -> f64
 where
     R: Into<o_id_region_args>,
-``````
+```
 
 * the first,second input parameters(f64) : the input propertry pairs
 * the third and fourth input parametes<R>:
@@ -91,12 +91,12 @@ fn main() {
 
 **Building the dynamic link library**
 
-* cdecl
+ * cdecl
 
 ```bash
 cargo build -r --features cdecl
 ```
-* stdcall: Win32 API functions
+ * stdcall: Win32 API functions
 
 ```bash
 cargo build -r --features stdcall
@@ -129,7 +129,7 @@ double sx(double s,double x,short o_id);
 
 **Examples**
 
-*  [./demo_using_lib/](./demo_using_lib/): C, Python, C#, Excel VBA, Java, Fortran
+ * [./demo_using_lib/](./demo_using_lib/): C, Python, C#, Excel VBA, Java, Fortran
 
 ```c
 #include <stdlib.h>

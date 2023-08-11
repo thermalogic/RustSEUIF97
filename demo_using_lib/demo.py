@@ -5,8 +5,8 @@ Author:   Cheng Maohua
 Email:    cmh@seu.edu.cn
 
 """
-from platform import *
-from ctypes import *
+from platform import system
+from ctypes import CFUNCTYPE,cdll
 
 prototype = CFUNCTYPE(c_double, c_double, c_double, c_int)
 cdll_names = {'Linux': '../target/release/libif97.so',
