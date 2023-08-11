@@ -2,14 +2,16 @@
 
  ![docs.rs](https://img.shields.io/docsrs/if97) [![Build test](https://github.com/thermalogic/IF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/IF97/actions/workflows/rust.yml) 
 
+![Codacy grade](https://img.shields.io/codacy/grade/if97)
+
 IF97 is the high-speed package of IAPWS-IF97 in Rust with C and Python binding. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
 **The Fast Methods**
 
-1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
-2. The recursive  method computes the polynomial values of the base variable and its derivatives
+ 1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+ 2. The recursive  method computes the polynomial values of the base variable and its derivatives
 
 In IF97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
@@ -48,8 +50,8 @@ where
 
 * the first,second input parameters(f64) : the input propertry pairs
 * the third and fourth input parametes<R>:
-   * the third : the property ID of the calculated property - [o_id](#properties)
-   * the fourth `option` parameter: the region of IAPWS-IF97
+     * the third : the property ID of the calculated property - [o_id](#properties)
+     * the fourth `option` parameter: the region of IAPWS-IF97
 * the return(f64): the calculated property value of o_id
 
 ```txt
@@ -104,9 +106,9 @@ cargo build -r --features stdcall
 
 The convenient compiled dynamic link libraries are provided in the [./dynamic_lib/](./dynamic_lib/)
 
- - `if97.dll`: [Windows64](./dynamic_lib/windows_x64/)  and [Windows32](./dynamic_lib/windows_x86/) 
+  - `if97.dll`: [Windows64](./dynamic_lib/windows_x64/)  and [Windows32](./dynamic_lib/windows_x86/) 
 
- - `libif97.so`: [Linux64](./dynamic_lib/linux_x64/)
+  - `libif97.so`: [Linux64](./dynamic_lib/linux_x64/)
 
 **The functions in C**
 ```c

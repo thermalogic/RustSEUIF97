@@ -1,7 +1,7 @@
 /*
 The C# example to call the if97 shared library on Windows x64 
 
->csc -out:demo.exe demo.cs /platform:"x64"
+  csc -out:demo.exe demo.cs /platform:"x64"
 
 Author:   Cheng Maohua
 Email:    cmh@seu.edu.cn
@@ -10,7 +10,7 @@ Email:    cmh@seu.edu.cn
 using System;
 using System.Runtime.InteropServices;
 
-public class if97
+public static class if97
     {
         [DllImport("../target/release/if97", CallingConvention = CallingConvention.StdCall)]
         public static extern double pt(double p, double t, int o_id);
@@ -19,7 +19,7 @@ public class if97
 
 namespace demo_if97
 {
-    class demo_if97
+    static class demo_if97
     {
 
         static void Main(string[] args)
