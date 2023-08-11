@@ -1,9 +1,10 @@
+
+#![allow(warnings)]
 /// The example to test all properties
 /// 
 ///   Run: 
 ///    cargo run -r --example props
 /// 
-#![allow(warnings)]
 use if97::*;
 
 const prop_map: [(&str, &str, i32); 36] = [
