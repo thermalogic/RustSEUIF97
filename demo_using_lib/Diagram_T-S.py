@@ -12,7 +12,7 @@ Email: cmh@seu.edu.cn
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from if97 import ph, tx
+from seuif97 import ph, tx
 
 OT = 1
 OS = 5

@@ -8,7 +8,7 @@
 ///  Run: 
 ///    cargo run -r --example input_pair
 /// 
-use if97::*;
+use seuif97::*;
 fn main() {
     let p: f64 = 3.0;
     let t: f64 = 300.0 - 273.15;

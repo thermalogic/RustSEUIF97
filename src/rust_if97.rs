@@ -59,7 +59,7 @@ where
 /// # Examples
 ///
 /// ```
-/// use if97::*;
+///  use seuif97::*;
 ///
 /// let p:f64 = 3.0;
 /// let t:f64= 300.0-273.15;
@@ -88,7 +88,7 @@ where
 /// # Examples
 ///
 /// ```
-/// use if97::*;
+///  use seuif97::*;
 ///
 /// let p:f64 = 3.0;
 /// let h:f64= 0.115331273e+3;
@@ -115,7 +115,7 @@ where
 /// # Examples
 ///
 ///```
-/// use if97::*;
+///  use seuif97::*;
 ///
 /// let p:f64= 3.0;
 /// let s:f64= 0.392294792;
@@ -142,7 +142,7 @@ where
 /// # Examples
 ///
 ///```
-/// use if97::*;
+///  use seuif97::*;
 ///
 /// let h:f64= 0.115331273e+3;;
 /// let s:f64= 0.392294792;
@@ -169,7 +169,7 @@ where
 ///  # Examples
 ///
 ///```
-///  use if97::*;
+///   use seuif97::*;
 ///
 ///  let p: f64 = 0.1;
 ///  let x: f64 = 0.0; // x= 0.0 saturation water ,x=1.0 saturation steam
@@ -197,7 +197,7 @@ pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
 ///  # Examples
 ///
 ///```
-///  use if97::*;
+///   use seuif97::*;
 ///
 ///  let t: f64 =372.755919-273.15;
 ///  let x: f64 = 0.0; // x= 0.0 saturation water ,x=1.0 saturation steam
@@ -228,7 +228,7 @@ pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
 /// # Examples
 ///
 ///```
-/// use if97::*;
+///  use seuif97::*;
 ///
 /// let p:f64= 3.0;
 /// let v:f64= 0.100215168e-2;
@@ -255,7 +255,7 @@ where
 /// # Examples
 ///
 ///```
-/// use if97::*;
+///  use seuif97::*;
 ///
 /// let t:f64=300.0-273.15;
 /// let v:f64= 0.100215168e-2;
@@ -282,7 +282,7 @@ where
 /// # Examples
 ///
 ///```
-/// use if97::*;
+///  use seuif97::*;
 ///
 /// let t:f64=300.0-273.15;
 /// let h:f64=0.115331273e+3;
@@ -309,7 +309,7 @@ where
 /// # Examples
 ///
 ///```
-/// use if97::*;
+///  use seuif97::*;
 ///
 /// let t:f64=300.0-273.15;
 /// let s:f64=0.392294792;
@@ -335,7 +335,7 @@ where
 ///  # Examples
 ///
 ///```
-///  use if97::*;
+///   use seuif97::*;
 ///
 ///  let h: f64 =1094.690434;
 ///  let x: f64 = 0.3;
@@ -360,7 +360,7 @@ pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
 ///  # Examples
 ///
 ///```
-///  use if97::*;
+///   use seuif97::*;
 ///
 ///  let s: f64 =3.119434;
 ///  let x: f64 = 0.3;

@@ -3,14 +3,14 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::*;
+use seuif97::*;
 
 #[test]
 fn test_tv_region1() {
     for i in 0..3 {
         let T: f64 = r1_pT_data[i].T;
         let p: f64 = r1_pT_data[i].p;
-        let v: f64 = if97::pt(p, T - 273.15, OV);
+        let v: f64 =  pt(p, T - 273.15, OV);
         assert_approx_eq!(r1_pT_data[i].p, tv(T - 273.15, v, OP), 1.0e-4f64);
     }
 }
@@ -20,8 +20,8 @@ fn test_tv_region2() {
     for i in 0..3 {
         let T: f64 = r2_pT_data[i].T;
         let p: f64 = r2_pT_data[i].p;
-        let v: f64 = if97::pt(p, T - 273.15, OV);
-        assert_approx_eq!(r2_pT_data[i].p, if97::tv(T - 273.15, v, OP), 1.0e-4f64);
+        let v: f64 =  pt(p, T - 273.15, OV);
+        assert_approx_eq!(r2_pT_data[i].p,  tv(T - 273.15, v, OP), 1.0e-4f64);
     }
 }
 

@@ -1,5 +1,5 @@
 """
-The Python example to call the if97 shared library
+The Python example to call the seuif97 shared library
 
 Author:   Cheng Maohua
 Email:    cmh@seu.edu.cn
@@ -9,8 +9,8 @@ from platform import system
 from ctypes import CFUNCTYPE,cdll,c_double,c_int
 
 prototype = CFUNCTYPE(c_double, c_double, c_double, c_int)
-cdll_names = {'Linux': '../target/release/libif97.so',
-              'Windows': '../target/release/if97.dll'}
+cdll_names = {'Linux': '../target/release/libseuif97.so',
+              'Windows': '../target/release/seuif97.dll'}
 
 osplat = system()
 if (osplat == 'Linux'):

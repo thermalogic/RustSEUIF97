@@ -5,7 +5,7 @@
 ///   Run: 
 ///    cargo run -r --example props
 /// 
-use if97::*;
+use seuif97::*;
 
 const prop_map: [(&str, &str, i32); 36] = [
     ("Pressure", "MPa", OP),

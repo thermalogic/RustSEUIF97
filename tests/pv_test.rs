@@ -3,14 +3,14 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::*;
+use seuif97::*;
 
 #[test]
 fn test_pv_region1() {
     for i in 0..3 {
         let t: f64 = r1_pT_data[i].T - 273.15;
         let p: f64 = r1_pT_data[i].p;
-        let v: f64 = if97::pt(p, t, OV);
+        let v: f64 = pt(p, t, OV);
         assert_approx_eq!(r1_pT_data[i].T - 273.15, pv(p, v, OT), 1.0e-4f64);
     }
 }

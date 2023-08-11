@@ -3,7 +3,7 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::*;
+use seuif97::*;
 
 #[test]
 fn test_th_region1() {
@@ -54,6 +54,6 @@ fn test_th_region5() {
         let T: f64 = r5_pT_data[i][0];
         let p: f64 = r5_pT_data[i][1];
         let h: f64 = pt(p, T - 273.15, OH);
-        assert_approx_eq!(p, if97::th(T - 273.15, h, OP), 1.0e-4f64);
+        assert_approx_eq!(p, th(T - 273.15, h, OP), 1.0e-4f64);
     }
 }

@@ -1,6 +1,6 @@
 /target
 /Cargo.lock
-/python/if97.egg-info
+/python/seuif97.egg-info
 /dist
 /build
 *.exe

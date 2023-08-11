@@ -10,16 +10,16 @@ Email:    cmh@seu.edu.cn
 using System;
 using System.Runtime.InteropServices;
 
-public static class if97
+public static class seuif97
     {
         [DllImport("../target/release/if97", CallingConvention = CallingConvention.StdCall)]
         public static extern double pt(double p, double t, int o_id);
     
 }
 
-namespace demo_if97
+namespace demo_seuif97
 {
-    static class demo_if97
+    static class demo_seuif97
     {
 
         static void Main(string[] args)

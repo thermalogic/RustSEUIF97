@@ -1,14 +1,14 @@
-//  The Rust example of using the if97 library 
-//  rustc -O demo.rs --extern if97=../target/release/libif97.rlib
+//  The Rust example of using the seuif97 library 
+//  rustc -O demo.rs --extern seuif97=../target/release/libseuif97.rlib
 #![allow(warnings)]
 fn main() {
     
     let p:f64 = 3.0;
     let t:f64= 300.0-273.15;
    
-    let h=if97::pt(p,t,if97::OH);
-    let s=if97::pt(p,t,if97::OS);
+    let h=seuif97::pt(p,t,seuif97::OH);
+    let s=seuif97::pt(p,t,seuif97::OS);
     // set the region
-    let v=if97::pt(p,t,(if97::OV,1));
+    let v=seuif97::pt(p,t,(seuif97::OV,1));
     println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");   
 }

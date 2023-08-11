@@ -1,9 +1,9 @@
 !
-!  The Fortran example to call  the if97 library
+!  The Fortran example to call  the seuif97 library
 !     make -f mfortran.mk
 !
 
-module if97
+module seuif97
    implicit none
    Interface
       real(c_double) function pt(p,t,wid) bind (C,name="pt")
@@ -18,7 +18,7 @@ end module
 
 program demo
    use iso_c_binding
-   use if97
+   use seuif97
    implicit none
    real(c_double) :: p,t,h,s,v
    p = 16.13;

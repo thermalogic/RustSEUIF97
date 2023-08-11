@@ -3,7 +3,7 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::*;
+use seuif97::*;
 
 #[test]
 fn test_ts_region1() {
@@ -31,7 +31,7 @@ fn test_ts_region3() {
         let t: f64 = r3_Td[i][0] - 273.15;
         let d: f64 = r3_Td[i][1];
         let s = tv(t, 1.0 / d, OS);
-        assert_approx_eq!(d, if97::ts(t, s, OD), 1.0e-4f64);
+        assert_approx_eq!(d, ts(t, s, OD), 1.0e-4f64);
     }
 }
 

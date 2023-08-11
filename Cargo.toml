@@ -1,19 +1,19 @@
 [package]
-name = "if97"
-version = "1.4.4"
+name = "seuif97"
+version = "1.0.1"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package with C and Python binding"
 readme = "README.md"
 homepage = "https://github.com/thermalogic/"
-repository = "https://github.com/thermalogic/IF97/"
+repository = "https://github.com/thermalogic/RustSEUIF97/"
 license = "MIT"
 keywords = ["IF97", "IAPWS-IF97"]
 categories = ["science"]
 exclude = ["/dynamic_lib"]
 
 [lib]
-name = "if97"
+name = "seuif97"
 crate-type = ["rlib", "cdylib"]
 
 [features]

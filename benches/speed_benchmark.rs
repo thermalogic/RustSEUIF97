@@ -1,6 +1,6 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
-use if97::*;
+use seuif97::*;
 
 fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("pt2h_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), black_box(OH))));

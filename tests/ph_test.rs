@@ -3,7 +3,7 @@
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;
-use if97::*;
+use seuif97::*;
 
 #[test]
 fn test_region1_ph() {

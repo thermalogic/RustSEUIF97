@@ -3,7 +3,7 @@
 ///   Run: 
 ///    cargo run -r --example speed
 /// 
-use if97::*;
+use seuif97::*;
 use std::time::Instant;
 
 const prop_map_pt: [(&str, i32); 6] = [("V", OV), ("H", OH), ("S", OS), ("U", OU), ("CP", OCP), ("W", OW)];
