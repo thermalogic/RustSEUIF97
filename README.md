@@ -2,7 +2,7 @@
 
  ![docs.rs](https://img.shields.io/docsrs/seuif97) [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml) 
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8237587.svg)](https://doi.org/10.5281/zenodo.8237587)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8239481.svg)](https://doi.org/10.5281/zenodo.8239481)
 
 The high-speed IAPWS-If97 package is the Rust implementation of `seuif97` with C and Python binding. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
