@@ -6,8 +6,8 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 
 **The Fast Methods**
 
- 1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
- 2. The recursive  method computes the polynomial values of the base variable and its derivatives
+1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
+2. The recursive  method computes the polynomial values of the base variable and its derivatives
 
 In if97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
@@ -30,9 +30,10 @@ The type of functions are provided in the if97 package:
 ```python 
   ??(in1,in2,o_id)
 ```
- * the first,second input parameters : the input propertry pairs
- * the third input parametes: the property ID of the calculated property - [o_id](#properties)
- * the return: the calculated property value of o_id
+
+* the first,second input parameters : the input propertry pairs
+* the third input parametes: the property ID of the calculated property - [o_id](#properties)
+* the return: the calculated property value of o_id
 
 ```python
 pt(p,t,o_id)
