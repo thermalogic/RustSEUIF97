@@ -4,6 +4,10 @@
 /// *  (t,v),(t,h),(t,s)
 /// *  (h,s)
 /// *  (p,x),(t,x),(h,x),(s,x)  
+///  
+///  Run: 
+///    cargo run -r --example input_pair
+/// 
 use if97::*;
 fn main() {
     let p: f64 = 3.0;

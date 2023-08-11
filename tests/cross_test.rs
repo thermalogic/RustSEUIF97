@@ -1,5 +1,6 @@
 #![allow(warnings)]
 ///  cross test
+///     cargo test --test cross_test
 use assert_approx_eq::assert_approx_eq;
 use if97::*;
 #[test]

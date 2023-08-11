@@ -1,4 +1,5 @@
 #![allow(warnings)]
+///  cargo test --test ph_test
 use assert_approx_eq::assert_approx_eq;
 mod common;
 use common::*;

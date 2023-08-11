@@ -1,4 +1,8 @@
-//! The example to test all properties
+/// The example to test all properties
+/// 
+///   Run: 
+///    cargo run -r --example props
+/// 
 #![allow(warnings)]
 use if97::*;
 

@@ -4,6 +4,9 @@
 /// *  (t,h) (t,s) (t,v)
 /// *  (p,x) (t,x) (h,x) (t,s)
 /// *  (h,s)
+/// 
+///   Run: 
+///    cargo run -r --example simple
 ///   
 use if97::*;
 fn main() {
