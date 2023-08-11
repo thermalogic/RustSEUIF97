@@ -6,7 +6,7 @@ Email:    cmh@seu.edu.cn
 
 """
 from platform import system
-from ctypes import CFUNCTYPE,cdll
+from ctypes import CFUNCTYPE,cdll,c_double,c_int
 
 prototype = CFUNCTYPE(c_double, c_double, c_double, c_int)
 cdll_names = {'Linux': '../target/release/libif97.so',
