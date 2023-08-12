@@ -71,7 +71,7 @@ pub unsafe extern "stdcall" fn px(p: f64, x: f64, o_id: i32) -> f64 {
 #[no_mangle]
 pub unsafe extern "stdcall" fn tx(t: f64, x: f64, o_id: i32) -> f64 {
     match o_id {
-        OT => return T,
+        OT => return t,
         OX => return x,
         _ => {
             let T: f64 = t + 273.15;
