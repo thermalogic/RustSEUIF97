@@ -172,12 +172,13 @@ pip install seuif97
 from seuif97 import *
 
 OH=4
-OS=5
 
 p=16.0
 t=535.1
+# ??(in1,in2,o_id)
 h=pt(p,t,OH)
-s=pt(p,t,OS)
+# ??2?(in1,in2)
+s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
 
