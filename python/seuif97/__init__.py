@@ -47,7 +47,7 @@ def ph2x(p, h):
 
 
 def ps2h(p, s):
-    return ps(p, s, OP)
+    return ps(p, s, OH)
 
 
 def ps2t(p, s):
@@ -79,8 +79,7 @@ def hs2v(h, s):
 def hs2x(h, s):
     return hs(h, s, OX)
 
-# the extended input pairs
-# p,v
+#  p,v
 
 
 def pv2t(p, v):
@@ -205,6 +204,7 @@ def hx2s(h, x):
 
 def hx2v(h, x):
     return hx(h, x, OV)
+
 # s,x
 
 

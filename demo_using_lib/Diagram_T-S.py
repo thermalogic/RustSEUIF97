@@ -1,5 +1,5 @@
 """
-The Python example to call seuif97
+The Python example to call the seuif97
 
 T-s Diagram
 
