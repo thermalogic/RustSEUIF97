@@ -1,4 +1,4 @@
-//!  The Python API:
+//!  The Python API
 
 use pyo3::prelude::*;
 

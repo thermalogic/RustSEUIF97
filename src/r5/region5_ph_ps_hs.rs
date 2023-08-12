@@ -1,7 +1,7 @@
 //! Region 5 - Backward: (p,h)  (p,s) (h,s)
 //!
 //！ Backward of Region 5 using the secant method
-//！      (p,h)  (p,s) (h,s)
+//！
 
 use crate::algo::root::I_MAX;
 use crate::algo::*;

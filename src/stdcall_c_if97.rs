@@ -8,7 +8,7 @@ use crate::r3::*;
 use crate::r4::*;
 use crate::r5::*;
 
-/// double pt(double p,double t,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// double pt(double p,double t,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     let T: f64 = t + 273.15;
@@ -20,7 +20,7 @@ pub unsafe extern "stdcall" fn pt(p: f64, t: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double ph(double p,double h,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// double ph(double p,double h,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
@@ -31,7 +31,7 @@ pub unsafe extern "stdcall" fn ph(p: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double ps(double p,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// double ps(double p,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
@@ -42,7 +42,7 @@ pub unsafe extern "stdcall" fn ps(p: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double hs(double h,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// double hs(double h,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn hs(h: f64, s: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
@@ -83,7 +83,7 @@ pub unsafe extern "stdcall" fn tx(t: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double pv(double p,double v,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// double pv(double p,double v,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn pv(p: f64, v: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
@@ -94,7 +94,7 @@ pub unsafe extern "stdcall" fn pv(p: f64, v: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double tv(double t,double v,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// double tv(double t,double v,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn tv(t: f64, v: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
@@ -105,7 +105,7 @@ pub unsafe extern "stdcall" fn tv(t: f64, v: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double th(double t,double h,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// double th(double t,double h,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn th(t: f64, h: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
@@ -116,7 +116,7 @@ pub unsafe extern "stdcall" fn th(t: f64, h: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double ts(double t,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc) <br/>
+/// double ts(double t,double s,short o_id)- the propertry of `o_id` (thermodynamic,transport,etc)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn ts(t: f64, s: f64, o_id: i32) -> f64 {
     let reg: i32 = REGION_NONE;
@@ -127,7 +127,7 @@ pub unsafe extern "stdcall" fn ts(t: f64, s: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double hx(double h,double x,short o_id)- the propertry of `o_id` (thermodynamic) <br/>
+/// double hx(double h,double x,short o_id)- the propertry of `o_id` (thermodynamic)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     if h > H_MAX4 || h < H_MIN4 || x > 1.0 || x < 0.0 {
@@ -140,7 +140,7 @@ pub unsafe extern "stdcall" fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double sx(double s,double x,short o_id)- the propertry of `o_id` (thermodynamic) <br/>
+/// double sx(double s,double x,short o_id)- the propertry of `o_id` (thermodynamic)  
 #[no_mangle]
 pub unsafe extern "stdcall" fn sx(s: f64, x: f64, o_id: i32) -> f64 {
     if s > S_MAX4 || s < S_MIN4 || x > 1.0 || x < 0.0 {

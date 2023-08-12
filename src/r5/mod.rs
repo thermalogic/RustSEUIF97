@@ -1,4 +1,4 @@
-//! Region 5 - (p,T),(p,h), (p,s),(h,s); (p,v),(t,v),(t,h),(tsh)
+//! Region 5 - (p,T),(p,h), (p,s),(h,s); (p,v),(t,v),(t,h),(t,s)
 
 pub mod region5;
 mod region5_gfe;

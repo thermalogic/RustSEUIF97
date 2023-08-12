@@ -7,10 +7,9 @@ use crate::common::constant::*;
 pub const r5Pstar: f64 = 1.0; //[MPa]
 pub const r5Tstar: f64 = 1000.0; //[K]
 
-/// ideal-gas part  of the  dimensionless Gibbs free energy for region 5
-
-/*	P37 Table 37: Ideal properties for Region 5
-     the coefficients and exponents of ideal-gas part  of the dimensionless Gibbs free energy for region 5, Eq. (33)
+/*The ideal-gas part  of the  dimensionless Gibbs free energy for region 5
+   P37 Table 37: Ideal properties for Region 5
+   the coefficients and exponents of ideal-gas part  of the dimensionless Gibbs free energy for region 5, Eq. (33)
 */
 const Jo: [i32; 6] = [0, 1, -3, -2, -1, 2];
 
@@ -23,7 +22,7 @@ const no: [f64; 6] = [
     -0.32961626538917,
 ];
 
-/// P36 The equation for the ideal-gas part of the dimensionless Gibbs free energy reads eq33
+/// P36 Eq33 - The equation for the ideal-gas part of the dimensionless Gibbs free energy
 pub fn gamma0_reg5(pi: f64, tau: f64) -> f64 {
     let mut result: f64 = pi.ln();
     for i in 0..6 {
@@ -62,7 +61,7 @@ pub fn gamma0_pitau_reg5() -> f64 {
     return 0.0;
 }
 
-///----------------residual part r of the dimensionless Gibbs free energy -----------------
+//----------------residual part r of the dimensionless Gibbs free energy -----------------
 
 // Table 38. coefficients and exponents of the residual part r of the dimensionless Gibbs free energy for region 5, Eq.(34)
 pub const IJn: [(i32, i32, f64); 6] = [

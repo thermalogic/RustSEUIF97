@@ -1,6 +1,6 @@
-//！   IAPWS-IF97 Region5: The extended input pair
-//!       (p,v)
-//!       (t,v),(t,h),(t,s)
+//！ IAPWS-IF97 Region5: The extended input pair
+//!  *  (p,v)
+//!  *  (t,v),(t,h),(t,s)
 use crate::algo::root::*;
 use crate::common::boundaries::*;
 use crate::common::constant::*;
