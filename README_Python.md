@@ -25,7 +25,13 @@ The following 12 input pairs are implemented:
 
 ## The functions 
 
-The type of functions are provided in the package:
+The two types of functions are provided in the package
+
+ 1. the input propertry pairs and the property ID([o_id](#properties)) to get the value of the specified property
+
+ 2. the input propertry pairs to get the one of  `p`,`t`,`h`,`s`,`v` or `x` directly
+
+### The input propertry pairs and the property ID 
 
 ```python 
   ??(in1,in2,o_id)
@@ -53,18 +59,46 @@ hx(h,x,o_id)
 sx(s,x,o_id)
 ```
 
+### The input propertry pairs 
+
+```python 
+  ??2?(in1,in2)
+```
+
+* the `?` in `2?` is the one of `p`,`t`,`h`,`s`,`v` or `x`
+
+```python
+pt2h(p, t)  pt2s(p, t)  pt2v(p, t)  pt2x(p, t)
+ph2t(p, h)  ph2s(p, h)  ph2v(p, h)  ph2x(p, h)   
+ps2t(p, s)  ps2h(p, s)  ps2v(p, s)  ps2x(p, s)  
+pv2t(p, v)  pv2h(p, v)  pv2s(p, v)  pv2x(p, v)  
+
+hs2t(h, s)  hs2p(h, s)  hs2v(p, s)  hs2x(h, s)    
+
+th2p(t, h)  th2s(t, h)  th2v(t, h)  th2x(t, h)   
+ts2p(t, s)  ts2h(t, s)  th2v(t, s)  ts2x(t, s)  
+tv2p(t, v)  tv2h(t, v)  tv2s(t, v)  tv2x(t, v)  
+
+px2t(p, x)  px2h(p, x)  px2s(p, x)  px2v(p, x)
+tx2p(t, x)  tx2h(t, x)  tx2s(t, x)  tx2v(t, x)
+
+hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
+sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
+```
+
 ## Examples
 
 ```python
 from seuif97 import *
 
 OH=4
-OS=5
 
 p=16.0
 t=535.1
+# ??(in1,in2,o_id)
 h=pt(p,t,OH)
-s=pt(p,t,OS)
+# ??2?(in1,in2)
+s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
     
