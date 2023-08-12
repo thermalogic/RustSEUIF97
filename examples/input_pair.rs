@@ -5,9 +5,9 @@
 /// *  (h,s)
 /// *  (p,x),(t,x),(h,x),(s,x)  
 ///  
-///  Run: 
+///  Run:
 ///    cargo run -r --example input_pair
-/// 
+///
 use seuif97::*;
 fn main() {
     let p: f64 = 3.0;
@@ -17,9 +17,9 @@ fn main() {
     let s = pt(p, t, OS);
 
     println!("\tpt\n\t   p={:.6} t={:.6} h={:.6} s={:6}", p, t, h, s);
-    // ph ->t
+    // ph -> t
     println!("\tph\n\t   p={:.6} t={:.6} h={:.6} s={:6}", p, ph(p, h, OT), h, s);
-    // ps ->t
+    // ps -> t
     println!("\tps\n\t   p={:.6} t={:.6} h={:.6} s={:6}", p, ps(p, s, OT), h, s);
     // hs ->t,p
     println!("\ths\n\t   p={:.6} t={:.6} h={:.6} s={:6}", hs(h, s, OP), hs(h, s, OT), h, s);
@@ -40,13 +40,14 @@ fn main() {
     //extened (t,v) ->p
     println!("\ttv\n\t   p={:.6} t={:.6} v={:.6}", tv(t, v, OP), t, v);
 
-    // px
+    // px x= 0.0 saturation water ,x=1.0 saturation steam
     let p: f64 = 0.1;
     let t_sat: f64 = px(p, 0.0, OT);
     let h_sat_w: f64 = px(p, 0.0, OH);
     let h_sat_s: f64 = px(p, 1.0, OH);
     println!("\tpx\n\t   p_sat={:.6} t_sat={:.6} h_sat_w={:.6} h_sat_s={:6}", p, t_sat, h_sat_w, h_sat_s);
-    //tx
+
+    // tx x= 0.0 saturation water ,x=1.0 saturation steam
     let p_sat: f64 = tx(t_sat, 0.0, OP);
     let h_sat_w: f64 = tx(t_sat, 0.0, OH);
     let h_sat_s: f64 = tx(t_sat, 1.0, OH);

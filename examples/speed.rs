@@ -1,8 +1,8 @@
 #![allow(warnings)]
 /// The example to test the  speed
-///   Run: 
+///   Run:
 ///    cargo run -r --example speed
-/// 
+///
 use seuif97::*;
 use std::time::Instant;
 

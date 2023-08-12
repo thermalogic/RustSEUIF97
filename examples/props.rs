@@ -1,10 +1,9 @@
-
 #![allow(warnings)]
 /// The example to test all properties
-/// 
-///   Run: 
+///
+///   Run:
 ///    cargo run -r --example props
-/// 
+///
 use seuif97::*;
 
 const prop_map: [(&str, &str, i32); 36] = [
