@@ -158,6 +158,8 @@ int main(void)
 
 ## The Python binding 
 
+[![Downloads](https://pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97)
+
 **Install**
 
 ```bash
