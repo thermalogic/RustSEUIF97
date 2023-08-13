@@ -11,5 +11,5 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --target x86_64-apple-darwin --features cdecl
+      run: cargo build -r --target x86_64-apple-darwin --features cdecl
    
