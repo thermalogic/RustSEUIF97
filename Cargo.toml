@@ -34,3 +34,7 @@ criterion = { version = "0.5.1", features = ["html_reports"] }
 [[bench]]
 name = "speed_benchmark"
 harness = false
+
+[target.x86_64-apple-darwin]
+linker = "x86_64-apple-darwin14-clang"
+ar = "x86_64-apple-darwin14-ar"

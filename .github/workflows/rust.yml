@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ "multi_step_powi" ]
+    branches: [ "seuif97" ]
   pull_request:
-    branches: [ "multi_step_powi" ]
+    branches: [ "seuif97" ]
 
 env:
   CARGO_TERM_COLOR: always

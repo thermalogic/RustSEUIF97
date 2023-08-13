@@ -1,0 +1,15 @@
+ame: Build the shared library on macos
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+
+    runs-on: macos-latests
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build
+      run: cargo build --target x86_64-apple-darwin --features cdecl
+   
