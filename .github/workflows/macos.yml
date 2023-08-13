@@ -1,4 +1,4 @@
-ame: Build the shared library on macos
+name: Build the shared library on macos
 
 env:
   CARGO_TERM_COLOR: always
