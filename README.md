@@ -231,4 +231,4 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## Cite as
 
-* Cheng Maohua. (2023). RustSEUIF97: The high-speed IAPWS-IF97 Rust package of SEUIF97 (1.0.1). Zenodo. https://doi.org/10.5281/zenodo.8239481
+* Cheng Maohua. (2023). Cheng Maohua. (2023). The high-speed IAPWS-IF97 Rust package of SEUIF97. Zenodo. https://doi.org/10.5281/zenodo.8239481
