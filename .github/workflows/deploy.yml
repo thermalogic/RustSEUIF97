@@ -60,4 +60,4 @@ jobs:
 
       - uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          # To test: repository_url: https://test.pypi.org/l
+          To test: repository_url: https://test.pypi.org/l
