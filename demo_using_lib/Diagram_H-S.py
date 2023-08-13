@@ -8,7 +8,7 @@ H-S(Mollier) Diagram
 3 Calculating saturation lines x=0,x=1
 4 Calculating isoquality lines x(0.1,0.9)
 
-Author: Cheng Maohua. 2017.02.10
+Author: Cheng Maohua  
 Email: cmh@seu.edu.cn
 
 """

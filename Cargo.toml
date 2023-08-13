@@ -19,7 +19,7 @@ crate-type = ["rlib", "cdylib"]
 [features]
 cdecl = []
 stdcall = []
-python = ["pyo3"]
+python = []
 
 [dependencies.pyo3]
 version = "0.19.2"

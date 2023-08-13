@@ -229,4 +229,6 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | Fugacity                              |     MPa     |     f* |   OFU |       34 |
 | Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|        35|
 
+## Cite as
 
+* Cheng Maohua. (2023). RustSEUIF97: The high-speed IAPWS-IF97 Rust package of SEUIF97 (1.0.1). Zenodo. https://doi.org/10.5281/zenodo.8239481
