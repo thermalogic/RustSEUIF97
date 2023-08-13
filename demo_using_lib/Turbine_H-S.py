@@ -17,19 +17,16 @@ from seuif97 import ph2t, ps2h, pt2h, pt2s
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-def ief(pi, ti, pe, te):
-    """ superheated steam zone 
-        return ishd,ief
-    """
+def turbine_stage(pi, ti, pe, te):
+    """ superheated steam zone """
     hi = pt2h(pi, ti)
     si = pt2s(pi, ti)
     he_isos = ps2h(pe, si)
     ishd = (hi - he_isos)
     he = pt2h(pe, te)
-    ahd = (hi - he)
-    return ishd, (100.0 * ahd / ishd)
-
+    se = pt2s(pe, te)
+    real_hd = (hi - he)
+    return hi, si, he, se, ishd, (100.0 * real_hd / ishd)
 
 class Turbine:
 
@@ -40,13 +37,8 @@ class Turbine:
         self.tex = tex
 
     def analysis(self):
-        self.his, self.ef = ief(self.pin, self.tin, self.pex, self.tex)
-
-        self.hin = pt2h(self.pin, self.tin)
-        self.sin = pt2s(self.pin, self.tin)
-
-        self.hex = pt2h(self.pex, self.tex)
-        self.sex = pt2s(self.pex, self.tex)
+        self.hin, self.sin, self.hex, self.sex, self.his, self.ef = turbine_stage(
+            self.pin, self.tin, self.pex, self.tex)
 
     def expansionline(self):
         sdelta = 0.01
