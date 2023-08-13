@@ -17,59 +17,18 @@ from seuif97 import ph2t, ps2h, pt2h, pt2s
 import matplotlib.pyplot as plt
 import numpy as np
 
-INVALID_VALUE = -1000.0
-
-
-def ishd(pi, ti, pe):
-    if (pi <= pe):
-        return INVALID_VALUE
-
-    hi = pt2h(pi, ti)
-    if (hi <= 0):
-        return INVALID_VALUE
-
-    si = pt2s(pi, ti)
-    if (si < -500):
-        return INVALID_VALUE
-
-    he_isos = ps2h(pe, si)
-    if (he_isos < 0):
-        return INVALID_VALUE
-    return (hi - he_isos)
-
 
 def ief(pi, ti, pe, te):
-    """ superheated steam zone """
-    if (pi <= pe):
-        return INVALID_VALUE
-    if (ti <= te):
-        return INVALID_VALUE
-
+    """ superheated steam zone 
+        return ishd,ief
+    """
     hi = pt2h(pi, ti)
-    if (hi < -500):
-        return INVALID_VALUE
-
     si = pt2s(pi, ti)
-    if (si < -500):
-        return INVALID_VALUE
-
     he_isos = ps2h(pe, si)
-    if (he_isos < -500):
-        return INVALID_VALUE
     ishd = (hi - he_isos)
-
     he = pt2h(pe, te)
-    if (he < -500):
-        return INVALID_VALUE
-    se = pt2s(pe, te)
-    if (se < -1000):
-        return INVALID_VALUE
-
-    if ((se - si) <= 0):
-        return INVALID_VALUE
-
     ahd = (hi - he)
-    return (100.0 * ahd / ishd)
+    return ishd, (100.0 * ahd / ishd)
 
 
 class Turbine:
@@ -81,8 +40,7 @@ class Turbine:
         self.tex = tex
 
     def analysis(self):
-        self.ef = ief(self.pin, self.tin, self.pex, self.tex)
-        self.his = ishd(self.pin, self.tin, self.pex)
+        self.his, self.ef = ief(self.pin, self.tin, self.pex, self.tex)
 
         self.hin = pt2h(self.pin, self.tin)
         self.sin = pt2s(self.pin, self.tin)
