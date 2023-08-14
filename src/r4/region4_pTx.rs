@@ -57,15 +57,15 @@ pub fn p2sat_steam(p: f64, o_id: i32) -> f64 {
         return T - 273.15;
     }
 
-    if p >= P_MIN && p <= Ps_623 {
+    if p >= P_MIN && p <= Ps_623 {   //  16.5291642526045
         return pT_reg2(p, T, o_id);
     } else {
         //reg3d =ss
         let mut v: f64 = 0.0;
         if (p - PC_WATER).abs() < FLOAT_ERROR {
-            let v: f64 = 1.0 / 322.0;
+            v = 1.0 / 322.0;
         } else {
-            let v: f64 = pT2v_sat_reg3(p, T, 1.0);
+            v = pT2v_sat_reg3(p, T, 1.0);
         }
         if o_id == OV {
             return v;

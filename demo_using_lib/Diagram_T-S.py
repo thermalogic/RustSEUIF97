@@ -37,22 +37,12 @@ isop = np.array([Pt, 0.001, 0.002, 0.004, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5,
 for h in isoh:
     T = np.array([ph(p, h, OT) for p in isop])
     S = np.array([ph(p, h, OS) for p in isop])
-    if any(np.isnan(S)):
-        i_nan = np.where(np.isnan(S))
-        il = (list(i_nan[0]))
-        T = np.delete(T, il)
-        S = np.delete(S, il)
     plt.plot(S, T, 'g', lw=0.5)
 
 # Calculating isobar lines  isop(611.657e-6,100)MPa
 for p in isop:
     T = np.array([ph(p, h, OT) for h in isoh])
     S = np.array([ph(p, h, OS) for h in isoh])
-    if any(np.isnan(S)):
-        i_nan = np.where(np.isnan(S))
-        il = (list(i_nan[0]))
-        T = np.delete(T, il)
-        S = np.delete(S, il)
     plt.plot(S, T, 'b', lw=0.5)
 
 # saturate water to wet steam
