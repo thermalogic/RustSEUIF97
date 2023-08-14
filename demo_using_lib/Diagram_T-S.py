@@ -43,7 +43,7 @@ for p in isop:
     plt.plot(S, T, 'b', lw=0.5)
 
 # saturate water to wet steam
-for p in [0.001, 0.002]:
+for p in [ Pt,0.001, 0.002]:
     s = ph(p, 100, OS)
     t = ph(p, 100, OT)
     s_sat_water = px(p, 0.0, OS)
