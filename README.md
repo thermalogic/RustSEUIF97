@@ -2,7 +2,7 @@
 
  ![docs.rs](https://img.shields.io/docsrs/seuif97) [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml) 
  
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8242473.svg)](https://doi.org/10.5281/zenodo.8242473)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8246380.svg)](https://doi.org/10.5281/zenodo.8246380)
 
 This is the Rust implementation of the high-speed IAPWS-IF97 package **seuif97** with C and Python binding. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
@@ -231,4 +231,4 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## Cite as
 
-* Cheng Maohua. (2023). The Rust implementation of the high-speed IAPWS-IF97 package: SEUIF97 (1.0.6). Zenodo. https://doi.org/10.5281/zenodo.8242473
+* Cheng Maohua. (2023). The Rust implementation of the high-speed IAPWS-IF97 package: SEUIF97 (1.0.9). Zenodo. https://doi.org/10.5281/zenodo.8246380
