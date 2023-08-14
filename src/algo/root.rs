@@ -8,10 +8,10 @@ pub const I_MAX: i32 = 100;
 
 ///  rtsec1 :fun(x,con_var2)： the result is the first x：x，x={x1,x2}
 ///  the second con_var2 in constant
-///  * fr: the value of fun(x,con_var2)
+///  *  fr: the value of fun(x,con_var2)
 ///  *  fl: fr-fun(x1,con_var2)
 ///  *  f: fr-fun(x2,con_var2)
-///  * rts：the solution of x
+///  *  rts：the solution of x
 pub fn rtsec1(
     fun: IF97_EQ, con_var2: f64, fr: f64, x1: f64, x2: f64, mut fl: f64, mut f: f64, xacc: f64, i_max: i32,
 ) -> f64 {
@@ -51,12 +51,12 @@ pub fn rtsec1(
     return rts;
 }
 
-///  rtsec2 :fun(con_var1，x),the result is the second x，x={x1,x2}
-///     the first con_var1 is constant
-///     fr: the value of func(con_var1,x)
-///     fl: fr-func(con_var1,x1)
-///     f: fr-func(con_var1,x2)
-///     rts：the solution of x
+/// rtsec2 :fun(con_var1，x),the result is the second x，x={x1,x2}
+///  * the first con_var1 is constant
+///  *  fr: the value of func(con_var1,x)
+///  *  fl: fr-func(con_var1,x1)
+///  *  f: fr-func(con_var1,x2)
+///  *  rts：the solution of x
 pub fn rtsec2(
     fun: IF97_EQ, con_var1: f64, fr: f64, x1: f64, x2: f64, mut fl: f64, mut f: f64, xacc: f64, i_max: i32,
 ) -> f64 {

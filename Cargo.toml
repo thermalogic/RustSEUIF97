@@ -1,6 +1,6 @@
 [package]
 name = "seuif97"
-version = "1.0.7"
+version = "1.0.8"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package with C and Python binding"
@@ -19,13 +19,12 @@ crate-type = ["rlib", "cdylib"]
 [features]
 cdecl = []
 stdcall = []
-python = []
+python = ["pyo3"]
 
 [dependencies.pyo3]
 version = "0.19.2"
 features = ["extension-module"]
 optional = true
-
 
 [dev-dependencies]
 assert_approx_eq = "1.1.0"

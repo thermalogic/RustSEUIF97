@@ -184,7 +184,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 **T-S Diagram**
 
-* code: [./demo_using_lib/Diagram_T-S.py](./demo_using_lib/Diagram_T-S.py)
+* [./demo_using_lib/Diagram_T-S.py](./demo_using_lib/Diagram_T-S.py)
 
 ![T-S Diagram](./img/T-S.jpg)
    

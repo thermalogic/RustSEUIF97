@@ -10,6 +10,7 @@ pub const INVALID_H: i32 = -2103;
 pub const INVALID_PT: i32 = -2201;
 pub const INVALID_HS: i32 = -2202;
 
+///  FLOAT_ERROR for float value with `==`
 pub const FLOAT_ERROR: f64 = 1.0e-6;
 
 /// constants  
@@ -34,7 +35,7 @@ pub const ht_water: f64 = 0.611783; // the triple point
 // T=623.15 region (1,3)
 pub const Ps_623: f64 = 16.5291642526045; // P_MIN3 Ps_623 = _PSat_T(623.15)  P Saturation at 623.15 K, boundary region 1-3
 
-pub const P_MIN: f64 = 0.000611212677444; // P_MIN = _PSat_T(273.15)  Minimum pressure
+pub const P_MIN: f64 = 0.000611212677444; // P_MIN = _PSat_T(273.15)  Mininum pressure
 pub const V_MAX: f64 = 1.0E+10;
 pub const V_MIN: f64 = 0.00095;
 pub const H_MAX: f64 = 7376.99;
@@ -48,7 +49,7 @@ pub const T01: f64 = 1386.0;
 pub const T_MAX1: f64 = 623.15;
 pub const T_MIN1: f64 = 273.15;
 pub const P_MAX1: f64 = 100.00;
-pub const P_MIN1: f64 = 0.000611212677444; // t=273.15
+pub const P_MIN1: f64 = 0.000611212677444; // T=273.15
 
 /// Region2  boundary constants
 pub const T02: f64 = 540.0;
@@ -82,4 +83,4 @@ pub const P05: f64 = 1.0;
 pub const T_MAX5: f64 = 2273.15;
 pub const T_MIN5: f64 = 1073.15;
 pub const P_MAX5: f64 = 50.0;
-pub const P_MIN5: f64 = 0.000611212677444; //1.0E-8;
+pub const P_MIN5: f64 = 0.000611212677444; 

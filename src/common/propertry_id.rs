@@ -3,12 +3,11 @@
 //! 1. The Basic propertry in IAPWS-IF97 Equation - p,t,v,d,h,s,cp,cv,w
 //!    * region1_pT.rs, region2_pT.rs, region5_pT.rs
 //!    * region3_Td.rs
-//! 2. Transport propertry
-//!    * common::transport_further.rs
-//! 3. The extended propertry
+//! 2. The extended propertry
 //!    * region1_pT_ext.rs, region2_pT_ext.rs, region5_pT_ext.rs
 //!    * region3_Td_ext.rs
-//!
+//! 3. Transport propertry
+//!    * common::transport_further.rs
 
 /// 0. p - Pressure  MPa   
 pub const OP: i32 = 0;

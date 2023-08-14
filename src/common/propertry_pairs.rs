@@ -1,6 +1,7 @@
 //! The computing function of basic and extended Thermodynamic  Properties  
 //! # Input pairs:
-//! *  (p,t) (p,h) (p,s) (h,s)
+//! *  (p,t) (p,h) (p,s)
+//! *  (h,s)
 //! *  (p,v),(t,v),(t,h),(t,s)
 //!   
 //! # The Basic Thermodynamic Properties
