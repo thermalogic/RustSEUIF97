@@ -9,7 +9,7 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
 2. The recursive  method computes the polynomial values of the base variable and its derivatives
 
-In seuif97, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
+In the package, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
 The following 12 input pairs are implemented:
 
@@ -101,6 +101,9 @@ h=pt(p,t,OH)
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
+**The Example of Rankine Cycle Analysis**
+
+ * [The Hybrid Steady-state Simulator of Rankine Cycle in Python](https://github.com/thermalogic/PyRankine)
     
 ## Properties
 

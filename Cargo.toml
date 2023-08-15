@@ -1,6 +1,6 @@
 [package]
 name = "seuif97"
-version = "1.1.0"
+version = "1.1.1"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package with C and Python binding"
@@ -30,7 +30,7 @@ optional = true
 assert_approx_eq = "1.1.0"
 criterion = { version = "0.5.1", features = ["html_reports"] }
 
-[[bench]]
-name = "speed_benchmark"
-harness = false
+#[[bench]]
+#name = "speed_benchmark"
+#harness = false
 

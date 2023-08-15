@@ -57,7 +57,7 @@ pub fn p2sat_steam(p: f64, o_id: i32) -> f64 {
         return T - 273.15;
     }
 
-    if p >= P_MIN && p <= Ps_623 {   //  16.5291642526045
+    if p >= P_MIN && p <= Ps_623 {
         return pT_reg2(p, T, o_id);
     } else {
         //reg3d =ss

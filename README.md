@@ -1,8 +1,6 @@
 # SEUIF97
 
- ![docs.rs](https://img.shields.io/docsrs/seuif97) [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml) 
- 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8246380.svg)](https://doi.org/10.5281/zenodo.8246380)
+ ![docs.rs](https://img.shields.io/docsrs/seuif97)  [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml)   ![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8246380.svg)](https://doi.org/10.5281/zenodo.8246380)
 
 This is the Rust implementation of the high-speed IAPWS-IF97 package **seuif97** with C and Python binding. It is suitable for computation-intensive calculations，such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
  
@@ -155,10 +153,11 @@ int main(void)
     return EXIT_SUCCESS;
 }
 ```
+**The Example of Rankine Cycle Analysis**
 
+ * [The Rankine Cycle Steady-state Simulator in Python，C++ and Modelica](https://github.com/thermalogic/SimRankine)
+ 
 ## The Python binding 
-
-[![Downloads](https://pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97)
 
 **Install**
 

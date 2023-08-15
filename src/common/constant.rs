@@ -83,4 +83,4 @@ pub const P05: f64 = 1.0;
 pub const T_MAX5: f64 = 2273.15;
 pub const T_MIN5: f64 = 1073.15;
 pub const P_MAX5: f64 = 50.0;
-pub const P_MIN5: f64 = 0.000611212677444; 
+pub const P_MIN5: f64 = 0.000611212677444;
