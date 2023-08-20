@@ -53,10 +53,7 @@ jobs:
         if: matrix.platform.os == 'macos-latest'
         run: rustup target add aarch64-apple-darwin
 
-      - name: Install test dependencies
-        run: pip install --upgrade nox
-
-      - name: Build package
+        - name: Build package
         run: pip install -e .
 
     
