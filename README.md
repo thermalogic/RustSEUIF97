@@ -129,7 +129,7 @@ double hx(double h,double x,short o_id);
 double sx(double s,double x,short o_id);
 ```
 
-**Examples**
+**Example**
 
 * [./demo_using_lib/](./demo_using_lib/): C, Python, C#, Excel VBA, Java, Fortran
 
@@ -165,7 +165,7 @@ int main(void)
 pip install seuif97
 ```
 
-**Examples**
+**Example**
 
 ```python
 from seuif97 import *
@@ -181,9 +181,15 @@ s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
 
-**T-S Diagram**
+**Examples**
 
-* [./demo_using_lib/Diagram_T-S.py](./demo_using_lib/Diagram_T-S.py)
+* [T-S Diagram](./demo_using_lib/Diagram_T-S.py)
+
+* [H-S Diagram](./demo_using_lib/Diagram_H-S.py)
+
+* [H-S Diagram of Steam Turbine Expansion](./demo_using_lib/Turbine_H-S.py)
+
+* [The Hybrid Steady-state Simulator of Rankine Cycle in Python](https://github.com/thermalogic/PyRankine)
 
 ![T-S Diagram](./img/T-S.jpg)
    

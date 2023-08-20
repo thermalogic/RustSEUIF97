@@ -86,7 +86,7 @@ hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
 sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```
 
-## Examples
+## Example
 
 ```python
 from seuif97 import *
@@ -101,10 +101,18 @@ h=pt(p,t,OH)
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
-**The Example of Rankine Cycle Analysis**
+**The Examples**
 
- * [The Hybrid Steady-state Simulator of Rankine Cycle in Python](https://github.com/thermalogic/PyRankine)
-    
+* [T-S Diagram](https://github.com/thermalogic/RustSEUIF97/blob/seuif97/demo_using_lib/Diagram_T-S.py)
+
+* [H-S Diagram](https://github.com/thermalogic/RustSEUIF97/blob/seuif97/demo_using_lib/Diagram_H-S.py)
+
+* [H-S Diagram of Steam Turbine Expansion](https://github.com/thermalogic/RustSEUIF97/blob/seuif97/demo_using_lib/Turbine_H-S.py)
+
+* [The Hybrid Steady-state Simulator of Rankine Cycle in Python](https://github.com/thermalogic/PyRankine)
+
+![T-S Diagram](https://github.com/thermalogic/RustSEUIF97/raw/seuif97/img/T-S.jpg)
+
 ## Properties
 
 | Propertry                             |    Unit     | Symbol | o_id  | o_id(i32)|
