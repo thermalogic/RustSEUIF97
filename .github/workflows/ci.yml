@@ -105,15 +105,3 @@ jobs:
 
     - name: list dist files
       run: ${{ matrix.ls || 'ls -lh' }} dist/
-
-
-    - name: twine check
-      run: twine check dist/*
-
-
-    - name: upload to pypi
-      if: startsWith(github.ref, 'refs/tags/')
-      run: twine upload dist/*
-      env:
-        TWINE_USERNAME: AgEIcHlwaS5vcmcCJDNmYzljZmM5LWI3YzUtNGQzMC1iNTA0LWY1NGMyNTE2ZTk4OQACD1sxLFsic2V1aWY5NyJdXQACLFsyLFsiMzJkY2IwZTktZWVjNS00Njk1LThkNTMtNDlmNmYwMGM5NzcwIl1dAAAGIPzW106KRDbSmuIIqsP9JrosXbY9EPntgkVHVVg8hQYI
-        TWINE_PASSWORD: pypi-AgEIcHlwaS5vcmcCJDNmYzljZmM5LWI3YzUtNGQzMC1iNTA0LWY1NGMyNTE2ZTk4OQACD1sxLFsic2V1aWY5NyJdXQACLFsyLFsiMzJkY2IwZTktZWVjNS00Njk1LThkNTMtNDlmNmYwMGM5NzcwIl1dAAAGIPzW106KRDbSmuIIqsP9JrosXbY9EPntgkVHVVg8hQYI
