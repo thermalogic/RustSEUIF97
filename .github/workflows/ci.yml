@@ -53,7 +53,5 @@ jobs:
         if: matrix.platform.os == 'macos-latest'
         run: rustup target add aarch64-apple-darwin
 
-        - name: Build package
-        run: pip install -e .
-
-    
+      - name: Build package
+        run: pip install -e .   
