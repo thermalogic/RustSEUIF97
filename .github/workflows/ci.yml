@@ -3,6 +3,11 @@ name: CI
 on:
   push:
     branches: [ "seuif97" ]
+  pull_request:
+    branches: [ "seuif97" ]
+
+env:
+  CARGO_TERM_COLOR: always
 
 jobs:
   build:
