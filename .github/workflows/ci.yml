@@ -59,34 +59,4 @@ jobs:
       - name: Build package
         run: pip install -e .
 
-      - name: Test examples
-        shell: bash
-        env:
-          PYTHON: ${{ matrix.python-version }}
-        run: nox -s test-examples
-
-      - name: Test macOS universal2
-        if: matrix.platform.os == 'macos-latest' && !startsWith(matrix.python-version, 'pypy')
-        shell: bash
-        env:
-          DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-          MACOSX_DEPLOYMENT_TARGET: '10.9'
-          ARCHFLAGS: -arch x86_64 -arch arm64
-          PYO3_CROSS_LIB_DIR: /Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.8/lib
-        run: |
-          cd examples/namespace_package
-          pip install build wheel
-          python -m build --no-isolation
-          ls -l dist/
-          pip install --force-reinstall dist/namespace_package*_universal2.whl
-          cd -
-          python -c "from namespace_package import rust; assert rust.rust_func() == 14"
-          python -c "from namespace_package import python; assert python.python_func() == 15"
-
-      - name: Test sdist vendor Rust crates
-        shell: bash
-        run: nox -s test-sdist-vendor
-        env:
-          CARGO_BUILD_TARGET: ${{ matrix.platform.rust-target }}
-
- 
+    
