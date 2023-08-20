@@ -54,4 +54,4 @@ jobs:
         run: rustup target add aarch64-apple-darwin
 
       - name: Build package
-        run:  python setup.py sdist bdist_wheel   
+        run: pip install .   
