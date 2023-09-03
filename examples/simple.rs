@@ -29,4 +29,12 @@ fn main() {
     p = hs(h, s, OP);
     t = hs(h, s, OT);
     println!("hs: h={h:.6} s={s:.6} p={p:.6} t={t:.6}");
+
+    let p: f64 = 0.1;
+    let t_sat: f64 = px(p, 0.0, OT);
+    println!("t={t_sat:.6}");
+
+    let p: f64 = 0.5;
+    let t_sat: f64 = px(p, 0.5, OT);
+    println!("t={t_sat:.6}");
 }

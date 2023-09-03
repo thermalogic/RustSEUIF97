@@ -62,7 +62,7 @@ pub unsafe extern "stdcall" fn px(p: f64, x: f64, o_id: i32) -> f64 {
     match o_id {
         OP => return p,
         OX => return x,
-        OT => return px_reg4(p, x, o_id),
+        OT => return px_reg4(p, x, o_id)-273.15,
         _ => return px_reg4(p, x, o_id),
     }
 }
