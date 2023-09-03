@@ -175,7 +175,7 @@ pub fn px_reg4(p: f64, x: f64, o_id: i32) -> f64 {
     let T: f64 = T_saturation(p);
     match o_id {
         OT => return T - 273.15,
-        OH | OS | OV | OU | OF | OG | OE => {
+        OH | OS | OV | OD | OU | OF | OG | OE => {
             // region 4 x(0,1) return  v,h,s only
             let mut rl: f64 = 0.0;
             let mut rv: f64 = 0.0;
@@ -208,7 +208,7 @@ pub fn Tx_reg4(T: f64, x: f64, o_id: i32) -> f64 {
     }
     let mut r: f64 = 0.0;
     match o_id {
-        OH | OS | OV | OU | OF | OG | OE => {
+        OH | OS | OV | OD | OU | OF | OG | OE => {
             // region 4 x(0,1) return  v,h,s only
             let mut rl: f64 = 0.0;
             let mut rv: f64 = 0.0;
