@@ -45,6 +45,14 @@ fn test_pv_region4() {
         let p: f64 = r4_sat_Tp[i][1];
         v = px(p, x, OV);
         assert_approx_eq!(x, pv(p, v, OX));
+        assert_approx_eq!(r4_sat_Tp[i][0]-273.15, pv(p, v, OT));
+    }
+
+    for i in 0..3 {
+        let p: f64 = r4_sat_pT[i][0];
+        v= px(p, x, OV);
+        assert_approx_eq!(x, pv(p, v, OX));
+        assert_approx_eq!(r4_sat_pT[i][1]-273.15, pv(p, v, OT));
     }
 }
 

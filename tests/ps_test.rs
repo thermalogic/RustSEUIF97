@@ -58,16 +58,19 @@ fn test_region4_ps() {
     let mut s: f64 = 0.0;
     let mut s1: f64 = 0.0;
     let mut s2: f64 = 0.0;
-    let mut x: f64 = 0.0;
+    let mut x: f64 = 0.35;
     for i in 0..3 {
         let p: f64 = r4_sat_Tp[i][1];
         s = px(p, x, OS);
         assert_approx_eq!(x, ps(p, s, OX));
+        assert_approx_eq!(r4_sat_Tp[i][0]-273.15, ps(p, s, OT));
     }
 
     for i in 0..3 {
         let p: f64 = r4_sat_pT[i][0];
+        x = 0.35;
         s = px(p, x, OS);
         assert_approx_eq!(x, ps(p, s, OX));
+        assert_approx_eq!(r4_sat_pT[i][1]-273.15, ps(p, s, OT));
     }
 }

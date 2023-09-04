@@ -13,6 +13,7 @@ use crate::r3::*;
 use crate::r4::region4_sat_pT::*;
 
 /// saturation water include :region3  pT2v_sat_reg
+//  t is  °C
 pub fn p2sat_water(p: f64, o_id: i32) -> f64 {
     if o_id == OP {
         return p;
@@ -20,7 +21,7 @@ pub fn p2sat_water(p: f64, o_id: i32) -> f64 {
 
     let T: f64 = T_saturation(p);
     if o_id == OT {
-        return T;
+        return T-273.15;
     }
 
     if p >= P_MIN && p <= Ps_623 {
@@ -46,7 +47,7 @@ pub fn p2sat_water(p: f64, o_id: i32) -> f64 {
     }
 }
 
-/// saturation  steam
+/// saturation  steam, t is  °C
 pub fn p2sat_steam(p: f64, o_id: i32) -> f64 {
     if o_id == OP {
         return p;
@@ -163,7 +164,8 @@ pub fn T2sat_steam(T: f64, o_id: i32) -> f64 {
         return Td_reg3(T, d, o_id);
     }
 }
-// T is k
+
+// px_reg4 ,t is  °C
 pub fn px_reg4(p: f64, x: f64, o_id: i32) -> f64 {
     // x= 0 or 1， return all properties
     if x == 0.0 {
@@ -174,7 +176,7 @@ pub fn px_reg4(p: f64, x: f64, o_id: i32) -> f64 {
     let mut r: f64 = 0.0;
     let T: f64 = T_saturation(p);
     match o_id {
-        OT => return T,
+        OT => return T-273.15,
         OH | OS | OV | OD | OU | OF | OG | OE => {
             // region 4 x(0,1) return  v,h,s only
             let mut rl: f64 = 0.0;

@@ -58,18 +58,18 @@ fn test_region4_ph() {
     let mut h: f64 = 0.0;
     let mut h1: f64 = 0.0;
     let mut h2: f64 = 0.0;
-    let mut x: f64 = 0.0;
+    let mut x: f64 = 0.35;
     for i in 0..3 {
         let p: f64 = r4_sat_Tp[i][1];
-        x = 0.35;
         h = px(p, x, OH);
         assert_approx_eq!(x, ph(p, h, OX));
+        assert_approx_eq!(r4_sat_Tp[i][0]-273.15, ph(p, h, OT));
     }
 
     for i in 0..3 {
         let p: f64 = r4_sat_pT[i][0];
-        x = 0.55;
         h = px(p, x, OH);
         assert_approx_eq!(x, ph(p, h, OX));
+        assert_approx_eq!(r4_sat_pT[i][1]-273.15, ph(p, h, OT));
     }
 }

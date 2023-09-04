@@ -32,7 +32,7 @@ pub fn ph_reg4(p: f64, h: f64, o_id: i32) -> f64 {
     if o_id == OX {
         return x;
     }
-    px_reg4(p, x, o_id)
+     px_reg4(p, x, o_id)   
 }
 
 pub fn ps_reg4(p: f64, s: f64, o_id: i32) -> f64 {
@@ -43,6 +43,7 @@ pub fn ps_reg4(p: f64, s: f64, o_id: i32) -> f64 {
         return x;
     }
     px_reg4(p, x, o_id)
+   
 }
 
 pub fn hs_reg4(h: f64, s: f64, o_id: i32) -> f64 {
@@ -63,8 +64,12 @@ pub fn hs_reg4(h: f64, s: f64, o_id: i32) -> f64 {
     if o_id == OX {
         return x;
     }
-
-    px_reg4(p, x, o_id)
+    // T is k
+    if o_id == OT {
+        px_reg4(p, x, o_id) - 273.15
+    } else {
+        px_reg4(p, x, o_id)
+    }
 }
 
 /// Region 4 - The extended input pair

@@ -31,7 +31,7 @@ fn main() {
     println!("hs: h={h:.6} s={s:.6} p={p:.6} t={t:.6}");
 
     p = 0.5;
-    let x=0.5;
+    let x = 0.5;
     t = px(p, x, OT);
     println!("px: p={p:.6} x={x:.6} t={t:.6}");
 }
