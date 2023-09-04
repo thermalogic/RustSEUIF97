@@ -97,10 +97,15 @@ fn main() {
 cargo build -r --features cdecl
 ```
 
-* stdcall: Win32 API functions
+* stdcall: Windows API functions(64bit)
 
 ```bash
 cargo build -r --features stdcall
+```
+
+* stdcall: Windows API functions(32bit) 
+```bash
+cargo build -r  --target=i686-pc-windows-msvc --features stdcall
 ```
 
 The convenient compiled dynamic link libraries are provided in the [./dynamic_lib/](./dynamic_lib/)
