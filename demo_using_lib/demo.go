@@ -1,6 +1,6 @@
 // cgo LDFLAGS:
 //    Linux:  -L/usr/lib/ -lseuif97 -lm
-//    Windows: : -LC:/Windows/system -llibseuif97
+//    Windows: -LC:/Windows/system -llibseuif97
 package main
 /*
 #cgo LDFLAGS: -LC:/Windows/system -llibseuif97
