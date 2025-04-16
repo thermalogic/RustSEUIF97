@@ -6,7 +6,7 @@ This is the Rust implementation of the high-speed IAPWS-IF97 package **seuif97**
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
-The speed of SETIF97 is also far faster than various approximate equations and algorithms for a fast calculation of the properties for water and steam.
+The speed of SEUIF97 is also far faster than various approximate equations and algorithms for a fast calculation of the properties for water and steam.
 
 **The Fast Methods**
 
