@@ -4,7 +4,7 @@
 //! * (h,x),(s,x)
 
 use crate::common::constant::*;
-use crate::common::propertry_id::*;
+use crate::common::property_id::*;
 use crate::r3::*;
 use crate::r4::*;
 

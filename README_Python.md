@@ -27,17 +27,17 @@ The following 12 input pairs are implemented:
 
 The two types of functions are provided in the package
 
- 1. the input propertry pairs and the property ID([o_id](#properties)) to get the value of the specified property
+ 1. the input property pairs and the property ID([o_id](#properties)) to get the value of the specified property
 
- 2. the input propertry pairs to get the one of  `p`,`t`,`h`,`s`,`v` or `x` directly
+ 2. the input property pairs to get the one of  `p`,`t`,`h`,`s`,`v` or `x` directly
 
-### The input propertry pairs and the property ID 
+### The input property pairs and the property ID 
 
 ```python 
   ??(in1,in2,o_id)
 ```
 
-* the first,second input parameters : the input propertry pairs
+* the first,second input parameters : the input property pairs
 * the third input parametes: the property ID of the calculated property - [o_id](#properties)
 * the return: the calculated property value of o_id
 
@@ -59,7 +59,7 @@ hx(h,x,o_id)
 sx(s,x,o_id)
 ```
 
-### The input propertry pairs 
+### The input property pairs 
 
 ```python 
   ??2?(in1,in2)
@@ -115,7 +115,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## Properties
 
-| Propertry                             |    Unit     | Symbol | o_id  | o_id(i32)|
+| property                             |    Unit     | Symbol | o_id  | o_id(i32)|
 | ------------------------------------- | :---------: |:------:|------:|:--------:|
 | Pressure                              |     MPa     |      p |   OP  |       0  |
 | Temperature                           |     °C      |      t |   OT  |       1  |

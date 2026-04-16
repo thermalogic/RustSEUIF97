@@ -4,7 +4,7 @@
 
 use crate::common::boundaries::*;
 use crate::common::constant::*;
-use crate::common::propertry_id::*;
+use crate::common::property_id::*;
 
 use crate::r1::region1_T_phps::*;
 use crate::r1::region1_pT::*;

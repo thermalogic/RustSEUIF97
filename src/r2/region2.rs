@@ -8,7 +8,7 @@
 //！       * Supp-PHS12-2014.pdf  (h,s)->p
 
 use crate::common::constant::*;
-use crate::common::propertry_id::*;
+use crate::common::property_id::*;
 use crate::common::*;
 use crate::r2::*;
 

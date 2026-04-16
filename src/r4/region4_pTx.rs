@@ -6,7 +6,7 @@
 
 use crate::algo::*;
 use crate::common::constant::*;
-use crate::common::propertry_id::*;
+use crate::common::property_id::*;
 use crate::r1::*;
 use crate::r2::*;
 use crate::r3::*;

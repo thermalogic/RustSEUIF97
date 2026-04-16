@@ -7,7 +7,7 @@
 use crate::algo::*;
 use crate::common::boundaries::*;
 use crate::common::constant::*;
-use crate::common::propertry_id::*;
+use crate::common::property_id::*;
 use crate::r1::*;
 use crate::r2::region2_pT::*;
 use crate::r3::*;

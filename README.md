@@ -48,7 +48,7 @@ where
     R: Into<o_id_region_args>,
 ```
 
-* the first,second input parameters(f64) : the input propertry pairs
+* the first,second input parameters(f64) : the input property pairs
 * the third and fourth input parametes<R>:
     * the third : the property ID of the calculated property - [o_id](#properties)
     * the fourth `option` parameter: the region of IAPWS-IF97
@@ -202,7 +202,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
    
 ## Properties
 
-| Propertry                             |    Unit     | Symbol | o_id  | o_id(i32)|
+| property property                             |    Unit     | Symbol | o_id  | o_id(i32)|
 | ------------------------------------- | :---------: |:------:|------:|:--------:|
 | Pressure                              |     MPa     |      p |   OP  |       0  |
 | Temperature                           |     °C      |      t |   OT  |       1  |

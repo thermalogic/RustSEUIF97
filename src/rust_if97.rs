@@ -9,7 +9,7 @@ use crate::r4::*;
 use crate::r5::*;
 
 /// the paramters: <br/>
-///   `o_id`: the propertry of id;<br/>
+///   `o_id`: the property of id;<br/>
 ///   `region`: the region in the IAPWS-IF97,**optional**
 pub struct o_id_region_args {
     o_id: i32,
@@ -53,8 +53,8 @@ where
     (o_id, reg)
 }
 
-/// pt(p,t,o_id) - the propertry of `o_id` (thermodynamic,transport,etc) <br/>
-/// pt(p,t,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// pt(p,t,o_id) - the property of `o_id` (thermodynamic,transport,etc) <br/>
+/// pt(p,t,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -82,8 +82,8 @@ where
     }
 }
 
-/// ph(p,h,o_id) - the propertry of `o_id` (thermodynamic,transport,etc)<br/>
-/// ph(p,h,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// ph(p,h,o_id) - the property of `o_id` (thermodynamic,transport,etc)<br/>
+/// ph(p,h,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -110,8 +110,8 @@ where
     }
 }
 
-/// ps(p,s,o_id) - the propertry of `o_id` (thermodynamic,transport,etc)<br/>
-/// ps(p,s,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// ps(p,s,o_id) - the property of `o_id` (thermodynamic,transport,etc)<br/>
+/// ps(p,s,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 /// # Examples
 ///
 ///```
@@ -136,8 +136,8 @@ where
     }
 }
 
-/// hs(h,s,o_id) - the propertry of `o_id` (thermodynamic,transport,etc)<br/>
-/// hs(h,s,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// hs(h,s,o_id) - the property of `o_id` (thermodynamic,transport,etc)<br/>
+/// hs(h,s,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -164,7 +164,7 @@ where
     }
 }
 
-///  px(p,x,o_id) - the propertry of `o_id` (thermodynamic)
+///  px(p,x,o_id) - the property of `o_id` (thermodynamic)
 ///
 ///  # Examples
 ///
@@ -191,7 +191,7 @@ pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-///  tx(t,x,o_id) - the propertry of `o_id` (thermodynamic)
+///  tx(t,x,o_id) - the property of `o_id` (thermodynamic)
 ///
 ///  # Examples
 ///
@@ -221,8 +221,8 @@ pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
 
 //  Functions of the  extended input pairs (p,v),(t,v),(t,s),(t,h)
 
-/// pv(p,v,o_id) - the propertry of `o_id`(thermodynamic,transport,etc)<br/>
-/// pv(p,v,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// pv(p,v,o_id) - the property of `o_id`(thermodynamic,transport,etc)<br/>
+/// pv(p,v,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -248,8 +248,8 @@ where
     }
 }
 
-/// tv(t,v,o_id) - the propertry of `o_id`(thermodynamic,transport,etc)<br/>
-/// tv(t,v,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// tv(t,v,o_id) - the property of `o_id`(thermodynamic,transport,etc)<br/>
+/// tv(t,v,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -275,8 +275,8 @@ where
     }
 }
 
-/// th(t,h,o_id) - the propertry of `o_id`(thermodynamic,transport,etc)<br/>
-/// th(t,h,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// th(t,h,o_id) - the property of `o_id`(thermodynamic,transport,etc)<br/>
+/// th(t,h,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///  
 /// # Examples
 ///
@@ -302,8 +302,8 @@ where
     }
 }
 
-/// ts(t,s,o_id) - the propertry of `o_id`(thermodynamic,transport,etc)<br/>
-/// ts(t,s,(o_id,reg)) - the propertry of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// ts(t,s,o_id) - the property of `o_id`(thermodynamic,transport,etc)<br/>
+/// ts(t,s,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
 ///   
 /// # Examples
 ///
@@ -329,7 +329,7 @@ where
     }
 }
 
-/// hx(h,x,o_id) - the propertry of `o_id`(thermodynamic)
+/// hx(h,x,o_id) - the property of `o_id`(thermodynamic)
 ///
 ///  # Examples
 ///
@@ -354,7 +354,7 @@ pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-/// sx(s,x,o_id) - the propertry of `o_id`(thermodynamic)
+/// sx(s,x,o_id) - the property of `o_id`(thermodynamic)
 ///
 ///  # Examples
 ///

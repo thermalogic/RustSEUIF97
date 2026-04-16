@@ -1,6 +1,6 @@
 //! Region 1 - (p,T),(p,h), (p,s),(h,s); (p,v),(t,v),(t,h),(t,s)
 
-use crate::common::propertry_id::*;
+use crate::common::property_id::*;
 use crate::common::*;
 
 use crate::r1::*;

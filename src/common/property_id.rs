@@ -1,12 +1,12 @@
-//! Propertry ID - o_id
+//! Property ID - o_id
 //!
-//! 1. The Basic propertry in IAPWS-IF97 Equation - p,t,v,d,h,s,cp,cv,w
+//! 1. The Basic property in IAPWS-IF97 Equation - p,t,v,d,h,s,cp,cv,w
 //!    * region1_pT.rs, region2_pT.rs, region5_pT.rs
 //!    * region3_Td.rs
-//! 2. The extended propertry
+//! 2. The extended property
 //!    * region1_pT_ext.rs, region2_pT_ext.rs, region5_pT_ext.rs
 //!    * region3_Td_ext.rs
-//! 3. Transport propertry
+//! 3. Transport property
 //!    * common::transport_further.rs
 
 /// 0. p - Pressure  MPa   

@@ -13,7 +13,7 @@ mod r3;
 mod r4;
 mod r5;
 
-pub use common::propertry_id::*;
+pub use common::property_id::*;
 use common::*;
 use r1::*;
 use r2::*;

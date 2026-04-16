@@ -2,7 +2,7 @@
 //! * x: Steam quality
 
 use crate::common::constant::*;
-use crate::common::propertry_id::*;
+use crate::common::property_id::*;
 
 use crate::r4::region4_pTx::*;
 

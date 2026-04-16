@@ -6,7 +6,7 @@
 //!    * (h,s)-> p  in IAPWS-IF97-S04rev, the region methods of Supp-phs3-2014.pdf in the `boundarie` module
 //!    * (p,T)-> d in IAPWS-IF97-S05rev
 
-use crate::common::propertry_id::*;
+use crate::common::property_id::*;
 use crate::common::*;
 use crate::r3::*;
 
