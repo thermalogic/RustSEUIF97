@@ -285,6 +285,7 @@ pub fn sub_region3_pT(p: f64, T: f64) -> char {
 
             if T <= tBcd {
                 subRegion = 'c';
+                return subRegion;
             } else if T <= tBqu {
                 subRegion = 'q';
                 return subRegion;
@@ -297,6 +298,7 @@ pub fn sub_region3_pT(p: f64, T: f64) -> char {
 
             if T > tBjk {
                 subRegion = 'k';
+                return subRegion;
             }
 
             // tBqu < T <= tBrx
