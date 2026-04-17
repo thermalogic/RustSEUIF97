@@ -10,9 +10,9 @@ SEUIF97 also significantly outperforms various approximate equations and algorit
 
 **Key Acceleration Methods**
 
-1. Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
+* Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-2. The Recursive Method: Efficiently computes polynomial values for the base variable and its derivatives.
+* Polynomial Recurrence Method: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by powers. This approach eliminates redundant calculations and significantly improves performance.
 
 In the package, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
