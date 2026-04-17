@@ -166,10 +166,15 @@ int main(void)
  
 ## The Python binding 
 
-**Install**
+**Install from pypi**
 
 ```bash
 pip install seuif97
+```
+
+**Build the release version locally and install it to the local Python environment**
+```bash
+python ./setup.py install
 ```
 
 **Example**

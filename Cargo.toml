@@ -22,7 +22,7 @@ stdcall = []
 python = ["pyo3"]
 
 [dependencies.pyo3]
-version = "0.24.0"
+version = "0.28.3"
 features = ["extension-module"]
 optional = true
 
