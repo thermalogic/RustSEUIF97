@@ -2,16 +2,17 @@
 
  ![docs.rs](https://img.shields.io/docsrs/seuif97)  [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml)   ![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8246380.svg)](https://doi.org/10.5281/zenodo.8246380)
 
-This is the Rust implementation of the high-speed IAPWS-IF97 package **seuif97** with C and Python binding. It is suitable for computation-intensive calculations，such as the simulation of non-stationary processes, on-line process monitoring and optimizations.
+This is the Rust implementation of the high-speed IAPWS-IF97 package **seuif97** with C and Python bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
  
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
+Through the high-speed package, IAPWS-IF97 calculations achieve a **5x to 20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2, and 3.
 
-The speed of SEUIF97 is also far faster than various approximate equations and algorithms for a fast calculation of the properties for water and steam.
+SEUIF97 also significantly outperforms various approximate equations and algorithms typically used for fast water and steam property calculations.
 
-**The Fast Methods**
+**Key Acceleration Methods**
 
-1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
-2. The recursive  method computes the polynomial values of the base variable and its derivatives
+1. Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
+
+2. The Recursive Method: Efficiently computes polynomial values for the base variable and its derivatives.
 
 In the package, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
