@@ -1,9 +1,9 @@
 [package]
 name = "seuif97"
-version = "1.1.6"
+version = "1.1.7"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
-description = "The high-speed IAPWS-IF97 package with C and Python binding"
+description = "The high-speed IAPWS-IF97 package with C and Python bindings"
 readme = "README.md"
 homepage = "https://github.com/thermalogic/"
 repository = "https://github.com/thermalogic/RustSEUIF97/"
