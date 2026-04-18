@@ -2,13 +2,13 @@
 
  ![docs.rs](https://img.shields.io/docsrs/seuif97)  [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml)   ![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8246380.svg)](https://doi.org/10.5281/zenodo.8246380)
 
-This is the Rust implementation of the high-speed IAPWS-IF97 package **seuif97** with C and Python bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
+This is the Rust implementation of the high-speed IAPWS-IF97 package **SEUIF97** with C and Python bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
  
 Through the high-speed package, IAPWS-IF97 calculations achieve a **5x to 20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2, and 3.
 
-SEUIF97 also significantly outperforms various approximate equations and algorithms typically used for fast water and steam property calculations.
+**SEUIF97** also significantly outperforms various approximate equations and algorithms typically used for fast water and steam property calculations.
 
-**Key Acceleration Methods**
+## Key Acceleration Methods
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
@@ -58,20 +58,16 @@ pub fn pT2u_reg1(p: f64, T: f64) -> f64 {
     RGAS_WATER * T * (tau * d_tau - pi * d_pi)
 }
 ```
+## Input Pairs and Properties
 
-In the package, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
 
-The following 12 input pairs are implemented: 
+**Input Pairs:**
 
-```txt
-(p,t) (p,h) (p,s) (p,v) 
-
-(t,h) (t,s) (t,v) 
-
-(p,x) (t,x) (h,x) (s,x) 
-
-(h,s)  
-```
+* Pressure-based: $(p,t), (p,h), (p,s), (p,v)$
+* Temperature-based: $(t,h),(t,s), (t,v)$
+* Quality-based: $(p,x), (t,x),(h,x),(s,x)$
+* Other: $(h,s)$
 
 ## Usage
 
@@ -253,7 +249,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
    
 ## Properties
 
-| property property                             |    Unit     | Symbol | o_id  | o_id(i32)|
+| Poperty                             |    Unit     | Symbol | o_id  | o_id(i32)|
 | ------------------------------------- | :---------: |:------:|------:|:--------:|
 | Pressure                              |     MPa     |      p |   OP  |       0  |
 | Temperature                           |     °C      |      t |   OT  |       1  |
