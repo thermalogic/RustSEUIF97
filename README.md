@@ -18,11 +18,15 @@ The following code snippets demonstrate the acceleration method to calculate the
 
 **The IAPWS-IF97 Equations**
 
-The basic equation for this region 1 is a fundamental equation for the specific **Gibbs free energy** $g$. This equation is expressed in dimensionless form,$\gamma =g/(RT)$.
+The basic equation for this region 1 is a fundamental equation for the specific **Gibbs free energy** $g$. This equation is expressed in dimensionless form,
+
+$\gamma =g/(RT)$.
 
 $$\frac{g(p,T)}{RT} = \gamma(\pi,\tau) = \sum_{i=1}^{34} n_i (7.1-\pi)^{I_i} (\tau-1.222)^{J_i}$$
 
-where $\pi = p/p^*$ and $\tau = T^*/T$ with $p^*=16.53MPa$ and $T^* =1386K$
+where 
+
+$\pi = p/p^*$ and $\tau = T^*/T$ with $p^*=16.53MPa$ and $T^* =1386K$
 
 To derive the **specific internal energy**
 
