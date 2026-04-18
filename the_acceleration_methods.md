@@ -1,6 +1,12 @@
 # The code snippets of the acceleration methods
 
-The following code snippets demonstrate the acceleration methods to calculate the specific internal energy in region 1, illustrating the flow from the optimized kernel to the final physical property calculation:
+The code snippets demonstrate the acceleration methods to calculate the specific internal energy in region 1, illustrating the flow from the optimized kernel to the final physical property calculation:
+
+## Key Acceleration Methods
+
+* Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
+
+* Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves performance.
 
 ## The IAPWS-IF97 Equations
 

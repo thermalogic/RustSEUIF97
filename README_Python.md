@@ -4,10 +4,13 @@ The version of **seuif97 2**  is the Python API of the high-speed IAPWS-IF97 pac
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
-**The Fast Methods**
+## Key Acceleration Methods
 
-1. The multi-step method unleashes the full power of the compiler optimizations while using `powi()` with the `for` loop
-2. The recursive  method computes the polynomial values of the base variable and its derivatives
+* Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
+
+* Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves performance.
+
+## Input Pairs and Properties
 
 In the package, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
 
