@@ -14,8 +14,6 @@ The basic equation for this region 1 is a fundamental equation for the specific 
 
 $$\frac{g(p,T)}{RT} = \gamma(\pi,\tau) = \sum_{i=1}^{34} n_i (7.1-\pi)^{I_i} (\tau-1.222)^{J_i}$$
 
-where
-
 $$
 \pi = p/p^{*}, \quad p^{*}=16.53 \, \text{MPa}, \quad \tau = T^{*}/T, \quad T^{*} = 1386 \, \text{K}
 $$
