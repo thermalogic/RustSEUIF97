@@ -24,9 +24,9 @@ $$\frac{g(p,T)}{RT} = \gamma(\pi,\tau) = \sum_{i=1}^{34} n_i (7.1-\pi)^{I_i} (\t
 
 where 
 
-$\pi = p/p^*，p^*=16.53MPa$
+$$\pi = p/p^*，p^*=16.53MPa$$
 
-$\tau = T^*/T， T^* =1386K$
+$$\tau = T^*/T， T^* =1386K$$
 
 To derive the **specific internal energy**
 
