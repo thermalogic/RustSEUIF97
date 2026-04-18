@@ -14,7 +14,11 @@ The basic equation for this region 1 is a fundamental equation for the specific 
 
 $$\frac{g(p,T)}{RT} = \gamma(\pi,\tau) = \sum_{i=1}^{34} n_i (7.1-\pi)^{I_i} (\tau-1.222)^{J_i}$$
 
-where $\pi = p/p^{*}$,, $\tau = T^{*}/T$
+where 
+
+$\pi = p/p^{*}$
+
+$\tau = T^{*}/T$
 
 To derive the **specific internal energy**
 
