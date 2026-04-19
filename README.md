@@ -23,9 +23,9 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 **Input Pairs:**
 
 ```txt
-(p,t), (p,h), (p,s), (p,v)
-(t,h),(t,s), (t,v)
-(p,x), (t,x),(h,x),(s,x)
+(p,t) (p,h) (p,s) (p,v)
+(t,h) (t,s) (t,v)
+(p,x) (t,x) (h,x) (s,x)
 (h,s)
 ```
 
