@@ -22,10 +22,12 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 **Input Pairs:**
 
-* Pressure-based: $(p,t), (p,h), (p,s), (p,v)$
-* Temperature-based: $(t,h),(t,s), (t,v)$
-* Quality-based: $(p,x), (t,x),(h,x),(s,x)$
-* Other: $(h,s)$
+```txt
+(p,t), (p,h), (p,s), (p,v)
+(t,h),(t,s), (t,v)
+(p,x), (t,x),(h,x),(s,x)
+(h,s)
+```
 
 ## Usage
 
