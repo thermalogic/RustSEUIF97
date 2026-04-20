@@ -1,6 +1,6 @@
 
 ifeq ($(OS),Windows_NT)
-	LIBFLAGES= -L../target/release/ -lseuif97  
+	LIBFLAGS= -L../target/release/ -lseuif97  
 	EXEDIR=../target/release/
 else
 	UNAME_S := $(shell uname -s)
@@ -11,7 +11,7 @@ else
 endif
 
 all: 
-	gcc demo.c -o$(EXEDIR)demo  $(LIBFLAGES)
+	gcc demo.c -o$(EXEDIR)demo  $(LIBFLAGS)
 	$(EXEDIR)demo
 
 
