@@ -1,9 +1,9 @@
 // cgo LDFLAGS:
 //    Linux:  -L/usr/lib/ -lseuif97 -lm
-//    Windows: -LC:/Windows/system -llibseuif97
+//    Windows: -LC:/Windows/system -lseuif97
 package main
 /*
-#cgo LDFLAGS: -LC:/Windows/system -llibseuif97
+#cgo LDFLAGS: -LC:/Windows/system -lseuif97
 double pt(double p, double t, int o_id);
 */
 import "C"
