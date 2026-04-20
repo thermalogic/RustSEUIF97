@@ -2,9 +2,9 @@
 /*
    The C example to call the shared library
    Windows with MinGW-W64：
-      gcc -o demo.exe demo.c -I./include  -LC:/Windows/system/  -lseuif97
+      gcc -o demo.exe demo.c -LC:/Windows/system/  -lseuif97
    Linux
-     gcc demo.c -o demo  -L../target/release  -Wl,-rpath=../target/release  -lseuif97 -lm
+      gcc demo.c -o demo  -L../target/release  -Wl,-rpath=../target/release  -lseuif97 -lm
 */
 
 #include <stdlib.h>
