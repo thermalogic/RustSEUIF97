@@ -12,7 +12,7 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5x to 20x sp
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-* Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves performance.
+* Recurrence Method for Multi-Polynomial Evaluation: By utilizing the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves computational  performance.
 
 Please refer to [The acceleration methods](./the_acceleration_methods.md) for more details on the algorithm
 
