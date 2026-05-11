@@ -41,7 +41,7 @@ The two types of functions are provided in the package
 ```
 
 * the first,second input parameters : the input property pairs
-* the third input parametes: the property ID of the calculated property - [o_id](#properties)
+* the third input parameters: the property ID of the calculated property - [o_id](#properties)
 * the return: the calculated property value of o_id
 
 ```python
@@ -137,7 +137,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | Compressibility factor                |             |     z  |   OZ  |       14 |
 | Steam quality                         |             |     x  |   OX  |       15 |
 | Region                                |             |     r  |   OR  |       16 |
-| Isobari cubic expansion coefficient   |     1/K     |   ɑv   |  OEC  |       17 |
+| Isobaric cubic expansion coefficient   |     1/K     |   ɑv   |  OEC  |       17 |
 | Isothermal compressibility            |    1/MPa    |    kT  |  OKT  |       18 |
 | Partial derivative (∂V/∂T)p           |  m³/(kg·K)  |(∂V/∂T)p| ODVDT |       19 |
 | Partial derivative (∂V/∂p)T           | m³/(kg·MPa) |(∂v/∂p)t| ODVDP |       20 |

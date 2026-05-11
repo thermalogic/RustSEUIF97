@@ -3,7 +3,7 @@
 //! The functions compute the polynomial values of the base variable and its derivatives
 //!  1. To the polynomial of base variable and its derivatives
 //!  2. To the polynomial of base variable and its derivatives recursively
-//！# Variables
+//! # Variables
 //! * IJn[(i32,i32,f64)]
 //!   * vi - the base of i=IJn[k][0]
 //!   * vj - the base of j=IJn[k][1]

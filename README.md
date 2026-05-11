@@ -51,7 +51,7 @@ where
 ```
 
 * the first,second input parameters(f64) : the input property pairs
-* the third and fourth input parametes<R>:
+* the third and fourth input parameters<R>:
     * the third : the property ID of the calculated property - [o_id](#properties)
     * the fourth `option` parameter: the region of IAPWS-IF97
 * the return(f64): the calculated property value of o_id
@@ -209,7 +209,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
    
 ## Properties
 
-| Poperty                             |    Unit     | Symbol | o_id  | o_id(i32)|
+| Property                             |    Unit     | Symbol | o_id  | o_id(i32)|
 | ------------------------------------- | :---------: |:------:|------:|:--------:|
 | Pressure                              |     MPa     |      p |   OP  |       0  |
 | Temperature                           |     °C      |      t |   OT  |       1  |
@@ -228,7 +228,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | Compressibility factor                |             |     z  |   OZ  |       14 |
 | Steam quality                         |             |     x  |   OX  |       15 |
 | Region                                |             |     r  |   OR  |       16 |
-| Isobari cubic expansion coefficient   |     1/K     |   ɑv   |  OEC  |       17 |
+| Isobaric cubic expansion coefficient   |     1/K     |   ɑv   |  OEC  |       17 |
 | Isothermal compressibility            |    1/MPa    |    kT  |  OKT  |       18 |
 | Partial derivative (∂V/∂T)p           |  m³/(kg·K)  |(∂V/∂T)p| ODVDT |       19 |
 | Partial derivative (∂V/∂p)T           | m³/(kg·MPa) |(∂v/∂p)t| ODVDP |       20 |
