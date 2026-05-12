@@ -255,10 +255,18 @@ pub fn pT2u_reg1(p: f64, T: f64) -> f64 {
 
 区域判定是计算流程的关键环节，根据输入参数对选择不同的判定策略：
 
-**判定流程**：
+**(p,T)判定流程**：
 1. 参数边界校验
 2. 饱和线检测（Region 4）
 3. 根据温度压力范围判定具体区域
+
+| 区域 | 范围 | 状态 |
+|------|------|------|
+| **Region 1** | 273.15K ≤ T ≤ 623.15K, p ≥ 饱和压力 | 液态水 |
+| **Region 2** | T ≥ 273.15K, p < 饱和压力 | 过热蒸汽 |
+| **Region 3** | 623.15K < T ≤ 863.15K, 高压区 | 临界点附近 |
+| **Region 4** | 273.15K ≤ T ≤ 647.096K | 饱和两相区 |
+| **Region 5** | 1073.15K < T ≤ 2273.15K, p ≤ 50MPa | 高温区 |
 
 ```rust
 pub fn pT_sub_region(p: f64, T: f64) -> i32 {
@@ -469,52 +477,10 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | `hs2p(h, s)` | 从(h,s)计算压力 |
 | `hs2t(h, s)` | 从(h,s)计算温度 |
 
----
 
-## 5. 热力学区域说明
+## 5. 物理常量定义
 
-### 5.1 区域划分
-
-| 区域 | 范围 | 状态 |
-|------|------|------|
-| **Region 1** | 273.15K ≤ T ≤ 623.15K, p ≥ 饱和压力 | 液态水 |
-| **Region 2** | T ≥ 273.15K, p < 饱和压力 | 过热蒸汽 |
-| **Region 3** | 623.15K < T ≤ 863.15K, 高压区 | 临界点附近 |
-| **Region 4** | 273.15K ≤ T ≤ 647.096K | 饱和两相区 |
-| **Region 5** | 1073.15K < T ≤ 2273.15K, p ≤ 50MPa | 高温区 |
-
-### 5.2 区域边界
-
-```
-                    T (K)
-                     ^
-              2273.15|          Region 5
-                     |            (p ≤ 50MPa)
-                     |         +------------------+
-                     |         |                  |
-              1073.15|    +----+                  +----+
-                     |    |    |                  |    |
-                     |    |    |   Region 2       |    |
-                     |    |    |                  |    |
-               863.15|    |    |    +----------+  |    |
-                     |    |    |    | Region 3  |  |    |
-               647.10|    |    |    |(critical)|  |    |
-                     |    |    |    +----------+  |    |
-               623.15|    |    +------------------+    |
-                     |    |        ^                  |
-                     |    |   Region 4                |
-                     |    |  (saturation)             |
-               273.15|----+--------+------------------+----> p (MPa)
-                     |   Region 1  |
-                     |  (liquid)   |  Region 2
-                     +-------------+ (vapor)
-```
-
----
-
-## 6. 物理常量定义
-
-### 6.1 关键常量
+### 5.1 关键常量
 
 ```rust
 pub const K: f64 = 273.15;                    // 摄氏温度转换常数
@@ -531,11 +497,10 @@ pub const P_MAX1: f64 = 100.0;                // Region 1 最大压力
 pub const T_MAX1: f64 = 623.15;               // Region 1 最大温度
 ```
 
----
 
-## 7. 错误处理机制
+## 6. 错误处理机制
 
-### 7.1 错误码定义
+### 6.1 错误码定义
 
 | 错误码 | 常量 | 含义 |
 |--------|------|------|
@@ -548,7 +513,7 @@ pub const T_MAX1: f64 = 623.15;               // Region 1 最大温度
 | -2201 | `INVALID_PT` | 无效(p,T)组合 |
 | -2202 | `INVALID_HS` | 无效(h,s)组合 |
 
-### 7.2 输入验证流程
+### 6.2 输入验证流程
 
 ```
 输入参数 → 范围检查 → 区域判定 → 属性计算 → 返回结果
@@ -558,11 +523,10 @@ pub const T_MAX1: f64 = 623.15;               // Region 1 最大温度
          返回错误码
 ```
 
----
 
-## 8. 构建与测试
+## 7. 构建与测试
 
-### 8.1 构建命令
+### 7.1 构建命令
 
 ```bash
 # 开发构建
@@ -581,7 +545,7 @@ cargo test
 cargo bench
 ```
 
-### 8.2 测试套件
+### 7.2 测试套件
 
 项目包含全面的测试用例：
 
@@ -598,11 +562,11 @@ cargo bench
 | `hxsx_test.rs` | 湿蒸汽区测试 |
 | `cross_test.rs` | 跨区域边界测试 |
 
-### 8.3 性能基准测试
+### 7.3 性能基准测试
 
 项目使用 [Criterion](https://crates.io/crates/criterion) 框架进行性能基准测试，测试文件位于 `benches/speed_benchmark.rs`。
 
-#### 8.3.1 测试内容
+#### 7.3.1 测试内容
 
 性能基准测试覆盖了各热力学区域的典型计算场景：
 
@@ -617,7 +581,7 @@ cargo bench
 | `pT2h_reg5` | Region 5 | p=0.5MPa, t=1226.85°C | 比焓 |
 | `pT2s_reg5` | Region 5 | p=0.5MPa, t=1226.85°C | 比熵 |
 
-#### 8.3.2 测试代码实现
+#### 7.3.2 测试代码实现
 
 ```rust
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
@@ -638,7 +602,7 @@ criterion_group!(benches, criterion_benchmark);
 criterion_main!(benches);
 ```
 
-#### 8.3.3 运行性能测试
+#### 7.3.3 运行性能测试
 
 ```bash
 # 运行所有基准测试
@@ -648,7 +612,7 @@ cargo bench
 # 报告位于 target/criterion/index.html
 ```
 
-#### 8.3.4 性能测试配置
+#### 7.3.4 性能测试配置
 
 在 `Cargo.toml` 中配置了 Criterion 依赖和基准测试设置：
 
@@ -667,9 +631,9 @@ harness = false
 
 ---
 
-## 9. 部署与集成
+## 8. 部署与集成
 
-### 9.1 动态库部署
+### 8.1 动态库部署
 
 预编译的动态库位于 `dynamic_lib/` 目录：
 
@@ -679,7 +643,7 @@ harness = false
 | Windows 32位 | `seuif97.dll` | `dynamic_lib/windows_x86/` |
 | Linux 64位 | `libseuif97.so` | `dynamic_lib/linux_x64/` |
 
-### 9.2 多语言集成示例
+### 8.2 多语言集成示例
 
 支持的编程语言：
 - ✅ Rust
@@ -693,15 +657,15 @@ harness = false
 
 ---
 
-## 10. 性能优化建议
+## 9. 性能优化建议
 
-### 10.1 使用建议
+### 9.1 使用建议
 
 1. **批量计算**：对于大量计算任务，建议使用循环分块技术，充分利用缓存
 2. **区域预判定**：如果已知计算区域，直接指定区域参数可避免区域判定开销
 3. **避免重复计算**：对于相同输入参数对的多次查询，考虑缓存结果
 
-### 10.2 性能对比
+### 9.2 性能对比
 
 | 实现方式 | 性能 | 说明 |
 |----------|------|------|
@@ -711,15 +675,15 @@ harness = false
 
 ---
 
-## 11. 维护与贡献
+## 10. 维护与贡献
 
-### 11.1 代码规范
+### 10.1 代码规范
 
 - 使用 Rust 2021 edition
 - 遵循 `rustfmt` 代码格式化规则
 - 使用 `clippy` 进行代码检查
 
-### 11.2 贡献流程
+### 10.2 贡献流程
 
 1. Fork 仓库
 2. 创建特性分支
@@ -727,7 +691,7 @@ harness = false
 4. 运行测试确保通过
 5. 提交 Pull Request
 
-### 11.3 版本管理
+### 10.3 版本管理
 
 版本格式：`MAJOR.MINOR.PATCH`
 
@@ -737,27 +701,10 @@ harness = false
 
 ---
 
-## 12. 参考文献
+## 11. 参考文献
 
-1. IAPWS-IF97: "Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam"
-2. IAPWS Supplementary Release: "Supplementary Release on Backward Equations for the Properties of Water and Steam"
-3. IAPWS Supp-Tv(ph,ps)-2014: "Supplementary Release for the Region 3 Boundaries"
-4. IAPWS Supp-phs3-2014: "Supplementary Release for the (h,s) Region Boundaries"
+* https://iapws.org/documents/release/IF97-Rev
 
----
-
-## 附录：单位转换表
-
-| 物理量 | SI单位 | 工程单位 | 转换关系 |
-|--------|--------|----------|----------|
-| 压力 | Pa | MPa | 1 MPa = 10^6 Pa |
-| 温度 | K | °C | T(K) = t(°C) + 273.15 |
-| 焓 | J/kg | kJ/kg | 1 kJ/kg = 10^3 J/kg |
-| 熵 | J/(kg·K) | kJ/(kg·K) | 1 kJ/(kg·K) = 10^3 J/(kg·K) |
-| 比容 | m³/kg | m³/kg | - |
-| 密度 | kg/m³ | kg/m³ | - |
-
----
 
 **文档版本**: v1.2.2  
 **生成日期**: 2024年  

@@ -260,10 +260,18 @@ pub fn pT2u_reg1(p: f64, T: f64) -> f64 {
 
 Region determination is a critical step in the calculation flow, selecting different determination strategies based on input parameter pairs.
 
-**Determination Flow**:
+**(p, T) Determination Flow**:
 1. **Parameter Boundary Validation**: Checks if pressure and temperature are within valid ranges
 2. **Saturation Line Detection**: Determines if located in the saturation region (Region 4)
 3. **Region Determination**: Determines the specific region based on temperature and pressure ranges
+
+| Region | Range | State |
+|--------|-------|-------|
+| **Region 1** | 273.15K ≤ T ≤ 623.15K, p ≥ saturation pressure | Liquid water |
+| **Region 2** | T ≥ 273.15K, p < saturation pressure | Superheated vapor |
+| **Region 3** | 623.15K < T ≤ 863.15K, high pressure region | Near critical point |
+| **Region 4** | 273.15K ≤ T ≤ 647.096K | Saturated two-phase region |
+| **Region 5** | 1073.15K < T ≤ 2273.15K, p ≤ 50MPa | High temperature region |
 
 ```rust
 pub fn pT_sub_region(p: f64, T: f64) -> i32 {
@@ -285,8 +293,6 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
     // ... other region determination logic
 }
 ```
-
----
 
 ## 4. API Interface Design
 
@@ -476,52 +482,10 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | `hs2p(h, s)` | Calculate pressure from (h,s) |
 | `hs2t(h, s)` | Calculate temperature from (h,s) |
 
----
 
-## 5. Thermodynamic Region Description
+## 5. Physical Constants
 
-### 5.1 Region Division
-
-| Region | Range | State |
-|--------|-------|-------|
-| **Region 1** | 273.15K ≤ T ≤ 623.15K, p ≥ saturation pressure | Liquid water |
-| **Region 2** | T ≥ 273.15K, p < saturation pressure | Superheated vapor |
-| **Region 3** | 623.15K < T ≤ 863.15K, high pressure region | Near critical point |
-| **Region 4** | 273.15K ≤ T ≤ 647.096K | Saturated two-phase region |
-| **Region 5** | 1073.15K < T ≤ 2273.15K, p ≤ 50MPa | High temperature region |
-
-### 5.2 Region Boundaries
-
-```
-                    T (K)
-                     ^
-              2273.15|          Region 5
-                     |            (p ≤ 50MPa)
-                     |         +------------------+
-                     |         |                  |
-              1073.15|    +----+                  +----+
-                     |    |    |                  |    |
-                     |    |    |   Region 2       |    |
-                     |    |    |                  |    |
-               863.15|    |    |    +----------+  |    |
-                     |    |    |    | Region 3  |  |    |
-               647.10|    |    |    |(critical)|  |    |
-                     |    |    |    +----------+  |    |
-               623.15|    |    +------------------+    |
-                     |    |        ^                  |
-                     |    |   Region 4                |
-                     |    |  (saturation)             |
-               273.15|----+--------+------------------+----> p (MPa)
-                     |   Region 1  |
-                     |  (liquid)   |  Region 2
-                     +-------------+ (vapor)
-```
-
----
-
-## 6. Physical Constants
-
-### 6.1 Key Constants
+### 5.1 Key Constants
 
 ```rust
 pub const K: f64 = 273.15;                    // Celsius temperature conversion constant
@@ -538,11 +502,9 @@ pub const P_MAX1: f64 = 100.0;               // Region 1 maximum pressure
 pub const T_MAX1: f64 = 623.15;              // Region 1 maximum temperature
 ```
 
----
+## 6 Error Handling
 
-## 7. Error Handling
-
-### 7.1 Error Code Definitions
+### 6.1 Error Code Definitions
 
 | Error Code | Constant | Meaning |
 |------------|----------|---------|
@@ -555,7 +517,7 @@ pub const T_MAX1: f64 = 623.15;              // Region 1 maximum temperature
 | -2201 | `INVALID_PT` | Invalid (p,T) combination |
 | -2202 | `INVALID_HS` | Invalid (h,s) combination |
 
-### 7.2 Input Validation Flow
+### 6.2 Input Validation Flow
 
 ```
 Input Parameters → Range Check → Region Determination → Property Calculation → Return Result
@@ -565,11 +527,9 @@ Input Parameters → Range Check → Region Determination → Property Calculati
                    Return Error Code
 ```
 
----
+## 7. Build and Testing
 
-## 8. Build and Testing
-
-### 8.1 Build Commands
+### 7.1 Build Commands
 
 ```bash
 # Development build
@@ -588,7 +548,7 @@ cargo test
 cargo bench
 ```
 
-### 8.2 Test Suite
+### 7.2 Test Suite
 
 The project includes comprehensive test cases:
 
@@ -605,11 +565,11 @@ The project includes comprehensive test cases:
 | `hxsx_test.rs` | Wet steam region tests |
 | `cross_test.rs` | Cross-region boundary tests |
 
-### 8.3 Performance Benchmarks
+### 7.3 Performance Benchmarks
 
 The project uses the [Criterion](https://crates.io/crates/criterion) framework for performance benchmarking. The benchmark file is located at `benches/speed_benchmark.rs`.
 
-#### 8.3.1 Test Content
+#### 7.3.1 Test Content
 
 Performance benchmarks cover typical calculation scenarios for each thermodynamic region:
 
@@ -624,7 +584,7 @@ Performance benchmarks cover typical calculation scenarios for each thermodynami
 | `pT2h_reg5` | Region 5 | p=0.5MPa, t=1226.85°C | Specific Enthalpy |
 | `pT2s_reg5` | Region 5 | p=0.5MPa, t=1226.85°C | Specific Entropy |
 
-#### 8.3.2 Test Code Implementation
+#### 7.3.2 Test Code Implementation
 
 ```rust
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
@@ -645,7 +605,7 @@ criterion_group!(benches, criterion_benchmark);
 criterion_main!(benches);
 ```
 
-#### 8.3.3 Running Performance Tests
+#### 7.3.3 Running Performance Tests
 
 ```bash
 # Run all benchmarks
@@ -655,7 +615,7 @@ cargo bench
 # Report is located at target/criterion/index.html
 ```
 
-#### 8.3.4 Performance Test Configuration
+#### 7.3.4 Performance Test Configuration
 
 Criterion dependency and benchmark settings are configured in `Cargo.toml`:
 
@@ -674,9 +634,9 @@ harness = false
 
 ---
 
-## 9. Deployment and Integration
+## 8. Deployment and Integration
 
-### 9.1 Dynamic Library Deployment
+### 8.1 Dynamic Library Deployment
 
 Pre-compiled dynamic libraries are located in the `dynamic_lib/` directory:
 
@@ -686,7 +646,7 @@ Pre-compiled dynamic libraries are located in the `dynamic_lib/` directory:
 | Windows 32-bit | `seuif97.dll` | `dynamic_lib/windows_x86/` |
 | Linux 64-bit | `libseuif97.so` | `dynamic_lib/linux_x64/` |
 
-### 9.2 Multi-language Integration Examples
+### 8.2 Multi-language Integration Examples
 
 Supported programming languages:
 - ✅ Rust
@@ -698,34 +658,30 @@ Supported programming languages:
 - ✅ Go
 - ✅ Excel VBA
 
----
+## 9. Performance Optimization Recommendations
 
-## 10. Performance Optimization Recommendations
-
-### 10.1 Usage Recommendations
+### 9.1 Usage Recommendations
 
 1. **Batch Calculations**: For large numbers of calculations, use loop tiling techniques to fully utilize cache
 2. **Pre-determine Region**: If the calculation region is known, specifying region parameters directly avoids region determination overhead
 3. **Avoid Redundant Calculations**: For multiple queries with the same input parameter pairs, consider caching results
 
-### 10.2 Performance Comparison
+### 9.2 Performance Comparison
 
 | Implementation | Performance | Description |
 |----------------|-------------|-------------|
 | SEUIF97 | Baseline | Optimized high-speed implementation |
 | Rust standard library `powi()` | 5-20x slower | Unoptimized direct implementation |
 
----
+## 10. Maintenance and Contribution
 
-## 11. Maintenance and Contribution
-
-### 11.1 Code Standards
+### 10.1 Code Standards
 
 - Use Rust 2021 edition
 - Follow `rustfmt` code formatting rules
 - Use `clippy` for code checks
 
-### 11.2 Contribution Process
+### 10.2 Contribution Process
 
 1. Fork the repository
 2. Create a feature branch
@@ -733,7 +689,7 @@ Supported programming languages:
 4. Run tests to ensure they pass
 5. Submit a Pull Request
 
-### 11.3 Version Management
+### 10.3 Version Management
 
 Version format: `MAJOR.MINOR.PATCH`
 
@@ -741,31 +697,15 @@ Version format: `MAJOR.MINOR.PATCH`
 - **MINOR**: New features, backward compatible
 - **PATCH**: Bug fixes, backward compatible
 
----
+## 11. References
 
-## 12. References
+* https://iapws.org/documents/release/IF97-Rev
 
-1. IAPWS-IF97: "Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam"
-2. IAPWS Supplementary Release: "Supplementary Release on Backward Equations for the Properties of Water and Steam"
-3. IAPWS Supp-Tv(ph,ps)-2014: "Supplementary Release for the Region 3 Boundaries"
-4. IAPWS Supp-phs3-2014: "Supplementary Release for the (h,s) Region Boundaries"
-
----
-
-## Appendix: Unit Conversion Table
-
-| Quantity | SI Unit | Engineering Unit | Conversion |
-|----------|---------|------------------|-------------|
-| Pressure | Pa | MPa | 1 MPa = 10^6 Pa |
-| Temperature | K | °C | T(K) = t(°C) + 273.15 |
-| Enthalpy | J/kg | kJ/kg | 1 kJ/kg = 10^3 J/kg |
-| Entropy | J/(kg·K) | kJ/(kg·K) | 1 kJ/(kg·K) = 10^3 J/(kg·K) |
-| Specific Volume | m³/kg | m³/kg | - |
-| Density | kg/m³ | kg/m³ | - |
-
----
 
 **Document Version**: v1.2.2
+
 **Generated Date**: 2024
+
 **Author**: Cheng Maohua <cmh@seu.edu.cn>
+
 **Project URL**: https://github.com/thermalogic/RustSEUIF97
