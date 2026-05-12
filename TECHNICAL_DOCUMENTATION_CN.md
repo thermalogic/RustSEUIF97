@@ -655,8 +655,6 @@ harness = false
 - ✅ Go
 - ✅ Excel VBA
 
----
-
 ## 9. 性能优化建议
 
 ### 9.1 使用建议
@@ -672,8 +670,6 @@ harness = false
 | SEUIF97 | 基准 | 优化后的高速实现 |
 | Rust标准库 `powi()` | 慢 5-20x | 无优化的直接实现 |
 | 其他近似算法 | 精度损失 | 速度可能更快但精度不足 |
-
----
 
 ## 10. 维护与贡献
 
@@ -699,14 +695,15 @@ harness = false
 - **MINOR**：新增功能，向后兼容
 - **PATCH**：Bug 修复，向后兼容
 
----
 
 ## 11. 参考文献
 
 * https://iapws.org/documents/release/IF97-Rev
 
-
 **文档版本**: v1.2.2  
+
 **生成日期**: 2024年  
+
 **作者**: Cheng Maohua <cmh@seu.edu.cn>  
+
 **项目地址**: https://github.com/thermalogic/RustSEUIF97
