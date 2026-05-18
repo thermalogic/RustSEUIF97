@@ -5,7 +5,9 @@
 pub mod polynomial;
 pub mod polynomial_steps;
 pub mod root;
+pub mod polynomial_steps_precomputing_powers;
 
 pub use self::polynomial::*;
 pub use self::polynomial_steps::*;
 pub use self::root::*;
+pub use self::polynomial_steps_precomputing_powers::*;
