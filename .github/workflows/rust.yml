@@ -62,12 +62,17 @@ jobs:
       with:
         name: sdist
         path: dist/*.tar.gz
-
+github
   publish:
     name: Publish to PyPI
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push' && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/seuif97-pypi-multi-platform')
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+
     steps:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
