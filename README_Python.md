@@ -1,10 +1,10 @@
 # SEUIF97
 
-The version of **seuif97 2**  is the Python API of the high-speed IAPWS-IF97 package in Rust. It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.   
- 
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
+The version of **seuif97 2** is the Python API of the high-speed IAPWS-IF97 package in Rust. It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
 
-## The Acceleration Methods
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2, and 3.
+
+## Acceleration Methods
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
@@ -12,7 +12,7 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 
 ## Input Pairs and Properties
 
-In the package, [36 thermodynamic, transport and  further properties](#properties) can be calculated. 
+In the package, [36 thermodynamic, transport and further properties](#properties) can be calculated. 
 
 The following 12 input pairs are implemented:
 
@@ -26,13 +26,13 @@ The following 12 input pairs are implemented:
   (h,s)
 ```
 
-## The functions 
+## Functions
 
-The two types of functions are provided in the package
+The two types of functions are provided in the package.
 
  1. the input property pairs and the property ID([o_id](#properties)) to get the value of the specified property
 
- 2. the input property pairs to get the one of  `p`,`t`,`h`,`s`,`v` or `x` directly
+ 2. the input property pairs to get one of  `p`,`t`,`h`,`s`,`v` or `x` directly
 
 ### The input property pairs and the property ID 
 
@@ -40,7 +40,7 @@ The two types of functions are provided in the package
   ??(in1,in2,o_id)
 ```
 
-* the first,second input parameters : the input property pairs
+* the first, second input parameters: the input property pairs
 * the third input parameters: the property ID of the calculated property - [o_id](#properties)
 * the return: the calculated property value of o_id
 
@@ -76,10 +76,10 @@ ph2t(p, h)  ph2s(p, h)  ph2v(p, h)  ph2x(p, h)
 ps2t(p, s)  ps2h(p, s)  ps2v(p, s)  ps2x(p, s)  
 pv2t(p, v)  pv2h(p, v)  pv2s(p, v)  pv2x(p, v)  
 
-hs2p(h, s)  hs2t(h, s)  hs2v(p, s)  hs2x(h, s)    
+hs2p(h, s)  hs2t(h, s)  hs2v(h, s)  hs2x(h, s)    
 
 th2p(t, h)  th2s(t, h)  th2v(t, h)  th2x(t, h)   
-ts2p(t, s)  ts2h(t, s)  th2v(t, s)  ts2x(t, s)  
+ts2p(t, s)  ts2h(t, s)  ts2v(t, s)  ts2x(t, s)  
 tv2p(t, v)  tv2h(t, v)  tv2s(t, v)  tv2x(t, v)  
 
 px2t(p, x)  px2h(p, x)  px2s(p, x)  px2v(p, x)
@@ -104,21 +104,21 @@ h=pt(p,t,OH)
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
-**The Examples**
+**Examples**
 
-* [T-S Diagram](https://github.com/thermalogic/RustSEUIF97/blob/seuif97/demo_using_lib/Diagram_T-S.py)
+* [T-S Diagram](https://github.com/thermalogic/RustSEUIF97/blob/seuif97-pypi-multi-platform/demo_using_lib/Diagram_T-S.py)
 
-* [H-S Diagram](https://github.com/thermalogic/RustSEUIF97/blob/seuif97/demo_using_lib/Diagram_H-S.py)
+* [H-S Diagram](https://github.com/thermalogic/RustSEUIF97/blob/seuif97-pypi-multi-platform/demo_using_lib/Diagram_H-S.py)
 
-* [H-S Diagram of Steam Turbine Expansion](https://github.com/thermalogic/RustSEUIF97/blob/seuif97/demo_using_lib/Turbine_H-S.py)
+* [H-S Diagram of Steam Turbine Expansion](https://github.com/thermalogic/RustSEUIF97/blob/seuif97-pypi-multi-platform/demo_using_lib/Turbine_H-S.py)
 
 * [The Hybrid Steady-state Simulator of Rankine Cycle in Python](https://github.com/thermalogic/PyRankine)
 
-![T-S Diagram](https://github.com/thermalogic/RustSEUIF97/raw/seuif97/img/T-S.jpg)
+![T-S Diagram](https://github.com/thermalogic/RustSEUIF97/raw/seuif97-pypi-multi-platform/img/T-S.jpg)
 
 ## Properties
 
-| property                             |    Unit     | Symbol | o_id  | o_id(i32)|
+| Property                              |    Unit     | Symbol | o_id  | o_id(i32)|
 | ------------------------------------- | :---------: |:------:|------:|:--------:|
 | Pressure                              |     MPa     |      p |   OP  |       0  |
 | Temperature                           |     °C      |      t |   OT  |       1  |
@@ -140,8 +140,8 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | Isobaric cubic expansion coefficient   |     1/K     |   ɑv   |  OEC  |       17 |
 | Isothermal compressibility            |    1/MPa    |    kT  |  OKT  |       18 |
 | Partial derivative (∂V/∂T)p           |  m³/(kg·K)  |(∂V/∂T)p| ODVDT |       19 |
-| Partial derivative (∂V/∂p)T           | m³/(kg·MPa) |(∂v/∂p)t| ODVDP |       20 |
-| Partial derivative (∂P/∂T)v           |    MPa/K    |(∂p/∂t)v| ODPDT |       21 |
+| Partial derivative (∂V/∂p)T           | m³/(kg·MPa) |(∂v/∂p)T| ODVDP |       20 |
+| Partial derivative (∂P/∂T)v           |    MPa/K    |(∂p/∂T)v| ODPDT |       21 |
 | Isothermal throttling coefficient     | kJ/(kg·MPa) |   δt   | OIJTC |       22 |
 | Joule-Thomson coefficient             |    K/MPa    |    μ   | OJTC  |       23 |
 | Dynamic viscosity                     |   Pa·s      |    η   |  ODV  |       24 |

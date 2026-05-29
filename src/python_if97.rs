@@ -280,7 +280,7 @@ mod seuif97 {
     }
 
     #[pyfunction]
-    fn ts2V(t: f64, s: f64) -> f64 {
+    fn ts2v(t: f64, s: f64) -> f64 {
         crate::rust_if97::ts(t,s,OV)
     }
 
@@ -357,7 +357,8 @@ mod seuif97 {
     fn hx2p(h: f64, x: f64) -> f64 {
         crate::rust_if97::hx(h,x,OP)
     }
-
+  
+    #[pyfunction]
     fn hx2t(h: f64, x: f64) -> f64 {
         crate::rust_if97::hx(h,x,OT)
     }
