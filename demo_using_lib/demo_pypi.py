@@ -20,5 +20,5 @@ print(f"??(in1,in2,o_id): p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 # ??2?(in1,in2)
 h = pt2h(p,t)
-s = pt2s(p, t)
+s = pt2s(p,t)
 print(f"   ??2?(in1,in2): p={p}, t={t} h={h:.3f} s={s:.3f}")
