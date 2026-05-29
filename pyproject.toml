@@ -27,5 +27,5 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/thermalogic/RustSEUIF97/"
+Homepage = "https://github.com/thermalogic/"
 Repository = "https://github.com/thermalogic/RustSEUIF97/"
