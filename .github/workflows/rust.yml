@@ -2,11 +2,11 @@ name: Rust
 
 on:
   push:
-    branches: [ "seuif97" ]
+    branches: [ "seuif97-pypi-multi-platform" ]
     tags:
       - 'v*'
   pull_request:
-    branches: [ "seuif97" ]
+    branches: [ "seuif97-pypi-multi-platform" ]
   workflow_dispatch:
 
 env:
