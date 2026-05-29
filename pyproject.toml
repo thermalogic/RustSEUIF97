@@ -1,10 +1,11 @@
 [build-system]
 requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
-
+[tool.maturin]
+bindings = "pyo3"
 [project]
 name = "seuif97"
-version = "1.2.2"
+version = "2.3.0"
 description = "The high-speed IAPWS-IF97 package in Rust with Python bindings"
 readme = "README_Python.md"
 requires-python = ">=3.8"
