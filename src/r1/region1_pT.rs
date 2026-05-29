@@ -1,15 +1,15 @@
-//! Region 1 - Basic Equation:(p,T)-->v, u,h,s,cp, cv,w
+//! Region 1 - Basic Equation: (p,T)->v, u,h,s,cp, cv,w
 //! *  IAPWS-97(2012) August 2007 Page8 Table 3 : <http://www.iapws.org/relguide/IF97-Rev.html>
 //! Thermodynamic  properties(9)
-//!  *  T: temperature  K
-//！ *  P: pressure  MPa
-//！ *  v: specific volume m^3/kg
-//！ *  h: specific enthalpy kJ/kg
-//！ *  u: specific internal energy kJ/kg
-//！ *  s: specific entropy  kJ/(kg K)
-//！ *  cp: specific isobaric heat capacity  kJ/(kg K)
-//！ *  cv: specific isochoric heat capacity kJ/(kg K)
-//！ *   w:  speed of sound  m/s
+//! *  T: temperature  K
+//! *  P: pressure  MPa
+//! *  v: specific volume m^3/kg
+//! *  h: specific enthalpy kJ/kg
+//! *  u: specific internal energy kJ/kg
+//! *  s: specific entropy  kJ/(kg K)
+//! *  cp: specific isobaric heat capacity  kJ/(kg K)
+//! *  cv: specific isochoric heat capacity kJ/(kg K)
+//! *   w:  speed of sound  m/s
 
 use crate::algo::*;
 use crate::common::constant::*;

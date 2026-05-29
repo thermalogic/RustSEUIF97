@@ -4,8 +4,8 @@
 //! *  Thermal conductivity W/(m.K)   tc     
 //! *  Thermal diffusivity  m^2/s     td     
 //! *  Prandtl number                 pr     
-//! *  Static dialectric sonstant     sdc
-//！*  Surface tension       N/m       st
+//! *  Static dielectric constant     sdc
+//! *  Surface tension       N/m      st
 
 use crate::algo::*;
 use crate::common::constant::*;

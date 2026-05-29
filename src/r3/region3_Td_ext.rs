@@ -1,4 +1,4 @@
-//！Region3: The extended Properties
+//! Region 3: The extended Properties
 //!
 //! Td_ext_reg3(T: f64, d: f64, o_id: i32) -> f64
 

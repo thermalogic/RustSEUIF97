@@ -1,4 +1,4 @@
-//! The computing function of basic and extended Thermodynamic  Properties  
+//! The computing function of basic and extended thermodynamic properties  
 //! # Input pairs:
 //! *  (p,t) (p,h) (p,s)
 //! *  (h,s)
@@ -14,10 +14,10 @@
 //! *  s: specific entropy  kJ/(kg K)
 //! *  cp: specific isobaric heat capacity  kJ/(kg K)
 //! *  cv: specific isochoric heat capacity kJ/(kg K)
-//！*  w:  speed of sound  m/s
+//! *  w:  speed of sound  m/s
 //! *  x:  Steam quality
 //! *  r:  Region
-//! # The extended hermodynamic Properties
+//! # The extended thermodynamic properties
 //!
 
 use crate::common::*;

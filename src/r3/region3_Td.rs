@@ -7,7 +7,7 @@
 //! *  s: specific entropy  kJ/(kg K)
 //! *  cp: specific isobaric heat capacity  kJ/(kg K)
 //! *  cv: specific isochoric heat capacity kJ/(kg K)
-//！*   w:  speed of sound  m/s
+//! *   w:  speed of sound  m/s
 
 use crate::algo::*;
 use crate::common::constant::*;

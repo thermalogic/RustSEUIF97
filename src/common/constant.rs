@@ -15,20 +15,20 @@ pub const FLOAT_ERROR: f64 = 1.0e-6;
 
 /// constants  
 pub const K: f64 = 273.15;
-pub const RGAS_WATER: f64 = 0.461526; //gas constant in KJ/(kg K)
+pub const RGAS_WATER: f64 = 0.461526; //gas constant in kJ/(kg.K)
 
 /// critical point
 pub const TC_WATER: f64 = 647.096; //critical temperature in K
 pub const PC_WATER: f64 = 22.064; //critical p in Mpa
 pub const DC_WATER: f64 = 322.0; //critical density in kg/m**3
-pub const SC_WATER: f64 = 4.41202148223476; // Critic entropy
-pub const HC_WATER: f64 = 2.087546845e+03; // Critic entropy h
+pub const SC_WATER: f64 = 4.41202148223476; // Critical entropy s
+pub const HC_WATER: f64 = 2.087546845e+03; // Critical enthalpy h
 
 /// the triple point of water
-pub const Pt: f64 = 611.657e-6; // the triple point
-pub const Tt: f64 = 273.16; // the triple point
-pub const st_water: f64 = 5.85; // the triple point
-pub const ht_water: f64 = 0.611783; // the triple point
+pub const Pt: f64 = 611.657e-6; // the triple point pressure in MPa
+pub const Tt: f64 = 273.16; // the triple point temperature in K
+pub const st_water: f64 = 5.85; // the triple point specific entropy in kJ/(kg.K)
+pub const ht_water: f64 = 0.611783; // the triple point specific enthalpy in kJ/(kg.K)
 
 /// boundary constants
 

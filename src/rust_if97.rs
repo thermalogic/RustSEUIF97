@@ -178,8 +178,6 @@ where
 ///  println!("px: p={p:.6} x={x:.6} t={t:.6} h={h:.6}");
 ///```
 
-// #[no_mangle]
-// pub unsafe extern "C"  fn px(p: f64, x: f64, o_id: i32) -> f64 {
 pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
     if p > P_MAX4 || p < P_MIN4 || x > 1.0 || x < 0.0 {
         return INVALID_VALUE as f64;

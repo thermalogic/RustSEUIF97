@@ -43,7 +43,7 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
     // ON TOP: to check the Saturaton lines、critical point firstly
     // to reduce the complex
 
-    //TODO: Saturaton Pressure Tolerance
+    //TODO: Saturation Pressure Tolerance
     const psatTol: f64 = 1.0e-6;
     if T >= 273.15 && T < TC_WATER {
         let ps: f64 = p_saturation(T);
