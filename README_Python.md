@@ -4,7 +4,7 @@ The version of **seuif97 2**  is the Python API of the high-speed IAPWS-IF97 pac
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to  using the `powi()` of the Rust standard library in the `for`loop directly when computing the basic equations of Region 1,2,3.
 
-## Key Acceleration Methods
+## The Acceleration Methods
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
@@ -155,7 +155,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | Isothermal stress coefficient         |   kg/m³     |    βp  | OBETAP|       32 |
 | Fugacity coefficient                  |             |    fi  |   OFI |       33 |
 | Fugacity                              |     MPa     |     f* |   OFU |       34 |
-| Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|        35|
+| Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|       35 |
 
 
 
