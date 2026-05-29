@@ -170,13 +170,10 @@ int main(void)
 
 **Install from pypi**
 
+* https://pypi.org/project/seuif97/
+
 ```bash
 pip install seuif97
-```
-
-**Build the release version locally and install it to the local Python environment**
-```bash
-python ./setup.py install
 ```
 
 **Example**
