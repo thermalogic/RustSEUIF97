@@ -1,3 +1,31 @@
 [build-system]
-requires = ["setuptools", "wheel", "setuptools-rust"]
-build-backend = "setuptools.build_meta"
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "seuif97"
+version = "1.2.2"
+description = "The high-speed IAPWS-IF97 package with Python bindings"
+readme = "README_Python.md"
+requires-python = ">=3.8"
+license = {text = "MIT"}
+authors = [
+    {name = "Cheng Maohua", email = "cmh@seu.edu.cn"}
+]
+keywords = ["IF97", "IAPWS-IF97", "thermodynamics"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
+    "Topic :: Scientific/Engineering",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+Homepage = "https://github.com/thermalogic/RustSEUIF97/"
+Repository = "https://github.com/thermalogic/RustSEUIF97/"
