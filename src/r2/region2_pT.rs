@@ -1,4 +1,4 @@
-//! Region 2 - Baisic Equation:(p,T)-->v, u,h,s,cp, cv,w
+//! Region 2 - Basic Equation:(p,T)-->v, u,h,s,cp, cv,w
 //!
 //! IAPWS-97(2012) August 2007 : <http://www.iapws.org/relguide/IF97-Rev.html>
 //! *  T: temperature K
