@@ -3,6 +3,7 @@ requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
 [tool.maturin]
 bindings = "pyo3"
+features = ["python"]
 [project]
 name = "seuif97"
 version = "2.3.0"
