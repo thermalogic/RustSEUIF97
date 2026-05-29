@@ -10,7 +10,7 @@ mod seuif97 {
     use crate::r3::*;
     use crate::r4::*;
     use crate::r5::*;
-
+   
     #[pyfunction]
     fn pt(p: f64, t: f64, o_id: i32) -> f64 {
         let T: f64 = t + 273.15;
@@ -142,8 +142,258 @@ mod seuif97 {
             _ => sx_reg4(s, x, o_id),
         }
     }
+// simple functions
+    //p,t
+   #[pyfunction]
+    fn pt2h(p: f64, t: f64) -> f64 {
+         crate::rust_if97::pt(p,t,OH)
+    }
+
+   #[pyfunction]
+    fn pt2s(p: f64, t: f64) -> f64 {
+        crate::rust_if97::pt(p,t,OS)
+    }
+
+   #[pyfunction]
+    fn pt2v(p: f64, t: f64) -> f64 {
+        crate::rust_if97::pt(p,t,OV)
+    }
+
+    #[pyfunction]
+    fn pt2x(p: f64, t: f64) -> f64 {
+        crate::rust_if97::pt(p,t,OX)
+    }
+    // p,h
+    #[pyfunction]
+    fn ph2t(p: f64, h: f64) -> f64 {
+        crate::rust_if97::ph(p,h,OT)    
+    }
+    
+    #[pyfunction]
+    fn ph2s(p: f64, h: f64) -> f64 {
+        crate::rust_if97::ph(p,h,OS)
+    }
+
+    #[pyfunction]
+    fn ph2v(p: f64, h: f64) -> f64 {
+        crate::rust_if97::ph(p,h,OV)
+    }
+
+   #[pyfunction]
+   fn ph2x(p: f64, h: f64) -> f64 {
+        crate::rust_if97::ph(p,h,OX)
+    }
+
+    // p,s
+    #[pyfunction]
+    fn ps2t(p: f64, s: f64) -> f64 {
+        crate::rust_if97::ps(p,s,OT)
+    }
+  
+    #[pyfunction]
+    fn ps2h(p: f64, s: f64) -> f64 {
+        crate::rust_if97::ps(p,s,OH)
+    }
+  
+    #[pyfunction]
+    fn ps2v(p: f64, s: f64) -> f64 {
+        crate::rust_if97::ps(p,s,OV)
+    }
+  
+    #[pyfunction]
+    fn ps2x(p: f64, s: f64) -> f64 {
+        crate::rust_if97::ps(p,s,OX)
+    }
+
+    //p,v
+    #[pyfunction]
+    fn pv2t(p: f64, v: f64) -> f64 {
+        crate::rust_if97::pv(p,v,OT)
+    }
+   
+    #[pyfunction]
+    fn pv2h(p: f64, v: f64) -> f64 {
+        crate::rust_if97::pv(p,v,OH)
+    }
+   
+    #[pyfunction]
+    fn pv2s(p: f64, v: f64) -> f64 {
+        crate::rust_if97::pv(p,v,OS)
+    }
+  
+    #[pyfunction]
+    fn pv2x(p: f64, v: f64) -> f64 {
+        crate::rust_if97::pv(p,v,OX)
+    }
+    
+    // h,s
+    #[pyfunction]
+    fn hs2p(h: f64, s: f64) -> f64 {
+        crate::rust_if97::hs(h,s,OP)
+    }
+  
+    #[pyfunction]
+    fn hs2t(h: f64, s: f64) -> f64 {
+        crate::rust_if97::hs(h,s,OT)
+    }
+  
+    #[pyfunction]
+    fn hs2v(h: f64, s: f64) -> f64 {
+        crate::rust_if97::hs(h,s,OV)
+    }
+  
+    #[pyfunction]
+    fn hs2x(h: f64, s: f64) -> f64 {
+        crate::rust_if97::hs(h,s,OX)
+    }
+       
+    // t,h
+    #[pyfunction]
+    fn th2p(t: f64, h: f64) -> f64 {
+        crate::rust_if97::th(t,h,OP)
+    }
+
+    #[pyfunction]
+    fn th2s(t: f64, h: f64) -> f64 {
+        crate::rust_if97::th(t,h,OS)
+    }
+
+   #[pyfunction]
+    fn th2v(t: f64, h: f64) -> f64 {
+        crate::rust_if97::th(t,h,OV)
+    }
+
+    #[pyfunction]
+    fn th2x(t: f64, h: f64) -> f64 {
+        crate::rust_if97::th(t,h,OX)
+    }
+
+    // t,s
+    #[pyfunction]
+    fn ts2p(t: f64, s: f64) -> f64 {
+        crate::rust_if97::ts(t,s,OP)
+    }
+
+    #[pyfunction]
+    fn ts2h(t: f64, s: f64) -> f64 {
+        crate::rust_if97::ts(t,s,OH)
+    }
+
+    #[pyfunction]
+    fn ts2V(t: f64, s: f64) -> f64 {
+        crate::rust_if97::ts(t,s,OV)
+    }
+
+    #[pyfunction]
+    fn ts2x(t: f64, s: f64) -> f64 {
+        crate::rust_if97::ts(t,s,OX)
+    }
+
+    // t,v
+    #[pyfunction]
+    fn tv2p(t: f64, v: f64) -> f64 {
+        crate::rust_if97::tv(t,v,OP)
+    }
+    
+    #[pyfunction]
+    fn tv2h(t: f64, v: f64) -> f64 {
+        crate::rust_if97::tv(t,v,OH)
+    }
+
+    #[pyfunction]
+    fn tv2s(t: f64, v: f64) -> f64 {
+        crate::rust_if97::tv(t,v,OS)
+    }
+
+    #[pyfunction]
+    fn tv2x(t: f64, v: f64) -> f64 {
+        crate::rust_if97::tv(t,v,OX)
+    }
+
+    // p,x      
+    #[pyfunction]
+    fn px2t(p: f64, x: f64) -> f64 {
+        crate::rust_if97::px(p,x,OT)
+    }
+
+    #[pyfunction]
+    fn px2h(p: f64, x: f64) -> f64 {
+        crate::rust_if97::px(p,x,OH)
+    }
+
+    #[pyfunction]
+    fn px2s(p: f64, x: f64) -> f64 {
+        crate::rust_if97::px(p,x,OS)
+    }
+
+    #[pyfunction]
+    fn px2v(p: f64, x: f64) -> f64 {
+        crate::rust_if97::px(p,x,OV)
+    }
+
+    // t,x
+     #[pyfunction]
+    fn tx2p(t: f64, x: f64) -> f64 {
+        crate::rust_if97::tx(t,x,OP)
+    }
+
+    #[pyfunction]
+    fn tx2h(t: f64, x: f64) -> f64 {
+        crate::rust_if97::tx(t,x,OH)
+    }
+   
+    #[pyfunction]
+    fn tx2s(t: f64, x: f64) -> f64 {
+        crate::rust_if97::tx(t,x,OS)
+    }
+
+    #[pyfunction]
+    fn tx2v(t: f64, x: f64) -> f64 {
+        crate::rust_if97::tx(t,x,OV)
+    }
+
+    //h,x
+    #[pyfunction]
+    fn hx2p(h: f64, x: f64) -> f64 {
+        crate::rust_if97::hx(h,x,OP)
+    }
+
+    fn hx2t(h: f64, x: f64) -> f64 {
+        crate::rust_if97::hx(h,x,OT)
+    }
+
+    #[pyfunction]
+    fn hx2s(h: f64, x: f64) -> f64 {
+        crate::rust_if97::hx(h,x,OS)
+    }
+
+    #[pyfunction]
+    fn hx2v(h: f64, x: f64) -> f64 {
+        crate::rust_if97::hx(h,x,OV)
+    }
+
+    // s,x
+    #[pyfunction]
+    fn sx2p(s: f64, x: f64) -> f64 {    
+       crate::rust_if97::sx(s,x,OP)
+    }
+    
+    #[pyfunction]
+    fn sx2t(s: f64, x: f64) -> f64 {    
+       crate::rust_if97::sx(s,x,OT)
+    }
+   
+    #[pyfunction]
+    fn sx2h(s: f64, x: f64) -> f64 {    
+       crate::rust_if97::sx(s,x,OH)
+    }
+    #[pyfunction]
+    fn sx2v(s: f64, x: f64) -> f64 {    
+       crate::rust_if97::sx(s,x,OV)
+    }
+
 }
-/*
+    /*
 //  py03 : 0.24
 #[pymodule]
 fn seuif97(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
@@ -165,3 +415,4 @@ fn seuif97(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
     Ok(())
 }
 */
+

@@ -76,7 +76,7 @@ ph2t(p, h)  ph2s(p, h)  ph2v(p, h)  ph2x(p, h)
 ps2t(p, s)  ps2h(p, s)  ps2v(p, s)  ps2x(p, s)  
 pv2t(p, v)  pv2h(p, v)  pv2s(p, v)  pv2x(p, v)  
 
-hs2t(h, s)  hs2p(h, s)  hs2v(p, s)  hs2x(h, s)    
+hs2p(h, s)  hs2t(h, s)  hs2v(p, s)  hs2x(h, s)    
 
 th2p(t, h)  th2s(t, h)  th2v(t, h)  th2x(t, h)   
 ts2p(t, s)  ts2h(t, s)  th2v(t, s)  ts2x(t, s)  
