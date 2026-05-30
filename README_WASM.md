@@ -1,6 +1,6 @@
 # The WASM and NPM Package  
 
-This package is the WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust. enabling fast and accurate thermodynamic property calculations for water and steam directly in the browser or Node.js. 
+The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust, enabling fast and accurate thermodynamic property calculations for water and steam directly in the browser or Node.js. 
 
 ## Building the WASM file
 
@@ -9,15 +9,15 @@ cargo build --release --features wasm --target wasm32-unknown-unknown
 ```
 
 ```bash
-wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir demo_html/pkg --target web
+wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir demo_wasm/pkg --target web
 ```
 
 ## Basic Usage (ES Modules)
 
 ```javascript
 import { pt2h, pt2s, ph2t, hs2p } from './pkg/seuif97.js';
-wait init();
-/ Calculate properties
+await init();
+
 const p = 16.0;  // MPa
 const t = 535.1; // °C
 
@@ -38,7 +38,7 @@ python -m http.server 8080
 http://localhost:8080/
 ```
 
-## Using in Node.js With NPM PackageNPM Package 
+## Using in Node.js With NPM Package 
 
 * NPM package: [seuif97](https://www.npmjs.com/seuif97)
 
@@ -60,7 +60,7 @@ const s = pt2s(p, t);
 
 console.log(`p = ${p} MPa, t = ${t} °C`);
 console.log(`s = ${s.toFixed(5)} kJ/(kg·K)`);
-````
+```
 
 ## T-s Diagram
 
