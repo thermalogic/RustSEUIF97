@@ -2,7 +2,7 @@
 
  ![docs.rs](https://img.shields.io/docsrs/seuif97)  [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml)   ![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97) [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.8246380.svg)](https://doi.org/10.5281/zenodo.8246380)
 
-This is the Rust implementation of the high-speed IAPWS-IF97 package **SEUIF97** with C and Python bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
+This is the Rust implementation of the high-speed IAPWS-IF97 package **SEUIF97** with **C, Python and WASM** bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
  
 Through the high-speed package, IAPWS-IF97 calculations achieve a **5x to 20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2, and 3.
 
@@ -203,7 +203,29 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 * [The Hybrid Steady-state Simulator of Rankine Cycle in Python](https://github.com/thermalogic/PyRankine)
 
 ![T-S Diagram](./img/T-S.jpg)
-   
+
+## WASM binding 
+
+* Local WASM - [README_WASM.md](./README_WASM.md)
+
+* NPM package: [seuif97](https://www.npmjs.com/package/seuif97)
+
+```javascript
+import init, { pt } from 'seuif97';
+
+await init();
+
+const p = 16.0;  // MPa
+const t = 535.1; // °C
+
+const enthalpy = pt(p, t, 4);     // kJ/kg
+const entropy = pt(p, t, 5);      // kJ/(kg·K)
+
+console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');
+console.log(`Enthalpy: ${enthalpy.toFixed(3)} kJ/kg`);
+console.log(`Entropy: ${entropy.toFixed(5)} kJ/(kg·K)`);
+```
+
 ## Properties
 
 | Property                             |    Unit     | Symbol | o_id  | o_id(i32)|

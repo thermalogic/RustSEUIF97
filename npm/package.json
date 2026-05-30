@@ -1,0 +1,49 @@
+{
+  "name": "seuif97",
+  "version": "1.2.7",
+  "description": "High-speed IAPWS-IF97 water/steam properties calculation in WebAssembly",
+  "main": "pkg/seuif97.js",
+  "types": "pkg/seuif97.d.ts",
+  "module": "pkg/seuif97.js",
+  "type": "module",
+  "files": [
+    "pkg/seuif97.js",
+    "pkg/seuif97_bg.js",
+    "pkg/seuif97_bg.wasm",
+    "pkg/seuif97_bg.wasm.d.ts",
+    "pkg/seuif97.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build:wasm": "cargo build --release --features wasm --target wasm32-unknown-unknown && wasm-bindgen ../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target web",
+    "build:wasm:node": "cargo build --release --features wasm --target wasm32-unknown-unknown && wasm-bindgen ../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target nodejs",
+    "prepack": "npm run build:wasm",
+    "test": "node tests/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thermalogic/RustSEUIF97.git"
+  },
+  "keywords": [
+    "wasm",
+    "webassembly",
+    "if97",
+    "iapws-if97",
+    "thermodynamics",
+    "water",
+    "steam",
+    "properties",
+    "calculation",
+    "engineering"
+  ],
+  "author": "Cheng Maohua <cmh@seu.edu.cn>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thermalogic/RustSEUIF97/issues"
+  },
+  "homepage": "https://github.com/thermalogic/RustSEUIF97/",
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
