@@ -2,7 +2,7 @@
 
 This package is the WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust. enabling fast and accurate thermodynamic property calculations for water and steam directly in the browser or Node.js. 
  
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2, and 3.
+Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about **5-20x** speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2 and 3.
 
 ## Acceleration Methods
 
