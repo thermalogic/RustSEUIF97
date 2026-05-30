@@ -2,7 +2,7 @@ name: Publish to PyPI
 
 on:
   workflow_dispatch:
-    description: "Publish Python package to PyPI"
+    description: 'Publish Python package to PyPI'
 
 env:
   CARGO_TERM_COLOR: always
