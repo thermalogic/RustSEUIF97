@@ -38,6 +38,27 @@ jobs:
     - name: Run Rust tests
       run: cargo test --features wasm --verbose
 
+    - name: Install wasmtime
+      run: curl https://wasmtime.dev/install.sh -sSf | bash
+
+    - name: Test WASM with wasmtime
+      run: |
+        source $HOME/.wasmtime/env
+        wasmtime pkg/seuif97_bg.wasm --invoke pt 16.0 535.1 4
+
+    - name: Install Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: Test WASM in Node.js
+      run: |
+        node -e "
+          const fs = require('fs');
+          const wasmBuffer = fs.readFileSync('./pkg/seuif97_bg.wasm');
+          console.log('WASM file size:', wasmBuffer.length, 'bytes');
+        "
+
     - name: Upload WASM artifact
       uses: actions/upload-artifact@v4
       with:
