@@ -12,8 +12,8 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 
 ## Related Packages
 
-- [seuif97 (Python)](https://pypi.org/project/seuif97/) - Python version
-- [seuif97 (Rust)](https://crates.io/crates/seuif97) - Rust version
+-  [Python package: seuif97](https://pypi.org/project/seuif97/)
+-  [Rust crate: seuif97](https://crates.io/crates/seuif97)  
 
 ## Installation
 
