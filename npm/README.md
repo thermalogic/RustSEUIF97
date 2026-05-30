@@ -1,6 +1,6 @@
 # SEUIF97
 
-This package is the WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust. enabling fast and accurate thermodynamic property calculations for water and steam directly in the browser or Node.js. 
+The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust, enabling fast and accurate thermodynamic property calculations for water and steam in the browser or Node.js. 
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about **5-20x** speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2 and 3.
 
@@ -47,7 +47,7 @@ The two types of functions are provided in the package.
 
 ### The input property pairs and the property ID 
 
-```python 
+```txt 
   ??(in1,in2,o_id)
 ```
 
@@ -58,11 +58,11 @@ The two types of functions are provided in the package.
 ```javascript
 pt(p,t,o_id)  ph(p,h,o_id) ps(p,s,o_id) pv(p,v,o_id)
 
-th(t,h,o_id)  ts(t,s,o_id) v(t,v,o_id)
+th(t,h,o_id)  ts(t,s,o_id) tv(t,v,o_id)
 
 hs(h,s,o_id)
 
-px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id)sx(s,x,o_id)
+px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id) sx(s,x,o_id)
 ```
 
 ```javascript
@@ -84,7 +84,7 @@ console.log(`Entropy: ${entropy.toFixed(5)} kJ/(kg·K)`);
 
 ### The input property pairs 
 
-```python 
+```txt
   ??2?(in1,in2)
 ```
 
@@ -112,20 +112,16 @@ sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```javascript
 import init, { pt2h, pt2s, pt2v } from 'seuif97';
 
-// Initialize the WASM module
 await init();
 
-// Calculate properties
 const p = 16.0;  // Pressure in MPa
 const t = 535.1; // Temperature in °C
 
 const h = pt2h(p, t);
 const s = pt2s(p, t);
-const v = pt2v(p, t);
 
 console.log(`h = ${h.toFixed(3)} kJ/kg`);
 console.log(`s = ${s.toFixed(5)} kJ/(kg·K)`);
-console.log(`v = ${v.toFixed(6)} m³/kg`);
 ```
 
 **T-s Diagram**
