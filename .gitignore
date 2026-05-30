@@ -4,6 +4,7 @@
 /dist
 /build
 /demo_npm/node_modules
+/npm/pkg
 *.exe
 *.pdb
 *.jar
