@@ -176,7 +176,7 @@ int main(void)
 pip install seuif97
 ```
 
-**Example**
+### Usage**
 
 ```python
 from seuif97 import *
@@ -192,7 +192,7 @@ s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
 
-**Examples**
+### Examples
 
 * [T-S Diagram](./demo_using_lib/Diagram_T-S.py)
 

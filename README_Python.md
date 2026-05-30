@@ -89,7 +89,7 @@ hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
 sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```
 
-## Usage Example
+## Usage 
 
 ```python
 from seuif97 import *
