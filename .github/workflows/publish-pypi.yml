@@ -51,7 +51,7 @@ jobs:
           if [ "${{ matrix.os }}" == "macos-latest" ]; then
             maturin build --release --out dist --target aarch64-apple-darwin --find-interpreter
           else
-            maturin build --release --out dist --target aarch64-unknown-linux-gnu
+            maturin build --release --out dist --target aarch64-unknown-linux-gnu --zig
           fi
         else
           maturin build --release --out dist
