@@ -21,7 +21,7 @@ pub fn pT_reg4(p: f64, T: f64, o_id: i32) -> f64 {
     if T == TC_WATER && p == PC_WATER {
         return Td_reg3(TC_WATER, DC_WATER, o_id);
     } else {
-        return 4.0 as f64;
+        return INVALID_VALUE as f64 ;// return 4.0 as f64;
     }
 }
 
