@@ -136,6 +136,8 @@ console.log(`s = ${s.toFixed(5)} kJ/(kg·K)`);
 console.log(`v = ${v.toFixed(6)} m³/kg`);
 ```
 
+![](./img/turbine_hs.jpg)
+
 ## Properties
 
 | Property                              |    Unit     | Symbol | o_id  | o_id(i32)|

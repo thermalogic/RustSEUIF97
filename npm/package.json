@@ -1,6 +1,6 @@
 {
   "name": "seuif97",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "description": "The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust",
   "main": "pkg/seuif97.js",
   "types": "pkg/seuif97.d.ts",
@@ -12,6 +12,7 @@
     "pkg/seuif97_bg.wasm",
     "pkg/seuif97_bg.wasm.d.ts",
     "pkg/seuif97.d.ts",
+    "img/turbine_hs.jpg",
     "README.md",
     "LICENSE"
   ],
