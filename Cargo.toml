@@ -20,10 +20,15 @@ crate-type = ["rlib", "cdylib"]
 cdecl = []
 stdcall = []
 python = ["pyo3"]
+wasm = ["wasm-bindgen"]
 
 [dependencies.pyo3]
 version = "0.28.3"
 features = ["extension-module"]
+optional = true
+
+[dependencies.wasm-bindgen]
+version = "0.2.100"
 optional = true
 
 [dev-dependencies]

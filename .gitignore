@@ -3,6 +3,7 @@
 /python/seuif97.egg-info
 /dist
 /build
+/pkg
 *.exe
 *.pdb
 *.jar
