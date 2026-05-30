@@ -44,7 +44,7 @@
             background: #f8d7da;
             color: #721c24;
         }
-        .canvas-container {
+        .svg-container {
             background: white;
             border-radius: 8px;
             padding: 20px;
@@ -52,10 +52,11 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-align: center;
         }
-        canvas {
+        svg {
             border: 1px solid #ddd;
             border-radius: 4px;
             max-width: 100%;
+            height: auto;
         }
         .legend {
             display: flex;
@@ -71,11 +72,17 @@
             align-items: center;
             font-size: 12px;
         }
-        .legend-color {
+        .legend-line {
             width: 30px;
             height: 3px;
             margin-right: 8px;
             border-radius: 2px;
+        }
+        .legend-dash {
+            width: 30px;
+            height: 0;
+            margin-right: 8px;
+            border-top: 2px dashed;
         }
         .nav-link {
             display: inline-block;
@@ -91,30 +98,32 @@
 </head>
 <body>
     <h1>🌡️ T-S 图绘制</h1>
-    <p>使用 WebAssembly 在浏览器中绘制完整的水蒸气 T-S 图</p>
+    <p>使用 WebAssembly 在浏览器中绘制完整的水蒸气 T-S 图（矢量 SVG）</p>
 
     <div class="card">
         <h2>🔧 WASM 加载状态</h2>
         <div id="wasmStatus" class="status loading">正在加载 WebAssembly 模块...</div>
     </div>
 
-    <div class="canvas-container">
-        <canvas id="tsCanvas" width="800" height="600"></canvas>
+    <div class="svg-container">
+        <svg id="tsSvg" viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+            <text x="400" y="25" text-anchor="middle" fill="#2c3e50" font-size="16" font-weight="bold">T-s Diagram</text>
+        </svg>
         <div class="legend">
             <div class="legend-item">
-                <div class="legend-color" style="background: #00ff00;"></div>
+                <div class="legend-line" style="background: #00ff00;"></div>
                 <span>等焓线 (kJ/kg)</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #0000ff;"></div>
+                <div class="legend-line" style="background: #0000ff;"></div>
                 <span>等压线 (MPa)</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #ff0000;"></div>
+                <div class="legend-line" style="background: #ff0000;"></div>
                 <span>饱和线 (x=0, x=1)</span>
             </div>
             <div class="legend-item">
-                <div class="legend-color" style="background: #ff0000; border-top: 2px dashed #ff0000;"></div>
+                <div class="legend-dash" style="border-color: #ff0000;"></div>
                 <span>等干度线 (x=0.1~0.9)</span>
             </div>
         </div>
@@ -159,16 +168,24 @@
         const OT = 1;
         const OS = 5;
 
+        function pointsToPath(points) {
+            if (points.length < 2) return '';
+            let d = `M ${points[0].x.toFixed(2)} ${points[0].y.toFixed(2)}`;
+            for (let i = 1; i < points.length; i++) {
+                d += ` L ${points[i].x.toFixed(2)} ${points[i].y.toFixed(2)}`;
+            }
+            return d;
+        }
+
         function drawTSDiagram() {
             const seuif97 = window.seuif97;
             if (!seuif97) {
                 return;
             }
 
-            const canvas = document.getElementById('tsCanvas');
-            const ctx = canvas.getContext('2d');
-            const width = canvas.width;
-            const height = canvas.height;
+            const svg = document.getElementById('tsSvg');
+            const width = 800;
+            const height = 600;
 
             const Pt = 611.657e-6;
             const isoh = [];
@@ -180,7 +197,7 @@
                          1.0, 2.0, 5.0, 10.0, 15, 20.0, 22, 25, 28, 30, 35, 40, 45, 50.0, 60, 80, 100.0];
 
             const allPoints = [];
-            
+
             for (const h of isoh) {
                 for (const p of isop) {
                     try {
@@ -194,7 +211,7 @@
             }
 
             const tc = 647.096 - 273.15;
-            const T_sat = [];
+
             for (let i = 0; i <= 100; i++) {
                 const t = 0.11 + i * (tc - 0.11) / 100;
                 try {
@@ -236,32 +253,45 @@
                 return { x, y };
             }
 
-            ctx.clearRect(0, 0, width, height);
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, width, height);
+            svg.innerHTML = '';
 
-            ctx.strokeStyle = '#e0e0e0';
-            ctx.lineWidth = 0.5;
-            
+            const bg = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            bg.setAttribute('width', '100%');
+            bg.setAttribute('height', '100%');
+            bg.setAttribute('fill', '#ffffff');
+            svg.appendChild(bg);
+
+            const gridGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            gridGroup.setAttribute('stroke', '#e0e0e0');
+            gridGroup.setAttribute('stroke-width', '0.5');
+
             for (let s = sMin; s <= sMax; s += 0.5) {
                 const start = toCanvasCoords(s, tMin);
                 const end = toCanvasCoords(s, tMax);
-                ctx.beginPath();
-                ctx.moveTo(start.x, start.y);
-                ctx.lineTo(end.x, end.y);
-                ctx.stroke();
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', start.x);
+                line.setAttribute('y1', start.y);
+                line.setAttribute('x2', end.x);
+                line.setAttribute('y2', end.y);
+                gridGroup.appendChild(line);
             }
-            
+
             for (let t = tMin; t <= tMax; t += 50) {
                 const start = toCanvasCoords(sMin, t);
                 const end = toCanvasCoords(sMax, t);
-                ctx.beginPath();
-                ctx.moveTo(start.x, start.y);
-                ctx.lineTo(end.x, end.y);
-                ctx.stroke();
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', start.x);
+                line.setAttribute('y1', start.y);
+                line.setAttribute('x2', end.x);
+                line.setAttribute('y2', end.y);
+                gridGroup.appendChild(line);
             }
+            svg.appendChild(gridGroup);
 
-            ctx.lineWidth = 0.5;
+            const isohGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            isohGroup.setAttribute('stroke', '#00ff00');
+            isohGroup.setAttribute('stroke-width', '1');
+            isohGroup.setAttribute('fill', 'none');
 
             for (const h of isoh) {
                 const points = [];
@@ -275,16 +305,17 @@
                     }
                 }
                 if (points.length > 1) {
-                    ctx.strokeStyle = '#00ff00';
-                    ctx.setLineDash([]);
-                    ctx.beginPath();
-                    ctx.moveTo(points[0].x, points[0].y);
-                    for (let i = 1; i < points.length; i++) {
-                        ctx.lineTo(points[i].x, points[i].y);
-                    }
-                    ctx.stroke();
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', pointsToPath(points));
+                    isohGroup.appendChild(path);
                 }
             }
+            svg.appendChild(isohGroup);
+
+            const isopGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            isopGroup.setAttribute('stroke', '#0000ff');
+            isopGroup.setAttribute('stroke-width', '1');
+            isopGroup.setAttribute('fill', 'none');
 
             for (const p of isop) {
                 const points = [];
@@ -298,18 +329,12 @@
                     }
                 }
                 if (points.length > 1) {
-                    ctx.strokeStyle = '#0000ff';
-                    ctx.setLineDash([]);
-                    ctx.beginPath();
-                    ctx.moveTo(points[0].x, points[0].y);
-                    for (let i = 1; i < points.length; i++) {
-                        ctx.lineTo(points[i].x, points[i].y);
-                    }
-                    ctx.stroke();
-
-
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', pointsToPath(points));
+                    isopGroup.appendChild(path);
                 }
             }
+            svg.appendChild(isopGroup);
 
             for (const p of [Pt, 0.001, 0.002]) {
                 try {
@@ -317,13 +342,17 @@
                     const t = seuif97.ph(p, 100, OT);
                     const s_sat_water = seuif97.px(p, 0.0, OS);
                     const t_sat_water = seuif97.px(p, 0.0, OT);
-                    
-                    ctx.strokeStyle = '#0000ff';
-                    ctx.setLineDash([]);
-                    ctx.beginPath();
-                    ctx.moveTo(toCanvasCoords(s_sat_water, t_sat_water).x, toCanvasCoords(s_sat_water, t_sat_water).y);
-                    ctx.lineTo(toCanvasCoords(s, t).x, toCanvasCoords(s, t).y);
-                    ctx.stroke();
+
+                    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    const start = toCanvasCoords(s_sat_water, t_sat_water);
+                    const end = toCanvasCoords(s, t);
+                    line.setAttribute('x1', start.x);
+                    line.setAttribute('y1', start.y);
+                    line.setAttribute('x2', end.x);
+                    line.setAttribute('y2', end.y);
+                    line.setAttribute('stroke', '#0000ff');
+                    line.setAttribute('stroke-width', '1');
+                    svg.appendChild(line);
                 } catch (e) {
                     continue;
                 }
@@ -345,29 +374,29 @@
             const satLine0 = T_sat_points.filter(p => p.x === 0).map(p => p.points);
             const satLine1 = T_sat_points.filter(p => p.x === 1).map(p => p.points);
 
+            const satGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            satGroup.setAttribute('stroke', '#ff0000');
+            satGroup.setAttribute('stroke-width', '1.5');
+            satGroup.setAttribute('fill', 'none');
+
             if (satLine0.length > 1) {
-                ctx.strokeStyle = '#ff0000';
-                ctx.setLineDash([]);
-                ctx.lineWidth = 1.0;
-                ctx.beginPath();
-                ctx.moveTo(satLine0[0].x, satLine0[0].y);
-                for (let i = 1; i < satLine0.length; i++) {
-                    ctx.lineTo(satLine0[i].x, satLine0[i].y);
-                }
-                ctx.stroke();
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pointsToPath(satLine0));
+                satGroup.appendChild(path);
             }
 
             if (satLine1.length > 1) {
-                ctx.strokeStyle = '#ff0000';
-                ctx.setLineDash([]);
-                ctx.lineWidth = 1.0;
-                ctx.beginPath();
-                ctx.moveTo(satLine1[0].x, satLine1[0].y);
-                for (let i = 1; i < satLine1.length; i++) {
-                    ctx.lineTo(satLine1[i].x, satLine1[i].y);
-                }
-                ctx.stroke();
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pointsToPath(satLine1));
+                satGroup.appendChild(path);
             }
+            svg.appendChild(satGroup);
+
+            const drynessGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            drynessGroup.setAttribute('stroke', '#ff0000');
+            drynessGroup.setAttribute('stroke-width', '0.5');
+            drynessGroup.setAttribute('fill', 'none');
+            drynessGroup.setAttribute('stroke-dasharray', '5,5');
 
             for (const x of [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]) {
                 const points = [];
@@ -381,61 +410,89 @@
                     }
                 }
                 if (points.length > 1) {
-                    ctx.strokeStyle = '#ff0000';
-                    ctx.setLineDash([5, 5]);
-                    ctx.lineWidth = 0.5;
-                    ctx.beginPath();
-                    ctx.moveTo(points[0].x, points[0].y);
-                    for (let i = 1; i < points.length; i++) {
-                        ctx.lineTo(points[i].x, points[i].y);
-                    }
-                    ctx.stroke();
+                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                    path.setAttribute('d', pointsToPath(points));
+                    drynessGroup.appendChild(path);
                 }
             }
+            svg.appendChild(drynessGroup);
 
-            ctx.strokeStyle = '#333';
-            ctx.lineWidth = 2;
-            ctx.setLineDash([]);
+            const axisGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
-            ctx.beginPath();
-            ctx.moveTo(padding.left, padding.top);
-            ctx.lineTo(padding.left, height - padding.bottom);
-            ctx.stroke();
+            const axisY = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            axisY.setAttribute('x1', padding.left);
+            axisY.setAttribute('y1', padding.top);
+            axisY.setAttribute('x2', padding.left);
+            axisY.setAttribute('y2', height - padding.bottom);
+            axisY.setAttribute('stroke', '#333');
+            axisY.setAttribute('stroke-width', '2');
+            axisGroup.appendChild(axisY);
 
-            ctx.beginPath();
-            ctx.moveTo(padding.left, height - padding.bottom);
-            ctx.lineTo(width - padding.right, height - padding.bottom);
-            ctx.stroke();
+            const axisX = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            axisX.setAttribute('x1', padding.left);
+            axisX.setAttribute('y1', height - padding.bottom);
+            axisX.setAttribute('x2', width - padding.right);
+            axisX.setAttribute('y2', height - padding.bottom);
+            axisX.setAttribute('stroke', '#333');
+            axisX.setAttribute('stroke-width', '2');
+            axisGroup.appendChild(axisX);
+            svg.appendChild(axisGroup);
 
-            ctx.fillStyle = '#333';
-            ctx.font = '14px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('s, kJ/kgK', width / 2, height - 15);
+            const labelGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            labelGroup.setAttribute('fill', '#333');
+            labelGroup.setAttribute('font-family', 'Arial, sans-serif');
+            labelGroup.setAttribute('font-size', '14');
+            labelGroup.setAttribute('text-anchor', 'middle');
 
-            ctx.save();
-            ctx.translate(20, height / 2);
-            ctx.rotate(-Math.PI / 2);
-            ctx.fillText('T, °C', 0, 0);
-            ctx.restore();
+            const xLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            xLabel.setAttribute('x', width / 2);
+            xLabel.setAttribute('y', height - 15);
+            xLabel.textContent = 's, kJ/kgK';
+            labelGroup.appendChild(xLabel);
 
-            ctx.fillStyle = '#333';
-            ctx.font = '11px Arial';
-            ctx.textAlign = 'right';
+            const yLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            yLabel.setAttribute('x', 20);
+            yLabel.setAttribute('y', height / 2);
+            yLabel.setAttribute('transform', `rotate(-90, 20, ${height / 2})`);
+            yLabel.textContent = 'T, °C';
+            labelGroup.appendChild(yLabel);
+            svg.appendChild(labelGroup);
+
+            const tickGroup = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            tickGroup.setAttribute('fill', '#333');
+            tickGroup.setAttribute('font-family', 'Arial, sans-serif');
+            tickGroup.setAttribute('font-size', '11');
+            tickGroup.setAttribute('text-anchor', 'end');
+
             for (let t = tMin; t <= tMax; t += 50) {
                 const y = padding.top + (1 - (t - tMin) / (tMax - tMin)) * plotHeight;
-                ctx.fillText(t.toFixed(0), padding.left - 10, y + 4);
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', padding.left - 10);
+                text.setAttribute('y', y + 4);
+                text.textContent = t.toFixed(0);
+                tickGroup.appendChild(text);
             }
 
-            ctx.textAlign = 'center';
+            tickGroup.setAttribute('text-anchor', 'middle');
             for (let s = sMin; s <= sMax; s += 1) {
                 const x = padding.left + (s - sMin) / (sMax - sMin) * plotWidth;
-                ctx.fillText(s.toFixed(1), x, height - padding.bottom + 20);
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', x);
+                text.setAttribute('y', height - padding.bottom + 20);
+                text.textContent = s.toFixed(1);
+                tickGroup.appendChild(text);
             }
+            svg.appendChild(tickGroup);
 
-            ctx.fillStyle = '#2c3e50';
-            ctx.font = 'bold 16px Arial';
-            ctx.textAlign = 'center';
-            ctx.fillText('T-s Diagram', width / 2, 25);
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            title.setAttribute('x', width / 2);
+            title.setAttribute('y', 25);
+            title.setAttribute('text-anchor', 'middle');
+            title.setAttribute('fill', '#2c3e50');
+            title.setAttribute('font-size', '16');
+            title.setAttribute('font-weight', 'bold');
+            title.textContent = 'T-s Diagram';
+            svg.appendChild(title);
         }
     </script>
 </body>
