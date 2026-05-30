@@ -35,6 +35,8 @@ http://localhost:8080/
 
 ## NPM Package 
 
+* NPM package: [seuif97](https://www.npmjs.com/seuif97)
+
 ```
 npm install seuif97
 ```
