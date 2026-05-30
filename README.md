@@ -91,7 +91,7 @@ fn main() {
 }
 ```
 
-## The C binding 
+## C binding 
 
 **Building the dynamic link library**
 
@@ -166,7 +166,7 @@ int main(void)
 
  * [The Rankine Cycle Steady-state Simulator in Python，C++ and Modelica](https://github.com/thermalogic/SimRankine)
  
-## The Python binding 
+## Python binding 
 
 **Install from pypi**
 
