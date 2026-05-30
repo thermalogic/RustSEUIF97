@@ -206,7 +206,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## WASM binding 
 
-* Local WASM - [README_WASM.md](./README_WASM.md)
+* WASM - [README_WASM.md](./README_WASM.md)
 
 * NPM package: [seuif97](https://www.npmjs.com/package/seuif97)
 
