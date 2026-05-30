@@ -48,7 +48,11 @@ jobs:
     - name: Build wheels
       run: |
         if [ "${{ matrix.target }}" == "aarch64" ]; then
-          maturin build --release --out dist --target aarch64-unknown-linux-gnu
+          if [ "${{ matrix.os }}" == "macos-latest" ]; then
+            maturin build --release --out dist --target aarch64-apple-darwin --find-interpreter
+          else
+            maturin build --release --out dist --target aarch64-unknown-linux-gnu
+          fi
         else
           maturin build --release --out dist
         fi
