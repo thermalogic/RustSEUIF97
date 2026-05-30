@@ -42,3 +42,7 @@ npm install seuif97
 ```
 
 * NPM Package example: [./demo_npm](./demo_npm/)
+
+## T-s Diagram
+
+![](img/ts_wasm.jpg)

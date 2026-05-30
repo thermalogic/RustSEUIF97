@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-S Diagram SEUIF97 WASM</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .status.loading {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .canvas-container {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            max-width: 100%;
+        }
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+        }
+        .legend-color {
+            width: 30px;
+            height: 3px;
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        .nav-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>🌡️ T-S 图绘制</h1>
+    <p>使用 WebAssembly 在浏览器中绘制完整的水蒸气 T-S 图</p>
+
+    <div class="card">
+        <h2>🔧 WASM 加载状态</h2>
+        <div id="wasmStatus" class="status loading">正在加载 WebAssembly 模块...</div>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="tsCanvas" width="800" height="600"></canvas>
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #00ff00;"></div>
+                <span>等焓线 (kJ/kg)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #0000ff;"></div>
+                <span>等压线 (MPa)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff0000;"></div>
+                <span>饱和线 (x=0, x=1)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ff0000; border-top: 2px dashed #ff0000;"></div>
+                <span>等干度线 (x=0.1~0.9)</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>📖 使用说明</h2>
+        <p>T-S 图显示水蒸气的温度-熵关系，包含以下曲线：</p>
+        <ul>
+            <li><strong>等焓线：</strong>绿色曲线，焓值从 200 到 3600 kJ/kg</li>
+            <li><strong>等压线：</strong>蓝色曲线，压力从 0.000611657 到 100 MPa</li>
+            <li><strong>饱和线：</strong>红色实线，饱和液体线 (x=0) 和饱和蒸汽线 (x=1)</li>
+            <li><strong>等干度线：</strong>红色虚线，干度从 0.1 到 0.9</li>
+        </ul>
+        <a href="index.html" class="nav-link">← 返回主页面</a>
+    </div>
+
+    <script type="module">
+        import init, {
+            ph, px, tx
+        } from './pkg/seuif97.js';
+
+        window.seuif97 = {
+            ph, px, tx
+        };
+
+        try {
+            await init();
+            const statusEl = document.getElementById('wasmStatus');
+            statusEl.className = 'status success';
+            statusEl.textContent = '✅ WebAssembly 模块加载成功！';
+            drawTSDiagram();
+        } catch (e) {
+            const statusEl = document.getElementById('wasmStatus');
+            statusEl.className = 'status error';
+            statusEl.textContent = '❌ WASM 加载失败: ' + e.message;
+            console.error('WASM load error:', e);
+        }
+    </script>
+
+    <script>
+        const OT = 1;
+        const OS = 5;
+
+        function drawTSDiagram() {
+            const seuif97 = window.seuif97;
+            if (!seuif97) {
+                return;
+            }
+
+            const canvas = document.getElementById('tsCanvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+
+            const Pt = 611.657e-6;
+            const isoh = [];
+            for (let i = 0; i <= 26; i++) {
+                isoh.push(100 + i * (3600 - 100) / 26);
+            }
+
+            const isop = [Pt, 0.001, 0.002, 0.004, 0.01, 0.02, 0.05, 0.1, 0.2, 0.5,
+                         1.0, 2.0, 5.0, 10.0, 15, 20.0, 22, 25, 28, 30, 35, 40, 45, 50.0, 60, 80, 100.0];
+
+            const allPoints = [];
+            
+            for (const h of isoh) {
+                for (const p of isop) {
+                    try {
+                        const T = seuif97.ph(p, h, OT);
+                        const S = seuif97.ph(p, h, OS);
+                        allPoints.push({ s: S, t: T });
+                    } catch (e) {
+                        continue;
+                    }
+                }
+            }
+
+            const tc = 647.096 - 273.15;
+            const T_sat = [];
+            for (let i = 0; i <= 100; i++) {
+                const t = 0.11 + i * (tc - 0.11) / 100;
+                try {
+                    const s0 = seuif97.tx(t, 0.0, OS);
+                    const s1 = seuif97.tx(t, 1.0, OS);
+                    allPoints.push({ s: s0, t: t });
+                    allPoints.push({ s: s1, t: t });
+                } catch (e) {
+                    continue;
+                }
+            }
+
+            for (let x of [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]) {
+                for (let i = 0; i <= 100; i++) {
+                    const t = 0.11 + i * (tc - 0.11) / 100;
+                    try {
+                        const s = seuif97.tx(t, x, OS);
+                        allPoints.push({ s: s, t: t });
+                    } catch (e) {
+                        continue;
+                    }
+                }
+            }
+
+            const sValues = allPoints.map(p => p.s);
+            const tValues = allPoints.map(p => p.t);
+            const sMin = Math.min(...sValues);
+            const sMax = Math.max(...sValues);
+            const tMin = Math.min(...tValues);
+            const tMax = Math.max(...tValues);
+
+            const padding = { top: 40, right: 40, bottom: 60, left: 70 };
+            const plotWidth = width - padding.left - padding.right;
+            const plotHeight = height - padding.top - padding.bottom;
+
+            function toCanvasCoords(s, t) {
+                const x = padding.left + (s - sMin) / (sMax - sMin) * plotWidth;
+                const y = padding.top + (1 - (t - tMin) / (tMax - tMin)) * plotHeight;
+                return { x, y };
+            }
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 0.5;
+            
+            for (let s = sMin; s <= sMax; s += 0.5) {
+                const start = toCanvasCoords(s, tMin);
+                const end = toCanvasCoords(s, tMax);
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(end.x, end.y);
+                ctx.stroke();
+            }
+            
+            for (let t = tMin; t <= tMax; t += 50) {
+                const start = toCanvasCoords(sMin, t);
+                const end = toCanvasCoords(sMax, t);
+                ctx.beginPath();
+                ctx.moveTo(start.x, start.y);
+                ctx.lineTo(end.x, end.y);
+                ctx.stroke();
+            }
+
+            ctx.lineWidth = 0.5;
+
+            for (const h of isoh) {
+                const points = [];
+                for (const p of isop) {
+                    try {
+                        const T = seuif97.ph(p, h, OT);
+                        const S = seuif97.ph(p, h, OS);
+                        points.push(toCanvasCoords(S, T));
+                    } catch (e) {
+                        continue;
+                    }
+                }
+                if (points.length > 1) {
+                    ctx.strokeStyle = '#00ff00';
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.moveTo(points[0].x, points[0].y);
+                    for (let i = 1; i < points.length; i++) {
+                        ctx.lineTo(points[i].x, points[i].y);
+                    }
+                    ctx.stroke();
+                }
+            }
+
+            for (const p of isop) {
+                const points = [];
+                for (const h of isoh) {
+                    try {
+                        const T = seuif97.ph(p, h, OT);
+                        const S = seuif97.ph(p, h, OS);
+                        points.push(toCanvasCoords(S, T));
+                    } catch (e) {
+                        continue;
+                    }
+                }
+                if (points.length > 1) {
+                    ctx.strokeStyle = '#0000ff';
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.moveTo(points[0].x, points[0].y);
+                    for (let i = 1; i < points.length; i++) {
+                        ctx.lineTo(points[i].x, points[i].y);
+                    }
+                    ctx.stroke();
+
+
+                }
+            }
+
+            for (const p of [Pt, 0.001, 0.002]) {
+                try {
+                    const s = seuif97.ph(p, 100, OS);
+                    const t = seuif97.ph(p, 100, OT);
+                    const s_sat_water = seuif97.px(p, 0.0, OS);
+                    const t_sat_water = seuif97.px(p, 0.0, OT);
+                    
+                    ctx.strokeStyle = '#0000ff';
+                    ctx.setLineDash([]);
+                    ctx.beginPath();
+                    ctx.moveTo(toCanvasCoords(s_sat_water, t_sat_water).x, toCanvasCoords(s_sat_water, t_sat_water).y);
+                    ctx.lineTo(toCanvasCoords(s, t).x, toCanvasCoords(s, t).y);
+                    ctx.stroke();
+                } catch (e) {
+                    continue;
+                }
+            }
+
+            const T_sat_points = [];
+            for (let i = 0; i <= 100; i++) {
+                const t = 0.11 + i * (tc - 0.11) / 100;
+                try {
+                    const s0 = seuif97.tx(t, 0.0, OS);
+                    const s1 = seuif97.tx(t, 1.0, OS);
+                    T_sat_points.push({ x: 0, points: toCanvasCoords(s0, t) });
+                    T_sat_points.push({ x: 1, points: toCanvasCoords(s1, t) });
+                } catch (e) {
+                    continue;
+                }
+            }
+
+            const satLine0 = T_sat_points.filter(p => p.x === 0).map(p => p.points);
+            const satLine1 = T_sat_points.filter(p => p.x === 1).map(p => p.points);
+
+            if (satLine0.length > 1) {
+                ctx.strokeStyle = '#ff0000';
+                ctx.setLineDash([]);
+                ctx.lineWidth = 1.0;
+                ctx.beginPath();
+                ctx.moveTo(satLine0[0].x, satLine0[0].y);
+                for (let i = 1; i < satLine0.length; i++) {
+                    ctx.lineTo(satLine0[i].x, satLine0[i].y);
+                }
+                ctx.stroke();
+            }
+
+            if (satLine1.length > 1) {
+                ctx.strokeStyle = '#ff0000';
+                ctx.setLineDash([]);
+                ctx.lineWidth = 1.0;
+                ctx.beginPath();
+                ctx.moveTo(satLine1[0].x, satLine1[0].y);
+                for (let i = 1; i < satLine1.length; i++) {
+                    ctx.lineTo(satLine1[i].x, satLine1[i].y);
+                }
+                ctx.stroke();
+            }
+
+            for (const x of [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]) {
+                const points = [];
+                for (let i = 0; i <= 100; i++) {
+                    const t = 0.11 + i * (tc - 0.11) / 100;
+                    try {
+                        const s = seuif97.tx(t, x, OS);
+                        points.push(toCanvasCoords(s, t));
+                    } catch (e) {
+                        continue;
+                    }
+                }
+                if (points.length > 1) {
+                    ctx.strokeStyle = '#ff0000';
+                    ctx.setLineDash([5, 5]);
+                    ctx.lineWidth = 0.5;
+                    ctx.beginPath();
+                    ctx.moveTo(points[0].x, points[0].y);
+                    for (let i = 1; i < points.length; i++) {
+                        ctx.lineTo(points[i].x, points[i].y);
+                    }
+                    ctx.stroke();
+                }
+            }
+
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([]);
+
+            ctx.beginPath();
+            ctx.moveTo(padding.left, padding.top);
+            ctx.lineTo(padding.left, height - padding.bottom);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.moveTo(padding.left, height - padding.bottom);
+            ctx.lineTo(width - padding.right, height - padding.bottom);
+            ctx.stroke();
+
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('s, kJ/kgK', width / 2, height - 15);
+
+            ctx.save();
+            ctx.translate(20, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillText('T, °C', 0, 0);
+            ctx.restore();
+
+            ctx.fillStyle = '#333';
+            ctx.font = '11px Arial';
+            ctx.textAlign = 'right';
+            for (let t = tMin; t <= tMax; t += 50) {
+                const y = padding.top + (1 - (t - tMin) / (tMax - tMin)) * plotHeight;
+                ctx.fillText(t.toFixed(0), padding.left - 10, y + 4);
+            }
+
+            ctx.textAlign = 'center';
+            for (let s = sMin; s <= sMax; s += 1) {
+                const x = padding.left + (s - sMin) / (sMax - sMin) * plotWidth;
+                ctx.fillText(s.toFixed(1), x, height - padding.bottom + 20);
+            }
+
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('T-s Diagram', width / 2, 25);
+        }
+    </script>
+</body>
+</html>

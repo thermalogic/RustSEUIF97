@@ -127,7 +127,10 @@ console.log(`h = ${h.toFixed(3)} kJ/kg`);
 console.log(`s = ${s.toFixed(5)} kJ/(kg·K)`);
 console.log(`v = ${v.toFixed(6)} m³/kg`);
 ```
-![](https://raw.githubusercontent.com/thermalogic/RustSEUIF97/seuif97-pypi-multi-platform/img/turbine_hs.jpg)
+
+**T-s Diagram**
+
+![](https://raw.githubusercontent.com/thermalogic/RustSEUIF97/seuif97-pypi-multi-platform/img/ts_wasm.jpg)
 
 ## Properties
 
