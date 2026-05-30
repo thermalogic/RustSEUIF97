@@ -56,21 +56,13 @@ The two types of functions are provided in the package.
 * the return: the calculated property value of o_id
 
 ```javascript
-pt(p,t,o_id)
-ph(p,h,o_id)
-ps(p,s,o_id)
-pv(p,v,o_id)
+pt(p,t,o_id)  ph(p,h,o_id) ps(p,s,o_id) pv(p,v,o_id)
 
-th(t,h,o_id)
-ts(t,s,o_id)
-tv(t,v,o_id)
+th(t,h,o_id)  ts(t,s,o_id) v(t,v,o_id)
 
 hs(h,s,o_id)
 
-px(p,x,o_id)
-tx(p,x,o_id)
-hx(h,x,o_id)
-sx(s,x,o_id)
+px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id)sx(s,x,o_id)
 ```
 
 ```javascript
