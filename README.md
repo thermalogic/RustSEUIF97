@@ -85,7 +85,7 @@ fn main() {
    
     let h=pt(p,t,OH);
     let s=pt(p,t,OS);
-    // set the region
+    // set the optional region to fast calculation
     let v=pt(p,t,(OV,1));
     println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");   
 }
@@ -266,7 +266,3 @@ console.log(`Entropy: ${entropy.toFixed(5)} kJ/(kg·K)`);
 | Fugacity coefficient                  |             |    fi  |   OFI |       33 |
 | Fugacity                              |     MPa     |     f* |   OFU |       34 |
 | Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|        35|
-
-## Cite as
-
-* Cheng Maohua. (2023). The Rust implementation of the high-speed IAPWS-IF97 package: SEUIF97 (1.0.9). Zenodo. https://doi.org/10.5281/zenodo.8246380

@@ -1,6 +1,6 @@
 # SEUIF97
 
-The version of **seuif97 2** is the Python API of the high-speed IAPWS-IF97 package in Rust. It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
+**SEUIF97 Version 2** is the Python API of the high-speed IAPWS-IF97 package in Rust. It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
 
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2 and 3.
 
@@ -36,7 +36,7 @@ The two types of functions are provided in the package.
 
 ### The input property pairs and the property ID 
 
-```python 
+```txt 
   ??(in1,in2,o_id)
 ```
 
@@ -64,7 +64,7 @@ sx(s,x,o_id)
 
 ### The input property pairs 
 
-```python 
+```txt
   ??2?(in1,in2)
 ```
 
@@ -89,7 +89,7 @@ hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
 sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```
 
-## Example
+## Usage Example
 
 ```python
 from seuif97 import *
@@ -104,7 +104,8 @@ h=pt(p,t,OH)
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
-**Examples**
+
+## Examples
 
 * [T-S Diagram](https://github.com/thermalogic/RustSEUIF97/blob/seuif97-pypi-multi-platform/demo_using_lib/Diagram_T-S.py)
 
