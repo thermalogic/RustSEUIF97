@@ -10,7 +10,6 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 
 * Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves performance.
 
-
 ## Related Packages
 
 - [seuif97 (Python)](https://pypi.org/project/seuif97/) - Python version

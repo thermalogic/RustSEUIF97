@@ -10,3 +10,6 @@
 *.jar
 *.class
 *.mod
+*.wasm
+/npm/package-lock.json
+/demo_npm/package-lock.json
