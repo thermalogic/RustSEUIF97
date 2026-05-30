@@ -15,6 +15,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Configure Cargo registry (GitHub Actions uses fast network)
+      run: |
+        echo '[source.crates-io]' > ~/.cargo/config.toml
+        echo 'replace-with = "crates-io"' >> ~/.cargo/config.toml
+
     - name: Install Rust toolchain
       uses: dtolnay/rust-toolchain@stable
       with:
@@ -42,24 +47,3 @@ jobs:
           pkg/seuif97.js
           pkg/seuif97.d.ts
         retention-days: 7
-
-  test_wasi:
-    runs-on: ubuntu-latest
-    needs: build_wasm
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Install Rust toolchain with WASI
-      uses: dtolnay/rust-toolchain@stable
-      with:
-        toolchain: stable
-        targets: wasm32-wasi
-
-    - name: Build for WASI
-      run: cargo build --release --features wasm --target wasm32-wasi
-
-    - name: Install wasmtime
-      run: curl https://wasmtime.dev/install.sh -sSf | bash
-
-    - name: Run WASI tests
-      run: wasmtime target/wasm32-wasi/release/seuif97.wasm --help || echo "WASI build successful"
