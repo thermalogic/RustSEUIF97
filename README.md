@@ -208,7 +208,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 * WASM - [README_WASM.md](./README_WASM.md)
 
-* NPM package: [seuif97](https://www.npmjs.com/package/seuif97)
+* NPM package: [seuif97](https://www.npmjs.com/seuif97)
 
 ```javascript
 import init, { pt } from 'seuif97';
