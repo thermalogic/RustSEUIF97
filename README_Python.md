@@ -22,7 +22,7 @@ The two types of API are provided in the package.
      - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` is the property ID of the calculated property.
 
  2. Convenience Functions (Direct Output)
-    -  These functions directly calculate a specific property `(p,t,h,s,v,x)`  without requiring the property ID parameter. For example: `pt2h（p,t)`
+    -  These functions directly calculate a specific property `(p,t,h,s,v,x)`  without requiring the property ID parameter. For example: `pt2h(p,t)`
 
 ### Universal Functions (with o_id parameter) 
 

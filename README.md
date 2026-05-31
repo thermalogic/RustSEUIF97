@@ -31,10 +31,10 @@ cargo add seuif97
 The two types of API are provided in the package.
 
  1.  Universal Functions (with o_id parameter and the optional region parameter)
-     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id,region)`, where `o_id` is the property `ID` of the calculated property, `the region` is optional.
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id,<region>)`, where `o_id` is the property `ID` of the calculated property, `the region` is optional.
 
  2. Convenience Functions (Direct Output)
-    -  These functions directly calculate a specific property `(p,t,h,s,v,x)` from the input property pairs. without requiring the property ID parameter. For example: `pt2h（p,t)`
+    -  These functions directly calculate a specific property `(p,t,h,s,v,x)` from the input property pairs. without requiring the property ID parameter. For example: `pt2h(p,t)`
 
 ###  Universal Functions (with o_id parameter and the optional region parameter)
 
