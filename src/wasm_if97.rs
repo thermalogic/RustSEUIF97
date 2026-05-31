@@ -140,6 +140,8 @@ pub fn sx(s: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
+// the convenience functions (direct output)
+// p,t->h,s,v,x
 #[wasm_bindgen]
 pub fn pt2h(p: f64, t: f64) -> f64 {
     crate::rust_if97::pt(p, t, OH)
@@ -160,6 +162,7 @@ pub fn pt2x(p: f64, t: f64) -> f64 {
     crate::rust_if97::pt(p, t, OX)
 }
 
+// p,h->t,s,v,x
 #[wasm_bindgen]
 pub fn ph2t(p: f64, h: f64) -> f64 {
     crate::rust_if97::ph(p, h, OT)
@@ -179,7 +182,7 @@ pub fn ph2v(p: f64, h: f64) -> f64 {
 pub fn ph2x(p: f64, h: f64) -> f64 {
     crate::rust_if97::ph(p, h, OX)
 }
-
+// p,s->t,h,v,x
 #[wasm_bindgen]
 pub fn ps2t(p: f64, s: f64) -> f64 {
     crate::rust_if97::ps(p, s, OT)
@@ -200,6 +203,7 @@ pub fn ps2x(p: f64, s: f64) -> f64 {
     crate::rust_if97::ps(p, s, OX)
 }
 
+// p,v->t,h,s,x
 #[wasm_bindgen]
 pub fn pv2t(p: f64, v: f64) -> f64 {
     crate::rust_if97::pv(p, v, OT)
@@ -220,7 +224,8 @@ pub fn pv2x(p: f64, v: f64) -> f64 {
     crate::rust_if97::pv(p, v, OX)
 }
 
-#[wasm_bindgen]
+// h,s->p,t,v,x
+#[#[wasm_bindgen]
 pub fn hs2p(h: f64, s: f64) -> f64 {
     crate::rust_if97::hs(h, s, OP)
 }
@@ -240,6 +245,7 @@ pub fn hs2x(h: f64, s: f64) -> f64 {
     crate::rust_if97::hs(h, s, OX)
 }
 
+// t,h->p,s,v,x
 #[wasm_bindgen]
 pub fn th2p(t: f64, h: f64) -> f64 {
     crate::rust_if97::th(t, h, OP)
@@ -260,6 +266,7 @@ pub fn th2x(t: f64, h: f64) -> f64 {
     crate::rust_if97::th(t, h, OX)
 }
 
+// t,s->p,h,v,x
 #[wasm_bindgen]
 pub fn ts2p(t: f64, s: f64) -> f64 {
     crate::rust_if97::ts(t, s, OP)
@@ -280,6 +287,7 @@ pub fn ts2x(t: f64, s: f64) -> f64 {
     crate::rust_if97::ts(t, s, OX)
 }
 
+// t,v->p,h,s,x
 #[wasm_bindgen]
 pub fn tv2p(t: f64, v: f64) -> f64 {
     crate::rust_if97::tv(t, v, OP)
@@ -300,6 +308,7 @@ pub fn tv2x(t: f64, v: f64) -> f64 {
     crate::rust_if97::tv(t, v, OX)
 }
 
+// p,x->t,h,s,x
 #[wasm_bindgen]
 pub fn px2t(p: f64, x: f64) -> f64 {
     crate::rust_if97::px(p, x, OT)
@@ -320,6 +329,7 @@ pub fn px2v(p: f64, x: f64) -> f64 {
     crate::rust_if97::px(p, x, OV)
 }
 
+// t,x->p,h,s,v
 #[wasm_bindgen]
 pub fn tx2p(t: f64, x: f64) -> f64 {
     crate::rust_if97::tx(t, x, OP)
@@ -340,6 +350,7 @@ pub fn tx2v(t: f64, x: f64) -> f64 {
     crate::rust_if97::tx(t, x, OV)
 }
 
+// h,x->p,t,s,v
 #[wasm_bindgen]
 pub fn hx2p(h: f64, x: f64) -> f64 {
     crate::rust_if97::hx(h, x, OP)
@@ -360,6 +371,7 @@ pub fn hx2v(h: f64, x: f64) -> f64 {
     crate::rust_if97::hx(h, x, OV)
 }
 
+// s,x->p,t,h,v
 #[wasm_bindgen]
 pub fn sx2p(s: f64, x: f64) -> f64 {
     crate::rust_if97::sx(s, x, OP)

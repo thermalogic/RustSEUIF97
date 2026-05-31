@@ -1,5 +1,5 @@
 #![allow(warnings)]
-/// Example: input pairs
+/// Example: 12 input pairs
 /// *  (p,t) (p,h) (p,s) ( (p,v)
 /// *  (t,v),(t,h),(t,s)
 /// *  (h,s)

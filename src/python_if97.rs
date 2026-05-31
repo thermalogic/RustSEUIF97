@@ -142,8 +142,9 @@ mod seuif97 {
             _ => sx_reg4(s, x, o_id),
         }
     }
-// simple functions
-    //p,t
+
+    // the convenience functions (direct output)
+    //p,t -> h,s,v,x
    #[pyfunction]
     fn pt2h(p: f64, t: f64) -> f64 {
          crate::rust_if97::pt(p,t,OH)
@@ -163,7 +164,8 @@ mod seuif97 {
     fn pt2x(p: f64, t: f64) -> f64 {
         crate::rust_if97::pt(p,t,OX)
     }
-    // p,h
+    // p,h->t,s,v,x
+     #[pyfunction]
     #[pyfunction]
     fn ph2t(p: f64, h: f64) -> f64 {
         crate::rust_if97::ph(p,h,OT)    
@@ -184,7 +186,7 @@ mod seuif97 {
         crate::rust_if97::ph(p,h,OX)
     }
 
-    // p,s
+    // p,s->t,h,v,x
     #[pyfunction]
     fn ps2t(p: f64, s: f64) -> f64 {
         crate::rust_if97::ps(p,s,OT)
@@ -205,7 +207,7 @@ mod seuif97 {
         crate::rust_if97::ps(p,s,OX)
     }
 
-    //p,v
+    //p,v  -> t,h,s,x
     #[pyfunction]
     fn pv2t(p: f64, v: f64) -> f64 {
         crate::rust_if97::pv(p,v,OT)
@@ -226,7 +228,7 @@ mod seuif97 {
         crate::rust_if97::pv(p,v,OX)
     }
     
-    // h,s
+    // h,s->p,t,v,x
     #[pyfunction]
     fn hs2p(h: f64, s: f64) -> f64 {
         crate::rust_if97::hs(h,s,OP)
@@ -247,7 +249,7 @@ mod seuif97 {
         crate::rust_if97::hs(h,s,OX)
     }
        
-    // t,h
+    // t,h -> p,s,v,x
     #[pyfunction]
     fn th2p(t: f64, h: f64) -> f64 {
         crate::rust_if97::th(t,h,OP)
@@ -268,7 +270,7 @@ mod seuif97 {
         crate::rust_if97::th(t,h,OX)
     }
 
-    // t,s
+    // t,s -> p,h,v,x
     #[pyfunction]
     fn ts2p(t: f64, s: f64) -> f64 {
         crate::rust_if97::ts(t,s,OP)
@@ -289,7 +291,7 @@ mod seuif97 {
         crate::rust_if97::ts(t,s,OX)
     }
 
-    // t,v
+    // t,v -> p,h,s,x
     #[pyfunction]
     fn tv2p(t: f64, v: f64) -> f64 {
         crate::rust_if97::tv(t,v,OP)
@@ -310,7 +312,7 @@ mod seuif97 {
         crate::rust_if97::tv(t,v,OX)
     }
 
-    // p,x      
+    // p,x-> t,h,s,v
     #[pyfunction]
     fn px2t(p: f64, x: f64) -> f64 {
         crate::rust_if97::px(p,x,OT)
@@ -331,7 +333,7 @@ mod seuif97 {
         crate::rust_if97::px(p,x,OV)
     }
 
-    // t,x
+    // t,x -> p,h,s,v
      #[pyfunction]
     fn tx2p(t: f64, x: f64) -> f64 {
         crate::rust_if97::tx(t,x,OP)
@@ -352,7 +354,7 @@ mod seuif97 {
         crate::rust_if97::tx(t,x,OV)
     }
 
-    //h,x
+    //h,x->p,t,s,v
     #[pyfunction]
     fn hx2p(h: f64, x: f64) -> f64 {
         crate::rust_if97::hx(h,x,OP)
@@ -373,7 +375,7 @@ mod seuif97 {
         crate::rust_if97::hx(h,x,OV)
     }
 
-    // s,x
+    // s,x->p,t,h,v
     #[pyfunction]
     fn sx2p(s: f64, x: f64) -> f64 {    
        crate::rust_if97::sx(s,x,OP)
