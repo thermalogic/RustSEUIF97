@@ -166,7 +166,7 @@ int main(void)
 ```
 **The Example of Rankine Cycle Analysis**
 
- * [The Rankine Cycle Steady-state Simulator in Python，C++ and Modelica](https://github.com/thermalogic/SimRankine)
+ * [The Rankine Cycle Steady-state Simulator in Python，C++,Rust and Modelica](https://github.com/thermalogic/SimRankine)
  
 ## Python binding 
 
@@ -220,12 +220,12 @@ await init();
 const p = 16.0;  // MPa
 const t = 535.1; // °C
 
-const enthalpy = pt(p, t, 4);     // kJ/kg
-const entropy = pt(p, t, 5);      // kJ/(kg·K)
+const h = pt(p, t, 4);     // kJ/kg
+const s = pt(p, t, 5);      // kJ/(kg·K)
 
 console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');
-console.log(`Enthalpy: ${enthalpy.toFixed(3)} kJ/kg`);
-console.log(`Entropy: ${entropy.toFixed(5)} kJ/(kg·K)`);
+console.log(`H: ${h.toFixed(3)} kJ/kg`);
+console.log(`S: ${s.toFixed(5)} kJ/(kg·K)`);
 ```
 
 ## Properties
