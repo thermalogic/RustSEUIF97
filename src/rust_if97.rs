@@ -376,3 +376,5 @@ pub fn sx(s: f64, x: f64, o_id: i32) -> f64 {
         _ => sx_reg4(s, x, o_id),
     }
 }
+
+// TODO：add convenience functions (Direct Output)
