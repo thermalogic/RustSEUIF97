@@ -1,5 +1,7 @@
 # The WASM and NPM Package  
 
+![npm version](https://img.shields.io/npm/v/seuif97)![NPM Downloads](https://img.shields.io/npm/dm/seuif97)![NPM Downloads](https://img.shields.io/npm/dt/seuif97)
+
 The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust, enabling fast and accurate thermodynamic property calculations for water and steam directly in the browser or Node.js. 
 
 ## Building the WASM file
