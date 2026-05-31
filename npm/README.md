@@ -75,13 +75,12 @@ await init();
 const p = 16.0;  // MPa
 const t = 535.1; // °C
 
-// Calculate all properties
-const enthalpy = pt(p, t, 4);     // kJ/kg
-const entropy = pt(p, t, 5);      // kJ/(kg·K)
+const h = pt(p, t, 4);     // kJ/kg
+const s = pt(p, t, 5);      // kJ/(kg·K)
 
 console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');
-console.log(`Enthalpy: ${enthalpy.toFixed(3)} kJ/kg`);
-console.log(`Entropy: ${entropy.toFixed(5)} kJ/(kg·K)`);
+console.log(`h: ${h.toFixed(3)} kJ/kg`);
+console.log(`s: ${s.toFixed(5)} kJ/(kg·K)`);
 ```
 
 ### The input property pairs 
@@ -112,7 +111,7 @@ sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```
 
 ```javascript
-import init, { pt2h, pt2s, pt2v } from 'seuif97';
+import init, { pt2h } from 'seuif97';
 
 await init();
 
@@ -120,10 +119,8 @@ const p = 16.0;  // Pressure in MPa
 const t = 535.1; // Temperature in °C
 
 const h = pt2h(p, t);
-const s = pt2s(p, t);
 
 console.log(`h = ${h.toFixed(3)} kJ/kg`);
-console.log(`s = ${s.toFixed(5)} kJ/(kg·K)`);
 ```
 
 **T-s Diagram**
