@@ -17,13 +17,13 @@ wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir demo_w
 ## Basic Usage (ES Modules)
 
 ```javascript
-import { pt2h, pt2s, ph2t, hs2p } from './pkg/seuif97.js';
+import { pt } from './pkg/seuif97.js';
 await init();
 
 const p = 16.0;  // MPa
 const t = 535.1; // °C
 
-const h = pt2h(p, t);
+const h = pt(p, t, 4);
 
 console.log(`p = ${p} MPa, t = ${t} °C`);
 console.log(`h = ${h.toFixed(3)} kJ/kg`);
@@ -51,17 +51,17 @@ npm install seuif97
 * NPM Package example: [./demo_npm](./demo_npm/)
 
 ```javascript
-import init, { pt, pt2h, pt2s, ph2t } from 'seuif97';
+import init, { pt2h } from 'seuif97';
 
 await init();
 
 const p = 3.0;    // MPa
 const t = 250.0;  // °C
 
-const s = pt2s(p, t);
+const h = pt2h(p, t);
 
 console.log(`p = ${p} MPa, t = ${t} °C`);
-console.log(`s = ${s.toFixed(5)} kJ/(kg·K)`);
+console.log(`h = ${h.toFixed(5)} kJ/kg`);
 ```
 
 ## T-s Diagram
