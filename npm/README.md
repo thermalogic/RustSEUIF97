@@ -6,6 +6,8 @@ The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in R
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about **5-20x** speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2 and 3.
 
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties**(see [Properties](#properties)).
+
 ## Acceleration Methods
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
@@ -23,31 +25,17 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 npm install seuif97
 ```
 
-## Input Pairs and Properties
+## API Reference
 
-In the package, [36 thermodynamic, transport and further properties](#properties) can be calculated. 
+The two types of API are provided in the package.
 
-The following 12 input pairs are implemented:
+ 1.  Universal Functions (with o_id parameter)
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)` where `o_id` is the property ID of the calculated property.
 
-```txt
-  (p,t) (p,h) (p,s) (p,v) 
-  
-  (p,x) (t,x) (h,x) (s,x) 
+ 2. Convenience Functions (Direct Output)
+    -  These functions directly calculate a specific property without requiring the property ID parameter. For example: `pt2h（p,t)`
 
-  (t,h) (t,s) (t,v) 
-
-  (h,s)
-```
-
-## Functions
-
-The two types of functions are provided in the package.
-
- 1. the input property pairs and the property ID([o_id](#properties)) to get the value of the specified property
-
- 2. the input property pairs to get one of  `p`,`t`,`h`,`s`,`v` or `x` directly
-
-### The input property pairs and the property ID 
+### Universal Functions (with o_id parameter)
 
 ```txt 
   ??(in1,in2,o_id)
@@ -56,6 +44,8 @@ The two types of functions are provided in the package.
 * the first, second input parameters: the input property pairs
 * the third input parameters: the property ID of the calculated property - [o_id](#properties)
 * the return: the calculated property value of o_id
+
+The following 12 input pairs are implemented:
 
 ```javascript
 pt(p,t,o_id)  ph(p,h,o_id) ps(p,s,o_id) pv(p,v,o_id)
@@ -83,13 +73,13 @@ console.log(`h: ${h.toFixed(3)} kJ/kg`);
 console.log(`s: ${s.toFixed(5)} kJ/(kg·K)`);
 ```
 
-### The input property pairs 
+### Convenience Functions (Direct Output)
 
 ```txt
   ??2?(in1,in2)
 ```
 
-* the `?` in `2?` is the one of `p`,`t`,`h`,`s`,`v` or `x`
+The following 12 input pairs are implemented:
 
 ```javascript
 pt2h(p, t)  pt2s(p, t)  pt2v(p, t)  pt2x(p, t)

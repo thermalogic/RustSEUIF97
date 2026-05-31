@@ -6,71 +6,41 @@
 
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2 and 3.
 
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
+
 ## Acceleration Methods
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
 * Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves performance.
 
-## Input Pairs and Properties
+## API Reference
 
-In the package, [36 thermodynamic, transport and further properties](#properties) can be calculated. 
+The two types of API are provided in the package.
+
+ 1.  Universal Functions (with o_id parameter)
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` is the property ID of the calculated property.
+
+ 2. Convenience Functions (Direct Output)
+    -  These functions directly calculate a specific property without requiring the property ID parameter. For example: `pt2h（p,t)`
+
+### Universal Functions (with o_id parameter) 
 
 The following 12 input pairs are implemented:
 
-```txt
-  (p,t) (p,h) (p,s) (p,v) 
-  
-  (p,x) (t,x) (h,x) (s,x) 
-
-  (t,h) (t,s) (t,v) 
-
-  (h,s)
-```
-
-## Functions
-
-The two types of functions are provided in the package.
-
- 1. the input property pairs and the property ID([o_id](#properties)) to get the value of the specified property
-
- 2. the input property pairs to get one of  `p`,`t`,`h`,`s`,`v` or `x` directly
-
-### The input property pairs and the property ID 
-
-```txt 
-  ??(in1,in2,o_id)
-```
-
-* the first, second input parameters: the input property pairs
-* the third input parameters: the property ID of the calculated property - [o_id](#properties)
-* the return: the calculated property value of o_id
-
 ```python
-pt(p,t,o_id)
-ph(p,h,o_id)
-ps(p,s,o_id)
-pv(p,v,o_id)
+pt(p,t,o_id) ph(p,h,o_id) ps(p,s,o_id) pv(p,v,o_id)
 
-th(t,h,o_id)
-ts(t,s,o_id)
-tv(t,v,o_id)
+th(t,h,o_id) ts(t,s,o_id) tv(t,v,o_id)
 
 hs(h,s,o_id)
 
-px(p,x,o_id)
-tx(p,x,o_id)
-hx(h,x,o_id)
-sx(s,x,o_id)
+px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id) sx(s,x,o_id)
 ```
 
-### The input property pairs 
+### Convenience Functions (Direct Output)
 
-```txt
-  ??2?(in1,in2)
-```
-
-* the `?` in `2?` is the one of `p`,`t`,`h`,`s`,`v` or `x`
+The following 12 input pairs are implemented:
 
 ```python
 pt2h(p, t)  pt2s(p, t)  pt2v(p, t)  pt2x(p, t)
@@ -78,11 +48,11 @@ ph2t(p, h)  ph2s(p, h)  ph2v(p, h)  ph2x(p, h)
 ps2t(p, s)  ps2h(p, s)  ps2v(p, s)  ps2x(p, s)  
 pv2t(p, v)  pv2h(p, v)  pv2s(p, v)  pv2x(p, v)  
 
-hs2p(h, s)  hs2t(h, s)  hs2v(h, s)  hs2x(h, s)    
-
 th2p(t, h)  th2s(t, h)  th2v(t, h)  th2x(t, h)   
 ts2p(t, s)  ts2h(t, s)  ts2v(t, s)  ts2x(t, s)  
 tv2p(t, v)  tv2h(t, v)  tv2s(t, v)  tv2x(t, v)  
+
+hs2p(h, s)  hs2t(h, s)  hs2v(h, s)  hs2x(h, s)    
 
 px2t(p, x)  px2h(p, x)  px2s(p, x)  px2v(p, x)
 tx2p(t, x)  tx2h(t, x)  tx2s(t, x)  tx2v(t, x)
@@ -100,9 +70,9 @@ OH=4
 
 p=16.0
 t=535.1
-# ??(in1,in2,o_id)
+#  Universal Functions (with o_id parameter)
 h=pt(p,t,OH)
-# ??2?(in1,in2)
+# Convenience Functions (Direct Output)
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```

@@ -4,6 +4,8 @@
 
 The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust, enabling fast and accurate thermodynamic property calculations for water and steam directly in the browser or Node.js. 
 
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties**.
+
 ## Building the WASM file
 
 ```bash

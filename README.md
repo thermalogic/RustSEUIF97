@@ -16,7 +16,7 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5x to 20x sp
 
 * Recurrence Method for Multi-Polynomial Evaluation: By utilizing the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves computational  performance.
 
-Please refer to [The acceleration methods](./the_acceleration_methods.md) for more details on the algorithm
+Please refer to [The acceleration methods](./docs/the_acceleration_methods.md) for more details on the algorithm
 
 ## Input Pairs and Properties
 
