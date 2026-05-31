@@ -377,4 +377,244 @@ pub fn sx(s: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-// TODO：add convenience functions (Direct Output)
+// Convenience Functions (Direct Output)
+
+/// pt2h(p,t) - Calculate specific enthalpy from pressure and temperature
+pub fn pt2h(p: f64, t: f64) -> f64 {
+    pt(p, t, OH)
+}
+
+/// pt2s(p,t) - Calculate specific entropy from pressure and temperature
+pub fn pt2s(p: f64, t: f64) -> f64 {
+    pt(p, t, OS)
+}
+
+/// pt2v(p,t) - Calculate specific volume from pressure and temperature
+pub fn pt2v(p: f64, t: f64) -> f64 {
+    pt(p, t, OV)
+}
+
+/// pt2x(p,t) - Calculate steam quality from pressure and temperature
+pub fn pt2x(p: f64, t: f64) -> f64 {
+    pt(p, t, OX)
+}
+
+/// ph2t(p,h) - Calculate temperature from pressure and enthalpy
+pub fn ph2t(p: f64, h: f64) -> f64 {
+    ph(p, h, OT)
+}
+
+/// ph2s(p,h) - Calculate specific entropy from pressure and enthalpy
+pub fn ph2s(p: f64, h: f64) -> f64 {
+    ph(p, h, OS)
+}
+
+/// ph2v(p,h) - Calculate specific volume from pressure and enthalpy
+pub fn ph2v(p: f64, h: f64) -> f64 {
+    ph(p, h, OV)
+}
+
+/// ph2x(p,h) - Calculate steam quality from pressure and enthalpy
+pub fn ph2x(p: f64, h: f64) -> f64 {
+    ph(p, h, OX)
+}
+
+/// ps2t(p,s) - Calculate temperature from pressure and entropy
+pub fn ps2t(p: f64, s: f64) -> f64 {
+    ps(p, s, OT)
+}
+
+/// ps2h(p,s) - Calculate specific enthalpy from pressure and entropy
+pub fn ps2h(p: f64, s: f64) -> f64 {
+    ps(p, s, OH)
+}
+
+/// ps2v(p,s) - Calculate specific volume from pressure and entropy
+pub fn ps2v(p: f64, s: f64) -> f64 {
+    ps(p, s, OV)
+}
+
+/// ps2x(p,s) - Calculate steam quality from pressure and entropy
+pub fn ps2x(p: f64, s: f64) -> f64 {
+    ps(p, s, OX)
+}
+
+/// pv2t(p,v) - Calculate temperature from pressure and specific volume
+pub fn pv2t(p: f64, v: f64) -> f64 {
+    pv(p, v, OT)
+}
+
+/// pv2h(p,v) - Calculate specific enthalpy from pressure and specific volume
+pub fn pv2h(p: f64, v: f64) -> f64 {
+    pv(p, v, OH)
+}
+
+/// pv2s(p,v) - Calculate specific entropy from pressure and specific volume
+pub fn pv2s(p: f64, v: f64) -> f64 {
+    pv(p, v, OS)
+}
+
+/// pv2x(p,v) - Calculate steam quality from pressure and specific volume
+pub fn pv2x(p: f64, v: f64) -> f64 {
+    pv(p, v, OX)
+}
+
+/// hs2p(h,s) - Calculate pressure from enthalpy and entropy
+pub fn hs2p(h: f64, s: f64) -> f64 {
+    hs(h, s, OP)
+}
+
+/// hs2t(h,s) - Calculate temperature from enthalpy and entropy
+pub fn hs2t(h: f64, s: f64) -> f64 {
+    hs(h, s, OT)
+}
+
+/// hs2v(h,s) - Calculate specific volume from enthalpy and entropy
+pub fn hs2v(h: f64, s: f64) -> f64 {
+    hs(h, s, OV)
+}
+
+/// hs2x(h,s) - Calculate steam quality from enthalpy and entropy
+pub fn hs2x(h: f64, s: f64) -> f64 {
+    hs(h, s, OX)
+}
+
+/// th2p(t,h) - Calculate pressure from temperature and enthalpy
+pub fn th2p(t: f64, h: f64) -> f64 {
+    th(t, h, OP)
+}
+
+/// th2s(t,h) - Calculate specific entropy from temperature and enthalpy
+pub fn th2s(t: f64, h: f64) -> f64 {
+    th(t, h, OS)
+}
+
+/// th2v(t,h) - Calculate specific volume from temperature and enthalpy
+pub fn th2v(t: f64, h: f64) -> f64 {
+    th(t, h, OV)
+}
+
+/// th2x(t,h) - Calculate steam quality from temperature and enthalpy
+pub fn th2x(t: f64, h: f64) -> f64 {
+    th(t, h, OX)
+}
+
+/// ts2p(t,s) - Calculate pressure from temperature and entropy
+pub fn ts2p(t: f64, s: f64) -> f64 {
+    ts(t, s, OP)
+}
+
+/// ts2h(t,s) - Calculate specific enthalpy from temperature and entropy
+pub fn ts2h(t: f64, s: f64) -> f64 {
+    ts(t, s, OH)
+}
+
+/// ts2v(t,s) - Calculate specific volume from temperature and entropy
+pub fn ts2v(t: f64, s: f64) -> f64 {
+    ts(t, s, OV)
+}
+
+/// ts2x(t,s) - Calculate steam quality from temperature and entropy
+pub fn ts2x(t: f64, s: f64) -> f64 {
+    ts(t, s, OX)
+}
+
+/// tv2p(t,v) - Calculate pressure from temperature and specific volume
+pub fn tv2p(t: f64, v: f64) -> f64 {
+    tv(t, v, OP)
+}
+
+/// tv2h(t,v) - Calculate specific enthalpy from temperature and specific volume
+pub fn tv2h(t: f64, v: f64) -> f64 {
+    tv(t, v, OH)
+}
+
+/// tv2s(t,v) - Calculate specific entropy from temperature and specific volume
+pub fn tv2s(t: f64, v: f64) -> f64 {
+    tv(t, v, OS)
+}
+
+/// tv2x(t,v) - Calculate steam quality from temperature and specific volume
+pub fn tv2x(t: f64, v: f64) -> f64 {
+    tv(t, v, OX)
+}
+
+/// px2t(p,x) - Calculate temperature from pressure and steam quality
+pub fn px2t(p: f64, x: f64) -> f64 {
+    px(p, x, OT)
+}
+
+/// px2h(p,x) - Calculate specific enthalpy from pressure and steam quality
+pub fn px2h(p: f64, x: f64) -> f64 {
+    px(p, x, OH)
+}
+
+/// px2s(p,x) - Calculate specific entropy from pressure and steam quality
+pub fn px2s(p: f64, x: f64) -> f64 {
+    px(p, x, OS)
+}
+
+/// px2v(p,x) - Calculate specific volume from pressure and steam quality
+pub fn px2v(p: f64, x: f64) -> f64 {
+    px(p, x, OV)
+}
+
+/// tx2p(t,x) - Calculate pressure from temperature and steam quality
+pub fn tx2p(t: f64, x: f64) -> f64 {
+    tx(t, x, OP)
+}
+
+/// tx2h(t,x) - Calculate specific enthalpy from temperature and steam quality
+pub fn tx2h(t: f64, x: f64) -> f64 {
+    tx(t, x, OH)
+}
+
+/// tx2s(t,x) - Calculate specific entropy from temperature and steam quality
+pub fn tx2s(t: f64, x: f64) -> f64 {
+    tx(t, x, OS)
+}
+
+/// tx2v(t,x) - Calculate specific volume from temperature and steam quality
+pub fn tx2v(t: f64, x: f64) -> f64 {
+    tx(t, x, OV)
+}
+
+/// hx2p(h,x) - Calculate pressure from enthalpy and steam quality
+pub fn hx2p(h: f64, x: f64) -> f64 {
+    hx(h, x, OP)
+}
+
+/// hx2t(h,x) - Calculate temperature from enthalpy and steam quality
+pub fn hx2t(h: f64, x: f64) -> f64 {
+    hx(h, x, OT)
+}
+
+/// hx2s(h,x) - Calculate specific entropy from enthalpy and steam quality
+pub fn hx2s(h: f64, x: f64) -> f64 {
+    hx(h, x, OS)
+}
+
+/// hx2v(h,x) - Calculate specific volume from enthalpy and steam quality
+pub fn hx2v(h: f64, x: f64) -> f64 {
+    hx(h, x, OV)
+}
+
+/// sx2p(s,x) - Calculate pressure from entropy and steam quality
+pub fn sx2p(s: f64, x: f64) -> f64 {
+    sx(s, x, OP)
+}
+
+/// sx2t(s,x) - Calculate temperature from entropy and steam quality
+pub fn sx2t(s: f64, x: f64) -> f64 {
+    sx(s, x, OT)
+}
+
+/// sx2h(s,x) - Calculate specific enthalpy from entropy and steam quality
+pub fn sx2h(s: f64, x: f64) -> f64 {
+    sx(s, x, OH)
+}
+
+/// sx2v(s,x) - Calculate specific volume from entropy and steam quality
+pub fn sx2v(s: f64, x: f64) -> f64 {
+    sx(s, x, OV)
+}

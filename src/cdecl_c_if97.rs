@@ -139,7 +139,7 @@ pub unsafe extern "C" fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-/// double sx(double s,double x,short o_id)- the property of `o_id` (thermodynamic)  
+/// double sx(double s,double x,short o_id)- the property of `o_id` (thermodynamic)
 #[no_mangle]
 pub unsafe extern "C" fn sx(s: f64, x: f64, o_id: i32) -> f64 {
     if s > S_MAX4 || s < S_MIN4 || x > 1.0 || x < 0.0 {
@@ -152,4 +152,292 @@ pub unsafe extern "C" fn sx(s: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-// TODO：add convenience functions (Direct Output)
+// Convenience Functions (Direct Output)
+
+/// double pt2h(double p,double t) - Calculate specific enthalpy from pressure and temperature
+#[no_mangle]
+pub unsafe extern "C" fn pt2h(p: f64, t: f64) -> f64 {
+    pt(p, t, OH)
+}
+
+/// double pt2s(double p,double t) - Calculate specific entropy from pressure and temperature
+#[no_mangle]
+pub unsafe extern "C" fn pt2s(p: f64, t: f64) -> f64 {
+    pt(p, t, OS)
+}
+
+/// double pt2v(double p,double t) - Calculate specific volume from pressure and temperature
+#[no_mangle]
+pub unsafe extern "C" fn pt2v(p: f64, t: f64) -> f64 {
+    pt(p, t, OV)
+}
+
+/// double pt2x(double p,double t) - Calculate steam quality from pressure and temperature
+#[no_mangle]
+pub unsafe extern "C" fn pt2x(p: f64, t: f64) -> f64 {
+    pt(p, t, OX)
+}
+
+/// double ph2t(double p,double h) - Calculate temperature from pressure and enthalpy
+#[no_mangle]
+pub unsafe extern "C" fn ph2t(p: f64, h: f64) -> f64 {
+    ph(p, h, OT)
+}
+
+/// double ph2s(double p,double h) - Calculate specific entropy from pressure and enthalpy
+#[no_mangle]
+pub unsafe extern "C" fn ph2s(p: f64, h: f64) -> f64 {
+    ph(p, h, OS)
+}
+
+/// double ph2v(double p,double h) - Calculate specific volume from pressure and enthalpy
+#[no_mangle]
+pub unsafe extern "C" fn ph2v(p: f64, h: f64) -> f64 {
+    ph(p, h, OV)
+}
+
+/// double ph2x(double p,double h) - Calculate steam quality from pressure and enthalpy
+#[no_mangle]
+pub unsafe extern "C" fn ph2x(p: f64, h: f64) -> f64 {
+    ph(p, h, OX)
+}
+
+/// double ps2t(double p,double s) - Calculate temperature from pressure and entropy
+#[no_mangle]
+pub unsafe extern "C" fn ps2t(p: f64, s: f64) -> f64 {
+    ps(p, s, OT)
+}
+
+/// double ps2h(double p,double s) - Calculate specific enthalpy from pressure and entropy
+#[no_mangle]
+pub unsafe extern "C" fn ps2h(p: f64, s: f64) -> f64 {
+    ps(p, s, OH)
+}
+
+/// double ps2v(double p,double s) - Calculate specific volume from pressure and entropy
+#[no_mangle]
+pub unsafe extern "C" fn ps2v(p: f64, s: f64) -> f64 {
+    ps(p, s, OV)
+}
+
+/// double ps2x(double p,double s) - Calculate steam quality from pressure and entropy
+#[no_mangle]
+pub unsafe extern "C" fn ps2x(p: f64, s: f64) -> f64 {
+    ps(p, s, OX)
+}
+
+/// double pv2t(double p,double v) - Calculate temperature from pressure and specific volume
+#[no_mangle]
+pub unsafe extern "C" fn pv2t(p: f64, v: f64) -> f64 {
+    pv(p, v, OT)
+}
+
+/// double pv2h(double p,double v) - Calculate specific enthalpy from pressure and specific volume
+#[no_mangle]
+pub unsafe extern "C" fn pv2h(p: f64, v: f64) -> f64 {
+    pv(p, v, OH)
+}
+
+/// double pv2s(double p,double v) - Calculate specific entropy from pressure and specific volume
+#[no_mangle]
+pub unsafe extern "C" fn pv2s(p: f64, v: f64) -> f64 {
+    pv(p, v, OS)
+}
+
+/// double pv2x(double p,double v) - Calculate steam quality from pressure and specific volume
+#[no_mangle]
+pub unsafe extern "C" fn pv2x(p: f64, v: f64) -> f64 {
+    pv(p, v, OX)
+}
+
+/// double hs2p(double h,double s) - Calculate pressure from enthalpy and entropy
+#[no_mangle]
+pub unsafe extern "C" fn hs2p(h: f64, s: f64) -> f64 {
+    hs(h, s, OP)
+}
+
+/// double hs2t(double h,double s) - Calculate temperature from enthalpy and entropy
+#[no_mangle]
+pub unsafe extern "C" fn hs2t(h: f64, s: f64) -> f64 {
+    hs(h, s, OT)
+}
+
+/// double hs2v(double h,double s) - Calculate specific volume from enthalpy and entropy
+#[no_mangle]
+pub unsafe extern "C" fn hs2v(h: f64, s: f64) -> f64 {
+    hs(h, s, OV)
+}
+
+/// double hs2x(double h,double s) - Calculate steam quality from enthalpy and entropy
+#[no_mangle]
+pub unsafe extern "C" fn hs2x(h: f64, s: f64) -> f64 {
+    hs(h, s, OX)
+}
+
+/// double th2p(double t,double h) - Calculate pressure from temperature and enthalpy
+#[no_mangle]
+pub unsafe extern "C" fn th2p(t: f64, h: f64) -> f64 {
+    th(t, h, OP)
+}
+
+/// double th2s(double t,double h) - Calculate specific entropy from temperature and enthalpy
+#[no_mangle]
+pub unsafe extern "C" fn th2s(t: f64, h: f64) -> f64 {
+    th(t, h, OS)
+}
+
+/// double th2v(double t,double h) - Calculate specific volume from temperature and enthalpy
+#[no_mangle]
+pub unsafe extern "C" fn th2v(t: f64, h: f64) -> f64 {
+    th(t, h, OV)
+}
+
+/// double th2x(double t,double h) - Calculate steam quality from temperature and enthalpy
+#[no_mangle]
+pub unsafe extern "C" fn th2x(t: f64, h: f64) -> f64 {
+    th(t, h, OX)
+}
+
+/// double ts2p(double t,double s) - Calculate pressure from temperature and entropy
+#[no_mangle]
+pub unsafe extern "C" fn ts2p(t: f64, s: f64) -> f64 {
+    ts(t, s, OP)
+}
+
+/// double ts2h(double t,double s) - Calculate specific enthalpy from temperature and entropy
+#[no_mangle]
+pub unsafe extern "C" fn ts2h(t: f64, s: f64) -> f64 {
+    ts(t, s, OH)
+}
+
+/// double ts2v(double t,double s) - Calculate specific volume from temperature and entropy
+#[no_mangle]
+pub unsafe extern "C" fn ts2v(t: f64, s: f64) -> f64 {
+    ts(t, s, OV)
+}
+
+/// double ts2x(double t,double s) - Calculate steam quality from temperature and entropy
+#[no_mangle]
+pub unsafe extern "C" fn ts2x(t: f64, s: f64) -> f64 {
+    ts(t, s, OX)
+}
+
+/// double tv2p(double t,double v) - Calculate pressure from temperature and specific volume
+#[no_mangle]
+pub unsafe extern "C" fn tv2p(t: f64, v: f64) -> f64 {
+    tv(t, v, OP)
+}
+
+/// double tv2h(double t,double v) - Calculate specific enthalpy from temperature and specific volume
+#[no_mangle]
+pub unsafe extern "C" fn tv2h(t: f64, v: f64) -> f64 {
+    tv(t, v, OH)
+}
+
+/// double tv2s(double t,double v) - Calculate specific entropy from temperature and specific volume
+#[no_mangle]
+pub unsafe extern "C" fn tv2s(t: f64, v: f64) -> f64 {
+    tv(t, v, OS)
+}
+
+/// double tv2x(double t,double v) - Calculate steam quality from temperature and specific volume
+#[no_mangle]
+pub unsafe extern "C" fn tv2x(t: f64, v: f64) -> f64 {
+    tv(t, v, OX)
+}
+
+/// double px2t(double p,double x) - Calculate temperature from pressure and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn px2t(p: f64, x: f64) -> f64 {
+    px(p, x, OT)
+}
+
+/// double px2h(double p,double x) - Calculate specific enthalpy from pressure and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn px2h(p: f64, x: f64) -> f64 {
+    px(p, x, OH)
+}
+
+/// double px2s(double p,double x) - Calculate specific entropy from pressure and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn px2s(p: f64, x: f64) -> f64 {
+    px(p, x, OS)
+}
+
+/// double px2v(double p,double x) - Calculate specific volume from pressure and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn px2v(p: f64, x: f64) -> f64 {
+    px(p, x, OV)
+}
+
+/// double tx2p(double t,double x) - Calculate pressure from temperature and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn tx2p(t: f64, x: f64) -> f64 {
+    tx(t, x, OP)
+}
+
+/// double tx2h(double t,double x) - Calculate specific enthalpy from temperature and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn tx2h(t: f64, x: f64) -> f64 {
+    tx(t, x, OH)
+}
+
+/// double tx2s(double t,double x) - Calculate specific entropy from temperature and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn tx2s(t: f64, x: f64) -> f64 {
+    tx(t, x, OS)
+}
+
+/// double tx2v(double t,double x) - Calculate specific volume from temperature and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn tx2v(t: f64, x: f64) -> f64 {
+    tx(t, x, OV)
+}
+
+/// double hx2p(double h,double x) - Calculate pressure from enthalpy and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn hx2p(h: f64, x: f64) -> f64 {
+    hx(h, x, OP)
+}
+
+/// double hx2t(double h,double x) - Calculate temperature from enthalpy and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn hx2t(h: f64, x: f64) -> f64 {
+    hx(h, x, OT)
+}
+
+/// double hx2s(double h,double x) - Calculate specific entropy from enthalpy and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn hx2s(h: f64, x: f64) -> f64 {
+    hx(h, x, OS)
+}
+
+/// double hx2v(double h,double x) - Calculate specific volume from enthalpy and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn hx2v(h: f64, x: f64) -> f64 {
+    hx(h, x, OV)
+}
+
+/// double sx2p(double s,double x) - Calculate pressure from entropy and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn sx2p(s: f64, x: f64) -> f64 {
+    sx(s, x, OP)
+}
+
+/// double sx2t(double s,double x) - Calculate temperature from entropy and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn sx2t(s: f64, x: f64) -> f64 {
+    sx(s, x, OT)
+}
+
+/// double sx2h(double s,double x) - Calculate specific enthalpy from entropy and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn sx2h(s: f64, x: f64) -> f64 {
+    sx(s, x, OH)
+}
+
+/// double sx2v(double s,double x) - Calculate specific volume from entropy and steam quality
+#[no_mangle]
+pub unsafe extern "C" fn sx2v(s: f64, x: f64) -> f64 {
+    sx(s, x, OV)
+}
