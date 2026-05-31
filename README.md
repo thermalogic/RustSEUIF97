@@ -10,6 +10,8 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5x to 20x sp
 
 **SEUIF97** also significantly outperforms various approximate equations and algorithms typically used for fast water and steam property calculations.
 
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
+
 ## Acceleration Methods
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
@@ -18,30 +20,27 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5x to 20x sp
 
 Please refer to [The acceleration methods](./docs/the_acceleration_methods.md) for more details on the algorithm
 
-## Input Pairs and Properties
-
-This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
-
-**Input Pairs:**
-
-```txt
-(p,t) (p,h) (p,s) (p,v)
-(t,h) (t,s) (t,v)
-(p,x) (t,x) (h,x) (s,x)
-(h,s)
-```
-
-## Usage
-
-Install the crate
+## Install the crate
 
 ```bash
 cargo add seuif97
 ```
 
+## API Reference
+
+The two types of API are provided in the package.
+
+ 1.  Universal Functions (with o_id parameter and the optional region parameter)
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id,region)`, where `o_id` is the property `ID` of the calculated property, `the region` is optional.
+
+ 2. Convenience Functions (Direct Output)
+    -  These functions directly calculate a specific property without requiring the property ID parameter. For example: `pt2h（p,t)`
+
+###  Universal Functions (with o_id parameter and the optional region parameter)
+
 The type of functions are provided in the package:
 
-```txt
+```rust
 struct o_id_region_args {
    o_id: i32,
    region: i32,
@@ -58,7 +57,9 @@ where
     * the fourth `option` parameter: the region of IAPWS-IF97
 * the return(f64): the calculated property value of o_id
 
-```txt
+The following 12 input pairs are implemented:
+
+```rust
 pt<R>(p:f64,t:f64,o_id_region:R)->f64
 ph<R>(p:f64,h:f64,o_id_region:R)->f64
 ps<R>(p:f64,s:f64,o_id_region:R)->f64
@@ -74,9 +75,31 @@ px(p:f64,x:f64,o_id:i32)->f64
 tx(p:f64,x:f64,o_id:i32)->f64
 hx(h:f64,x:f64,o_id:i32)->f64
 sx(s:f64,x:f64,o_id:i32)->f64
-
 ```
-**Example**
+### Convenience Functions (Direct Output)
+
+The following 12 input pairs are implemented:
+
+```rust
+pt2h(p, t)  pt2s(p, t)  pt2v(p, t)  pt2x(p, t)
+ph2t(p, h)  ph2s(p, h)  ph2v(p, h)  ph2x(p, h)   
+ps2t(p, s)  ps2h(p, s)  ps2v(p, s)  ps2x(p, s)  
+pv2t(p, v)  pv2h(p, v)  pv2s(p, v)  pv2x(p, v)  
+
+th2p(t, h)  th2s(t, h)  th2v(t, h)  th2x(t, h)   
+ts2p(t, s)  ts2h(t, s)  ts2v(t, s)  ts2x(t, s)  
+tv2p(t, v)  tv2h(t, v)  tv2s(t, v)  tv2x(t, v)  
+
+hs2p(h, s)  hs2t(h, s)  hs2v(h, s)  hs2x(h, s)    
+
+px2t(p, x)  px2h(p, x)  px2s(p, x)  px2v(p, x)
+tx2p(t, x)  tx2h(t, x)  tx2s(t, x)  tx2v(t, x)
+
+hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
+sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
+```
+
+### Usage 
 
 ```rust
 use seuif97::*;
@@ -84,11 +107,13 @@ fn main() {
     
     let p:f64 = 3.0;
     let t:f64= 300.0-273.15;
-   
+    // universal functions (with o_id parameter only)
     let h=pt(p,t,OH);
-    let s=pt(p,t,OS);
-    // set the optional region to fast calculation
-    let v=pt(p,t,(OV,1));
+    // set the optional region value to fast calculate the property h at the region
+    let s=pt(p,t,OS(OV,1));
+    // convenience functions (Direct Output)
+    let v=pt2v(p,t);
+
     println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");   
 }
 ```
@@ -120,29 +145,16 @@ The convenient compiled dynamic link libraries are provided in the [./dynamic_li
 
 * `libseuif97.so`: [Linux64](./dynamic_lib/linux_x64/)
 
-**The functions in C**
+The shared library supports all functions of both types in Rust, except for the `optional region` parameter. For example in C：
 
 ```c
 double pt(double p,double t,short o_id);
-double ph(double p,double h,short o_id);
-double ps(double p,double s,short o_id);
-double pv(double p,double v,short o_id);
-
-double tv(double t,double v,short o_id);
-double th(double t,double h,short o_id);
-double ts(double t,double s,short o_id);
-
-double hs(double h,double s,short o_id);
-
-double px(double p,double x,short o_id);
-double tx(double t,double x,short o_id);
-double hx(double h,double x,short o_id);
-double sx(double s,double x,short o_id);
+double pt2s(double p,double t);
 ```
 
-**Example**
+Interfaces and examples are provided in the [./demo_using_lib/](./demo_using_lib/) directory, supporting a wide range of languages and environments
 
-* [./demo_using_lib/](./demo_using_lib/): C, Python, C#, Excel VBA, Java, Fortran, Golang
+* C/C++, Python, C#, Java, Excel VBA, Rust, Fortran, Golang
 
 ```c
 #include <stdlib.h>
@@ -150,7 +162,6 @@ double sx(double s,double x,short o_id);
 #include <string.h>
 
 #define OH 4
-#define OS 5
 
 extern double pt(double p,double t,short o_id);
 
@@ -158,15 +169,18 @@ int main(void)
 {
     double p = 16.0;
     double t = 530.0;
+    // universal functions (with o_id parameter only)
     double h = pt(p, t, OH);
-    double s = pt(p, t, OS);
+    // convenience functions (Direct Output)
+    double s = pt2s(p, t);
     printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
     return EXIT_SUCCESS;
 }
 ```
-**The Example of Rankine Cycle Analysis**
 
- * [The Rankine Cycle Steady-state Simulator in Python，C++,Rust and Modelica](https://github.com/thermalogic/SimRankine)
+**Comprehensive Cross-language Examples**
+
+* [The Rankine Cycle Steady-state Simulator in Python，C++,Rust and Modelica](https://github.com/thermalogic/SimRankine)
  
 ## Python binding 
 
@@ -178,7 +192,8 @@ int main(void)
 pip install seuif97
 ```
 
-### Usage
+The Python package supports all functions of both types in Rust, except for the `optional region` parameter.
+
 
 ```python
 from seuif97 import *
@@ -187,14 +202,14 @@ OH=4
 
 p=16.0
 t=535.1
-# ??(in1,in2,o_id)
+# universal functions (with o_id parameter only)
 h=pt(p,t,OH)
-# ??2?(in1,in2)
+# convenience functions (Direct Output)
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
 
-### Examples
+**The Comprehensive Examples in Python**
 
 * [T-S Diagram](./demo_using_lib/Diagram_T-S.py)
 
@@ -208,20 +223,24 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## WASM binding 
 
+
 * WASM - [README_WASM.md](./README_WASM.md)
 
 * NPM package: [seuif97](https://www.npmjs.com/seuif97)
 
+The NPM ackage supports all functions of both types in Rust, except for the `optional region` parameter.
+
 ```javascript
-import init, { pt } from 'seuif97';
+import init, { pt, pt2s } from 'seuif97';
 
 await init();
 
 const p = 16.0;  // MPa
 const t = 535.1; // °C
-
+// universal functions (with o_id parameter only)
 const h = pt(p, t, 4);     // kJ/kg
-const s = pt(p, t, 5);      // kJ/(kg·K)
+// convenience functions (Direct Output)
+const s = pt2s(p, t);      // kJ/(kg·K)
 
 console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');
 console.log(`H: ${h.toFixed(3)} kJ/kg`);
