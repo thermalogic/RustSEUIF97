@@ -16,7 +16,17 @@ cargo build --release --features wasm --target wasm32-unknown-unknown
 wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir demo_wasm/pkg --target web
 ```
 
-## Basic Usage (ES Modules)
+## API Reference
+
+The two types of API are provided in the package.
+
+ 1.  Universal Functions (with o_id parameter)
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` is the property ID of the calculated property.
+
+ 2. Convenience Functions (Direct Output)
+    -  These functions directly calculate a specific property without requiring the property ID parameter. For example: `pt2h（p,t)`
+
+### Basic Usage (ES Modules)
 
 ```javascript
 import { pt } from './pkg/seuif97.js';
@@ -30,7 +40,7 @@ const h = pt(p, t, 4);
 console.log(`p = ${p} MPa, t = ${t} °C`);
 console.log(`h = ${h.toFixed(3)} kJ/kg`);
 ```
-## Using in Web Browsers
+### Using in Web Browsers
 
 * Example: [./demo_wasm](./demo_wasm/)
 

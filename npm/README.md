@@ -30,20 +30,12 @@ npm install seuif97
 The two types of API are provided in the package.
 
  1.  Universal Functions (with o_id parameter)
-     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)` where `o_id` is the property ID of the calculated property.
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` is the property ID of the calculated property.
 
  2. Convenience Functions (Direct Output)
     -  These functions directly calculate a specific property without requiring the property ID parameter. For example: `pt2h（p,t)`
 
 ### Universal Functions (with o_id parameter)
-
-```txt 
-  ??(in1,in2,o_id)
-```
-
-* the first, second input parameters: the input property pairs
-* the third input parameters: the property ID of the calculated property - [o_id](#properties)
-* the return: the calculated property value of o_id
 
 The following 12 input pairs are implemented:
 
@@ -57,27 +49,7 @@ hs(h,s,o_id)
 px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id) sx(s,x,o_id)
 ```
 
-```javascript
-import init, { pt } from 'seuif97';
-
-await init();
-
-const p = 16.0;  // MPa
-const t = 535.1; // °C
-
-const h = pt(p, t, 4);     // kJ/kg
-const s = pt(p, t, 5);      // kJ/(kg·K)
-
-console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');
-console.log(`h: ${h.toFixed(3)} kJ/kg`);
-console.log(`s: ${s.toFixed(5)} kJ/(kg·K)`);
-```
-
 ### Convenience Functions (Direct Output)
-
-```txt
-  ??2?(in1,in2)
-```
 
 The following 12 input pairs are implemented:
 
@@ -87,11 +59,11 @@ ph2t(p, h)  ph2s(p, h)  ph2v(p, h)  ph2x(p, h)
 ps2t(p, s)  ps2h(p, s)  ps2v(p, s)  ps2x(p, s)  
 pv2t(p, v)  pv2h(p, v)  pv2s(p, v)  pv2x(p, v)  
 
-hs2p(h, s)  hs2t(h, s)  hs2v(h, s)  hs2x(h, s)    
-
 th2p(t, h)  th2s(t, h)  th2v(t, h)  th2x(t, h)   
 ts2p(t, s)  ts2h(t, s)  ts2v(t, s)  ts2x(t, s)  
 tv2p(t, v)  tv2h(t, v)  tv2s(t, v)  tv2x(t, v)  
+
+hs2p(h, s)  hs2t(h, s)  hs2v(h, s)  hs2x(h, s)    
 
 px2t(p, x)  px2h(p, x)  px2s(p, x)  px2v(p, x)
 tx2p(t, x)  tx2h(t, x)  tx2s(t, x)  tx2v(t, x)
@@ -100,17 +72,24 @@ hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
 sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```
 
+### Example
+
 ```javascript
-import init, { pt2h } from 'seuif97';
+import init, { pt,pt2s } from 'seuif97';
 
 await init();
 
 const p = 16.0;  // Pressure in MPa
 const t = 535.1; // Temperature in °C
 
-const h = pt2h(p, t);
+// universal function (with o_id parameter)
+const h = pt(p, t, 4);   
+// convenience function (Direct Output)
+const s = pt2s(p, t);
 
-console.log(`h = ${h.toFixed(3)} kJ/kg`);
+console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');
+console.log(`h: ${h.toFixed(3)} kJ/kg`);
+console.log(`s: ${s.toFixed(5)} kJ/(kg·K)`);
 ```
 
 **T-s Diagram**
