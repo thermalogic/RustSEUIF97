@@ -25,12 +25,7 @@
     "webassembly",
     "if97",
     "iapws-if97",
-    "thermodynamics",
-    "water",
-    "steam",
-    "properties",
-    "calculation",
-    "engineering"
+    "thermodynamics"
   ],
   "author": "Cheng Maohua <cmh@seu.edu.cn>",
   "license": "MIT",

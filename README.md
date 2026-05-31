@@ -178,7 +178,7 @@ int main(void)
 pip install seuif97
 ```
 
-### Usage**
+### Usage
 
 ```python
 from seuif97 import *
