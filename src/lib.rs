@@ -7,6 +7,7 @@
 
 mod algo;
 mod common;
+mod if97_core;
 mod r1;
 mod r2;
 mod r3;

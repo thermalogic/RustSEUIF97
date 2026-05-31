@@ -1,4 +1,4 @@
-!
+target/release/seuif97.dll!
 !  The Fortran example to call  the shared library
 !     make -f mfortran.mk
 !

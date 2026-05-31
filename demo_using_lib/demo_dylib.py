@@ -9,6 +9,7 @@ from platform import system
 from ctypes import CFUNCTYPE, cdll, c_double, c_int
 
 prototype = CFUNCTYPE(c_double, c_double, c_double, c_int)
+prototype_c = CFUNCTYPE(c_double, c_double, c_double)
 cdll_names = {'Linux': '../target/release/libseuif97.so',
               'Windows': '../target/release/seuif97.dll'}
 
@@ -24,8 +25,15 @@ def pt(p, t, pid):
     result = f(p, t, pid)
     return result
 
+def pt2s(p, t):
+    f = prototype_c(("pt2s", flib),)
+    result = f(p, t)
+    return result
 
 p = 16
 t = 535.1
 h = pt(p, t, 4)
-print("h=", h)
+s = pt2s(p, t)
+
+print("h=", h)  
+print("s=", s)

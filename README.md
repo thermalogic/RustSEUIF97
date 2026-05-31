@@ -40,7 +40,7 @@ The two types of API are provided in the package.
 
 The type of functions are provided in the package:
 
-```rust
+```txt
 struct o_id_region_args {
    o_id: i32,
    region: i32,
@@ -59,7 +59,7 @@ where
 
 The following 12 input pairs are implemented:
 
-```rust
+```txt
 pt<R>(p:f64,t:f64,o_id_region:R)->f64
 ph<R>(p:f64,h:f64,o_id_region:R)->f64
 ps<R>(p:f64,s:f64,o_id_region:R)->f64
@@ -80,7 +80,7 @@ sx(s:f64,x:f64,o_id:i32)->f64
 
 The following 12 input pairs are implemented:
 
-```rust
+```txt
 pt2h(p, t)  pt2s(p, t)  pt2v(p, t)  pt2x(p, t)
 ph2t(p, h)  ph2s(p, h)  ph2v(p, h)  ph2x(p, h)   
 ps2t(p, s)  ps2h(p, s)  ps2v(p, s)  ps2x(p, s)  
@@ -110,7 +110,7 @@ fn main() {
     // universal functions (with o_id parameter only)
     let h=pt(p,t,OH);
     // set the optional region value to fast calculate the property h at the region
-    let s=pt(p,t,OS(OV,1));
+    let s=pt(p,t,(OS,1));
     // convenience functions (Direct Output)
     let v=pt2v(p,t);
 
@@ -164,6 +164,7 @@ Interfaces and examples are provided in the [./demo_using_lib/](./demo_using_lib
 #define OH 4
 
 extern double pt(double p,double t,short o_id);
+extern double pt2s(double p,double t);
 
 int main(void)
 {

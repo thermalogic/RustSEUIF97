@@ -2,9 +2,12 @@
 /*
    The C example to call the shared library
    Windows with MinGW-W64：
-      gcc -o demo.exe demo.c -LC:/Windows/system/  -lseuif97
+      gcc -o demo.exe demo.c -L../target/release/  -lseuif97
    Linux
-      gcc demo.c -o demo  -L../target/release  -Wl,-rpath=../target/release  -lseuif97 -lm
+      gcc demo.c -o demo  -L../target/release  -Wl,-rpath=../target/release  -lseuif97 -
+     
+    make  
+
 */
 
 #include <stdlib.h>
@@ -12,9 +15,9 @@
 #include <string.h>
 
 #define OH 4
-#define OS 5
 
 extern double pt(double p,double t,short o_id);
+extern double pt2s(double p,double t);
 
 int main(void)
 {
@@ -24,7 +27,7 @@ int main(void)
     double h, s;
 
     h = pt(p, t, OH);
-    s = pt(p, t, OS);
+    s = pt2s(p, t);
     printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
     return EXIT_SUCCESS;
 }
