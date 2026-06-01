@@ -154,7 +154,7 @@ double pt2s(double p,double t);
 
 Interfaces and examples are provided in the [./demo_using_lib/](./demo_using_lib/) directory, supporting a wide range of languages and environments
 
-* C/C++, Python, C#, Java, Excel VBA, Rust, Fortran, Golang
+* C/C++, Python, C#, Java, Excel VBA, Rust, Fortran, Golang, JavaScript/TypeScript
 
 ```c
 #include <stdlib.h>
