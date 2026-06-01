@@ -117,7 +117,7 @@ console.log(`s: ${s.toFixed(5)} kJ/(kg·K)`);
 | Compressibility factor                |             |     z  |   OZ  |       14 |
 | Steam quality                         |             |     x  |   OX  |       15 |
 | Region                                |             |     r  |   OR  |       16 |
-| Isobaric cubic expansion coefficient   |     1/K     |   ɑv   |  OEC  |       17 |
+| Isobaric cubic expansion coefficient  |     1/K     |   ɑv   |  OEC  |       17 |
 | Isothermal compressibility            |    1/MPa    |    kT  |  OKT  |       18 |
 | Partial derivative (∂V/∂T)p           |  m³/(kg·K)  |(∂V/∂T)p| ODVDT |       19 |
 | Partial derivative (∂V/∂p)T           | m³/(kg·MPa) |(∂v/∂p)T| ODVDP |       20 |
