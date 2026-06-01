@@ -15,6 +15,6 @@ t = 535.1
 
 # Universal Functions (with o_id parameter))
 h = pt(p, t, OH)
-# Convenience Functions (Direct Output)
+# Direct Property Functions
 s = pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")

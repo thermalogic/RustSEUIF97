@@ -22,7 +22,7 @@ int main(void)
     double h, s;
     // Universal Functions (with o_id parameter))
     h = pt(p, t, OH);
-    //  Convenience Functions (Direct Output)
+    // Direct Property Functions
     s = pt2s(p, t);
     printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
     return EXIT_SUCCESS;

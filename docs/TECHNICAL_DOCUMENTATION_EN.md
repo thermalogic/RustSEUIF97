@@ -470,7 +470,7 @@ s = pt2s(p, t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
 
-#### 4.3.3 Python Convenience Functions
+#### 4.3.3 Python Direct Property Functions
 
 | Function | Description |
 |----------|-------------|

@@ -27,8 +27,6 @@ cargo build -r --features cdecl
 | JNA | Java 5+ | jna.jar |
 | Panama FFI | Java 22+ | None (built-in) |
 
----
-
 ## Method 1: JNA (Recommended)
 
 JNA is the most common way to call native libraries from Java. It's simple and has good cross-platform compatibility.
@@ -82,8 +80,6 @@ public class demo_jni_cdecl {
     }
 }
 ```
-
----
 
 ## Method 2: Panama FFI (Java 22+)
 

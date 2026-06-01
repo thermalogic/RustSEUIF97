@@ -377,7 +377,7 @@ pub fn sx(s: f64, x: f64, o_id: i32) -> f64 {
     }
 }
 
-// Convenience Functions (Direct Output)
+// Direct Property Functions
 
 /// pt2h(p,t) - Calculate specific enthalpy from pressure and temperature
 pub fn pt2h(p: f64, t: f64) -> f64 {

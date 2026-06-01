@@ -2,20 +2,19 @@
 
  ![docs.rs](https://img.shields.io/docsrs/seuif97)  [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml) ![Crates.io Version](https://img.shields.io/crates/v/seuif97) ![Crates.io Total Downloads](https://img.shields.io/crates/d/seuif97) ![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/seuif97)![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97) ![npm version](https://img.shields.io/npm/v/seuif97)![NPM Downloads](https://img.shields.io/npm/dt/seuif97)![NPM Downloads](https://img.shields.io/npm/dm/seuif97) 
 
-
 This is the Rust implementation of the high-speed IAPWS-IF97 package **SEUIF97** with **C, Python and WASM** bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
  
-Through the high-speed package, IAPWS-IF97 calculations achieve a **5x to 20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
+Through the high-speed package, IAPWS-IF97 calculations achieve a **5x - 20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
 
 **SEUIF97** also significantly outperforms various approximate equations and algorithms typically used for fast water and steam property calculations.
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
-
+ 
 ## Acceleration Methods
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-* Recurrence Method for Multi-Polynomial Evaluation: By utilizing the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves computational  performance.
+* Recurrence Method for Multi-Polynomial Evaluation: By utilizing the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts computational performance.
 
 Please refer to [The acceleration methods](./docs/the_acceleration_methods.md) for more details on the algorithm
 
@@ -29,15 +28,17 @@ cargo add seuif97
 
 The two types of API are provided in the package.
 
- 1.  Universal Functions (with o_id parameter and the optional region parameter)
-     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id,<region>)`, where `o_id` is the property `ID` of the calculated property, `the region` is optional.
+ 1.  Universal Functions (with o_id parameter and optional region parameter)
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id,<region>)`, where `o_id` specifies the output property, and `region` is optional.
 
- 2. Convenience Functions (Direct Output)
-    -  These functions directly calculate a specific property `(p,t,h,s,v,x)` from the input property pairs. without requiring the property ID parameter. For example: `pt2h(p,t)`
+ 2. Direct Property Functions
+    -  These functions directly calculate a specific property `(p,t,h,s,v,x)` from the input property pairs without requiring the property ID parameter. For example: `pt2h(p,t)`.
 
-###  Universal Functions (with o_id parameter and the optional region parameter)
+**C, Python and WASM** bindings support all functions of both types in Rust, except for the optional region parameter
 
-The type of functions are provided in the package:
+###  Universal Functions (with o_id parameter and optional region parameter)
+
+The following function signature is provided:
 
 ```txt
 struct o_id_region_args {
@@ -53,7 +54,7 @@ where
 * the first,second input parameters(f64) : the input property pairs
 * the third and fourth input parameters<R>:
     * the third : the property ID of the calculated property - [o_id](#properties)
-    * the fourth `option` parameter: the region of IAPWS-IF97
+    * the fourth (`optional`) parameter: IAPWS-IF97 region specification
 * the return(f64): the calculated property value of o_id
 
 The following 12 input pairs are implemented:
@@ -75,7 +76,7 @@ tx(p:f64,x:f64,o_id:i32)->f64
 hx(h:f64,x:f64,o_id:i32)->f64
 sx(s:f64,x:f64,o_id:i32)->f64
 ```
-### Convenience Functions (Direct Output)
+### Direct Property Functions
 
 The following 12 input pairs are implemented:
 
@@ -108,12 +109,12 @@ fn main() {
     let t:f64= 300.0-273.15;
     // universal functions (with o_id parameter only)
     let h=pt(p,t,OH);
-    // set the optional region value to fast calculate the property h at the region
+    // universal functions with explicit region for faster calculation
     let s=pt(p,t,(OS,1));
-    // convenience functions (Direct Output)
+    // direct property functions
     let v=pt2v(p,t);
 
-    println!("p={p:.6} t={t:.6} h={t:.6} s={s:.6} v={v:.6}");   
+    println!("p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");   
 }
 ```
 
@@ -138,13 +139,13 @@ cargo build -r --features stdcall
 cargo build -r  --target=i686-pc-windows-msvc --features stdcall
 ```
 
-The convenient compiled dynamic link libraries are provided in the [./dynamic_lib/](./dynamic_lib/)
+Pre-compiled dynamic link libraries are provided in the [./dynamic_lib/](./dynamic_lib/)
 
 * `seuif97.dll`: [Windows64](./dynamic_lib/windows_x64/)  and [Windows32](./dynamic_lib/windows_x86/) 
 
 * `libseuif97.so`: [Linux64](./dynamic_lib/linux_x64/)
 
-The shared library supports all functions of both types in Rust, except for the `optional region` parameter. For example in C：
+The shared library supports all functions of both types in Rust, except for the `optional region` parameter. For example in C:
 
 ```c
 double pt(double p,double t,short o_id);
@@ -171,7 +172,7 @@ int main(void)
     double t = 530.0;
     // universal functions (with o_id parameter only)
     double h = pt(p, t, OH);
-    // convenience functions (Direct Output)
+    // direct property functions
     double s = pt2s(p, t);
     printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
     return EXIT_SUCCESS;
@@ -180,7 +181,7 @@ int main(void)
 
 **Comprehensive Cross-language Examples**
 
-* [The Rankine Cycle Steady-state Simulator in Python，C++,Rust and Modelica](https://github.com/thermalogic/SimRankine)
+* [The Rankine Cycle Steady-state Simulator in Python, C++, Rust and Modelica](https://github.com/thermalogic/SimRankine)
  
 ## Python binding 
 
@@ -192,9 +193,6 @@ int main(void)
 pip install seuif97
 ```
 
-The Python package supports all functions of both types in Rust, except for the `optional region` parameter.
-
-
 ```python
 from seuif97 import *
 
@@ -204,7 +202,7 @@ p=16.0
 t=535.1
 # universal functions (with o_id parameter only)
 h=pt(p,t,OH)
-# convenience functions (Direct Output)
+# direct property functions
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
@@ -226,8 +224,6 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 * NPM package: [seuif97](https://www.npmjs.com/seuif97)
 
-The NPM ackage supports all functions of both types in Rust, except for the `optional region` parameter.
-
 ```javascript
 import init, { pt, pt2s } from 'seuif97';
 
@@ -237,7 +233,7 @@ const p = 16.0;  // MPa
 const t = 535.1; // °C
 // universal functions (with o_id parameter only)
 const h = pt(p, t, 4);     // kJ/kg
-// convenience functions (Direct Output)
+// direct property functions
 const s = pt2s(p, t);      // kJ/(kg·K)
 
 console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');
@@ -247,7 +243,7 @@ console.log(`S: ${s.toFixed(5)} kJ/(kg·K)`);
 
 ## Properties
 
-| Property                             |    Unit     | Symbol | o_id  | o_id(i32)|
+| Property                              |    Unit     | Symbol | o_id  | o_id(i32)|
 | ------------------------------------- | :---------: |:------:|------:|:--------:|
 | Pressure                              |     MPa     |      p |   OP  |       0  |
 | Temperature                           |     °C      |      t |   OT  |       1  |
@@ -284,4 +280,4 @@ console.log(`S: ${s.toFixed(5)} kJ/(kg·K)`);
 | Isothermal stress coefficient         |   kg/m³     |    βp  | OBETAP|       32 |
 | Fugacity coefficient                  |             |    fi  |   OFI |       33 |
 | Fugacity                              |     MPa     |     f* |   OFU |       34 |
-| Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|        35|
+| Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|       35 |

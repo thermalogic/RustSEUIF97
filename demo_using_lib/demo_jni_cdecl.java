@@ -18,7 +18,7 @@ interface seuif97 extends Library {
     seuif97 lib = (seuif97) Native.load("../target/release/seuif97", seuif97.class);
     // Universal Functions (with o_id parameter))
     public double pt(double p, double t, int o_id);
-    // Convenience Functions (without o_id parameter))
+    // Direct Property Functions (without o_id parameter)
     public double pt2s(double p, double t); 
 }
 

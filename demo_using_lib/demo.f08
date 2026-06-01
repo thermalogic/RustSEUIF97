@@ -29,7 +29,7 @@ program demo
    t = 535.0;
    ! Universal Functions (with o_id parameter))
    h = pt(p, t, 4);
-   ! Convenience Functions (Direct Output)
+   ! Direct Property Functions
    s = pt2s(p, t);
    write (*,'(A,F10.2,F10.2,F10.2,F10.4)')  "(p,t) ->h,s",p,t,h,s
 end program demo

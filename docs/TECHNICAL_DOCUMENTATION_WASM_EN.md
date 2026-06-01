@@ -200,7 +200,7 @@ These functions accept an input property pair plus a property ID to calculate th
 | `hx(h, x, o_id)` | Enthalpy (kJ/kg), Quality (0-1) | Property value | Saturation region only |
 | `sx(s, x, o_id)` | Entropy (kJ/(kg·K)), Quality (0-1) | Property value | Saturation region only |
 
-### 6.2 Convenience Functions (Direct Output)
+### 6.2 Direct Property Functions
 
 These functions directly calculate a specific property without requiring the property ID parameter.
 

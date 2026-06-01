@@ -4,7 +4,7 @@
 
 **SEUIF97 Version 2** is the Python API of the high-speed IAPWS-IF97 package in Rust. It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
 
-Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about 5-20x speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2 and 3.
+Through the high-speed package, IAPWS-IF97 calculations achieve a **5x - 20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
 
@@ -12,17 +12,17 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-* Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves performance.
+* Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts performance.
 
 ## API Reference
 
 The two types of API are provided in the package.
 
  1.  Universal Functions (with o_id parameter)
-     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` is the property ID of the calculated property.
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` specifies the output property.
 
- 2. Convenience Functions (Direct Output)
-    -  These functions directly calculate a specific property `(p,t,h,s,v,x)`  without requiring the property ID parameter. For example: `pt2h(p,t)`
+ 2. Direct Property Functions
+    -  These functions directly calculate a specific property `(p,t,h,s,v,x)` without requiring the property ID parameter. For example: `pt2h(p,t)`.
 
 ### Universal Functions (with o_id parameter) 
 
@@ -38,7 +38,7 @@ hs(h,s,o_id)
 px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id) sx(s,x,o_id)
 ```
 
-### Convenience Functions (Direct Output)
+### Direct Property Functions
 
 The following 12 input pairs are implemented:
 
@@ -70,9 +70,9 @@ OH=4
 
 p=16.0
 t=535.1
-#  Universal Functions (with o_id parameter)
+# universal functions (with o_id parameter)
 h=pt(p,t,OH)
-# Convenience Functions (Direct Output)
+# direct property functions
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
@@ -110,7 +110,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | Compressibility factor                |             |     z  |   OZ  |       14 |
 | Steam quality                         |             |     x  |   OX  |       15 |
 | Region                                |             |     r  |   OR  |       16 |
-| Isobaric cubic expansion coefficient   |     1/K     |   ɑv   |  OEC  |       17 |
+| Isobaric cubic expansion coefficient  |     1/K     |   ɑv   |  OEC  |       17 |
 | Isothermal compressibility            |    1/MPa    |    kT  |  OKT  |       18 |
 | Partial derivative (∂V/∂T)p           |  m³/(kg·K)  |(∂V/∂T)p| ODVDT |       19 |
 | Partial derivative (∂V/∂p)T           | m³/(kg·MPa) |(∂v/∂p)T| ODVDP |       20 |
@@ -129,10 +129,3 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 | Fugacity coefficient                  |             |    fi  |   OFI |       33 |
 | Fugacity                              |     MPa     |     f* |   OFU |       34 |
 | Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|       35 |
-
-
-
-
-
-
-

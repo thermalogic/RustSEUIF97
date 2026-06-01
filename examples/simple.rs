@@ -16,7 +16,7 @@ fn main() {
     let mut h = pt(p, t, OH);
     //  Universal Functions (with o_id parameter and region parameter)
     let s = pt(p, t, (OS, 1));
-    //  Convenience Functions (Direct Output)
+    // Direct Property Functions
     let mut v = pt2v(p, t);
     println!("pt: p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");   
 }
