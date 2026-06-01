@@ -34,9 +34,9 @@ The two types of API are provided in the package.
  2. Direct Property Functions
     -  These functions directly calculate a specific property `(p,t,h,s,v,x)` from the input property pairs without requiring the property ID parameter. For example: `pt2h(p,t)`.
 
-**C, Python and WASM** bindings support all functions of both types in Rust, except for the optional region parameter
+**C, Python and WASM** bindings support all functions of both types in Rust, **except for the `optional region` parameter**.
 
-###  Universal Functions (with o_id parameter and optional region parameter)
+###  Universal Functions (with o_id and `<optional>` region parameter)
 
 The following function signature is provided:
 
