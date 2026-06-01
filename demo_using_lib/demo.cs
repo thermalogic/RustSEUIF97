@@ -29,7 +29,9 @@ namespace demo_seuif97
             double p = 16.13;
             double t = 535.0;
             double h, s;
+            // Universal Functions (with o_id parameter))
             h = seuif97.pt(p, t, 4);
+            // Convenience Functions (Direct Output)
             s = seuif97.pt2s(p, t);
             Console.WriteLine("(p,t) h,s {0 :.00} {1:.0} {2:.000} {3:.000} ", p, t, h, s);
 

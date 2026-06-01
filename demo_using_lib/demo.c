@@ -1,11 +1,6 @@
 
 /*
    The C example to call the shared library
-   Windows with MinGW-W64：
-      gcc -o demo.exe demo.c -L../target/release/  -lseuif97
-   Linux
-      gcc demo.c -o demo  -L../target/release  -Wl,-rpath=../target/release  -lseuif97 -
-     
     make  
 
 */
@@ -25,8 +20,9 @@ int main(void)
     double p = 16.0;
     double t = 530.0;
     double h, s;
-
+    // Universal Functions (with o_id parameter))
     h = pt(p, t, OH);
+    //  Convenience Functions (Direct Output)
     s = pt2s(p, t);
     printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
     return EXIT_SUCCESS;
