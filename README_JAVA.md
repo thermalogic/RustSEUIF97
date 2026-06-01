@@ -1,6 +1,6 @@
-# Java Using the Shared Library building from Rust
+# Java Using Shared Libraries Built from Rust
 
-This document describes two methods for Java to call the Rust shared library, with support for **Windows, Linux, macOS** platforms.
+This document describes two methods for Java to call shared libraries built from Rust, with support for **Windows, Linux, macOS** platforms.
 
 1. **JNA (Java Native Access)** - Simple and widely compatible
 2. **Panama FFI** - Built-in from Java 22+, more modern approach
@@ -15,7 +15,7 @@ This document describes two methods for Java to call the Rust shared library, wi
 | **Linux** | `cargo build -r --features cdecl --target x86_64-unknown-linux-gnu` | `target/x86_64-unknown-linux-gnu/release/libseuif97.so` |
 | **macOS** | `cargo build -r --features cdecl --target x86_64-apple-darwin` | `target/x86_64-apple-darwin/release/libseuif97.dylib` |
 
-**Shorter command** (uses default target for your platform):
+**Alternative command** (uses default target for your platform):
 ```bash
 cargo build -r --features cdecl
 ```
@@ -87,7 +87,7 @@ public class demo_jni_cdecl {
 
 ## Method 2: Panama FFI (Java 22+)
 
-Panama FFI is the Foreign Function & Memory API built into Java 22+. No additional dependencies required.
+Panama FFI is Java 22+'s built-in Foreign Function & Memory API. No additional dependencies required.
 
 ### Steps
 

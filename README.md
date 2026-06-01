@@ -208,7 +208,6 @@ h=pt(p,t,OH)
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
-
 **The Comprehensive Examples in Python**
 
 * [T-S Diagram](./demo_using_lib/Diagram_T-S.py)
