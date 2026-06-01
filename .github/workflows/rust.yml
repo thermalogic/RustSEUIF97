@@ -2,9 +2,9 @@ name: Rust
 
 on:
   push:
-    branches: [ "seuif97-pypi-multi-platform" ]
+    branches: [ "seuif97-crate-so-pypi-wasm-com-funs" ]
   pull_request:
-    branches: [ "seuif97-pypi-multi-platform" ]
+    branches: [ "seuif97-crate-so-pypi-wasm-com-funs" ]
 
 env:
   CARGO_TERM_COLOR: always
