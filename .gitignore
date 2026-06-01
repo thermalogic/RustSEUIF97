@@ -3,13 +3,11 @@
 /python/seuif97.egg-info
 /dist
 /build
-/demo_npm/node_modules
-/npm/pkg
+/npm/pkg/
+/npm/package-lock.json
 *.exe
 *.pdb
 *.jar
 *.class
 *.mod
 *.wasm
-/npm/package-lock.json
-/demo_npm/package-lock.json

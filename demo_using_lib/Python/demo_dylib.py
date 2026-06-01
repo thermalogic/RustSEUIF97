@@ -10,8 +10,8 @@ from ctypes import CFUNCTYPE, cdll, c_double, c_int
 
 prototype = CFUNCTYPE(c_double, c_double, c_double, c_int)
 prototype_c = CFUNCTYPE(c_double, c_double, c_double)
-cdll_names = {'Linux': '../target/release/libseuif97.so',
-              'Windows': '../target/release/seuif97.dll'}
+cdll_names = {'Linux': '../../target/release/libseuif97.so',
+              'Windows': '../../target/release/seuif97.dll'}
 
 osplat = system()
 if (osplat == 'Linux'):

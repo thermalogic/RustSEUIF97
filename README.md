@@ -141,9 +141,9 @@ cargo build -r  --target=i686-pc-windows-msvc --features stdcall
 
 Pre-compiled dynamic link libraries are provided in the [./dynamic_lib/](./dynamic_lib/)
 
-* `seuif97.dll`: [Windows64](./dynamic_lib/windows_x64/)  and [Windows32](./dynamic_lib/windows_x86/) 
+* `seuif97.dll`: [windows_x64](./dynamic_lib/windows_x64/)  and [windows_x86](./dynamic_lib/windows_x86/) 
 
-* `libseuif97.so`: [Linux64](./dynamic_lib/linux_x64/)
+* `libseuif97.so`: [linux_x64](./dynamic_lib/linux_x64/)
 
 The shared library supports all functions of both types in Rust, except for the `optional region` parameter. For example in C:
 

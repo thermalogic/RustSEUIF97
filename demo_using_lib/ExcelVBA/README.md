@@ -17,7 +17,12 @@ cargo build -r  --target=i686-pc-windows-msvc --features stdcall
 
 ###  Copy the Dynamic Library to the Default Path
 
-Copy `seuif97.dll` in the [Windows/x86](../../shared_lib/Windows/x86) or [Windows/x64](../../shared_lib/Windows/x64) folder to a default path of Windows32/64's DLL :   `C:\Windows\system`
+Copy `seuif97.dll` to a default path of Windows32/64's DLL :   `C:\Windows\system`
+
+Pre-compiled dynamic link libraries `seuif97.dll`are provided in the [./dynamic_lib/](../../dynamic_lib/)
+
+*  [windows_x64](../../dynamic_lib/windows_x64/)  and [windows_x86](../../dynamic_lib/windows_x86/) 
+
 
 ## Excel Workbook
 

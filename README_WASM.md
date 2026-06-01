@@ -13,7 +13,7 @@ cargo build --release --features wasm --target wasm32-unknown-unknown
 ```
 
 ```bash
-wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir demo_wasm/pkg --target web
+wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir /demo_using_lib/demo_wasm/pkg --target web
 ```
 
 ## API Reference
@@ -42,7 +42,7 @@ console.log(`h = ${h.toFixed(3)} kJ/kg`);
 ```
 ### Using in Web Browsers
 
-* Example: [./demo_wasm](./demo_wasm/)
+* Example: [./demo_using_lib/demo_wasm](./demo_using_lib/demo_wasm/)
 
 ```bash
 python -m http.server 8080
@@ -60,7 +60,7 @@ http://localhost:8080/
 npm install seuif97
 ```
 
-* NPM Package example: [./demo_npm](./demo_npm/)
+* NPM Package example: [./demo_using_lib/demo_npm](./demo_using_lib/demo_npm/)
 
 ```javascript
 import init, { pt2h } from 'seuif97';
