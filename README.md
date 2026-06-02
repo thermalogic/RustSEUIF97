@@ -3,13 +3,13 @@
  ![docs.rs](https://img.shields.io/docsrs/seuif97)  [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml) ![Crates.io Version](https://img.shields.io/crates/v/seuif97) ![Crates.io Total Downloads](https://img.shields.io/crates/d/seuif97) ![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/seuif97)![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97) ![npm version](https://img.shields.io/npm/v/seuif97)![NPM Downloads](https://img.shields.io/npm/dt/seuif97)![NPM Downloads](https://img.shields.io/npm/dm/seuif97) 
 
 This is the Rust implementation of the high-speed IAPWS-IF97 package **SEUIF97** with **C, Python and WASM** bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
- 
+
 Through the high-speed package, IAPWS-IF97 calculations achieve a **5x - 20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
 
 **SEUIF97** also significantly outperforms various approximate equations and algorithms typically used for fast water and steam property calculations.
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
- 
+
 ## Acceleration Methods
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
@@ -17,6 +17,22 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 * Recurrence Method for Multi-Polynomial Evaluation: By utilizing the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts computational performance.
 
 Please refer to [The acceleration methods](./docs/the_acceleration_methods.md) for more details on the algorithm
+
+## What's New in the Rust Version
+
+The Rust version of SEUIF97 is a major upgrade over [the original C implementation](https://github.com/thermalogic/SEUIF97), delivering significant improvements in performance, functionality, and ecosystem support.
+
+| Feature | C Version | Rust Version |
+|---------|-----------|--------------|
+| **Calculation Speed** | Baseline | **3× faster** |
+| **Supported Properties** | 30 properties | **36 properties** (+6 new) |
+| **Package Distribution** | PyPI only | **Crates.io, PyPI, npm** |
+| **Supported OS (Pre-built)** | Windows, Linux | **Windows, Linux, macOS** |
+| **Universal Functions** | ✓ | ✓ |
+| **Direct Property Functions** | ✗ | **✓** (new) |
+| **Thermodynamic Process Calculation** | ✓ | ✗ (planned) |
+
+For detailed comparison and key improvements, see [Rust vs C Version Comparison](./docs/RUST_VS_C_COMPARISON.md).
 
 ## Install the crate
 
@@ -118,7 +134,7 @@ fn main() {
 }
 ```
 
-## C binding 
+## C Shared Library 
 
 **Building the dynamic link library**
 
@@ -139,7 +155,9 @@ cargo build -r --features stdcall
 cargo build -r  --target=i686-pc-windows-msvc --features stdcall
 ```
 
-Pre-compiled dynamic link libraries are provided in the [./dynamic_lib/](./dynamic_lib/)
+Pre-compiled dynamic link libraries for Windows, Linux and macOS are available in [GitHub Releases](https://github.com/thermalogic/RustSEUIF97/releases). 
+
+Legacy pre-compiled libraries are also provided in the [./dynamic_lib/](./dynamic_lib/) directory.
 
 * `seuif97.dll`: [windows_x64](./dynamic_lib/windows_x64/)  and [windows_x86](./dynamic_lib/windows_x86/) 
 
