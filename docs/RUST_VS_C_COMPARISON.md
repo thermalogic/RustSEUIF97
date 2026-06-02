@@ -6,21 +6,19 @@ The Rust version of SEUIF97 is a major upgrade over the original C implementatio
 
 | Feature | C Version | Rust Version |
 |---------|-----------|--------------|
-| **Calculation Speed** | Baseline | **3× faster** |
+| **Calculation Speed** | Baseline | **2-3× speedup** |
 | **Supported Properties** | 30 properties | **36 properties** (+6 new) |
 | **Package Distribution** | PyPI only | **Crates.io, PyPI, npm** |
-| **Supported OS (Pre-built)** | Windows, Linux | **Windows, Linux, macOS** |
 | **Universal Functions** | ✓ | ✓ |
 | **Direct Property Functions** | ✗ | **✓** (new) |
-| **Thermodynamic Process Calculation** | ✓ | ✗ |
+| **Thermodynamic Process Calculation** | ✓ | ✗ (planned)|
 
 ## Key Improvements
 
 ### 1. 2-3× Speedup in Calculation
 
-The Rust implementation achieves a 3× speedup over the C version through:
+The Rust implementation achieves a 2-3× speedup over the C version through:
 - Loop tiling optimization that unleashes full compiler auto-vectorization
-- Recurrence method for multi-polynomial evaluation, eliminating redundant calculations
 - Zero-cost abstractions and compile-time optimizations (LTO, fat codegen)
 
 ### 2. Extended Property Support: 30 → 36 Properties
@@ -41,17 +39,7 @@ The Rust version adds 6 new thermodynamic properties:
 | Python (PyPI) | ✓ | ✓ |
 | JavaScript/TypeScript (npm) | ✗ | ✓ |
 
-### 4. Cross-Platform Shared Library & Package Support
-
-| Platform | C Version | Rust Version |
-|----------|-----------|--------------|
-| **Windows** | ✓ Pre-built | ✓ Pre-built |
-| **Linux** | ✓ Pre-built | ✓ Pre-built |
-| **macOS** | ✗ Compile from source | ✓ Pre-built |
-
-The Rust version provides pre-compiled shared libraries for all three major operating systems (Windows, Linux, macOS) via GitHub Actions CI/CD. The C version requires macOS users to compile from source themselves.
-
-### 5. Dual API Design: Universal + Direct Functions
+### 4. Dual API Design: Universal + Direct Functions
 
 The Rust version introduces two complementary calculation approaches:
 
@@ -65,6 +53,6 @@ The C version only supports universal functions. The Rust version's direct prope
 - Compile-time type safety
 - Better IDE autocomplete support
 
-### 6. Thermodynamic Process Calculation
+### 5. Thermodynamic Process Calculation
 
 The C version supports thermodynamic process calculations (e.g., isentropic expansion, polytropic processes). This feature is not yet implemented in the Rust version but is planned for future releases.
