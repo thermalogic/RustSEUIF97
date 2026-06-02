@@ -1,0 +1,150 @@
+name: Build C Bindings Shared Libraries
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v2.3.6)'
+        required: true
+        type: string
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build-linux:
+    name: Linux x86_64 (cdecl)
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-unknown-linux-gnu
+
+      - name: Build cdecl shared library
+        run: cargo build --release --features cdecl --target x86_64-unknown-linux-gnu
+
+      - name: Rename shared library
+        run: |
+          mkdir -p artifacts
+          cp target/x86_64-unknown-linux-gnu/release/libseuif97.so artifacts/libseuif97-linux-x86_64-cdecl.so
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seuif97-linux-x86_64-cdecl
+          path: artifacts/libseuif97-linux-x86_64-cdecl.so
+
+  build-windows:
+    name: Windows x86_64 (cdecl + stdcall)
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        abi: [cdecl, stdcall]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Build ${{ matrix.abi }} shared library
+        run: cargo build --release --features ${{ matrix.abi }} --target x86_64-pc-windows-msvc
+
+      - name: Rename shared library
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path artifacts
+          Copy-Item target/x86_64-pc-windows-msvc/release/seuif97.dll artifacts/seuif97-windows-x86_64-${{ matrix.abi }}.dll
+          Copy-Item target/x86_64-pc-windows-msvc/release/seuif97.dll.lib artifacts/seuif97-windows-x86_64-${{ matrix.abi }}.lib
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seuif97-windows-x86_64-${{ matrix.abi }}
+          path: artifacts/
+
+  build-macos:
+    name: macOS x86_64 (cdecl)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-apple-darwin
+
+      - name: Build cdecl shared library
+        run: cargo build --release --features cdecl --target x86_64-apple-darwin
+
+      - name: Rename shared library
+        run: |
+          mkdir -p artifacts
+          cp target/x86_64-apple-darwin/release/libseuif97.dylib artifacts/libseuif97-macos-x86_64-cdecl.dylib
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seuif97-macos-x86_64-cdecl
+          path: artifacts/libseuif97-macos-x86_64-cdecl.dylib
+
+  build-macos-aarch64:
+    name: macOS ARM64 (cdecl)
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin
+
+      - name: Build cdecl shared library
+        run: cargo build --release --features cdecl --target aarch64-apple-darwin
+
+      - name: Rename shared library
+        run: |
+          mkdir -p artifacts
+          cp target/aarch64-apple-darwin/release/libseuif97.dylib artifacts/libseuif97-macos-aarch64-cdecl.dylib
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: seuif97-macos-aarch64-cdecl
+          path: artifacts/libseuif97-macos-aarch64-cdecl.dylib
+
+  release:
+    name: Publish Release
+    needs: [build-linux, build-windows, build-macos, build-macos-aarch64]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-assets
+
+      - name: Display structure
+        run: find release-assets -type f
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          name: Release ${{ github.event.inputs.version }}
+          files: |
+            release-assets/**/*.so
+            release-assets/**/*.dll
+            release-assets/**/*.lib
+            release-assets/**/*.dylib
+          generate_release_notes: true
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
