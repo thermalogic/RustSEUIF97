@@ -13,6 +13,7 @@ use crate::common::*;
 use crate::r2::*;
 
 /// Region 2 : pT_reg1 all properties
+#[inline(always)]
 pub fn pT_reg2(p: f64, T: f64, o_id: i32) -> f64 {
     match o_id {
         OST | ODV | OKV | OTC | OSDC | OPR | OTD => pair_transport_reg(p, T, o_id, PAIRS::pT, pT_thermal_reg2),
@@ -21,6 +22,7 @@ pub fn pT_reg2(p: f64, T: f64, o_id: i32) -> f64 {
 }
 
 /// Region 2 : pT_thermal_reg2 - the basic and extended properties
+#[inline(always)]
 pub fn pT_thermal_reg2(p: f64, T: f64, o_id: i32) -> f64 {
     match o_id {
         OV => pT2v_reg2(p, T),
@@ -35,11 +37,13 @@ pub fn pT_thermal_reg2(p: f64, T: f64, o_id: i32) -> f64 {
     }
 }
 
+#[inline(always)]
 pub fn pt_reg2(p: f64, t: f64, o_id: i32) -> f64 {
     let T = t + 273.15;
     pT_reg2(p, T, o_id)
 }
 
+#[inline(always)]
 pub fn ph_reg2(p: f64, h: f64, o_id: i32) -> f64 {
     let T: f64 = ph2T_reg2(p, h);
     if o_id == OT {
@@ -48,6 +52,7 @@ pub fn ph_reg2(p: f64, h: f64, o_id: i32) -> f64 {
     pT_reg2(p, T, o_id)
 }
 
+#[inline(always)]
 pub fn ps_reg2(p: f64, s: f64, o_id: i32) -> f64 {
     let T: f64 = ps2T_reg2(p, s);
     if o_id == OT {
@@ -56,6 +61,7 @@ pub fn ps_reg2(p: f64, s: f64, o_id: i32) -> f64 {
     pT_reg2(p, T, o_id)
 }
 
+#[inline(always)]
 pub fn hs_reg2(h: f64, s: f64, o_id: i32) -> f64 {
     let p: f64 = hs2p_reg2(h, s);
     if o_id == OP {
@@ -68,6 +74,7 @@ pub fn hs_reg2(h: f64, s: f64, o_id: i32) -> f64 {
 /// *  (p,v)  (t,v),(t,h),(t,s)
 
 /// Region 2 : (p,v)
+#[inline(always)]
 pub fn pv_reg2(p: f64, v: f64, o_id: i32) -> f64 {
     let T: f64 = pv2T_reg2(p, v);
     if o_id == OT {
@@ -77,6 +84,7 @@ pub fn pv_reg2(p: f64, v: f64, o_id: i32) -> f64 {
 }
 
 ///  Region 2 :(t,v)
+#[inline(always)]
 pub fn tv_reg2(t: f64, v: f64, o_id: i32) -> f64 {
     let T: f64 = t + K;
     let p: f64 = Tv2p_reg2(T, v);
@@ -87,6 +95,7 @@ pub fn tv_reg2(t: f64, v: f64, o_id: i32) -> f64 {
 }
 
 ///  Region 2 :(t,h)
+#[inline(always)]
 pub fn th_reg2(t: f64, h: f64, o_id: i32) -> f64 {
     let p: f64 = Th2p_reg2(t + 273.15, h);
     if o_id == OP {
@@ -96,6 +105,7 @@ pub fn th_reg2(t: f64, h: f64, o_id: i32) -> f64 {
 }
 
 /// Region 2 : (t, s)
+#[inline(always)]
 pub fn ts_reg2(t: f64, s: f64, o_id: i32) -> f64 {
     let p: f64 = Ts2p_reg2(t + 273.15, s);
     if o_id == OP {

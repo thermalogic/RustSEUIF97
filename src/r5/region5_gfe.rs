@@ -23,6 +23,7 @@ const no: [f64; 6] = [
 ];
 
 /// P36 Eq33 - The equation for the ideal-gas part of the dimensionless Gibbs free energy
+#[inline(always)]
 pub fn gamma0_reg5(pi: f64, tau: f64) -> f64 {
     let mut result: f64 = pi.ln();
     for i in 0..6 {
@@ -32,15 +33,18 @@ pub fn gamma0_reg5(pi: f64, tau: f64) -> f64 {
 }
 
 ///  region 5 38p
+#[inline(always)]
 pub fn gamma0_pi_reg5(pi: f64) -> f64 {
     return 1.0 / pi;
 }
 
 ///  region 5 38p
+#[inline(always)]
 pub fn gamma0_pipi_reg5(pi: f64) -> f64 {
     return -1.0 / pi / pi;
 }
 
+#[inline(always)]
 pub fn gamma0_tau_reg5(tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     for i in 0..6 {
@@ -49,6 +53,7 @@ pub fn gamma0_tau_reg5(tau: f64) -> f64 {
     result
 }
 
+#[inline(always)]
 pub fn gamma0_tautau_reg5(tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     for i in 0..6 {
@@ -57,6 +62,7 @@ pub fn gamma0_tautau_reg5(tau: f64) -> f64 {
     result
 }
 
+#[inline(always)]
 pub fn gamma0_pitau_reg5() -> f64 {
     return 0.0;
 }
@@ -73,6 +79,7 @@ pub const IJn: [(i32, i32, f64); 6] = [
     (3, 7, 0.37919454822955e-7),
 ];
 
+#[inline(always)]
 pub fn gammar_reg5(pi: f64, tau: f64) -> f64 {
     poly_powi(pi, tau, &IJn)
 }
@@ -80,23 +87,28 @@ pub fn gammar_reg5(pi: f64, tau: f64) -> f64 {
 // Table 41. The residual part gammar of the dimensionless Gibbs free energy and its derivatives a according to Eq. (34)
 
 /// The residual part gammar of the dimensionless Gibbs free energy
+#[inline(always)]
 pub fn gammar_pi_reg5(pi: f64, tau: f64) -> f64 {
     poly_i_powi(pi, tau, &IJn)
 }
 
+#[inline(always)]
 pub fn gammar_pipi_reg5(pi: f64, tau: f64) -> f64 {
     poly_ii_powi(pi, tau, &IJn)
 }
 
+#[inline(always)]
 pub fn gammar_tau_reg5(pi: f64, tau: f64) -> f64 {
     poly_j_powi(pi, tau, &IJn)
 }
 
 /// region5 39p
+#[inline(always)]
 pub fn gammar_tautau_reg5(pi: f64, tau: f64) -> f64 {
     poly_jj_powi(pi, tau, &IJn)
 }
 
+#[inline(always)]
 pub fn gammar_pitau_reg5(pi: f64, tau: f64) -> f64 {
     poly_ij_powi(pi, tau, &IJn)
 }

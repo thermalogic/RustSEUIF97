@@ -75,6 +75,7 @@ pub const IJn: [(i32, i32, f64); 43] = [
 ];
 
 /// Eq16 P13 Ideal-gas part of fundamental equation for region 2
+#[inline(always)]
 pub fn gamma0_reg2(pi: f64, tau: f64) -> f64 {
     let mut result = pi.ln(); //
     for i in 0..9 {
@@ -84,16 +85,19 @@ pub fn gamma0_reg2(pi: f64, tau: f64) -> f64 {
 }
 
 /// First derivative in pi of ideal-gas part of fundamental equation for region 2
+#[inline(always)]
 pub fn gamma0_pi_reg2(pi: f64) -> f64 {
     1.0 / pi
 }
 
 /// Second derivative in pi of ideal-gas part of fundamental equation for region 2
+#[inline(always)]
 pub fn gamma0_pipi_reg2(pi: f64) -> f64 {
     -1.0 / pi / pi
 }
 
 /// First derivative in tau of ideal-gas part of fundamental equation for region 2
+#[inline(always)]
 pub fn gamma0_tau_reg2(tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     for i in 0..9 {
@@ -103,6 +107,7 @@ pub fn gamma0_tau_reg2(tau: f64) -> f64 {
 }
 
 /// Second derivative in tau of ideal-gas part of fundamental equation for region 2
+#[inline(always)]
 pub fn gamma0_tautau_reg2(pi: f64, tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     for i in 0..9 {
@@ -112,43 +117,48 @@ pub fn gamma0_tautau_reg2(pi: f64, tau: f64) -> f64 {
 }
 
 /// Second derivative in pi and tau of ideal-gas part of fundamental equation for region 2
+#[inline(always)]
 pub fn gamma0_pitau_reg2() -> f64 {
     0.0
 }
 
 //   Eq(17), Page 13   Residual part of fundamental equation for region 2
+#[inline(always)]
 pub fn gammar_reg2(pi: f64, tau: f64) -> f64 {
     let steps: [(usize, usize); 3] = [(0, 19), (19, 38), (38, 43)];
     poly_powi_steps(pi, tau - 0.5, &IJn, &steps)
 }
 
 /// First derivative in pi of residual part of fundamental equation for region 2
+#[inline(always)]
 pub fn gammar_pi_reg2(pi: f64, tau: f64) -> f64 {
-    let mut result: f64 = 0.0;
-    let tau1: f64 = tau - 0.5;
     let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 43)];
     poly_i_powi_steps(pi, tau - 0.5, &IJn, &steps)
 }
 
 /// Second derivative in pi of residual part of fundamental equation for region 2
+#[inline(always)]
 pub fn gammar_pipi_reg2(pi: f64, tau: f64) -> f64 {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
     poly_ii_powi_steps(pi, tau - 0.5, &IJn, &steps)
 }
 
 /// First derivative in tau of residual part of fundamental equation for region 2
+#[inline(always)]
 pub fn gammar_tau_reg2(pi: f64, tau: f64) -> f64 {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
     poly_j_powi_steps(pi, tau - 0.5, &IJn, &steps)
 }
 
 /// Second derivative in tau of residual part of fundamental equation for region 2
+#[inline(always)]
 pub fn gammar_tautau_reg2(pi: f64, tau: f64) -> f64 {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
     poly_jj_powi_steps(pi, tau - 0.5, &IJn, &steps)
 }
 
 /// Second derivative in pi and tau of residual part of fundamental equation for region 2
+#[inline(always)]
 pub fn gammar_pitau_reg2(pi: f64, tau: f64) -> f64 {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
     poly_ij_powi_steps(pi, tau - 0.5, &IJn, &steps)
@@ -156,18 +166,21 @@ pub fn gammar_pitau_reg2(pi: f64, tau: f64) -> f64 {
 
 // -----------multiple ----------------------------
 
+#[inline(always)]
 pub fn polys_0_j_powi_reg2(pi: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
     let (gammar, gammar_tau) = polys_0_j_powi_steps(pi, tau - 0.5, &IJn, &steps);
     (gammar, gammar_tau)
 }
 
+#[inline(always)]
 pub fn polys_i_j_powi_reg2(pi: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
     let (gammar, gammar_tau) = polys_i_j_powi_steps(pi, tau - 0.5, &IJn, &steps);
     (gammar, gammar_tau)
 }
 
+#[inline(always)]
 pub fn polys_i_ii_ij_jj_powi_reg2(pi: f64, tau: f64) -> (f64, f64, f64, f64) {
     let steps: [(usize, usize); 4] = [(0, 11), (11, 22), (22, 33), (33, 43)];
     let (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau) =

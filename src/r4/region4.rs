@@ -17,6 +17,7 @@ pub fn t_sat(p: f64) -> f64 {
 }
 
 /// for TC_WATER && p == PC_WATER
+#[inline(always)]
 pub fn pT_reg4(p: f64, T: f64, o_id: i32) -> f64 {
     if T == TC_WATER && p == PC_WATER {
         return Td_reg3(TC_WATER, DC_WATER, o_id);
@@ -25,6 +26,7 @@ pub fn pT_reg4(p: f64, T: f64, o_id: i32) -> f64 {
     }
 }
 
+#[inline(always)]
 pub fn ph_reg4(p: f64, h: f64, o_id: i32) -> f64 {
     let h1: f64 = p2sat_water(p, OH);
     let h2: f64 = p2sat_steam(p, OH);
@@ -35,6 +37,7 @@ pub fn ph_reg4(p: f64, h: f64, o_id: i32) -> f64 {
      px_reg4(p, x, o_id)   
 }
 
+#[inline(always)]
 pub fn ps_reg4(p: f64, s: f64, o_id: i32) -> f64 {
     let s1: f64 = p2sat_water(p, OS);
     let s2: f64 = p2sat_steam(p, OS);
@@ -46,6 +49,7 @@ pub fn ps_reg4(p: f64, s: f64, o_id: i32) -> f64 {
    
 }
 
+#[inline(always)]
 pub fn hs_reg4(h: f64, s: f64, o_id: i32) -> f64 {
     // for T<623.15 only
     let T: f64 = hs2T_reg4(h, s);
@@ -78,6 +82,7 @@ pub fn hs_reg4(h: f64, s: f64, o_id: i32) -> f64 {
 ///   x: Steam quality
 
 ///  (p,v) ->x
+#[inline(always)]
 pub fn pv_reg4(p: f64, v: f64, o_id: i32) -> f64 {
     let x: f64 = pv2x_reg4(p, v);
     if o_id == OX {
@@ -87,6 +92,7 @@ pub fn pv_reg4(p: f64, v: f64, o_id: i32) -> f64 {
 }
 
 ///  (t,v)
+#[inline(always)]
 pub fn tv_reg4(t: f64, v: f64, o_id: i32) -> f64 {
     let x: f64 = Tv2x_reg4(t + 273.15, v);
     if o_id == OX {
@@ -96,6 +102,7 @@ pub fn tv_reg4(t: f64, v: f64, o_id: i32) -> f64 {
 }
 
 ///  (t,h)
+#[inline(always)]
 pub fn th_reg4(t: f64, h: f64, o_id: i32) -> f64 {
     let x: f64 = Th2x_reg4(t + 273.15, h);
     if o_id == OX {
@@ -105,6 +112,7 @@ pub fn th_reg4(t: f64, h: f64, o_id: i32) -> f64 {
 }
 
 ///  (t,s)
+#[inline(always)]
 pub fn ts_reg4(t: f64, s: f64, o_id: i32) -> f64 {
     let x: f64 = Ts2x_reg4(t + 273.15, s);
     if o_id == OX {

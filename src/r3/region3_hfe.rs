@@ -52,6 +52,7 @@ pub const IJn: [(i32, i32, f64); 39] = [
 ];
 
 /// Fundamental equation for region 3
+#[inline(always)]
 pub fn phi_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = n1 * delta.ln();
     let steps: [(usize, usize); 2] = [(0, 19), (19, 39)];
@@ -59,6 +60,7 @@ pub fn phi_reg3(delta: f64, tau: f64) -> f64 {
 }
 
 /// First derivative in delta of fundamental equation for region 3
+#[inline(always)]
 pub fn phi_delta_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = n1 / delta;
     let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
@@ -66,6 +68,7 @@ pub fn phi_delta_reg3(delta: f64, tau: f64) -> f64 {
 }
 
 /// Second derivative in delta of fundamental equation for region 3
+#[inline(always)]
 pub fn phi_deltadelta_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = -n1 / delta / delta;
     let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
@@ -73,6 +76,7 @@ pub fn phi_deltadelta_reg3(delta: f64, tau: f64) -> f64 {
 }
 
 /// First derivative in tau of fundamental equation for region 3
+#[inline(always)]
 pub fn phi_tau_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
@@ -80,6 +84,7 @@ pub fn phi_tau_reg3(delta: f64, tau: f64) -> f64 {
 }
 
 /// Second derivative in tau of fundamental equation for region 3
+#[inline(always)]
 pub fn phi_tautau_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
@@ -87,6 +92,7 @@ pub fn phi_tautau_reg3(delta: f64, tau: f64) -> f64 {
 }
 
 /// Second derivative in delta and tau of fundamental equation for region 3
+#[inline(always)]
 pub fn phi_deltatau_reg3(delta: f64, tau: f64) -> f64 {
     let mut result: f64 = 0.0;
     let steps: [(usize, usize); 3] = [(0, 17), (17, 34), (34, 39)];
@@ -94,12 +100,14 @@ pub fn phi_deltatau_reg3(delta: f64, tau: f64) -> f64 {
 }
 
 //---------- multiple -------------------------
+#[inline(always)]
 pub fn polys_0_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
     let (poly_phi, poly_tau) = polys_0_j_powi_steps(delta, tau, &IJn, &steps);
     (poly_phi + n1 * delta.ln(), poly_tau)
 }
 
+#[inline(always)]
 pub fn polys_i_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
     let (poly_delta, poly_tau) = polys_i_j_powi_steps(delta, tau, &IJn, &steps);
@@ -108,6 +116,7 @@ pub fn polys_i_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
 
 /// Fast recursion algorithm of phi and its derivatives
 ///          phi_delta, deltatau, deltadelta, tautau
+#[inline(always)]
 pub fn polys_i_ii_ij_jj_powi_reg3(delta: f64, tau: f64) -> (f64, f64, f64, f64) {
     let mut phi_delta: f64 = n1 / delta;
     let mut phi_deltadelta = -n1 / delta / delta;

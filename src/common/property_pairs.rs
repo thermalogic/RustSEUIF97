@@ -27,9 +27,6 @@ use crate::r3::region3::*;
 use crate::r4::region4::*;
 use crate::r5::region5::*;
 
-type REGION_EQ = fn(f64, f64) -> i32;
-type PROP_EQ = fn(f64, f64, i32) -> f64;
-
 pub enum PAIRS {
     pT,
     Td,
@@ -37,7 +34,10 @@ pub enum PAIRS {
 
 /// The common method to get the transport properties of input pairs for each region
 /// * (p,T) - 1,2,5; (T,d) -3
-pub fn pair_transport_reg(v1: f64, v2: f64, o_id: i32, pair: PAIRS, fn_thermal: PROP_EQ) -> f64 {
+pub fn pair_transport_reg<F>(v1: f64, v2: f64, o_id: i32, pair: PAIRS, fn_thermal: F) -> f64
+where
+    F: Fn(f64, f64, i32) -> f64,
+{
     match o_id {
         OST => match pair {
             PAIRS::Td => surface_tension(v1),
@@ -107,10 +107,18 @@ pub fn pair_transport_reg(v1: f64, v2: f64, o_id: i32, pair: PAIRS, fn_thermal: 
 }
 
 /// The common method of input pairs to get all properties
-pub fn pair_properties(
-    v1: f64, v2: f64, o_id: i32, fr: REGION_EQ, f1: PROP_EQ, f2: PROP_EQ, f3: PROP_EQ, f4: PROP_EQ, f5: PROP_EQ,
+pub fn pair_properties<FR, F1, F2, F3, F4, F5>(
+    v1: f64, v2: f64, o_id: i32, fr: FR, f1: F1, f2: F2, f3: F3, f4: F4, f5: F5,
     reg: i32,
-) -> f64 {
+) -> f64
+where
+    FR: Fn(f64, f64) -> i32,
+    F1: Fn(f64, f64, i32) -> f64,
+    F2: Fn(f64, f64, i32) -> f64,
+    F3: Fn(f64, f64, i32) -> f64,
+    F4: Fn(f64, f64, i32) -> f64,
+    F5: Fn(f64, f64, i32) -> f64,
+{
     let mut sub_region: i32 = reg;
     if reg == REGION_NONE {
         sub_region = fr(v1, v2)

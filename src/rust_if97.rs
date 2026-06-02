@@ -69,6 +69,7 @@ where
 /// println!("p={p:.6} t={t:.6} h={h:.6} s={s:.6}");    
 /// ```
 ///
+#[inline(always)]
 pub fn pt<R>(p: f64, t: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
@@ -98,6 +99,7 @@ where
 /// println!("p={p:.6} h={h:.6} t={t:.6} s={s:.6}");    
 /// ```
 ///
+#[inline(always)]
 pub fn ph<R>(p: f64, h: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
@@ -124,6 +126,7 @@ where
 /// let h=ps(p,s,(OH,1));
 /// println!("p={p:.6} s={s:.6} t={t:.6} h={h:6}");    
 /// ```
+#[inline(always)]
 pub fn ps<R>(p: f64, s: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
@@ -152,6 +155,7 @@ where
 /// println!("h={h:.6} s={s:.6} p={p:.6} t={t:.6}");
 /// ```
 ///   
+#[inline(always)]
 pub fn hs<R>(h: f64, s: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
@@ -178,6 +182,7 @@ where
 ///  println!("px: p={p:.6} x={x:.6} t={t:.6} h={h:.6}");
 ///```
 
+#[inline(always)]
 pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
     if p > P_MAX4 || p < P_MIN4 || x > 1.0 || x < 0.0 {
         return INVALID_VALUE as f64;
@@ -203,6 +208,7 @@ pub fn px(p: f64, x: f64, o_id: i32) -> f64 {
 ///  println!("tx: p={p:.6} x={x:.6} t={t:.6} h={h:.6}");
 /// ```
 ///
+#[inline(always)]
 pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
     match o_id {
         OT => return t,
@@ -234,6 +240,7 @@ pub fn tx(t: f64, x: f64, o_id: i32) -> f64 {
 /// let h=pv(p,v,(OH,1));
 /// println!("p={p:.6} v={v:.6} t={t:.6}");    
 /// ```
+#[inline(always)]
 pub fn pv<R>(p: f64, v: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
@@ -261,6 +268,7 @@ where
 /// let s=tv(t,v,(OS,1));
 /// println!("t={p:.6} v={v:.6} p={p:.6} s={s:.6}");    
 /// ```
+#[inline(always)]
 pub fn tv<R>(t: f64, v: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
@@ -288,6 +296,7 @@ where
 /// let s=th(t,h,(OS,1));
 /// println!("t={p:.6} h={h:.6} p={p:.6} s={s:.6}");    
 /// ```
+#[inline(always)]
 pub fn th<R>(t: f64, h: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
@@ -315,6 +324,7 @@ where
 /// let h=ts(t,s,(OH,1));
 /// println!("t={p:.6} s={s:.6} p={p:.6} h={h:.6}");    
 /// ```
+#[inline(always)]
 pub fn ts<R>(t: f64, s: f64, o_id_reg: R) -> f64
 where
     R: Into<o_id_region_args>,
@@ -341,6 +351,7 @@ where
 ///  println!("hx: h={p:.6} x={x:.6} p={p:.6} t={t:.6}");
 /// ```
 ///
+#[inline(always)]
 pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
     if h > H_MAX4 || h < H_MIN4 || x > 1.0 || x < 0.0 {
         return INVALID_VALUE as f64;
@@ -366,6 +377,7 @@ pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
 ///  println!("sx: s={p:.6} x={x:.6} p={p:.6} t={t:.6}");
 /// ```
 ///
+#[inline(always)]
 pub fn sx(s: f64, x: f64, o_id: i32) -> f64 {
     if s > S_MAX4 || s < S_MIN4 || x > 1.0 || x < 0.0 {
         return INVALID_VALUE as f64;
