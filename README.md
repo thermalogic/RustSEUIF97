@@ -26,9 +26,9 @@ cargo add seuif97
 
 ## API Reference
 
-The two types of API are provided in the package.
+The package provides two types of API.
 
- 1.  Universal Functions (with o_id parameter and optional region parameter)
+ 1.  Universal Functions (with o_id and optional region parameter)
      - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id,<region>)`, where `o_id` specifies the output property, and `region` is optional.
 
  2. Direct Property Functions

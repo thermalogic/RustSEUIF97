@@ -13,23 +13,23 @@ cargo build --release --features wasm --target wasm32-unknown-unknown
 ```
 
 ```bash
-wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir /demo_using_lib/demo_wasm/pkg --target web
+wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir demo_using_lib/demo_wasm/pkg --target web
 ```
 
 ## API Reference
 
-The two types of API are provided in the package.
+The package provides two types of API.
 
  1.  Universal Functions (with o_id parameter)
-     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` is the property ID of the calculated property.
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` specifies the output property.
 
  2. Direct Property Functions
-    -  These functions directly calculate a specific property `(p,t,h,s,v,x)`without requiring the property ID parameter. For example: `pt2h(p,t)`
+    -  These functions directly calculate a specific property `(p,t,h,s,v,x)` without requiring the property ID parameter. For example: `pt2h(p,t)`
 
 ### Basic Usage (ES Modules)
 
 ```javascript
-import { pt } from './pkg/seuif97.js';
+import init, { pt } from './pkg/seuif97.js';
 await init();
 
 const p = 16.0;  // MPa

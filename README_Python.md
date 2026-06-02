@@ -16,7 +16,7 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 ## API Reference
 
-The two types of API are provided in the package.
+The package provides two types of API.
 
  1.  Universal Functions (with o_id parameter)
      - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` specifies the output property.

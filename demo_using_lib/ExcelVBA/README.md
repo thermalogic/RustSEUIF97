@@ -1,8 +1,8 @@
 # Using SEUIF97 in Excel
 
-##  The Dynamic Library
+## The Dynamic Library
 
-### Build the  stdcall Dynamic Library for VBA
+### Build the stdcall Library for VBA
 
 * stdcall: Windows API functions(64bit)
 
@@ -15,25 +15,24 @@ cargo build -r --features stdcall
 cargo build -r  --target=i686-pc-windows-msvc --features stdcall
 ```
 
-###  Copy the Dynamic Library to the Default Path
+###  Copy the Dynamic Library to the System Directory
 
-Copy `seuif97.dll` to a default path of Windows32/64's DLL :   `C:\Windows\system`
+Copy `seuif97.dll` to a system directory (e.g., `C:\Windows\System32` for 64-bit Windows).
 
-Pre-compiled dynamic link libraries `seuif97.dll`are provided in the [./dynamic_lib/](../../dynamic_lib/)
+Pre-compiled dynamic link libraries `seuif97.dll` are provided in the [./dynamic_lib/](../../dynamic_lib/)
 
-*  [windows_x64](../../dynamic_lib/windows_x64/)  and [windows_x86](../../dynamic_lib/windows_x86/) 
+* [windows_x64](../../dynamic_lib/windows_x64/) and [windows_x86](../../dynamic_lib/windows_x86/)
 
 
 ## Excel Workbook
 
-You can choose one of the following two methods to start your Excel workbook
+Choose one of the following methods to set up your Excel workbook:
 
-* use [app_template_seuif97.xlsm](./app_template_seuif97.xlsm) file with `seuif97.bas`  inside to start your work directly</br></br>
+* Use the [app_template_seuif97.xlsm](./app_template_seuif97.xlsm) file, which already includes `seuif97.bas`, to start your work directly.
 
+* Import `seuif97.bas` to the Excel workbook without macro</br></br>
 
-* import `seuif97.bas` to the Excel workbook  without macro</br></br>
-
-   Press `ALT+F11`, then `File` ->` Import File` [seuif97.bas](./seuif97.bas) into the workbook
+   Press `ALT+F11`, then select `File` ->` Import File` and choose `seuif97.bas` from the file dialog.
 
   ![import_module](./img/import_module.jpg)
 

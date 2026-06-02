@@ -6,7 +6,7 @@ The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in R
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about **5-20x** speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2 and 3.
 
-This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties**(see [Properties](#properties)).
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport and derived properties** (see [Properties](#properties)).
 
 ## Acceleration Methods
 
@@ -27,10 +27,10 @@ npm install seuif97
 
 ## API Reference
 
-The two types of API are provided in the package.
+The package provides two types of API.
 
  1.  Universal Functions (with o_id parameter)
-     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` is the property ID of the calculated property.
+     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` specifies the output property.
 
  2. Direct Property Functions
     -  These functions directly calculate a specific property `(p,t,h,s,v,x)` without requiring the property ID parameter. For example: `pt2h(p,t)`
@@ -84,7 +84,7 @@ const t = 535.1; // Temperature in °C
 
 // universal function (with o_id parameter)
 const h = pt(p, t, 4);   
-// convenience function (Direct Output)
+// direct property function 
 const s = pt2s(p, t);
 
 console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');
