@@ -48,10 +48,7 @@ The Rust version introduces two complementary calculation approaches:
 | **Universal Functions** | Single function with property ID parameter | `pt(p, t, OH)` |
 | **Direct Property Functions** | Dedicated function for each property | `pt2h(p, t)` |
 
-The C version only supports universal functions. The Rust version's direct property functions provide:
-- Cleaner, more readable code
-- Compile-time type safety
-- Better IDE autocomplete support
+The C version only supports universal functions. The Rust version's direct property functions provide a more convenient way to calculate commonly used properties.
 
 ### 5. Thermodynamic Process Calculation
 
