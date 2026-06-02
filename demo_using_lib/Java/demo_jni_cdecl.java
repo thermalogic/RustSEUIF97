@@ -28,7 +28,9 @@ public class demo_jni_cdecl {
         double p = 16.0;
         double t = 540.0;
         double h,s;
+        //  the Universal Function
         h = seuif97.lib.pt(p, t, 4);
+        // the Direct Property Function  
         s = seuif97.lib.pt2s(p, t);
         System.out.printf("(p,t)->h,s: (%.1f %.1f) h: %.2f, s: %.2f\n", p, t, h, s);
     }

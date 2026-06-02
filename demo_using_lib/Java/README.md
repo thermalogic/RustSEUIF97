@@ -35,14 +35,13 @@ JNA is the most common way to call native libraries from Java. It's simple and h
 
 1. **Download JNA**
 
-   Download `jna.jar` from [Maven Central](https://mvnrepository.com/artifact/net.java.dev.jna/jna) and place it in the `demo_using_lib` directory.
+   Download `jna.jar` from [Maven Central](https://mvnrepository.com/artifact/net.java.dev.jna/jna) and place it in the `demo_using_lib/Java/` directory.
 
 2. **Compile and Run**
 
 **Windows:**
-```bash
-cd demo_using_lib
 
+```bash
 # Compile
 javac -cp jna.jar demo_jni_cdecl.java
 
@@ -52,8 +51,6 @@ java -cp jna.jar;. -Djava.library.path=../target/x86_64-pc-windows-msvc/release 
 
 **Linux:**
 ```bash
-cd demo_using_lib
-
 # Compile
 javac -cp jna.jar demo_jni_cdecl.java
 
@@ -83,7 +80,7 @@ public class demo_jni_cdecl {
 
 ## Method 2: Panama FFI (Java 22+)
 
-Panama FFI is Java 22+'s built-in Foreign Function & Memory API. No additional dependencies required.
+Panama FFI is Java 22+'s built-in Foreign Function & Memory API, requiring no additional dependencies.
 
 ### Steps
 
@@ -153,7 +150,7 @@ public class seuif97_panama_simple {
 | **Java Version** | 5+ | 22+ |
 | **Dependencies** | jna.jar required | None (built-in) |
 | **Code Complexity** | Low (declare interface only) | Slightly higher (manual configuration) |
-| **Performance** | Slightly slower (JNA wrapper) | Better (direct FFI) |
+| **Performance** | Slightly slower (JNA overhead) | Better (direct FFI) |
 | **Learning Curve** | Gentle | Steeper |
 | **Compatibility** | Excellent (all platforms) | Limited (Java 22+ only) |
 | **Maven Publishing** | Simple | Simple (no dependencies) |
