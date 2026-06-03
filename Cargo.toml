@@ -24,7 +24,7 @@ wasm = ["wasm-bindgen"]
 
 [dependencies.pyo3]
 version = "0.28.3"
-features = ["extension-module"]
+features = ["extension-module", "abi3-py38"]
 optional = true
 
 [dependencies.wasm-bindgen]
@@ -45,4 +45,7 @@ lto = "fat"
 codegen-units = 1
 panic = "abort"
 target-cpu = "native"  # 新增
+
+[package.metadata.maturin]
+name = "seuif97"
 
