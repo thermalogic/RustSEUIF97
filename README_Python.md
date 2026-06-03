@@ -2,9 +2,13 @@
 
  ![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97)
 
-**SEUIF97 Version 2** is the Python API of the high-speed IAPWS-IF97 package in Rust. It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
+**SEUIF97 Version 2** is the Python API of the high-speed IAPWS-IF97 package in Rust. 
 
-Through the high-speed package, IAPWS-IF97 calculations achieve a **5x - 20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
+SEUIF97 2, built on Rust, is a major upgrade over SEUIF97 1.* (built on C), delivering significant improvements in performance, functionality and ecosystem support.
+
+It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
+
+Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
 
@@ -14,9 +18,21 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 * Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts performance.
 
+## What's New in SEUIF97 2 
+
+| Feature                               | 1.*            | 2.*                        |
+| ------------------------------------- | -------------- | -------------------------- |
+| **Implementation**                    | C              | **Rust**                   |
+| **Calculation Speed**                 | Baseline       | **~2x speedup**            |
+| **Supported Properties**              | 30 properties  | **36 properties** (+6 new) |
+| **Supported OS**                      | Windows, Linux | **Windows, Linux, macOS**  |
+| **Universal Functions**               | ✓              | ✓                          |
+| **Direct Property Functions**         | ✗              | **✓** (new)                |
+| **Thermodynamic Process Calculation** | ✓              | ✗ (planned)                |
+
 ## API Reference
 
-The package provides two types of API.
+The package provides two types of APIs.
 
  1.  Universal Functions (with o_id parameter)
      - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` specifies the output property.
