@@ -1,3 +1,4 @@
+// The Go example to call the shared library: cdel
 package main
 /*
 double pt(double p, double t, int o_id);

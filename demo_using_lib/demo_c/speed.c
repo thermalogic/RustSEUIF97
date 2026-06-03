@@ -1,5 +1,5 @@
 /*
- * Benchmark: SEUIF97 C Shared Library Performance Test
+ * Benchmark: SEUIF97 C Shared Library(cdel) Performance Test
  */
 
 #include <stdio.h>

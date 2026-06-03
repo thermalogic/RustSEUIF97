@@ -1,6 +1,6 @@
 
 /*
-   The C example to call the shared library
+   The C example to call the shared library: cdel
     make  
 
 */
