@@ -49,6 +49,3 @@ The Rust version introduces two complementary calculation approaches:
 
 The C version only supports universal functions. The Rust version's direct property functions provide a more convenient way to calculate commonly used properties.
 
-### 5. Thermodynamic Process Calculation
-
-The C version supports thermodynamic process calculations (e.g., isentropic expansion, polytropic processes). This feature is not yet implemented in the Rust version but is planned for future releases.
