@@ -4,7 +4,7 @@
 
 **SEUIF97 Version 2** is the Python API of the high-speed IAPWS-IF97 package in Rust. 
 
-SEUIF97 2, built on Rust, is a major upgrade over SEUIF97 1.* (built on C), delivering significant improvements in performance, functionality and ecosystem support.
+SEUIF97 2, built on Rust, is a major upgrade over [SEUIF97 1.* (built on C)](https://pypi.org/project/seuif97/1.2.0/), delivering significant improvements in performance, functionality and ecosystem support.
 
 It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
 
@@ -26,8 +26,6 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 | **Calculation Speed**                 | Baseline       | **~2x speedup**            |
 | **Supported Properties**              | 30 properties  | **36 properties** (+6 new) |
 | **Supported OS**                      | Windows, Linux | **Windows, Linux, macOS**  |
-| **Universal Functions**               | ✓              | ✓                          |
-| **Direct Property Functions**         | ✗              | **✓** (new)                |
 | **Thermodynamic Process Calculation** | ✓              | ✗ (planned)                |
 
 ## API Reference
