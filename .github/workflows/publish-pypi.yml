@@ -21,7 +21,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
     steps:
     - uses: actions/checkout@v4
     - name: Build wheels
@@ -29,24 +29,66 @@ jobs:
       with:
         args: --release --out dist
         sccache: 'true'
-        manylinux: auto
+        manylinux: '2014'
     - name: Upload wheels
       uses: actions/upload-artifact@v4
       with:
         name: wheels-${{ matrix.os }}
         path: dist/*.whl
 
+  build_wheels_linux_arm:
+    name: Build wheels on Linux ARM64
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v3
+      with:
+        platforms: arm64
+    - name: Build wheels
+      uses: PyO3/maturin-action@v1
+      with:
+        target: aarch64-unknown-linux-gnu
+        args: --release --out dist
+        sccache: 'true'
+        manylinux: '2014'
+        docker-options: -e CFLAGS="-march=armv8-a"
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels-linux-arm64
+        path: dist/*.whl
+
+  build_wheels_macos_intel:
+    name: Build wheels on macOS Intel
+    runs-on: macos-12
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build wheels
+      uses: PyO3/maturin-action@v1
+      with:
+        args: --release --out dist
+        sccache: 'true'
+      env:
+        MACOSX_DEPLOYMENT_TARGET: '10.12'
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels-macos-intel
+        path: dist/*.whl
+
   build_wheels_macos_arm:
-    name: Build wheels on macos-latest-arm64
+    name: Build wheels on macOS ARM64
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
     - name: Build wheels
       uses: PyO3/maturin-action@v1
       with:
-        target: aarch64-apple-darwin
         args: --release --out dist
         sccache: 'true'
+      env:
+        MACOSX_DEPLOYMENT_TARGET: '11.0'
     - name: Upload wheels
       uses: actions/upload-artifact@v4
       with:
@@ -71,7 +113,7 @@ jobs:
 
   publish:
     name: Publish to PyPI
-    needs: [test, build_wheels, build_wheels_macos_arm, build_sdist]
+    needs: [test, build_wheels, build_wheels_linux_arm, build_wheels_macos_intel, build_wheels_macos_arm, build_sdist]
     runs-on: ubuntu-latest
     steps:
     - name: Download all artifacts
