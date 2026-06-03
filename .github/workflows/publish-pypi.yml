@@ -16,12 +16,9 @@ jobs:
     - name: Run tests
       run: cargo test --verbose
 
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+  build_wheels_linux:
+    name: Build wheels on Linux x86_64
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
     - name: Build wheels
@@ -33,7 +30,23 @@ jobs:
     - name: Upload wheels
       uses: actions/upload-artifact@v4
       with:
-        name: wheels-${{ matrix.os }}
+        name: wheels-linux-x86_64
+        path: dist/*.whl
+
+  build_wheels_windows:
+    name: Build wheels on Windows x86_64
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build wheels
+      uses: PyO3/maturin-action@v1
+      with:
+        args: --release --out dist
+        sccache: 'true'
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels-windows-x86_64
         path: dist/*.whl
 
   build_wheels_linux_arm:
@@ -60,13 +73,14 @@ jobs:
         path: dist/*.whl
 
   build_wheels_macos_intel:
-    name: Build wheels on macOS Intel
-    runs-on: macos-12
+    name: Build wheels on macOS Intel (cross-compile)
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
     - name: Build wheels
       uses: PyO3/maturin-action@v1
       with:
+        target: x86_64-apple-darwin
         args: --release --out dist
         sccache: 'true'
       env:
@@ -113,7 +127,7 @@ jobs:
 
   publish:
     name: Publish to PyPI
-    needs: [test, build_wheels, build_wheels_linux_arm, build_wheels_macos_intel, build_wheels_macos_arm, build_sdist]
+    needs: [test, build_wheels_linux, build_wheels_windows, build_wheels_linux_arm, build_wheels_macos_intel, build_wheels_macos_arm, build_sdist]
     runs-on: ubuntu-latest
     steps:
     - name: Download all artifacts

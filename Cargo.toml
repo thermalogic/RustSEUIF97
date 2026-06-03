@@ -1,6 +1,6 @@
 [package]
 name = "seuif97"
-version = "2.3.5"
+version = "2.3.4.2"
 edition = "2021"
 authors = ["Cheng Maohua <cmh@seu.edu.cn>"]
 description = "The high-speed IAPWS-IF97 package with C, Python and WASM bindings"
