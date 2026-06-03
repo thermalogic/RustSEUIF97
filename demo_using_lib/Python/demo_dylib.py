@@ -11,13 +11,14 @@ from ctypes import CFUNCTYPE, cdll, c_double, c_int
 prototype = CFUNCTYPE(c_double, c_double, c_double, c_int)
 prototype_c = CFUNCTYPE(c_double, c_double, c_double)
 cdll_names = {'Linux': '../../target/release/libseuif97.so',
-              'Windows': '../../target/release/seuif97.dll'}
+              'Windows': '../../target/release/seuif97.dll',
+              'Darwin': '../../target/release/libseuif97.dylib'}
 
 osplat = system()
-if (osplat == 'Linux'):
+if osplat in cdll_names:
     flib = cdll.LoadLibrary(cdll_names[osplat])
-elif (osplat == 'Windows'):
-    flib = cdll.LoadLibrary(cdll_names[osplat])
+else:
+    raise OSError(f"Unsupported platform: {osplat}")
 
 
 def pt(p, t, pid):
