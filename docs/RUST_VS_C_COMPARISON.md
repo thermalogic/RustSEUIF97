@@ -11,7 +11,6 @@ The Rust version of SEUIF97 is a major upgrade over the original C implementatio
 | **Package Distribution** | PyPI only | **Crates.io, PyPI, npm** |
 | **Universal Functions** | ✓ | ✓ |
 | **Direct Property Functions** | ✗ | **✓** (new) |
-| **Thermodynamic Process Calculation** | ✓ | ✗ (planned)|
 
 ## Key Improvements
 

@@ -304,4 +304,14 @@ mod seuif97 {
     fn sx2v(s: f64, x: f64) -> f64 {
         core_sx2v(s, x)
     }
+
+    #[pyfunction]
+    fn ishd(pi: f64, ti: f64, pe: f64) -> f64 {
+        core_ishd(pi, ti, pe)
+    }
+
+    #[pyfunction]
+    fn ief(pi: f64, ti: f64, pe: f64, te: f64) -> f64 {
+        core_ief(pi, ti, pe, te)
+    }
 }

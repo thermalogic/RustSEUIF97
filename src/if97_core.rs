@@ -248,3 +248,60 @@ pub fn core_sx2t(s: f64, x: f64) -> f64 { core_sx(s, x, OT) }
 pub fn core_sx2h(s: f64, x: f64) -> f64 { core_sx(s, x, OH) }
 #[inline(always)]
 pub fn core_sx2v(s: f64, x: f64) -> f64 { core_sx(s, x, OV) }
+
+/// Isentropic enthalpy drop: h(pi,ti) - h(pe, s=const)
+/// Returns INVALID_VALUE if input is invalid
+pub fn core_ishd(pi: f64, ti: f64, pe: f64) -> f64 {
+    if pi <= pe {
+        return INVALID_VALUE as f64;
+    }
+    let hi = core_pt(pi, ti, OH);
+    if hi <= 0.0 {
+        return INVALID_VALUE as f64;
+    }
+    let si = core_pt(pi, ti, OS);
+    if si < -500.0 {
+        return INVALID_VALUE as f64;
+    }
+    let he_isos = core_ps(pe, si, OH);
+    if he_isos < 0.0 {
+        return INVALID_VALUE as f64;
+    }
+    hi - he_isos
+}
+
+/// Isentropic efficiency (%) for superheated steam expansion
+/// Returns INVALID_VALUE if input is invalid
+pub fn core_ief(pi: f64, ti: f64, pe: f64, te: f64) -> f64 {
+    if pi <= pe || ti <= te {
+        return INVALID_VALUE as f64;
+    }
+    let hi = core_pt(pi, ti, OH);
+    if hi < -500.0 {
+        return INVALID_VALUE as f64;
+    }
+    let si = core_pt(pi, ti, OS);
+    if si < -500.0 {
+        return INVALID_VALUE as f64;
+    }
+    let he_isos = core_ps(pe, si, OH);
+    if he_isos < -500.0 {
+        return INVALID_VALUE as f64;
+    }
+    let ishd_val = hi - he_isos;
+
+    let he = core_pt(pe, te, OH);
+    if he < -500.0 {
+        return INVALID_VALUE as f64;
+    }
+    let se = core_pt(pe, te, OS);
+    if se < -1000.0 {
+        return INVALID_VALUE as f64;
+    }
+    if (se - si) <= 0.0 {
+        return INVALID_VALUE as f64;
+    }
+
+    let ahd = hi - he;
+    100.0 * ahd / ishd_val
+}

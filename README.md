@@ -8,7 +8,7 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedu
 
 **SEUIF97** also significantly outperforms various approximate equations and algorithms typically used for fast water and steam property calculations.
 
-This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)), and **thermodynamic process functions** (see [Thermodynamic Process Functions](#thermodynamic-process-functions)).
 
 ## Acceleration Methods
 
@@ -28,7 +28,6 @@ The Rust version of SEUIF97 is a major upgrade over [the original C implementati
 | **Package Distribution**              | PyPI only      | **Crates.io, PyPI, npm**   |
 | **Universal Functions**               | ✓              | ✓                          |
 | **Direct Property Functions**         | ✗              | **✓** (new)                |
-| **Thermodynamic Process Calculation** | ✓              | ✗ (planned)                |
 
 For detailed comparison and key improvements, see [Rust vs C Version Comparison](./docs/RUST_VS_C_COMPARISON.md).
 
@@ -38,9 +37,9 @@ For detailed comparison and key improvements, see [Rust vs C Version Comparison]
 cargo add seuif97
 ```
 
-## API Reference
+## Property Calculation Functions
 
-The package provides two types of API.
+The package provides two types of API for property calculation.
 
 1. Universal Functions (with o\_id and optional region parameter)
    - These functions accept an input property pair plus a property ID([o\_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id,<region>)`, where `o_id` specifies the output property, and `region` is optional.
@@ -113,6 +112,18 @@ hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
 sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```
 
+### Thermodynamic Process Functions
+
+The following thermodynamic process functions are implemented:
+
+```txt
+ishd(pi:f64, ti:f64, pe:f64) -> f64    // Isentropic enthalpy drop (kJ/kg)
+ief(pi:f64, ti:f64, pe:f64, te:f64) -> f64  // Isentropic efficiency (%)
+```
+
+- `ishd`: Calculates the isentropic enthalpy drop for steam expansion from inlet state `(pi, ti)` to outlet pressure `pe`.
+- `ief`: Calculates the isentropic efficiency (%) for superheated steam expansion from inlet state `(pi, ti)` to outlet state `(pe, te)`.
+
 ### Usage
 
 ```rust
@@ -129,6 +140,13 @@ fn main() {
     let v=pt2v(p,t);
 
     println!("p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");   
+
+    // thermodynamic process functions
+    let pi: f64 = 16.0;
+    let ti: f64 = 535.1;
+    let pe: f64 = 5.0;
+    let delta_h = ishd(pi, ti, pe);
+    println!("ishd: pi={pi} ti={ti} pe={pe} delta_h={delta_h:.3}");
 }
 ```
 

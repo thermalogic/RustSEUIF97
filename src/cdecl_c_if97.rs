@@ -361,3 +361,15 @@ pub unsafe extern "C" fn sx2h(s: f64, x: f64) -> f64 {
 pub unsafe extern "C" fn sx2v(s: f64, x: f64) -> f64 {
     core_sx2v(s, x)
 }
+
+/// double ishd(double pi,double ti,double pe) - Isentropic enthalpy drop
+#[no_mangle]
+pub unsafe extern "C" fn ishd(pi: f64, ti: f64, pe: f64) -> f64 {
+    crate::if97_core::core_ishd(pi, ti, pe)
+}
+
+/// double ief(double pi,double ti,double pe,double te) - Isentropic efficiency (%)
+#[no_mangle]
+pub unsafe extern "C" fn ief(pi: f64, ti: f64, pe: f64, te: f64) -> f64 {
+    crate::if97_core::core_ief(pi, ti, pe, te)
+}

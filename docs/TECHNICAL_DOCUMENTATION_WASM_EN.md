@@ -284,6 +284,39 @@ sx2h(s, x)  // Entropy + Quality → Enthalpy
 sx2v(s, x)  // Entropy + Quality → Specific Volume
 ```
 
+### 6.3 Thermodynamic Process Functions
+
+The following thermodynamic process functions are also available:
+
+| Function | Input Parameters | Output | Description |
+|----------|------------------|--------|-------------|
+| `ishd(pi, ti, pe)` | Inlet pressure (MPa), Inlet temperature (°C), Outlet pressure (MPa) | Enthalpy drop (kJ/kg) | Isentropic enthalpy drop |
+| `ief(pi, ti, pe, te)` | Inlet pressure (MPa), Inlet temperature (°C), Outlet pressure (MPa), Outlet temperature (°C) | Efficiency (%) | Isentropic efficiency |
+
+#### Usage Example
+
+```javascript
+import init, { ishd, ief } from 'seuif97';
+
+await init();
+
+// Inlet conditions
+const pi = 16.0;  // MPa
+const ti = 535.1; // °C
+
+// Outlet pressure
+const pe = 5.0;   // MPa
+
+// Isentropic enthalpy drop
+const deltaH = ishd(pi, ti, pe);
+console.log(`Isentropic enthalpy drop: ${deltaH.toFixed(3)} kJ/kg`);
+
+// Isentropic efficiency
+const te = 350.0; // °C (actual outlet temperature)
+const efficiency = ief(pi, ti, pe, te);
+console.log(`Isentropic efficiency: ${efficiency.toFixed(2)}%`);
+```
+
 ## 7. Property ID Constants
 
 The following property IDs can be used with the universal functions (`pt`, `ph`, `ps`, etc.):

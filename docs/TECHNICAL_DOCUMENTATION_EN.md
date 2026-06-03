@@ -22,6 +22,18 @@ SEUIF97 is a high-speed IAPWS-IF97 water and steam property calculation library 
 
 Supports **36 thermodynamic, transport, and derived properties**.
 
+### 1.4 Thermodynamic Process Functions
+
+The following thermodynamic process functions are also implemented:
+
+```txt
+ishd(pi, ti, pe) -> f64    // Isentropic enthalpy drop (kJ/kg)
+ief(pi, ti, pe, te) -> f64 // Isentropic efficiency (%)
+```
+
+- `ishd`: Calculates the isentropic enthalpy drop for steam expansion from inlet state `(pi, ti)` to outlet pressure `pe`.
+- `ief`: Calculates the isentropic efficiency (%) for superheated steam expansion from inlet state `(pi, ti)` to outlet state `(pe, te)`.
+
 ## 2. Technical Architecture
 
 ### 2.1 Project Structure
@@ -369,7 +381,14 @@ where
 | Fugacity | f* | OFU(34) | MPa |
 | Relative Pressure Coefficient | αp | OALFAP(35) | 1/K |
 
-#### 4.1.4 Usage Example
+#### 4.1.4 Thermodynamic Process Functions
+
+| Function | Input Parameters | Description | Unit |
+|----------|------------------|--------------|------|
+| `ishd(pi, ti, pe)` | Inlet pressure, Inlet temperature, Outlet pressure | Isentropic enthalpy drop | kJ/kg |
+| `ief(pi, ti, pe, te)` | Inlet pressure, Inlet temperature, Outlet pressure, Outlet temperature | Isentropic efficiency | % |
+
+### 4.1.5 Usage Example
 
 ```rust
 use seuif97::*;
@@ -385,6 +404,20 @@ fn main() {
     // Calculate entropy with specified region
     let s = pt(p, t, (OS, 1));
     println!("s = {:.3f} kJ/(kg·K)", s);
+
+    // Thermodynamic process functions
+    let pi: f64 = 16.0;
+    let ti: f64 = 535.1;
+    let pe: f64 = 5.0;
+    
+    // Isentropic enthalpy drop
+    let delta_h = ishd(pi, ti, pe);
+    println!("Isentropic enthalpy drop: {:.3f} kJ/kg", delta_h);
+    
+    // Isentropic efficiency
+    let te: f64 = 350.0;
+    let efficiency = ief(pi, ti, pe, te);
+    println!("Isentropic efficiency: {:.2}%", efficiency);
 }
 ```
 

@@ -4,7 +4,7 @@
 
 The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust, enabling fast and accurate thermodynamic property calculations for water and steam directly in the browser or Node.js. 
 
-This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties**.
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties**, plus **thermodynamic process functions** for isentropic enthalpy drop and efficiency calculations.
 
 ## Building the WASM file
 
@@ -16,7 +16,7 @@ cargo build --release --features wasm --target wasm32-unknown-unknown
 wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir demo_using_lib/demo_wasm/pkg --target web
 ```
 
-## API Reference
+## Property Calculation API
 
 The package provides two types of API.
 
@@ -26,7 +26,14 @@ The package provides two types of API.
  2. Direct Property Functions
     -  These functions directly calculate a specific property `(p,t,h,s,v,x)` without requiring the property ID parameter. For example: `pt2h(p,t)`
 
-### Basic Usage (ES Modules)
+## Thermodynamic Process Functions
+
+The following thermodynamic process functions are also available:
+
+- `ishd(pi, ti, pe)` - Isentropic enthalpy drop (kJ/kg)
+- `ief(pi, ti, pe, te)` - Isentropic efficiency (%)
+
+## Basic Usage (ES Modules)
 
 ```javascript
 import init, { pt } from './pkg/seuif97.js';
@@ -40,7 +47,7 @@ const h = pt(p, t, 4);
 console.log(`p = ${p} MPa, t = ${t} °C`);
 console.log(`h = ${h.toFixed(3)} kJ/kg`);
 ```
-### Using in Web Browsers
+## Using in Web Browsers
 
 * Example: [./demo_using_lib/demo_wasm](./demo_using_lib/demo_wasm/)
 

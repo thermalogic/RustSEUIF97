@@ -6,7 +6,7 @@ The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in R
  
 Through the high-speed package, the results of the IAPWS-IF97 are accurately produced at about **5-20x** speed-up compared to using the `powi()` of the Rust standard library in the `for` loop directly when computing the basic equations of Regions 1, 2 and 3.
 
-This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport and derived properties** (see [Properties](#properties)).
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport and derived properties** (see [Properties](#properties)), plus **thermodynamic process functions** for isentropic enthalpy drop and efficiency calculations.
 
 ## Acceleration Methods
 
@@ -25,7 +25,7 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 npm install seuif97
 ```
 
-## API Reference
+## Property Calculation API
 
 The package provides two types of API.
 
@@ -35,7 +35,19 @@ The package provides two types of API.
  2. Direct Property Functions
     -  These functions directly calculate a specific property `(p,t,h,s,v,x)` without requiring the property ID parameter. For example: `pt2h(p,t)`
 
-### Universal Functions (with o_id parameter)
+## Thermodynamic Process Functions
+
+The following thermodynamic process functions are also available:
+
+```javascript
+ishd(pi, ti, pe)        // Isentropic enthalpy drop (kJ/kg)
+ief(pi, ti, pe, te)     // Isentropic efficiency (%)
+```
+
+- `ishd`: Calculates the isentropic enthalpy drop for steam expansion from inlet state `(pi, ti)` to outlet pressure `pe`.
+- `ief`: Calculates the isentropic efficiency (%) for superheated steam expansion from inlet state `(pi, ti)` to outlet state `(pe, te)`.
+
+## Universal Functions (with o_id parameter)
 
 The following 12 input pairs are implemented:
 
@@ -49,7 +61,7 @@ hs(h,s,o_id)
 px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id) sx(s,x,o_id)
 ```
 
-### Direct Property Functions
+## Direct Property Functions
 
 The following 12 input pairs are implemented:
 
@@ -72,7 +84,7 @@ hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
 sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```
 
-### Example
+## Example
 
 ```javascript
 import init, { pt,pt2s } from 'seuif97';

@@ -301,3 +301,13 @@ pub fn sx2h(s: f64, x: f64) -> f64 {
 pub fn sx2v(s: f64, x: f64) -> f64 {
     core_sx2v(s, x)
 }
+
+#[wasm_bindgen]
+pub fn ishd(pi: f64, ti: f64, pe: f64) -> f64 {
+    core_ishd(pi, ti, pe)
+}
+
+#[wasm_bindgen]
+pub fn ief(pi: f64, ti: f64, pe: f64, te: f64) -> f64 {
+    core_ief(pi, ti, pe, te)
+}

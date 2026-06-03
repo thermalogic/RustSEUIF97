@@ -10,7 +10,7 @@ It is suitable for computation-intensive calculations, such as heat cycle calcul
 
 Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
 
-This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)).
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)), plus **thermodynamic process functions** for isentropic enthalpy drop and efficiency calculations.
 
 ## Acceleration Methods
 
@@ -26,9 +26,8 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 | **Calculation Speed**                 | Baseline       | **~2x speedup**            |
 | **Supported Properties**              | 30 properties  | **36 properties** (+6 new) |
 | **Supported OS**                      | Windows, Linux | **Windows, Linux, macOS**  |
-| **Thermodynamic Process Calculation** | ✓              | ✗ (planned)                |
 
-## API Reference
+## Property Calculation API
 
 The package provides two types of APIs.
 
@@ -74,6 +73,17 @@ tx2p(t, x)  tx2h(t, x)  tx2s(t, x)  tx2v(t, x)
 hx2p(h, x)  hx2t(h, x)  hx2s(h, x)  hx2v(h, x)
 sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 ```
+## Thermodynamic Process Functions
+
+The following thermodynamic process functions are also available:
+
+```python
+ishd(pi, ti, pe)        # Isentropic enthalpy drop (kJ/kg)
+ief(pi, ti, pe, te)     # Isentropic efficiency (%)
+```
+
+- `ishd`: Calculates the isentropic enthalpy drop for steam expansion from inlet state `(pi, ti)` to outlet pressure `pe`.
+- `ief`: Calculates the isentropic efficiency (%) for superheated steam expansion from inlet state `(pi, ti)` to outlet state `(pe, te)`.
 
 ## Usage 
 
