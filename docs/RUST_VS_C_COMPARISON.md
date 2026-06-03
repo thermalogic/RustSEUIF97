@@ -15,9 +15,9 @@ The Rust version of SEUIF97 is a major upgrade over the original C implementatio
 
 ## Key Improvements
 
-### 1. 2-3× Speedup in Calculation
+### 1. ~2× Speedup in Calculation
 
-The Rust implementation achieves a 2-3× speedup over the C version through:
+The Rust implementation achieves a ~2× speedup over the C version through:
 - Native `powi()` function: After compiler optimization, integer power calculations are extremely fast
 - Loop tiling optimization that unleashes full compiler auto-vectorization
 - Zero-cost abstractions and compile-time optimizations (LTO, fat codegen)
