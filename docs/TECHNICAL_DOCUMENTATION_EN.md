@@ -2,12 +2,13 @@
 
 ## 1. Project Overview
 
-SEUIF97 is a high-speed IAPWS-IF97 water and steam property calculation library implemented in Rust. It is specifically designed for computation-intensive tasks such as non-stationary process simulation, on-line process monitoring, and optimization.
+SEUIF97 is a high-speed IAPWS-IF97 water and steam property calculation library implemented in Rust. It directly accelerates the IAPWS-IF97 formula evaluation using two core algorithms—recurrence polynomial evaluation and loop tiling—achieving 5x to 20x speedup over existing IAPWS-IF97 formula-based implementations (including FreeSteam which uses the repeated squaring method). Unlike TTSE and SBTL methods which avoid direct formula evaluation and support limited input parameter pairs, SEUIF97 maintains full IAPWS-IF97 formula accuracy while supporting all input parameter pairs required by computation-intensive applications.
 
 ### 1.1 Core Performance Advantages
 
 - **Performance Improvement**: Achieves **5x to 20x speedup** compared to direct implementations using Rust standard library's `powi()` for Region 1, 2, and 3 basic equations
-- **Significantly outperforms** various approximate equations and algorithms for fast water and steam property calculations
+- **Faster than existing IAPWS-IF97 formula-based implementations**, including FreeSteam which uses the repeated squaring method for integer power computation
+- **Full formula accuracy**: Directly evaluates IAPWS-IF97 formulas, unlike TTSE/SBTL which use approximate table lookup methods
 
 ### 1.2 Supported Input Parameter Pairs
 
@@ -41,44 +42,49 @@ ief(pi, ti, pe, te) -> f64 // Isentropic efficiency (%)
 ```
 RustSEUIF97/
 ├── src/
-│   ├── algo/              # Core algorithm modules
-│   │   ├── polynomial.rs          # Polynomial calculation
-│   │   ├── polynomial_steps.rs    # Step-by-step polynomial (acceleration core)
+│   ├── algo/                      # Core algorithm modules
+│   │   ├── mod.rs                 # Algorithm module exports
+│   │   ├── polynomial.rs          # Direct polynomial calculation
+│   │   ├── polynomial_steps.rs    # Loop tiling polynomial (acceleration core)
 │   │   └── root.rs                # Root-finding algorithms
-│   ├── common/            # Common components
+│   ├── common/                    # Common components
 │   │   ├── boundaries.rs          # Region boundary determination
 │   │   ├── constant.rs            # Physical constants
 │   │   ├── property_id.rs         # Property ID definitions
 │   │   ├── property_pairs.rs      # Property pair calculations
 │   │   ├── region.rs              # Region determination logic
 │   │   └── transport_further.rs   # Transport property calculations
-│   ├── r1/                # Region 1 (Liquid water region)
-│   ├── r2/                # Region 2 (Superheated vapor region)
-│   ├── r3/                # Region 3 (Near critical point region)
-│   ├── r4/                # Region 4 (Saturation region)
-│   ├── r5/                # Region 5 (High temperature region)
-│   ├── cdecl_c_if97.rs    # C interface (cdecl)
-│   ├── stdcall_c_if97.rs  # C interface (stdcall)
-│   ├── python_if97.rs     # Python bindings
-│   ├── rust_if97.rs       # Rust API
-│   └── lib.rs             # Library entry point
-├── demo_using_lib/        # Multi-language example code
-├── dynamic_lib/           # Pre-compiled dynamic libraries
-├── benches/              # Performance benchmarks
-├── examples/              # Rust examples
-└── tests/                 # Test suite
+│   ├── r1/                        # Region 1 (Liquid water region)
+│   ├── r2/                        # Region 2 (Superheated vapor region)
+│   ├── r3/                        # Region 3 (Near critical point region)
+│   ├── r4/                        # Region 4 (Saturation region)
+│   ├── r5/                        # Region 5 (High temperature region)
+│   ├── if97_core.rs               # Core IAPWS-IF97 implementation
+│   ├── cdecl_c_if97.rs            # C interface (cdecl)
+│   ├── stdcall_c_if97.rs          # C interface (stdcall)
+│   ├── python_if97.rs             # Python bindings
+│   ├── rust_if97.rs               # Rust API
+│   ├── wasm_if97.rs               # WebAssembly bindings
+│   └── lib.rs                     # Library entry point
+├── demo_using_lib/                # Multi-language example code
+├── dynamic_lib/                   # Pre-compiled dynamic libraries
+├── benches/                       # Performance benchmarks
+├── examples/                      # Rust examples
+└── tests/                         # Test suite
 ```
 
 ### 2.2 Module Responsibilities
 
 | Module | Responsibility | Key Files |
 |--------|----------------|-----------|
-| **algo** | Core mathematical algorithm implementation | polynomial_steps.rs, root.rs |
-| **common** | Common constants, boundary determination, property definitions | constant.rs, boundaries.rs, region.rs |
+| **algo** | Core mathematical algorithm implementation | polynomial_steps.rs, polynomial.rs, root.rs |
+| **common** | Common constants, boundary determination, property definitions | constant.rs, boundaries.rs, region.rs, property_pairs.rs |
 | **r1-r5** | Property calculations for each thermodynamic region | regionX_pT.rs, regionX_ph_ps_hs.rs, etc. |
+| **if97_core** | Core IAPWS-IF97 implementation used by all language bindings | if97_core.rs |
 | **cdecl_c_if97** | C interface (cdecl calling convention) | cdecl_c_if97.rs |
 | **stdcall_c_if97** | C interface (stdcall calling convention) | stdcall_c_if97.rs |
 | **python_if97** | Python bindings | python_if97.rs |
+| **wasm_if97** | WebAssembly bindings | wasm_if97.rs |
 | **rust_if97** | Rust high-level API | rust_if97.rs |
 
 ### 2.3 Thermodynamic Region Modules
@@ -166,15 +172,21 @@ The project implements the 5 thermodynamic regions of the IAPWS-IF97 standard. T
 
 ### 3.1 Acceleration Techniques
 
-SEUIF97 employs two core acceleration techniques:
+SEUIF97 employs two core acceleration techniques that directly optimize IAPWS-IF97 formula evaluation:
 
 **Design Principles**:
-1. **Loop Tiling**: Splits a single loop into multiple steps, improving cache locality and SIMD vectorization potential
-2. **Recursive Evaluation**: Directly derives derivative values by dividing by base values vi/vj, computing polynomial values and their derivatives simultaneously, avoiding redundant calculations
+1. **Loop Tiling**: Splits a single loop into multiple steps, improving cache locality and enabling LLVM's auto-vectorizer to generate SIMD instructions
+2. **Recurrence Polynomial Evaluation**: Computes polynomial values and their partial derivatives simultaneously in a single traversal, eliminating redundant exponentiation operations
 
 #### 3.1.1 Loop Tiling Method
 
-Splits a single loop into multiple small steps, fully leveraging compiler optimization capabilities and surpassing single-loop performance.
+The loop tiling method splits the polynomial summation loop into multiple smaller loops (tiles). This enables the Rust compiler and LLVM optimizer to:
+- Automatically unroll inner tile loops to reduce loop overhead
+- Apply SIMD vectorization to independent floating-point operations within tiles
+- Optimize register allocation for intermediate values, minimizing memory spills
+- Reorder instructions to maximize pipeline utilization
+
+For Region 1 (34 terms), the loop is split into three tiles: `(0, 16)`, `(16, 26)`, `(26, 34)`.
 
 ```rust
 #[inline(always)]
@@ -183,7 +195,7 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
     let mut poly_i: f64 = 0.0;
     let mut poly_j: f64 = 0.0;
 
-    // Loop splitting for better cache locality or SIMD potential
+    // Loop tiling for better cache locality and SIMD vectorization
     for m in 0..steps.len() {
         for k in steps[m].0..steps[m].1 {
             item = IJn[k].2 * vi.powi(IJn[k].0) * vj.powi(IJn[k].1);
@@ -198,38 +210,49 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
 }
 ```
 
-#### 3.1.2 Recurrence Method for Multi-Polynomial Evaluation
+#### 3.1.2 Recurrence Polynomial Evaluation
 
-By utilizing the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base, eliminating redundant calculations and significantly improving computational performance.
+The IAPWS-IF97 formulation uses polynomials of the form:
 
-##### 3.1.2.1 IAPWS-IF97 Basic Equations
+$$\gamma(\pi,\tau) = \sum_{i=1}^{N} n_i \, \pi^{I_i} \, \tau^{J_i}$$
 
-The basic equation for Region 1 is based on the **Gibbs free energy**:
+The partial derivatives share the same polynomial structure with modified coefficients:
 
-$$\frac{g(p,T)}{RT} = \gamma(\pi,\tau) = \sum_{i=1}^{34} n_i (7.1-\pi)^{I_i} (\tau-1.222)^{J_i}$$
+$$\frac{\partial \gamma}{\partial \pi} = \sum_{i=1}^{N} n_i \, I_i \, \pi^{I_i-1} \, \tau^{J_i}$$
+$$\frac{\partial \gamma}{\partial \tau} = \sum_{i=1}^{N} n_i \, J_i \, \pi^{I_i} \, \tau^{J_i-1}$$
 
-where:
-- $\pi = p/p^{*}$
-- $\tau = T^{*}/T$
+By computing the base term $n_i \, \pi^{I_i} \, \tau^{J_i}$ once and deriving the derivatives via multiplication by $I_i$ and $J_i$, redundant exponentiation operations are eliminated.
 
-Derivation of specific internal energy:
+##### 3.1.2.1 Available Polynomial Functions
 
-$$u = g - T \left( \frac{\partial g}{\partial T} \right)_p - p \left( \frac{\partial g}{\partial p} \right)_T$$
+The `polynomial_steps.rs` module provides multiple polynomial evaluation functions for different derivative combinations:
 
-$$\frac{u(\pi, \tau)}{RT} = \tau \gamma_{\tau} - \pi \gamma_{\pi}$$
+| Function | Computes | Use Case |
+|----------|----------|----------|
+| `poly_powi_steps` | $\gamma$ | Basic polynomial value |
+| `poly_i_powi_steps` | $\partial\gamma/\partial\pi$ | First derivative w.r.t. $\pi$ |
+| `poly_ii_powi_steps` | $\partial^2\gamma/\partial\pi^2$ | Second derivative w.r.t. $\pi$ |
+| `poly_j_powi_steps` | $\partial\gamma/\partial\tau$ | First derivative w.r.t. $\tau$ |
+| `poly_jj_powi_steps` | $\partial^2\gamma/\partial\tau^2$ | Second derivative w.r.t. $\tau$ |
+| `poly_ij_powi_steps` | $\partial^2\gamma/\partial\pi\partial\tau$ | Mixed derivative |
+| `polys_0_j_powi_steps` | $(\gamma, \partial\gamma/\partial\tau)$ | Simultaneous value + $\tau$ derivative |
+| `polys_i_j_powi_steps` | $(\partial\gamma/\partial\pi, \partial\gamma/\partial\tau)$ | Both first derivatives |
+| `polys_i_ij_powi_steps` | $(\partial\gamma/\partial\pi, \partial^2\gamma/\partial\pi\partial\tau)$ | $\pi$ derivative + mixed |
+| `polys_i_ii_powi_steps` | $(\partial\gamma/\partial\pi, \partial^2\gamma/\partial\pi^2)$ | $\pi$ derivative + second $\pi$ |
+| `polys_i_ii_ij_jj_powi_steps` | $(\partial\gamma/\partial\pi, \partial^2\gamma/\partial\pi^2, \partial^2\gamma/\partial\pi\partial\tau, \partial^2\gamma/\partial\tau^2)$ | All derivatives for $c_p, c_v, w$ |
 
-##### 3.1.2.2 Implementation Code
+##### 3.1.2.2 Three-Layer Architecture
+
+SEUIF97 follows a modular three-layer architecture:
 
 ```rust
-// --- Module: algo/polynomial_steps.rs ---
-// 1. Optimized kernel: Uses loop splitting (steps) and aggressive inlining
+// --- Layer 1: Optimized Kernel (algo/polynomial_steps.rs) ---
+// Core loop tiling + recurrence evaluation
 #[inline(always)]
 pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
     let mut item: f64 = 0.0;
     let mut poly_i: f64 = 0.0;
     let mut poly_j: f64 = 0.0;
-
-    // Loop splitting for better cache locality or SIMD potential
     for m in 0..steps.len() {
         for k in steps[m].0..steps[m].1 {
             item = IJn[k].2 * vi.powi(IJn[k].0) * vj.powi(IJn[k].1);
@@ -237,36 +260,32 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
             poly_j += IJn[k].1 as f64 * item;
         }
     }
-
-    // Multi-polynomial evaluation derived via base scaling (multiplication/division)
     poly_i /= vi;
     poly_j /= vj;
     (poly_i, poly_j)
 }
 
-// --- Module: r1/region1_gfe.rs ---
-// 2. Region 1 Wrapper: Handles specific coordinate transformations (pi, tau)
+// --- Layer 2: Region Wrapper (r1/region1_gfe.rs) ---
+// Handles coordinate transformations and step definitions
 pub fn polys_i_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
-    // Define calculation steps explicitly to assist compiler optimization
     let steps: [(usize, usize); 3] = [(0, 16), (16, 26), (26, 34)];
     let (d_pi, d_tau) = polys_i_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
     (-d_pi, d_tau)
 }
 
-// --- Module: r1/region1_pT.rs ---
-// 3. API: Calculates specific internal energy
-pub fn pT2u_reg1(p: f64, T: f64) -> f64 {
-    let pi: f64 = p / r1pstar;
-    let tau: f64 = r1Tstar / T;
-    let (d_pi, d_tau) = polys_i_j_powi_reg1(pi, tau);
-    RGAS_WATER * T * (tau * d_tau - pi * d_pi)
-}
+// --- Layer 3: Public API (rust_if97.rs / if97_core.rs) ---
+// User-facing functions for all input parameter pairs
+pub fn pt<R>(p: f64, t: f64, o_id_reg: R) -> f64
+where R: Into<o_id_region_args> { ... }
+
+pub fn ph<R>(p: f64, h: f64, o_id_reg: R) -> f64
+where R: Into<o_id_region_args> { ... }
 ```
 
 **Design Principles**:
-1. **Loop Splitting**: Splits a single loop into multiple steps, improving cache locality and SIMD vectorization potential
-2. **Recursive Evaluation**: Computes polynomial values and their derivatives simultaneously in a single traversal, avoiding redundant calculations
-3. **Base Scaling**: Directly derives derivative values by dividing by base values vi/vj, rather than recalculating
+1. **Loop Tiling**: Splits polynomial summation into cache-friendly tiles that enable effective SIMD vectorization
+2. **Recurrence Evaluation**: Computes polynomial values and derivatives simultaneously in a single traversal
+3. **Base Scaling**: Derives derivative values by dividing by base values $\pi$/$\tau$, avoiding redundant calculations
 
 ### 3.2 Region Determination Logic
 
@@ -735,9 +754,9 @@ Version format: `MAJOR.MINOR.PATCH`
 * https://iapws.org/documents/release/IF97-Rev
 
 
-**Document Version**: v1.2.2
+**Document Version**: v2.3.5
 
-**Generated Date**: 2024
+**Generated Date**: 2026-06-04
 
 **Author**: Cheng Maohua <cmh@seu.edu.cn>
 
