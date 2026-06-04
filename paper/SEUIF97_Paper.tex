@@ -60,7 +60,9 @@ In addition, the IAPWS-IF97 Supplementary Release [6] extends the original stand
 
 \subsection{Basic Equations}
 
-The core of IAPWS-IF97 consists of two types of fundamental equations, each optimized for specific thermodynamic regions:
+The core of IAPWS-IF97 consists of two types of fundamental equations, each optimized for specific thermodynamic regions for Regions 1, 2, 3     and 5:
+
+Region 4 (saturation line) provides explicit equations for saturation pressure $p_s(T)$ and saturation temperature $T_s(p)$:
 
 \subsubsection{Gibbs Free Energy Equation (Regions 1, 2, 5)}
 
@@ -73,21 +75,6 @@ Regions 1 (compressed liquid), 2 (superheated vapor), and 5 (high-temperature st
 
 where the reduced variables are defined as $\pi = p/p^{*}$ and $\tau = T^{*}/T$, with region-specific scaling parameters $p^{*}$ and $T^{*}$. The coefficients $n_i$ and exponents $I_i$, $J_i$ are provided in tabular form for each region. Table \ref{tab:region_params} summarizes the scaling parameters and number of terms for each Gibbs-based region.
 
-\begin{table}[htbp]
-\centering
-\caption{Scaling parameters and term counts for Gibbs-based regions}
-\label{tab:region_params}
-\begin{tabular}{lcccc}
-\toprule
-\textbf{Parameter} & \textbf{Region 1} & \textbf{Region 2} & \textbf{Region 5} \\
-\midrule
-$p^{*}$ (MPa) & 1 & 1 & 1 \\
-$T^{*}$ (K) & 1386 & 540 & 1000 \\
-Number of terms $N$ & 34 & 40 & 21 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
 \subsubsection{Helmholtz Free Energy Equation (Region 3)}
 
 Region 3 (near-critical region) uses the dimensionless Helmholtz free energy $f/(RT)$ as the fundamental equation, with density $\rho$ and temperature $T$ as independent variables:
@@ -99,16 +86,6 @@ Region 3 (near-critical region) uses the dimensionless Helmholtz free energy $f/
 
 where $\delta = \rho/\rho^{*}$ and $\tau = T^{*}/T$, with $\rho^{*} = 322$ kg/m$^3$ and $T^{*} = 647.096$ K. The ideal gas part $\alpha^0$ and the residual part $\alpha^r$ together contain 42 terms, with the residual part including exponential and logarithmic terms to capture critical behavior.
 
-\subsubsection{Saturation Equation (Region 4)}
-
-Region 4 (saturation line) provides explicit equations for saturation pressure $p_s(T)$ and saturation temperature $T_s(p)$:
-
-\begin{equation}
-\frac{p_s}{p^{*}} = \exp\left( \frac{T^{*}}{T} \sum_{i=1}^{9} n_i \theta^{t_i} \right)
-\label{eq:saturation}
-\end{equation}
-
-where $\theta = 1 - T/T^{*}$, with $p^{*} = 22.064$ MPa and $T^{*} = 647.096$ K.
 
 \subsection{Thermodynamic Property Derivation}
 
