@@ -107,7 +107,10 @@ pub fn polys_i_ii_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
 #[inline(always)]
 pub fn polys_0_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
     let steps: [(usize, usize); 2] = [(0, 16), (16, 34)];
-    polys_0_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    let (v,d_tau)=polys_0_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    // let v=poly_powi(7.1-pi,tau-1.222,&IJn);
+    // let d_tau=poly_j_powi(7.1-pi,tau-1.222,&IJn);
+    (v,d_tau)  
 }
 
 #[inline(always)]
