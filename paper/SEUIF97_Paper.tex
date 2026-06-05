@@ -143,10 +143,10 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     
     % p = 50 MPa horizontal line (Region 5)
     \draw[thick] (9.0,5.25) -- (11.5,5.25);
-    \node[above] at (10.2,6.0) {50 MPa};
+    \node[above] at (10.5,5.25) {50 MPa};
      %  p = 50 MPa horizontal lines break
-    \draw (10.1,5.24) -- (10.15,5.26);
-    \draw (10.20,5.24) -- (10.25,5.26);
+    \draw (9.6,5.1) -- (9.65,5.4);
+    \draw (9.68,5.1) -- (9.71,5.4);
     
     % Bottom boundary p = p_s(273.15 K)
     \draw[thick] (1.0,1.0) -- (11.5,1.0);
@@ -184,16 +184,16 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     \node[draw, fill=gray!15, align=center, font=\small] at (4.5,4.6) {$v_3(p,h)$\\$T_3(p,h)$\\$v_3(p,s)$\\$T_3(p,s)$\\$p_3(h,s)$\\$v_3(p,T)$};
     
     % Region 4 - saturation curve area
-    \draw (4.2,1.2) circle (0.3);
-    \node at (4.2,1.2) {4};
-    \node[draw, fill=gray!15, align=center] at (5.2,1.2) {$p_s(T)$\\$T_s(p)$};
-    \node[draw, fill=gray!15, align=center] at (2.8,1.0) {$T_s(h,s)$};
+    \draw (5.2,2.2) circle (0.3);
+    \node at (5.2,2.2) {4};
+    \node[draw, fill=gray!15, align=center] at (6.2,2.2) {$p_s(T)$\\$T_s(p)$};
+    \node[draw, fill=gray!15, align=center] at (2.5,2.5) {$T_s(h,s)$};
     
     % Region 5 - far right
     % T = 2273.15 K vertical line
-    \draw (10.2,4.0) circle (0.3);
-    \node at (10.2,4.0) {5};
-    \node[draw, fill=gray!00, align=center] at (10.2,3.2) {$g_5(p,T)$};
+    \draw (10.2,4.5) circle (0.3);
+    \node at (10.2,4.5) {5};
+    \node[draw, fill=gray!00, align=center] at (10.2,3.6) {$g_5(p,T)$};
     
 \end{tikzpicture}
 \caption{Structure and regions of IAPWS-IF97}
