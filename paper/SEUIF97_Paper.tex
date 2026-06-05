@@ -6,7 +6,7 @@
 \usepackage{algorithmic}
 \usepackage{float}
 
-\title{Accelerating IAPWS-IF97 Formula Evaluation via Recurrence Polynomial-Derivative Computation and Loop Tiling}
+\title{Accelerating IAPWS-IF97 Formula Evaluation via Loop Tiling and Recurrence Polynomial-Derivative Computation}
 
 \author{Maohua Cheng \\
   School of Energy and Environment, Southeast University \\
@@ -35,8 +35,8 @@ Despite these efforts, significant opportunities for optimization remain unexplo
 
 This paper proposes two acceleration techniques that directly accelerate the IAPWS-IF97 formula evaluation:
 \begin{enumerate}
-    \item \textbf{Recurrence polynomial-derivative computation}: Computing polynomials and their partial derivatives simultaneously in a single pass to eliminate redundant calculations
     \item \textbf{Loop tiling}: Splitting single loops into cache-friendly tiles to improve cache locality and SIMD vectorization
+    \item \textbf{Recurrence polynomial-derivative computation}: Computing polynomials and their partial derivatives simultaneously in a single pass to eliminate redundant calculations
 \end{enumerate}
 
 The paper is organized as follows: Section 2 provides an overview of the IAPWS-IF97 formulation and its key characteristics; Section 3 details the acceleration techniques; Section 4 presents comprehensive benchmark results; Section 5 describes the software implementation; and Section 6 concludes the paper.
@@ -45,7 +45,7 @@ The paper is organized as follows: Section 2 provides an overview of the IAPWS-I
 
 The IAPWS-IF97 (International Association for the Properties of Water and Steam, Industrial Formulation 1997) [1] divides the thermodynamic phase diagram of water and steam into five regions, as shown in Figure \ref{fig:if97_regions}. The original 1997 release replaced the corresponding release of 1967 (IFC-67). The 2007 revision extended Region 5 to 50 MPa, and the 2012 consolidated release (R7-97(2012)) is the current standard. This release has been supplemented by additional ``backward'' equations for $p(h,s)$ in Regions 1 and 2, $T(p,h)$, $v(p,h)$, $T(p,s)$, $v(p,s)$ in Region 3, $p(h,s)$ in Region 3 with auxiliary equations for independent variables $h$ and $s$, and $v(p,T)$ in Region 3.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
 \centering
 \caption{IAPWS-IF97 thermodynamic regions in the pressure-temperature plane}
 \label{fig:if97_regions}
@@ -60,96 +60,114 @@ In addition, the IAPWS-IF97 Supplementary Release [6] extends the original stand
 
 \subsection{Basic Equations}
 
-The core of IAPWS-IF97 consists of two types of fundamental equations, each optimized for specific thermodynamic regions for Regions 1, 2, 3     and 5:
-
-Region 4 (saturation line) provides explicit equations for saturation pressure $p_s(T)$ and saturation temperature $T_s(p)$:
+The core of IAPWS-IF97 consists of two types of fundamental equations, each optimized for specific thermodynamic regions (Regions 1, 2, 3, and 5). Region 4 (saturation line) provides explicit equations for saturation pressure $p_s(T)$ and saturation temperature $T_s(p)$.
 
 \subsubsection{Gibbs Free Energy Equation (Regions 1, 2, 5)}
 
-Regions 1 (compressed liquid), 2 (superheated vapor), and 5 (high-temperature steam) use the dimensionless Gibbs free energy $g/(RT)$ as the fundamental equation:
+Regions 1 (compressed liquid), 2 (superheated vapor), and 5 (high-temperature steam) use the dimensionless Gibbs free energy $g/(RT)$ as the fundamental equation. For Regions 2 and 5, the dimensionless Gibbs free energy is split into an ideal-gas part $\gamma^0$ and a residual part $\gamma^r$:
 
 \begin{equation}
-\frac{g(p,T)}{RT} = \gamma(\pi,\tau) = \sum_{i=1}^{N} n_i \, \pi^{I_i} \, \tau^{J_i}
+\frac{g(p,T)}{RT} = \gamma(\pi,\tau) = \gamma^0(\pi,\tau) + \gamma^r(\pi,\tau)
 \label{eq:gibbs}
 \end{equation}
 
-where the reduced variables are defined as $\pi = p/p^{*}$ and $\tau = T^{*}/T$, with region-specific scaling parameters $p^{*}$ and $T^{*}$. The coefficients $n_i$ and exponents $I_i$, $J_i$ are provided in tabular form for each region. Table \ref{tab:region_params} summarizes the scaling parameters and number of terms for each Gibbs-based region.
+where the reduced variables are defined as $\pi = p/p^{*}$ and $\tau = T^{*}/T$, with region-specific scaling parameters $p^{*}$ and $T^{*}$. The ideal-gas part $\gamma^0$ has the form:
+
+\begin{equation}
+\gamma^0(\pi,\tau) = \ln\pi + \sum_{i=1}^{N_0} n_i^0 \, \tau^{J_i^0}
+\label{eq:gibbs_ideal}
+\end{equation}
+
+The residual part $\gamma^r$ is a polynomial in $\pi$ and $\tau$:
+
+\begin{equation}
+\gamma^r(\pi,\tau) = \sum_{i=1}^{N_r} n_i \, \pi^{I_i} \, \tau^{J_i}
+\label{eq:gibbs_residual}
+\end{equation}
+
+For Region 1, the fundamental equation uses a single polynomial with shifted variables:
+
+\begin{equation}
+\gamma(\pi,\tau) = \sum_{i=1}^{N} n_i \, (7.1 - \pi)^{I_i} \, (\tau - 1.222)^{J_i}
+\label{eq:gibbs_r1}
+\end{equation}
+
+where $\pi = p/p^{*}$ with $p^{*} = 16.53$ MPa and $\tau = T^{*}/T$ with $T^{*} = 1386$ K. The coefficients $n_i$ and exponents $I_i$, $J_i$ are provided in tabular form for each region. Table \ref{tab:region_params} summarizes the scaling parameters and number of terms for each region.
+
+\begin{table}[H]
+\centering
+\caption{Scaling parameters and term counts for IAPWS-IF97 fundamental equations}
+\label{tab:region_params}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Region} & \textbf{Equation} & \textbf{$p^{*}$ (MPa)} & \textbf{$T^{*}$ (K)} & \textbf{Terms} & \textbf{Form} \\
+\midrule
+1 (Liquid) & Gibbs & 16.53 & 1386 & 34 & Shifted polynomial \\
+2 (Vapor) & Gibbs & 1.0 & 540 & 9 + 43 & Ideal + residual \\
+3 (Critical) & Helmholtz & --- & 647.096 & 1 + 39 & $\ln\delta$ + polynomial \\
+5 (High-T) & Gibbs & 1.0 & 1000 & 6 + 6 & Ideal + residual \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsubsection{Helmholtz Free Energy Equation (Region 3)}
 
 Region 3 (near-critical region) uses the dimensionless Helmholtz free energy $f/(RT)$ as the fundamental equation, with density $\rho$ and temperature $T$ as independent variables:
 
 \begin{equation}
-\frac{f(\rho,T)}{RT} = \alpha(\delta,\tau) = \alpha^0(\delta,\tau) + \alpha^r(\delta,\tau)
+\frac{f(\rho,T)}{RT} = \alpha(\delta,\tau) = n_1 \ln\delta + \sum_{i=1}^{N} n_i \, \delta^{I_i} \, \tau^{J_i}
 \label{eq:helmholtz}
 \end{equation}
 
-where $\delta = \rho/\rho^{*}$ and $\tau = T^{*}/T$, with $\rho^{*} = 322$ kg/m$^3$ and $T^{*} = 647.096$ K. The ideal gas part $\alpha^0$ and the residual part $\alpha^r$ together contain 42 terms, with the residual part including exponential and logarithmic terms to capture critical behavior.
+where $\delta = \rho/\rho^{*}$ and $\tau = T^{*}/T$, with $\rho^{*} = 322$ kg/m$^3$ and $T^{*} = 647.096$ K. The leading $n_1 \ln\delta$ term captures the ideal-gas behavior, and the 39 polynomial terms model the residual contribution.
 
 
 \subsection{Thermodynamic Property Derivation}
 
-All thermodynamic properties are derived from the fundamental equations and their partial derivatives. The key properties and their relationships are summarized in Table \ref{tab:properties}.
+All thermodynamic properties are derived from the fundamental equations and their partial derivatives. In Regions 1, 2, and 5, properties are derived from the Gibbs free energy $\gamma(\pi,\tau)$, while in Region 3, properties are derived from the Helmholtz free energy $\alpha(\delta,\tau)$. Although the specific expressions differ by region, all share the same computational pattern: evaluating polynomial summations and their partial derivatives. Taking Region 2 as a representative example, the key properties derived from $\gamma(\pi,\tau) = \gamma^0(\pi,\tau) + \gamma^r(\pi,\tau)$ are:
 
-\begin{table}[htbp]
-\centering
-\caption{Thermodynamic properties derived from Gibbs free energy $\gamma(\pi,\tau)$}
-\label{tab:properties}
-\begin{tabular}{ll}
-\toprule
-\textbf{Property} & \textbf{Expression} \\
-\midrule
-Enthalpy $h$ & $RT \cdot \tau \left( \dfrac{\partial \gamma}{\partial \tau} \right)_\pi$ \\
-Entropy $s$ & $R \left[ \tau \left( \dfrac{\partial \gamma}{\partial \tau} \right)_\pi - \gamma \right]$ \\
-Specific volume $v$ & $\dfrac{RT}{p} \cdot \pi \left( \dfrac{\partial \gamma}{\partial \pi} \right)_\tau$ \\
-Isobaric heat capacity $c_p$ & $-R \tau^2 \left( \dfrac{\partial^2 \gamma}{\partial \tau^2} \right)_\pi$ \\
-Speed of sound $w$ & $\sqrt{ \dfrac{c_p}{c_v} \left( \dfrac{\partial p}{\partial \rho} \right)_T }$ \\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{align}
+h &= RT \cdot \tau \left( \frac{\partial \gamma}{\partial \tau} \right)_\pi
+    = RT \cdot \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) \\
+s &= R \left[ \tau \left( \frac{\partial \gamma}{\partial \tau} \right)_\pi - \gamma \right]
+    = R \left[ \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) - \left( \gamma^0 + \gamma^r \right) \right] \label{eq:entropy} \\
+w^2 &= RT \cdot \frac{1 + 2\pi\gamma^r_\pi + \pi^2(\gamma^r_\pi)^2}{\left( 1 - \pi^2\gamma^r_{\pi\pi} \right) + \dfrac{\left( 1 + \pi\gamma^r_\pi - \tau\pi\gamma^r_{\pi\tau} \right)^2}{\tau^2\left( \gamma^0_{\tau\tau} + \gamma^r_{\tau\tau} \right)}} \label{eq:speed}
+\end{align}
 
-As a representative example, the specific enthalpy $h$ is computed from Eq. (\ref{eq:gibbs}) as:
+where the partial derivatives of the ideal-gas part $\gamma^0$ and the residual part $\gamma^r$ are:
 
-\begin{equation}
-h = RT \cdot \tau \left( \frac{\partial \gamma}{\partial \tau} \right)_\pi
-    = RT \cdot \tau \sum_{i=1}^{N} n_i \, J_i \, \pi^{I_i} \, \tau^{J_i - 1}
-\label{eq:enthalpy}
-\end{equation}
+\begin{align}
+\gamma^0_\tau &= \sum_{i=1}^{N_0} n_i^0 J_i^0 \tau^{J_i^0 - 1}, &
+\gamma^0_{\tau\tau} &= \sum_{i=1}^{N_0} n_i^0 J_i^0 (J_i^0 - 1) \tau^{J_i^0 - 2} \\
+\gamma^r_\pi &= \sum_{i=1}^{N_r} n_i I_i \pi^{I_i - 1} \tau^{J_i}, &
+\gamma^r_{\pi\pi} &= \sum_{i=1}^{N_r} n_i I_i (I_i - 1) \pi^{I_i - 2} \tau^{J_i} \\
+\gamma^r_\tau &= \sum_{i=1}^{N_r} n_i J_i \pi^{I_i} \tau^{J_i - 1}, &
+\gamma^r_{\tau\tau} &= \sum_{i=1}^{N_r} n_i J_i (J_i - 1) \pi^{I_i} \tau^{J_i - 2} \\
+\gamma^r_{\pi\tau} &= \sum_{i=1}^{N_r} n_i I_i J_i \pi^{I_i - 1} \tau^{J_i - 1}
+\end{align}
 
-Similarly, the isobaric heat capacity $c_p$ requires the second derivative:
-
-\begin{equation}
-c_p = -R \tau^2 \left( \frac{\partial^2 \gamma}{\partial \tau^2} \right)_\pi
-    = -R \tau^2 \sum_{i=1}^{N} n_i \, J_i (J_i - 1) \, \pi^{I_i} \, \tau^{J_i - 2}
-\label{eq:cp}
-\end{equation}
+Other properties such as specific volume $v = \frac{RT}{p^*}(\gamma^0_\pi + \gamma^r_\pi)$ and specific isobaric heat capacity $c_p = -R\tau^2(\gamma^0_{\tau\tau} + \gamma^r_{\tau\tau})$ follow the same pattern. In Region 3, the analogous properties are derived from $\alpha(\delta,\tau)$ with partial derivatives with respect to $\delta$ and $\tau$. Despite these differences, the core computation in all regions reduces to evaluating polynomial summations and their partial derivatives of various orders.
 
 \subsection{Formula Characteristics and Computational Implications}
 
 The IAPWS-IF97 formulation exhibits several key characteristics that directly impact computational performance:
 
-\textbf{Characteristic 1: Polynomial structure with integer exponents.} All fundamental equations are sums of terms of the form $n_i \pi^{I_i} \tau^{J_i}$, where $I_i$ and $J_i$ are small integers. This structure allows efficient evaluation using integer power operations rather than general exponentiation.
+\textbf{Characteristic 1: Polynomial structure with integer exponents.} The residual parts of all fundamental equations are sums of terms of the form $n_i x^{I_i} y^{J_i}$, where $I_i$ and $J_i$ are integers and $(x, y)$ are the reduced variables for each region. This structure allows efficient evaluation using integer power operations rather than general exponentiation.
 
-\textbf{Characteristic 2: Derivatives share the same polynomial form.} The partial derivatives of the fundamental equations are themselves polynomials with the same structure, only with modified coefficients. For example, comparing Eqs. (\ref{eq:gibbs}) and (\ref{eq:enthalpy}):
+\textbf{Characteristic 2: Derivatives share the same polynomial form.} The partial derivatives of the fundamental equations are themselves polynomials with the same base terms, only with modified coefficients. For example, comparing Eq.~(\ref{eq:gibbs_residual}) with the derivative $\gamma^r_\tau$:
 
 \begin{align}
-\gamma &= \sum_{i=1}^{N} n_i \, \pi^{I_i} \, \tau^{J_i} \\
-\left( \frac{\partial \gamma}{\partial \tau} \right)_\pi &= \sum_{i=1}^{N} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1}
+\gamma^r &= \sum_{i=1}^{N_r} n_i \, \pi^{I_i} \, \tau^{J_i} \\
+\left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi &= \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1}
 \end{align}
 
-This means that computing multiple thermodynamic properties requires evaluating several polynomials with the same base terms $\pi^{I_i} \tau^{J_i}$ but different coefficient multipliers.
+This means that computing multiple thermodynamic properties requires evaluating several polynomials with the same base terms $\pi^{I_i} \tau^{J_i-1}$ but different coefficient multipliers.
 
-\textbf{Characteristic 3: High term counts in main regions.} Regions 1 and 2, which cover the most commonly used thermodynamic conditions in engineering applications, contain 34 and 40 terms respectively. Each property calculation requires summing all these terms, making polynomial evaluation the dominant computational cost.
+\textbf{Characteristic 3: High term counts in main regions.} Regions 1 and 2, which cover the most commonly used thermodynamic conditions in engineering applications, contain 34 and 52 terms respectively. Each property calculation requires summing all these terms, making polynomial evaluation the dominant computational cost.
 
-\textbf{Characteristic 4: Multiple properties needed simultaneously.} Engineering applications such as turbine expansion calculations often require enthalpy, entropy, specific volume, and heat capacity at the same state point. A naive implementation would evaluate each property's polynomial separately, leading to redundant computation of the same base terms $\pi^{I_i} \tau^{J_i}$.
+These characteristics motivate the acceleration techniques presented in this paper. The shared polynomial structure (Characteristic 2) enables recurrence polynomial-derivative computation when multiple related derivatives are needed, while the high term counts (Characteristic 3) benefit from loop tiling for all polynomial evaluations.
 
-\textbf{Characteristic 5: Transport properties add further complexity.} The supplementary release's transport property formulations require additional polynomial evaluations with density-dependent terms, increasing the computational burden for applications that need viscosity or thermal conductivity.
-
-These characteristics motivate the acceleration techniques presented in this paper. The shared polynomial structure (Characteristic 2) and simultaneous property requirement (Characteristic 4) enable recurrence polynomial-derivative computation, while the high term counts (Characteristic 3) benefit from loop tiling.
-
-Table \ref{tab:formula_char} summarizes the complexity of each region's formulation.
-
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \caption{IAPWS-IF97 formula characteristics by region}
 \label{tab:formula_char}
@@ -157,50 +175,114 @@ Table \ref{tab:formula_char} summarizes the complexity of each region's formulat
 \toprule
 \textbf{Region} & \textbf{Terms} & \textbf{Exponent Range} & \textbf{Formulation} \\
 \midrule
-1 (Liquid) & 34 & $I_i$: 0--8, $J_i$: 0--6 & Gibbs \\
-2 (Vapor) & 40 & $I_i$: 0--7, $J_i$: -2--10 & Gibbs \\
-3 (Critical) & 42 & Complex mix & Helmholtz \\
+1 (Liquid) & 34 & $I_i$: 0--32, $J_i$: $-41$--17 & Gibbs (shifted) \\
+2 (Vapor) & 9 + 43 & $I_i$: 1--24, $J_i$: $-5$--58 & Gibbs (ideal + residual) \\
+3 (Critical) & 1 + 39 & $I_i$: 0--11, $J_i$: 0--26 & Helmholtz ($\ln\delta$ + polynomial) \\
 4 (Saturation) & 9 & Simple polynomial & Exponential \\
-5 (High-T) & 21 & $I_i$: 0--3, $J_i$: -9--4 & Gibbs \\
+5 (High-T) & 6 + 6 & $I_i$: 1--3, $J_i$: $-3$--9 & Gibbs (ideal + residual) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \section{Acceleration Techniques}
 
-\subsection{Recurrence Polynomial-Derivative Computation with Loop Tiling}
+\subsection{Loop Tiling}
 
-The recurrence polynomial-derivative computation technique leverages the mathematical relationship between polynomial terms and their derivatives. Instead of computing derivatives separately, we calculate them simultaneously with the base polynomial in a single traversal. This directly supports the derivative computation required for properties like enthalpy (Eq. \ref{eq:enthalpy}) and other derivative-based properties.
+Loop tiling (also known as loop blocking) [7] is a general optimization technique that partitions a single loop into multiple smaller loops (tiles) to improve cache locality and enable effective SIMD vectorization. For IF97 polynomial evaluation, this technique applies to any property computation that involves a single polynomial summation.
 
-Loop tiling (also known as loop blocking) [7] further improves cache locality by splitting a single loop into multiple smaller loops. For IF97 polynomial evaluation, we partition terms into tiles that fit within CPU cache, reducing memory access latency and enabling SIMD vectorization.
+Taking specific enthalpy $h$ in Region 2 as an example, the computation requires only the first-order partial derivative $\gamma_\tau$:
 
-Algorithm \ref{alg:main} presents the combined approach that integrates recurrence polynomial-derivative computation with loop tiling:
+\begin{equation}
+h = RT \cdot \tau \left( \gamma^0_\tau + \gamma^r_\tau \right)
+\end{equation}
 
-\begin{algorithm}
-\caption{Recurrence Polynomial-Derivative Computation with Loop Tiling}
-\label{alg:main}
+Each summation is a simple polynomial evaluation with a single accumulator. The loop tiling technique partitions the term indices into tiles that fit within CPU cache, reducing memory access latency and allowing the compiler to optimize each tile independently.
+
+Algorithm \ref{alg:loop_tiling} presents the loop tiling approach for a single polynomial summation:
+
+\begin{algorithm}[H]
+\caption{Loop Tiling for Single Polynomial Summation}
+\label{alg:loop_tiling}
 \begin{algorithmic}[1]
-\REQUIRE $\pi, \tau$: reduced pressure and temperature
+\REQUIRE $x, y$: reduced variables (e.g., $\pi, \tau$ for Regions 2/5; $7.1{-}\pi, \tau{-}1.222$ for Region 1; $\delta, \tau$ for Region 3)
 \REQUIRE $IJn$: array of $(I_i, J_i, n_i)$ polynomial coefficients
 \REQUIRE $\text{steps}$: array of $(start, end)$ tile boundaries
-\ENSURE $\gamma, \partial\gamma/\partial\pi, \partial\gamma/\partial\tau$: polynomial and its partial derivatives
+\ENSURE $S = \sum_i n_i x^{I_i} y^{J_i}$: polynomial summation result
 
-\STATE Initialize $\gamma \leftarrow 0$, $\gamma_\pi \leftarrow 0$, $\gamma_\tau \leftarrow 0$
+\STATE Initialize $S \leftarrow 0$
 \FOR{each tile $m$ in $\text{steps}$}
     \FOR{$k \leftarrow \text{steps}[m].start$ \TO $\text{steps}[m].end - 1$}
-        \STATE $term \leftarrow IJn[k].n \times \pi^{IJn[k].I} \times \tau^{IJn[k].J}$
-        \STATE $\gamma \leftarrow \gamma + term$
-        \STATE $\gamma_\pi \leftarrow \gamma_\pi + IJn[k].I \times term$
-        \STATE $\gamma_\tau \leftarrow \gamma_\tau + IJn[k].J \times term$
+        \STATE $term \leftarrow IJn[k].n \times x^{IJn[k].I} \times y^{IJn[k].J}$
+        \STATE $S \leftarrow S + term$
     \ENDFOR
 \ENDFOR
-\STATE $\gamma_\pi \leftarrow \gamma_\pi / \pi$
-\STATE $\gamma_\tau \leftarrow \gamma_\tau / \tau$
-\RETURN $(\gamma, \gamma_\pi, \gamma_\tau)$
+\RETURN $S$
 \end{algorithmic}
 \end{algorithm}
 
-For Region 1 (34 terms), we use three tiles: 0--15, 16--25, and 26--33. This partitioning allows the Rust compiler to optimize each tile independently through loop unrolling, SIMD vectorization, and register allocation.
+The optimal tile boundaries vary across regions and polynomial types, and are determined empirically through performance profiling to identify the partitioning that maximizes compiler optimization potential. For Region 2 (43 residual terms), we use three tiles: 0--13, 13--26, and 26--43. This partitioning allows the Rust compiler to optimize each tile independently through loop unrolling, SIMD vectorization, and register allocation. The same loop tiling strategy applies to all single-polynomial computations, including $h$, $c_p$, $v$, and individual derivative evaluations.
+
+Performance profiling demonstrates the effectiveness of this approach. All measurements were conducted on an Intel Core i7-13700K processor (24 cores, up to 5.4 GHz) with 32 GB DDR5 RAM, running Windows 11, using Rust 1.75.0 compiled in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}. For Region 2 enthalpy computation ($h$), loop tiling reduces the execution time from approximately 1.07 µs to 53.8 ns, achieving a ~20x speedup. This improvement stems from better cache utilization and the compiler's ability to apply aggressive optimizations to each tile independently.
+
+\subsection{Recurrence Polynomial-Derivative Computation}
+
+When a thermodynamic property requires multiple polynomial evaluations that share the same base terms, recurrence polynomial-derivative computation eliminates redundant calculations by computing them simultaneously in a single pass.
+
+Taking specific entropy $s$ in Region 2 as an example, the computation requires both $\gamma$ and $\gamma_\tau$:
+
+\begin{equation}
+s = R \left[ \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) - \left( \gamma^0 + \gamma^r \right) \right]
+\end{equation}
+
+The key observation is that $\gamma^r$ and its partial derivatives with respect to $\tau$ share the same base term $n_i \pi^{I_i} \tau^{J_i}$ and differ only in their coefficient multipliers:
+
+\begin{align}
+\gamma^0_\tau &= \sum_{i=1}^{N_0} n_i^0 J_i^0 \tau^{J_i^0 - 1} \\
+\gamma^r_\tau &= \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i-1} = \frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
+\end{align}
+
+By accumulating these coefficient-weighted sums in parallel within the same loop, we eliminate the redundant recomputation of the base terms $\pi^{I_i} \tau^{J_i}$.
+
+Algorithm \ref{alg:recurrence} presents the recurrence polynomial-derivative computation combined with loop tiling for the common case of computing the polynomial value and its two first-order partial derivatives simultaneously:
+
+\begin{algorithm}[H]
+\caption{Recurrence Polynomial-Derivative Computation with Loop Tiling}
+\label{alg:recurrence}
+\begin{algorithmic}[1]
+\REQUIRE $x, y$: reduced variables (e.g., $\pi, \tau$ for Regions 2/5; $7.1{-}\pi, \tau{-}1.222$ for Region 1; $\delta, \tau$ for Region 3)
+\REQUIRE $IJn$: array of $(I_i, J_i, n_i)$ polynomial coefficients
+\REQUIRE $\text{steps}$: array of $(start, end)$ tile boundaries
+\ENSURE $\gamma, \partial\gamma/\partial x, \partial\gamma/\partial y$: polynomial and its partial derivatives
+
+\STATE Initialize $\gamma \leftarrow 0$, $\gamma_x \leftarrow 0$, $\gamma_y \leftarrow 0$
+\FOR{each tile $m$ in $\text{steps}$}
+    \FOR{$k \leftarrow \text{steps}[m].start$ \TO $\text{steps}[m].end - 1$}
+        \STATE $term \leftarrow IJn[k].n \times x^{IJn[k].I} \times y^{IJn[k].J}$
+        \STATE $\gamma \leftarrow \gamma + term$
+        \STATE $\gamma_x \leftarrow \gamma_x + IJn[k].I \times term$
+        \STATE $\gamma_y \leftarrow \gamma_y + IJn[k].J \times term$
+    \ENDFOR
+\ENDFOR
+\STATE $\gamma_x \leftarrow \gamma_x / x$
+\STATE $\gamma_y \leftarrow \gamma_y / y$
+\RETURN $(\gamma, \gamma_x, \gamma_y)$
+\end{algorithmic}
+\end{algorithm}
+
+Algorithm \ref{alg:recurrence} shows the general case of computing one polynomial value and two first-order partial derivatives simultaneously. For properties requiring only one derivative (e.g., entropy $s$ needs $\gamma$ and $\gamma_\tau$), the same pattern applies with only the relevant derivative accumulator active. For properties requiring higher-order or mixed derivatives (e.g., speed of sound $w$), additional accumulators are added following the same coefficient-multiplication principle.
+
+Performance profiling under the same hardware and software environment as Section 3.1 demonstrates the effectiveness of this approach. For Region 2 entropy computation ($s$), which requires both $\gamma$ and $\gamma_\tau$, the recurrence polynomial-derivative computation combined with loop tiling reduces the execution time from approximately 2.2 µs to 138.7 ns, achieving a ~15x speedup. This confirms that computing multiple related derivatives simultaneously eliminates redundant base term evaluations while maintaining the cache benefits of loop tiling.
+
+\subsection{Combined Application}
+
+The two techniques are applied based on the computational requirements of each property:
+
+\begin{itemize}
+    \item \textbf{Loop tiling only}: Applied to properties requiring a single polynomial summation, such as $h = RT\tau\gamma_\tau$ and $c_p = -R\tau^2\gamma_{\tau\tau}$. Each derivative is computed independently with its own tiled loop.
+    \item \textbf{Recurrence + Loop tiling}: Applied to properties requiring multiple related polynomials, such as $s = R[\tau\gamma_\tau - \gamma]$ and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The recurrence technique computes all required derivatives simultaneously, and loop tiling is applied to the combined loop.
+\end{itemize}
+
+This selective application ensures that the overhead of recurrence computation is only incurred when it provides a net benefit, while loop tiling is universally applied to all polynomial summations.
 
 \section{Performance Benchmarks}
 
@@ -214,14 +296,14 @@ The proposed techniques are implemented in Rust as SEUIF97, a high-performance I
 \toprule
 \textbf{Test} & \textbf{Region} & \textbf{Parameters} & \textbf{Calculated Property} & \textbf{Speedup} \\
 \midrule
-pt2h\_reg1 & Region 1 & 3.0 MPa, 26.85 $^\circ$C & Specific Enthalpy & 18.3x \\
-pt2s\_reg1 & Region 1 & 3.0 MPa, 26.85 $^\circ$C & Specific Entropy & 17.8x \\
-pt2h\_reg2 & Region 2 & 0.0035 MPa, 26.85 $^\circ$C & Specific Enthalpy & 12.5x \\
-pt2s\_reg2 & Region 2 & 0.0035 MPa, 26.85 $^\circ$C & Specific Entropy & 12.1x \\
-tv2h\_reg3 & Region 3 & 376.85 $^\circ$C, 0.002 m$^3$/kg & Specific Enthalpy & 6.8x \\
-tv2s\_reg3 & Region 3 & 376.85 $^\circ$C, 0.002 m$^3$/kg & Specific Entropy & 6.5x \\
-pT2h\_reg5 & Region 5 & 0.5 MPa, 1226.85 $^\circ$C & Specific Enthalpy & 5.2x \\
-pT2s\_reg5 & Region 5 & 0.5 MPa, 1226.85 $^\circ$C & Specific Entropy & 5.1x \\
+pT2h\_reg1 & Region 1 & 3.0 MPa, 300 K & Specific Enthalpy & 10x \\
+pT2s\_reg1 & Region 1 & 3.0 MPa, 300 K & Specific Entropy & 13x \\
+pT2h\_reg2 & Region 2 & 0.0035 MPa, 300 K & Specific Enthalpy & 20x \\
+pT2s\_reg2 & Region 2 & 0.0035 MPa, 300 K & Specific Entropy & 15x \\
+Tv2h\_reg3 & Region 3 & 650 K, 0.002 m$^3$/kg & Specific Enthalpy & 6x \\
+Tv2s\_reg3 & Region 3 & 650 K, 0.002 m$^3$/kg & Specific Entropy & 7x \\
+pT2h\_reg5 & Region 5 & 0.5 MPa, 1500 K & Specific Enthalpy & 5x \\
+pT2s\_reg5 & Region 5 & 0.5 MPa, 1500 K & Specific Entropy & 6x \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -230,7 +312,7 @@ The results show significant speedups across all regions, with the largest impro
 
 \section{Software Implementation: SEUIF97}
 
-The high-performance SEUIF97 library follows a modular three-layer architecture:
+Based on the acceleration techniques presented in Section 3, SEUIF97 is implemented in Rust as a high-performance IAPWS-IF97 property calculation library. The high-performance SEUIF97 library follows a modular three-layer architecture:
 
 \begin{enumerate}
     \item \textbf{Public API}: User-facing functions supporting multiple input parameter pairs (p-T, p-h, p-s, etc.)
@@ -273,7 +355,7 @@ IAPWS, ``Release on the Spline-Based Table Lookup (SBTL) Method for the Calculat
 P. Colby, ``freeSteam: A C library for water/steam properties,'' https://sourceforge.net/projects/freesteam/.
 
 \bibitem{IAPWS-Supplementary}
-IAPWS, ``Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance,'' International Association for the Properties of Water and Steam, 2008.
+IAPWS, ``Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance,'' International Association for the Properties of Water and Steam, 2008; ``Release on the IAPWS Formulation 2011 for the Thermal Conductivity of Ordinary Water Substance,'' 2011.
 
 \bibitem{LoopTiling}
 M.E. Wolf, M.S. Lam, ``A data locality optimizing algorithm,'' Proceedings of the ACM SIGPLAN Conference on Programming Language Design and Implementation, 1991, pp. 30-44.
