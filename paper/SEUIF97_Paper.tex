@@ -115,7 +115,7 @@ where $\pi = p/p^{*}$ with $p^{*} = 16.53$ MPa and $\tau = T^{*}/T$ with $T^{*} 
 Region 3 (near-critical region) uses the dimensionless Helmholtz free energy $f/(RT)$ as the fundamental equation, with density $\rho$ and temperature $T$ as independent variables:
 
 \begin{equation}
-\frac{f(\rho,T)}{RT} = \alpha(\delta,\tau) = n_1 \ln\delta + \sum_{i=1}^{N} n_i \, \delta^{I_i} \, \tau^{J_i}
+\frac{f(\rho,T)}{RT} = \phi(\delta,\tau) = n_1 \ln\delta + \sum_{i=1}^{N} n_i \, \delta^{I_i} \, \tau^{J_i}
 \label{eq:helmholtz}
 \end{equation}
 
@@ -124,7 +124,7 @@ where $\delta = \rho/\rho^{*}$ and $\tau = T^{*}/T$, with $\rho^{*} = 322$ kg/m$
 
 \subsection{Thermodynamic Property Derivation}
 
-All thermodynamic properties are derived from the fundamental equations and their partial derivatives. In Regions 1, 2, and 5, properties are derived from the Gibbs free energy $\gamma(\pi,\tau)$, while in Region 3, properties are derived from the Helmholtz free energy $\alpha(\delta,\tau)$. Although the specific expressions differ by region, all share the same computational pattern: evaluating polynomial summations and their partial derivatives. Taking Region 2 as a representative example, the key properties derived from $\gamma(\pi,\tau) = \gamma^0(\pi,\tau) + \gamma^r(\pi,\tau)$ are:
+All thermodynamic properties are derived from the fundamental equations and their partial derivatives. In Regions 1, 2, and 5, properties are derived from the Gibbs free energy $\gamma(\pi,\tau)$, while in Region 3, properties are derived from the Helmholtz free energy $\phi(\delta,\tau)$. Although the specific expressions differ by region, all share the same computational pattern: evaluating polynomial summations and their partial derivatives. Taking Region 2 as a representative example, the key properties derived from $\gamma(\pi,\tau) = \gamma^0(\pi,\tau) + \gamma^r(\pi,\tau)$ are:
 
 \begin{align}
 h &= RT \cdot \tau \left( \frac{\partial \gamma}{\partial \tau} \right)_\pi
@@ -146,7 +146,7 @@ where the partial derivatives of the ideal-gas part $\gamma^0$ and the residual 
 \gamma^r_{\pi\tau} &= \sum_{i=1}^{N_r} n_i I_i J_i \pi^{I_i - 1} \tau^{J_i - 1}
 \end{align}
 
-Other properties such as specific volume $v = \frac{RT}{p^*}(\gamma^0_\pi + \gamma^r_\pi)$ and specific isobaric heat capacity $c_p = -R\tau^2(\gamma^0_{\tau\tau} + \gamma^r_{\tau\tau})$ follow the same pattern. In Region 3, the analogous properties are derived from $\alpha(\delta,\tau)$ with partial derivatives with respect to $\delta$ and $\tau$. Despite these differences, the core computation in all regions reduces to evaluating polynomial summations and their partial derivatives of various orders.
+Other properties such as specific volume $v = \frac{RT}{p^*}(\gamma^0_\pi + \gamma^r_\pi)$ and specific isobaric heat capacity $c_p = -R\tau^2(\gamma^0_{\tau\tau} + \gamma^r_{\tau\tau})$ follow the same pattern. In Region 3, the analogous properties are derived from $\phi(\delta,\tau)$ with partial derivatives with respect to $\delta$ and $\tau$. Despite these differences, the core computation in all regions reduces to evaluating polynomial summations and their partial derivatives of various orders.
 
 \subsection{Formula Characteristics and Computational Implications}
 
@@ -158,10 +158,10 @@ The IAPWS-IF97 formulation exhibits several key characteristics that directly im
 
 \begin{align}
 \gamma^r &= \sum_{i=1}^{N_r} n_i \, \pi^{I_i} \, \tau^{J_i} \\
-\left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi &= \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1}
+\left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi &= \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1} =\frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
 \end{align}
 
-This means that computing multiple thermodynamic properties requires evaluating several polynomials with the same base terms $\pi^{I_i} \tau^{J_i-1}$ but different coefficient multipliers.
+This means that computing multiple thermodynamic properties requires evaluating several polynomials with the same base terms $\pi^{I_i} \tau^{J_i}$ but different coefficient multipliers.
 
 \textbf{Characteristic 3: High term counts in main regions.} Regions 1 and 2, which cover the most commonly used thermodynamic conditions in engineering applications, contain 34 and 52 terms respectively. Each property calculation requires summing all these terms, making polynomial evaluation the dominant computational cost.
 
