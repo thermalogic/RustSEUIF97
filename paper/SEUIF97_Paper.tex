@@ -52,81 +52,113 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
 \centering
 \begin{tikzpicture}[scale=0.9]
     % Axes
-    \draw[->, thick] (0,0) -- (10.5,0);
-    \draw[->, thick] (0,0) -- (0,7.5);
-    
+   
     % X-axis labels (T/K)
-    \node[below] at (0,0) {273.15};
-    \node[below] at (2.2,0) {473.15};
-    \node[below] at (3.8,0) {673.15};
-    \node[below] at (5.5,0) {873.15};
-    \node[below] at (7.2,0) {1073.15};
-    
+    \node[below] at (1.0,0) {273.15};
+    \node[below] at (3.0,0) {473.15};
+    \node[below] at (5.0,0) {673.15};
+    \node[below] at (7.0,0) {873.15};
+    \node[below] at (9.0,0) {1073.15};
+    \node[below] at (11.5,0) {2273.15};
+     % X-axis arrow and Temperature label
+    \draw[->, thick] (0,0) -- (12.5,0);
+    \node[right] at (12.5,0) {$T$/K};
+     % x-axis tick vertical line
+    \draw[black,thick] (1.0, 0) -- (1.0, 0.2);  
+    \draw[black,thick] (3.0, 0) -- (3.0, 0.2);  
+    \draw[black,thick] (5.0, 0) -- (5.0, 0.2);  
+    \draw[black,thick] (7.0, 0) -- (7.0, 0.2);  
+    \draw[black,thick] (9.0, 0) -- (9.0, 0.2);  
+    \draw[black,thick] (11.5, 0) -- (11.5, 0.2);  
+   
     % X-axis break
-    \draw (7.2,-0.1) -- (7.3,0.1);
-    \draw (7.3,-0.1) -- (7.4,0.1);
-    
-    \node[below] at (9.2,0) {2273.15};
-    
-    % X-axis labels (t/°C)
-    \node[below] at (0,-0.5) {0};
-    \node[below] at (2.2,-0.5) {200};
-    \node[below] at (3.8,-0.5) {400};
-    \node[below] at (5.5,-0.5) {600};
-    \node[below] at (7.2,-0.5) {800};
-    \node[below] at (9.2,-0.5) {2000};
-    
+    \draw (10.2,-0.1) -- (10.3,0.1);
+    \draw (10.3,-0.1) -- (10.4,0.1);
+      
+    % X-axis  second labels (t/°C)
+    \node[below] at (1,-0.8) {0};
+    \node[below] at (3.0,-0.8) {200};
+    \node[below] at (5.0,-0.8) {400};
+    \node[below] at (7.0,-0.8) {600};
+    \node[below] at (9.0,-0.8) {800};
+    \node[below] at (11.5,-0.8) {2000};
     % X-axis second row
-    \draw[->] (0,-0.75) -- (10.5,-0.75);
-    \node[right] at (10.5,-0.75) {$t/^\circ$C};
+    \draw[->, thick] (0,-0.75) -- (12.5,-0.75);
+    \node[right] at (12.5,-0.75) {$t/^\circ$C};
+
+     % x-axis tick vertical line
+    \draw[black,thick] (1.0, -0.8) -- (1.0, -0.6);  
+    \draw[black,thick] (3.0, -0.8) -- (3.0, -0.6);  
+    \draw[black,thick] (5.0, -0.8) -- (5.0, -0.6);  
+    \draw[black,thick] (7.0, -0.8) -- (7.0, -0.6);  
+    \draw[black,thick] (9.0, -0.8) -- (9.0, -0.6);  
+    \draw[black,thick] (11.5, -0.8) -- (11.5, -0.6);
+
+     % X-axis second rbreak
+    \draw (10.2,-0.85) -- (10.3,-0.70);
+    \draw (10.3,-0.855) -- (10.4,-0.70);
+      
+    % Y-axis arrow
+    \draw[->, thick] (0,0) -- (0,10.3);
+     % Y-axis labels (p/MPa)
+    \node[left] at (0,1.0) {0.000611};
+    \node[left] at (0,2.3) {16.529};
+    \node[left] at (0,3.6) {22.064};
+    \node[left] at (0,4.0) {25};
+    \node[left] at (0,6.0) {50};
+    \node[left] at (0,8.0) {75};
+    \node[left] at (0,10.0) {100};
     
-    % Y-axis labels (p/MPa)
-    \node[left] at (0,0.3) {0.000611};
-    \node[left] at (0,1.3) {16.529};
-    \node[left] at (0,1.8) {22.064};
-    \node[left] at (0,3.0) {25};
-    \node[left] at (0,5.0) {50};
-    \node[left] at (0,7.0) {100};
-    
-    % Y-axis break
-    \draw (-0.1,3.0) -- (0.1,3.1);
-    \draw (-0.1,3.1) -- (0.1,3.2);
-    
-    % Y-axis label
-    \node[rotate=90, left=1cm] at (0,3.5) {Pressure $p$ [MPa]};
+      % Y-axis label
+    \node[rotate=90, left=0.8cm] at (-1.0,5.5) {Pressure $p$ [MPa]};
+
+    % Y-axis tick line
+    \draw[black,thick] (0, 4.0) -- (0.2, 4.0);  
+    \draw[black,thick] (0,6.0) -- (0.2, 6.0);  
+    \draw[black,thick] (0,8.0) -- (0.2, 8.0);  
+    \draw[black,thick] (0,10.0) -- (0.2, 10.0);
     
     % Region boundaries - solid lines
     % Left boundary T = 273.15 K
-    \draw[thick] (0,0.3) -- (0,7.0);
-    \node[rotate=90, above] at (0.15,4.5) {$T = 273.15$ K};
+    \draw[thick] (1,1.0) -- (1.0,10.0);
+    \node[rotate=90, right] at (1.3,6.0) {$T = 273.15$ K};
     
     % Top boundary p = 100 MPa
-    \draw[thick] (0,7.0) -- (7.2,7.0);
-    \node[above] at (3.2,7.0) {$p = 100$ MPa};
+    \draw[thick] (1.0,10.0) -- (9.0,10.0);
+    \node[above] at (2.2,10.0) {$p = 100$ MPa};
     
     % T = 623.15 K vertical line
-    \draw[thick] (3.8,0.3) -- (3.8,7.0);
-    \node[rotate=90, left] at (3.75,5.5) {$T = 623.15$ K};
+    \draw[thick] (4.4,1.0) -- (4.4,10.0);
+    \node[above] at (4.8,10.0) {$623.15$};
+
+     % T = 863.15 K label
+    \node[above] at (6.3,10.0) {$863.15$};
     
     % T = 1073.15 K vertical line
-    \draw[thick] (7.2,0.3) -- (7.2,7.0);
-    \node[rotate=90, right] at (7.25,5.5) {$T = 1073.15$ K};
+    \draw[thick] (9.0,1.0) -- (9.0,10.0);
+    \node[rotate=90, right] at (9.3,6.5) {$T = 1073.15$ K};
+    
+     % T = 2273.15 K vertical line
+    \draw[thick] (11.5,1.0) -- (11.5,6.0);
     
     % p = 50 MPa horizontal line (Region 5)
-    \draw[thick] (7.2,3.0) -- (10.2,3.0);
-    \node[above] at (8.7,3.0) {50 MPa};
+    \draw[thick] (9.0,6.0) -- (11.5,6.0);
+    \node[above] at (10.2,6.0) {50 MPa};
+     %  p = 50 MPa horizontal lines break
+    \draw (10.1,5.9) -- (10.15,6.1);
+    \draw (10.20,5.9) -- (10.25,6.1);
     
     % Bottom boundary p = p_s(273.15 K)
-    \draw[thick] (0,0.3) -- (3.8,0.3);
-    \node[below] at (1.8,0.3) {$p = p_s(273.15$ K)};
+    \draw[thick] (1.0,1.0) -- (11.5,1.0);
+    \node[below] at (2.8,1.0) {$p = p_s(273.15$ K)};
     
     % Saturation curve (Region 4) - from triple point to critical point
-    \draw[thick] (0,0.3) .. controls (1.0,0.4) and (2.5,0.8) .. (3.5,1.5);
-    \draw[thick] (3.5,1.5) .. controls (3.7,1.7) .. (3.8,1.8);
+    \draw[thick] (1.0,1.0) .. controls (2.0,1.4) and (3.5,1.8) .. (4.5,2.5);
+    \draw[thick] (4.5,2.5) .. controls (4.7,2.7) .. (4.8,2.8);
     
     % Critical point
-    \fill (3.8,1.8) circle (2pt);
-    \node[above right] at (3.8,1.8) {c};
+    \fill (4.8,2.8) circle (2pt);
+    \node[above right] at (4.8,2.8) {c};
     
     % p_B23(T) curve - from critical region upward
     \draw[thick] (3.8,1.8) .. controls (4.5,3.0) and (5.2,4.5) .. (5.8,7.0);
@@ -134,10 +166,10 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     \node[right] at (5.8,5.1) {$T_{\text{B23}}(p)$};
     
     % Region 1 - left side
-    \draw (1.5,5.5) circle (0.3);
-    \node at (1.5,5.5) {1};
-    \node[draw, fill=gray!15, align=center] at (1.5,4.6) {$g_1(p,T)$};
-    \node[draw, fill=gray!15, align=center, font=\small] at (1.5,3.2) {$T_1(p,h)$\\$T_1(p,s)$\\$p_1(h,s)$};
+    \draw (2.5,7.5) circle (0.3);
+    \node at (2.5,7.5) {1};
+    \node[draw, fill=gray!00, align=center] at (2.5,6.6) {$g_1(p,T)$};
+    \node[draw, fill=gray!15, align=center, font=\small] at (2.5,5.3) {$T_1(p,h)$\\$T_1(p,s)$\\$p_1(h,s)$};
     
     % Region 2 - right side (larger area)
     \draw (5.8,6.0) circle (0.3);
@@ -158,12 +190,10 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     \node[draw, fill=gray!15, align=center] at (2.8,1.0) {$T_s(h,s)$};
     
     % Region 5 - far right
-    \draw (8.7,2.0) circle (0.3);
-    \node at (8.7,2.0) {5};
-    \node[draw, fill=gray!15, align=center] at (8.7,1.2) {$g_5(p,T)$};
-    
-    % Temperature axis label
-    \node[right] at (10.5,0) {$T$/K};
+    % T = 2273.15 K vertical line
+    \draw (10.2,4.0) circle (0.3);
+    \node at (10.2,4.0) {5};
+    \node[draw, fill=gray!00, align=center] at (10.2,3.2) {$g_5(p,T)$};
     
 \end{tikzpicture}
 \caption{Structure and regions of IAPWS-IF97}
@@ -500,7 +530,7 @@ IAPWS, ``Release on the Spline-Based Table Lookup (SBTL) Method for the Calculat
 P. Colby, ``freeSteam: A C library for water/steam properties,'' \url{https://sourceforge.net/projects/freesteam/}.
 
 \bibitem{CoolPropIF97}
-I. Bell et al., ``CoolProp/IF97: A high-speed C++ implementation of the IAPWS-IF97 formulation,'' \url{https://github.com/CoolProp/IF97}.
+I. Bell et al., ``CoolProp/IF97: Open-source C++ implementation of the IAPWS-IF97 equations,'' \url{https://github.com/CoolProp/IF97}.
 
 \bibitem{IAPWS-Supplementary}
 IAPWS, ``Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance,'' International Association for the Properties of Water and Steam, 2008; ``Release on the IAPWS Formulation 2011 for the Thermal Conductivity of Ordinary Water Substance,'' 2011.
