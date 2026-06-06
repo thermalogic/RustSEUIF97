@@ -210,9 +210,9 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
 }
 ```
 
-#### 3.1.2 Scaling for Derivatively-Related Polynomial Computation
+#### 3.1.2 Shared-Power Scaling in Derivative Polynomials
 
- Scaling for Derivatively-Related Polynomial Computation: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
+By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
 
 The IAPWS-IF97 formulation uses polynomials of the form:
 
