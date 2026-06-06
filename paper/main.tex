@@ -24,23 +24,37 @@
 
 \begin{abstract}
 The IAPWS-IF97 formulation is the international standard for water and steam thermodynamic properties, 
-but direct formula evaluation cannot meet the compute-intensive demands of large-scale simulations requiring millions of
- property calculations. Existing approaches to improve computational speed fall into two categories: 
+but direct formula evaluation cannot meet the compute-intensive demands of large-scale simulations requiring millions of property calculations. Existing approaches to improve computational speed fall into two categories: 
  (1) direct formula evaluation with fast integer power functions (repeated squaring), which provides limited acceleration; and
   (2) alternative methods such as TTSE and SBTL that avoid direct formula evaluation but sacrifice accuracy and support only limited 
   input parameter pairs. This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
    loop tiling and scaling for derivatively related polynomial computation. 
-   Loop tiling partitions polynomial summation into cache-friendly tiles  that enable effective SIMD vectorization. 
-   Scaling for derivatively related polynomial computation exploits the mathematical relationship between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, eliminating redundant calculations. These techniques maintain full formula accuracy while supporting all 12 input parameter pairs. A Rust-based software package, SEUIF97, implements these methods and computes 36 thermodynamic, transport, and derived properties. Benchmark results demonstrate 5x to 20x speedups compared to baseline implementations using fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2, and 3 where polynomial forms are most complex.
+   Loop tiling partitions polynomial summation into cache-friendly tiles that enable effective SIMD vectorization. 
+   Scaling for derivatively related polynomial computation exploits the mathematical relationship 
+   between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
+   eliminating redundant calculations. These techniques maintain full formula accuracy while supporting all 12 input parameter pairs. 
+   A Rust-based software package, SEUIF97, implements these methods and computes 36 thermodynamic, transport, and derived properties. 
+   Benchmark results demonstrate 5x to 20x speedups compared to baseline implementations using fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2, and 3 where polynomial forms are most complex.
 \end{abstract}
 
 \section{Introduction}
 
-The IAPWS-IF97 formulation \cite{IAPWS-IF97} is the international standard for calculating thermodynamic properties of water and steam. Since its release, it has become the de facto standard in power engineering, process simulation, and thermal system analysis \cite{Wagner2008}. High-performance computing scenarios such as real-time simulation, optimization, and large-scale model training require fast and accurate water/steam property calculations to meet compute-intensive demands.
+The IAPWS-IF97 formulation \cite{IAPWS-IF97} is the international standard for calculating thermodynamic properties of water and steam. 
+Since its release, it has become the de facto standard in power engineering, process simulation, and thermal system analysis \cite{Wagner2008}. High-performance computing scenarios such as real-time simulation, optimization, and large-scale model training require fast and accurate water/steam property calculations to meet compute-intensive demands.
+The core computational work of IF97 involves evaluating Gibbs and Helmholtz free energy polynomials and their partial derivatives, 
+which can become a bottleneck in large-scale simulations requiring millions of property calculations. 
+Since IF97 equations are based on polynomials with integer exponents and their partial derivatives, achieving fast property calculations 
+requires designing efficient evaluation methods for these polynomials. This creates a critical need for optimization techniques that can accelerate such polynomial computations without sacrificing accuracy.
 
-The core computational work of IF97 consists of evaluatiing Gibbs and Helmholtz free energy polynomials and their partial derivatives, which can become a bottleneck in large-scale simulations requiring millions of property calculations. Since IF97 equations are based on polynomials with integer exponents and their partial derivatives, achieving fast property calculations requires designing efficient evaluation methods for these polynomials. This creates a critical need for optimization techniques that can accelerate such polynomial computations without sacrificing accuracy.
-
-Existing approaches to improving IAPWS-IF97 computational speed fall into two categories. The first category directly evaluates the IF97 formulas with limited optimization. Among open-source implementations, freesteam \cite{FreeSteam} and CoolProp/IF97 \cite{CoolProp,CoolPropIF97} have applied the repeated squaring method in their C implementations to optimize integer power computation. Most other implementations, including widely used libraries, directly evaluate the formulas term by term without exploiting the polynomial structure for acceleration. The second category uses alternative formulations that avoid direct polynomial evaluation. IAPWS has proposed the TTSE (Tabular Taylor Series Expansion) \cite{TTSE} and SBTL (Spline-Based Table Lookup) \cite{SBTL} methods, which use precomputed tables with interpolation to achieve fast lookups. However, these methods do not directly evaluate the IF97 formulas, have limited applicability to specific input parameter pairs, and require additional memory for table storage.
+Existing approaches to improving IAPWS-IF97 computational speed fall into two categories. The first category directly evaluates 
+the IF97 formulas with limited optimization. 
+Among open-source implementations, freesteam \cite{FreeSteam} and CoolProp/IF97 \cite{CoolProp,CoolPropIF97} 
+have applied the repeated squaring method in their C implementations to optimize integer power computation. 
+Most other implementations, including widely used libraries, directly evaluate the formulas term by term 
+without exploiting the polynomial structure for acceleration. 
+The second category uses alternative formulations that avoid direct polynomial evaluation. 
+IAPWS has proposed the TTSE (Tabular Taylor Series Expansion) \cite{TTSE} and SBTL (Spline-Based Table Lookup) \cite{SBTL} methods, 
+which use precomputed tables with interpolation to achieve fast lookups. However, these methods do not directly evaluate the IF97 formulas, have limited applicability to specific input parameter pairs, and require additional memory for table storage.
 
 Despite these efforts, significant opportunities for optimization remain unexplored: (1) the recurrence relationship between polynomial terms and their derivatives has not been exploited to eliminate redundant calculations; (2) loop tiling for improving cache locality in polynomial evaluation has not been applied in the IF97 context; and (3) no existing implementation systematically combines multiple optimization techniques while maintaining full formula accuracy and support for all input parameter pairs.
 
@@ -103,7 +117,7 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     \draw[black,thick] (9.0, -0.75) -- (9.0, -0.55);  
     \draw[black,thick] (11.5, -0.75) -- (11.5, -0.55);
 
-     % X-axis second rbreak
+     % X-axis second break
     \draw (10.2,-0.85) -- (10.3,-0.70);
     \draw (10.3,-0.855) -- (10.4,-0.70);
       
