@@ -475,13 +475,13 @@ The proposed techniques are implemented in Rust as SEUIF97, a high-performance I
 \textbf{Test} & \textbf{Region} & \textbf{Input} & \textbf{Method} & \textbf{Speedup} \\
 \midrule
 $(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & Loop tiling & 13x \\
-$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & Loop tiling + Recurrence & 20x \\
+$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & Loop tiling + Scaling & 20x \\
 $(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & Loop tiling & 20x \\
-$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & Loop tiling + Recurrence & 15x \\
+$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & Loop tiling + Scaling & 15x \\
 $(T,v)\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling & 17x \\
-$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling + Recurrence & 13x \\
+$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling + Scaling & 13x \\
 $(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & None & 1x \\
-$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Recurrence & 5x \\
+$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Scaling & 5x \\
 \bottomrule
 \end{tabular}%
 }
