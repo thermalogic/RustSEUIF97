@@ -11,7 +11,7 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 ## Acceleration Methods
 
 - Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
-- Shared-Power Scaling in Derivative-Related Polynomials: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
+- Shared-Power Scaling: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
 
 Please refer to [The acceleration methods](./docs/the_acceleration_methods.md) for more details on the algorithm
 
@@ -249,7 +249,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## WASM binding
 
-- WASM - [README\_WASM.md](./README_WASM.md)
+- WASM - [README_WASM.md](./README_WASM.md)
 - NPM package: [seuif97](https://www.npmjs.com/seuif97)
 
 ```javascript

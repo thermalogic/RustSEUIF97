@@ -176,7 +176,7 @@ SEUIF97 employs two core acceleration techniques that directly optimize IAPWS-IF
 
 **Design Principles**:
 1. **Loop Tiling**: Splits a single loop into multiple steps, improving cache locality and enabling LLVM's auto-vectorizer to generate SIMD instructions
-2. **Scaling for Derivatively Related Polynomial Computation**: Computes polynomial values and their partial derivatives simultaneously in a single traversal, eliminating redundant exponentiation operations
+2. **Shared-Power Scaling**:By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency.
 
 #### 3.1.1 Loop Tiling 
 
@@ -210,7 +210,7 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
 }
 ```
 
-#### 3.1.2 Shared-Power Scaling in Derivative-Related Polynomials
+#### 3.1.2 Shared-Power Scaling
 
 By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
 

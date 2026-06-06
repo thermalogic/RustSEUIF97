@@ -26,7 +26,7 @@ The IAPWS-IF97 formulation is the international standard for water and steam the
 but direct formula evaluation cannot meet the compute-intensive demands of large-scale simulations requiring millions of property calculations. Existing approaches to improve computational speed fall into two categories: 
  (1) direct formula evaluation with fast integer power functions (repeated squaring), which provides limited acceleration; and
   (2) alternative methods such as TTSE and SBTL that avoid direct formula evaluation but sacrifice accuracy and support only limited input parameter pairs. This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
-   loop tiling and scaling for derivatively related polynomial computation. 
+   loop tiling and shared-power scaling for derivative-related polynomials. 
    Loop tiling partitions polynomial summation into cache-friendly tiles that enable effective SIMD vectorization. 
    Shared-power scaling for derivative-related polynomial computation exploits the mathematical relationship 
    between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
@@ -353,7 +353,7 @@ only with modified coefficients. For example, comparing Eq.~(\ref{eq:gibbs_resid
 \left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi = \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1} =\frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
 \end{equation}
 
-This means that computing multiple thermodynamic properties requires evaluating several polynomials with the same base terms $n_i \pi^{I_i} \tau^{J_i}$ but different coefficient multipliers.
+This means that computing one thermodynamic properties requires evaluating several polynomials with the same power terms $n_i \pi^{I_i} \tau^{J_i}$ but different coefficient multipliers.
 
 \textbf{Characteristic 3: High term counts in main regions.} Regions 1 and 2, which cover the most commonly used thermodynamic conditions in engineering applications, contain 34 and 52 terms respectively. Each property calculation requires summing all these terms, making polynomial evaluation the dominant computational cost.
 
@@ -393,7 +393,7 @@ Each summation is a simple polynomial evaluation with a single accumulator. The 
 Algorithm \ref{alg:loop_tiling} presents the loop tiling approach for a single polynomial summation:
 
 \begin{algorithm}[H]
-\caption{Loop Tiling for Single Polynomial Summation}
+\caption{Loop Tiling for Single Polynomial}
 \label{alg:loop_tiling}
 \begin{algorithmic}[1]
 \REQUIRE $x, y$: reduced variables (e.g., $\pi, \tau$ for Regions 2/5; $7.1{-}\pi, \tau{-}1.222$ for Region 1; $\delta, \tau$ for Region 3)
@@ -416,9 +416,11 @@ The optimal tile boundaries vary across regions and polynomial types, and are de
 
 Performance profiling demonstrates the effectiveness of this approach. All measurements were conducted on an Intel Core i7-13700K processor (24 cores, up to 5.4 GHz) with 32 GB DDR5 RAM, running Windows 11, using Rust 1.75.0 compiled in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}. For Region 2 enthalpy computation ($h$), loop tiling reduces the execution time from approximately 1.07 µs to 53.8 ns, achieving a ~20x speedup. This improvement stems from better cache utilization and the compiler's ability to apply aggressive optimizations to each tile independently.
 
-\subsection{Shared-Power Scaling in Derivative-Related Polynomials}
+\subsection{Shared-Power Scaling}
 
-When a thermodynamic property requires multiple polynomial evaluations that share the same power terms, Shared power terms are precomputed once, and remaining polynomial items are obtained by scaling pre-evaluated power values with corresponding exponents. Coupled with cache-friendly loop tiling, redundant power calculations are removed to improve computational efficiency of thermodynamic property calculation
+When a thermodynamic property requires multiple derivative-related polynomial evaluations,shared power terms are precomputed once. 
+Remaining polynomial components are obtained by scaling pre-evaluated power values with corresponding exponents through multiplication or post-processing division. 
+This strategy eliminates redundant repeated power evaluations and improves computational efficiency.
 
 Taking specific entropy $s$ in Region 2 as an example, the computation requires both $\gamma$ and $\gamma_\tau$:
 
@@ -427,15 +429,17 @@ s = R \left[ \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) - \left( \gamma^0
 \end{equation}
 
 Where,Eq.~\eqref{eq:gibbs_residual} \(\gamma^r\) and Eq.~\eqref{eq:gibbs_residual_tau} \(\gamma^r_\tau\)  rely on an identical base power product \(n_i \pi^{I_i}\tau^{J_i}\) and differ merely in their attached scaling coefficients.
+
 During polynomial evaluation for \(\gamma^r\) and \(\gamma^r_\tau\), the shared base power product \(n_i \pi^{I_i}\tau^{J_i}\) is precomputed once per entry. The incremental contribution for \(\gamma^r_\tau\) is subsequently derived by scaling this pre-evaluated base value with exponent \(J_i\).
 All accumulations for \(\gamma^r\) and \(\gamma^r_\tau\) are executed concurrently inside one unified loop.
 Upon loop completion, the accumulated sum yields \(\gamma^r\) directly, while the accumulator reserved for \(\gamma^r_\tau\) is post-scaled via division by \(\tau\) to produce the final \(\gamma^r_\tau\).
 This single-pass evaluation eliminates duplicate recalculations of the expensive base power term \(n_i \pi^{I_i}\tau^{J_i}\) across the two derivative-associated polynomials.
 
-Algorithm \ref{alg:scaling} presents the scaling for derivatively related polynomial computation combined with loop tiling for the common case of computing the polynomial value and its two first-order partial derivatives simultaneously:
+Algorithm \ref{alg:scaling} presents the shared-power scaling approach for derivative-related polynomial computation 
+combined with loop tiling for the case of computing the polynomial value and its two first-order partial derivatives simultaneously:
 
 \begin{algorithm}[H]
-\caption{Scaling for Derivatively Related Polynomial Computation with Loop Tiling}
+\caption{Shared-Power Scaling with Loop Tiling}
 \label{alg:scaling}
 \begin{algorithmic}[1]
 \REQUIRE $x, y$: reduced variables (e.g., $\pi, \tau$ for Regions 2/5; $7.1{-}\pi, \tau{-}1.222$ for Region 1; $\delta, \tau$ for Region 3)
@@ -460,10 +464,9 @@ Algorithm \ref{alg:scaling} presents the scaling for derivatively related polyno
 
 For properties requiring only one derivative (e.g., entropy $s$ needs $\gamma$ and $\gamma_\tau$), the same pattern applies with only the relevant derivative accumulator active. For properties requiring higher-order or mixed derivatives (e.g., speed of sound $w$), additional accumulators are added following the same coefficient-multiplication principle.
 
-Performance profiling under the same hardware and software environment as 
-Section 3.1 demonstrates the effectiveness of this approach. 
-For Region 2 entropy computation ($s$), which requires both $\gamma$ and $\gamma_\tau$,
-the scaling for derivatively related polynomial computation combined with loop tiling reduces the execution time from approximately 2.2 µs to 138.7 ns, achieving a ~15x speedup. This confirms that computing multiple related derivatives simultaneously eliminates redundant base term evaluations while maintaining the cache benefits of loop tiling.
+Performance profiling under the same hardware and software environment as Section 3.1 demonstrates the effectiveness of this approach. 
+For Region 2 entropy $s$ computation , which requires both $\gamma$ and $\gamma_\tau$, the shared-power scaling combined with loop tiling reduces the execution time from approximately 2.2 µs to 138.7 ns, achieving a ~15x speedup. 
+This confirms that the combined optimization strategy can drastically accelerate the overall computational speed of IAPWS-IF97 property calculation.
 
 \subsection{Combined Application}
 
