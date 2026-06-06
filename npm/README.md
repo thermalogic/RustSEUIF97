@@ -12,7 +12,7 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 * Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-* Recurrence Method for Multi-Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly improves performance.
+* Scaling Method for Derivatively Related Polynomial Evaluation: By leveraging the inherent derivative relationship among polynomials, only one base polynomial is directly computed. All remaining derivatively related polynomial values are efficiently obtained through simple variable multiplication or division. This strategy eliminates redundant polynomial calculations and substantially accelerates the overall evaluation process.
 
 ## Related Packages
 

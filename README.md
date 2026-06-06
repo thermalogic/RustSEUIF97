@@ -12,8 +12,8 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 ## Acceleration Methods
 
-- Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
-- Recurrence Method for Multi-Polynomial Evaluation: By utilizing the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts computational performance.
+- Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
+- Scaling for Derivatively Related Polynomial Evaluation: By utilizing the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts computational performance.
 
 Please refer to [The acceleration methods](./docs/the_acceleration_methods.md) for more details on the algorithm
 
