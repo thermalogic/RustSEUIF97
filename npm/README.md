@@ -8,17 +8,6 @@ Through the high-speed package, the results of the IAPWS-IF97 are accurately pro
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport and derived properties** (see [Properties](#properties)), plus **thermodynamic process functions** for isentropic enthalpy drop and efficiency calculations.
 
-## Acceleration Methods
-
-* Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
-
-* Shared-Power Scaling in Derivative-Related Polynomials: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency.
-
-## Related Packages
-
--  [Rust crate: seuif97](https://crates.io/crates/seuif97)  
--  [Python package: seuif97](https://pypi.org/project/seuif97/)
-
 ## Installation
 
 ```bash

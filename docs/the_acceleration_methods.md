@@ -6,7 +6,7 @@ The code snippets demonstrate the acceleration methods to calculate the specific
 
 * Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-* Shared-Power Scaling in Derivative Polynomials: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency.
+* Shared-Power Scaling in Derivative-Related Polynomials: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency.
 
 ## The IAPWS-IF97 Equations
 

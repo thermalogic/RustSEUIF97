@@ -10,12 +10,6 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedu
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)), plus **thermodynamic process functions** for isentropic enthalpy drop and efficiency calculations.
 
-## Acceleration Methods
-
-* Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
-
-* Shared-Power Scaling in Derivative-Related Polynomials: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
-
 ## What's New in SEUIF97 2 
 
 | Feature                               | 1.*            | 2.*                        |
