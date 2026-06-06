@@ -10,6 +10,13 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedu
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)), and **thermodynamic process functions** (see [Thermodynamic Process Functions](#thermodynamic-process-functions)).
 
+## Acceleration Methods
+
+- Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
+- Shared-Power Scaling in Derivative-Related Polynomials: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
+
+Please refer to [The acceleration methods](./docs/the_acceleration_methods.md) for more details on the algorithm
+
 ## What's New in the Rust Version
 
 The Rust version of SEUIF97 is a major upgrade over [the original C implementation](https://github.com/thermalogic/SEUIF97), delivering significant improvements in performance, functionality, and ecosystem support.
