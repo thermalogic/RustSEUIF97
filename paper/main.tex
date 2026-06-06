@@ -22,13 +22,13 @@
 \maketitle
 
 \begin{abstract}
-The IAPWS-IF97 formulation is the international standard for water and steam thermodynamic properties, 
-but direct formula evaluation cannot meet the compute-intensive demands of large-scale simulations requiring millions of property calculations. Existing approaches to improve computational speed fall into two categories: 
+The IAPWS-IF97 formulation is the international standard for water and steam thermodynamic properties,
+but direct formula evaluation cannot meet the performance demands of compute-intensive applications requiring millions of property calculations. Existing approaches to improve computational speed fall into two categories: 
  (1) direct formula evaluation with fast integer power functions (repeated squaring), which provides limited acceleration; and
   (2) alternative methods such as TTSE and SBTL that avoid direct formula evaluation but sacrifice accuracy and support only limited input parameter pairs. This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
-   loop tiling and shared-power scaling for derivative-related polynomials. 
-   Loop tiling partitions polynomial summation into cache-friendly tiles that enable effective SIMD vectorization. 
-   Shared-power scaling for derivative-related polynomial computation exploits the mathematical relationship 
+   loop tiling and shared-power scaling.
+   Loop tiling partitions polynomial summation into cache-friendly tiles that enable effective SIMD (Single Instruction Multiple Data) vectorization.
+   Shared-power scaling exploits the mathematical relationship 
    between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
    eliminating redundant power calculations. These techniques maintain full formula accuracy while supporting all 12 input parameter pairs. A Rust-based software package, SEUIF97, implements these methods and computes 36 thermodynamic, transport, and derived properties. 
    Benchmark results demonstrate 5x to 20x speedups compared to baseline implementations using fast integer power functions with a single loop, with the largest improvements in Regions 1, 2, and 3 where polynomial forms are most complex.
@@ -36,12 +36,12 @@ but direct formula evaluation cannot meet the compute-intensive demands of large
 
 \section{Introduction}
 
-The IAPWS-IF97 formulation \cite{IAPWS-IF97} is the international standard for calculating thermodynamic properties of water and steam. 
-Since its release, it has become the de facto standard in power engineering, process simulation, and thermal system analysis \cite{Wagner2008}. High-performance computing scenarios such as real-time simulation, optimization, and large-scale model training require fast and accurate water/steam property calculations to meet compute-intensive demands.
-The core computational work of IF97 involves evaluating Gibbs and Helmholtz free energy polynomials and their partial derivatives, 
-which can become a bottleneck in large-scale simulations requiring millions of property calculations. 
-Since IF97 equations are based on polynomials with integer exponents and their partial derivatives, achieving fast property calculations 
-requires designing efficient evaluation methods for these polynomials. This creates a critical need for optimization techniques that can accelerate such polynomial computations without sacrificing accuracy.
+The IAPWS-IF97 formulation \cite{IAPWS-IF97} is the international standard for calculating thermodynamic properties of water and steam.
+Since its release, it has become the de facto standard in power engineering, process simulation, and thermal system analysis \cite{Wagner2008}. Compute-intensive applications such as real-time simulation, system optimization, and digital twins require millions of property calculations per second.
+The core computational work of IF97 involves evaluating Gibbs and Helmholtz free energy polynomials and their partial derivatives,
+which can become a performance bottleneck in these applications.
+Since IF97 equations are based on polynomials with integer exponents, achieving fast property calculations
+requires designing efficient evaluation methods for these polynomials.
 
 Existing approaches to improving IAPWS-IF97 computational speed fall into two categories. The first category directly evaluates 
 the IF97 formulas with limited optimization. 
@@ -55,20 +55,20 @@ which use precomputed tables with interpolation to achieve fast lookups. However
 
 Despite these efforts, significant opportunities for optimization remain unexplored: 
 (1) loop tiling for improving cache locality in polynomial evaluation has not been applied in the IF97 context;
-(2) the scaling relationship between powers terms of derivative-realted polynomials  has not been exploited to eliminate redundant calculations;
+(2) the scaling relationship between power terms of derivative-related polynomials has not been exploited to eliminate redundant calculations;
  and no existing implementation systematically combines multiple optimization techniques while maintaining full formula accuracy and support for all input parameter pairs.
 
 This paper proposes two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
 \begin{enumerate}
-    \item \textbf{Loop tiling}: Splitting single loops into cache-friendly tiles to improve cache locality and SIMD(Single Instruction Multiple Data) vectorization
-    \item \textbf{Shared-power scaling in derivative-related polynomials}: Based on the link between polynomials and their derivatives, we compute shared power terms once and obtain other results by exponent scaling, removing redundant calculations for higher computation efficiency.
+    \item \textbf{Loop tiling}: Splitting single loops into cache-friendly tiles to improve cache locality and SIMD (Single Instruction Multiple Data) vectorization
+    \item \textbf{Shared-power scaling}: Exploiting the mathematical relationship between polynomials and their derivatives to compute shared power terms once and obtain derivative results by exponent scaling, eliminating redundant calculations
 \end{enumerate}
 
 The paper is organized as follows: Section 2 provides an overview of the IAPWS-IF97 formulation and its key characteristics; Section 3 details the acceleration techniques; Section 4 presents comprehensive benchmark results; Section 5 describes the software implementation; and Section 6 concludes the paper.
 
 \section{IAPWS-IF97 Formulation Overview}
 
-The IAPWS-IF97 (International Association for the Properties of Water and Steam, Industrial Formulation 1997) \cite{IAPWS-IF97} divides the thermodynamic phase diagram of water and steam into five regions, as shown in Figure \ref{fig:if97_regions}. The 1997 release superseded the 1967 formulation (IFC-67). The 2007 revision extended Region 5 to 50 MPa, and the 2012 consolidated release (R7-97(2012)) is the current standard. This release has been supplemented by additional backward equations for $p(h,s)$ in Regions 1 and 2, $T(p,h)$, $v(p,h)$, $T(p,s)$, $v(p,s)$ in Region 3, $p(h,s)$ in Region 3 with auxiliary equations for independent variables $h$ and $s$, and $v(p,T)$ in Region 3.
+The IAPWS-IF97 formulation \cite{IAPWS-IF97} divides the thermodynamic phase diagram of water and steam into five regions, as shown in Figure \ref{fig:if97_regions}. The 1997 release superseded the 1967 formulation (IFC-67). The 2007 revision extended Region 5 to 50 MPa, and the 2012 consolidated release (R7-97(2012)) is the current standard. This release has been supplemented by additional backward equations for $p(h,s)$ in Regions 1 and 2, $T(p,h)$, $v(p,h)$, $T(p,s)$, $v(p,s)$, $(p,T)$ in Region 3, and $T_{\text{sat}}(h,s)$ for Region 4.
 
 \begin{figure}[H]
 \centering
@@ -244,7 +244,7 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
 \label{fig:if97_regions}
 \end{figure}
 
-In addition, IAPWS\cite{IAPWS-Releases} provides formulations for transport properties, interfacial property and dielectric property, etc.
+In addition, IAPWS \cite{IAPWS-Releases} provides formulations for transport properties, interfacial properties, and dielectric properties.
 
 \subsection{Basic Equations}
 
@@ -280,20 +280,19 @@ For Region 1, the fundamental equation uses a single polynomial with shifted var
 \label{eq:gibbs_r1}
 \end{equation}
 
-where $\pi = p/p^{*}$ with $p^{*} = 16.53$ MPa and $\tau = T^{*}/T$ with $T^{*} = 1386$ K. The coefficients $n_i$ and exponents $I_i$, $J_i$ are provided in tabular form for each region. Table \ref{tab:region_params} summarizes the scaling parameters and number of terms for each region.
+where $\pi = p/p^{*}$ with $p^{*} = 16.53$ MPa and $\tau = T^{*}/T$ with $T^{*} = 1386$ K. The coefficients $n_i$ and exponents $I_i$, $J_i$ are provided in tabular form for each region. Table \ref{tab:region_params} summarizes the scaling parameters for each region.
 
 \begin{table}[H]
 \centering
-\caption{Scaling parameters and term counts for IAPWS-IF97 fundamental equations}
+\caption{Scaling parameters for fundamental equations in Regions 1, 2, and 5}
 \label{tab:region_params}
-\begin{tabular}{lccccc}
+\begin{tabular}{lccc}
 \toprule
-\textbf{Region} & \textbf{Equation} & \textbf{$p^{*}$ (MPa)} & \textbf{$T^{*}$ (K)} & \textbf{Terms} & \textbf{Form} \\
+\textbf{Region} & \textbf{Equation} & \textbf{$p^{*}$ (MPa)} & \textbf{$T^{*}$ (K)} \\
 \midrule
-1 (Liquid) & Gibbs & 16.53 & 1386 & 34 & Shifted polynomial \\
-2 (Vapor) & Gibbs & 1.0 & 540 & 9 + 43 & Ideal + residual \\
-3 (Critical) & Helmholtz & --- & 647.096 & 1 + 39 & $\ln\delta$ + polynomial \\
-5 (High-T) & Gibbs & 1.0 & 1000 & 6 + 6 & Ideal + residual \\
+1 (Liquid) & Gibbs & 16.53 & 1386  \\
+2 (Vapor) & Gibbs & 1.0 & 540  \\
+5 (High-T) & Gibbs & 1.0 & 1000  \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -309,55 +308,9 @@ Region 3 (near-critical region) uses the dimensionless Helmholtz free energy $f/
 
 where $\delta = \rho/\rho^{*}$ and $\tau = T^{*}/T$, with $\rho^{*} = 322$ kg/m$^3$ and $T^{*} = 647.096$ K. The leading $n_1 \ln\delta$ term captures the ideal-gas behavior, and the 39 polynomial terms model the residual contribution.
 
+\subsubsection{Summary of Fundamental Equations}
 
-\subsection{Thermodynamic Property Derivation}
-
-All thermodynamic properties are derived from the fundamental equations and their partial derivatives. In Regions 1, 2, and 5, properties are derived from the Gibbs free energy $\gamma(\pi,\tau)$, while in Region 3, properties are derived from the Helmholtz free energy $\phi(\delta,\tau)$. Although the specific expressions differ by region, all share the same computational pattern: evaluating polynomial summations and their partial derivatives. Taking Region 2 as a representative example, the key properties derived from $\gamma(\pi,\tau) = \gamma^0(\pi,\tau) + \gamma^r(\pi,\tau)$ are:
-
-\begin{align}
-h &= RT \cdot \tau \left( \frac{\partial \gamma}{\partial \tau} \right)_\pi
-    = RT \cdot \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) \\
-s &= R \left[ \tau \left( \frac{\partial \gamma}{\partial \tau} \right)_\pi - \gamma \right]
-    = R \left[ \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) - \left( \gamma^0 + \gamma^r \right) \right] \label{eq:entropy} \\
-w^2 &= RT \cdot \frac{1 + 2\pi\gamma^r_\pi + \pi^2(\gamma^r_\pi)^2}{\left( 1 - \pi^2\gamma^r_{\pi\pi} \right) + \dfrac{\left( 1 + \pi\gamma^r_\pi - \tau\pi\gamma^r_{\pi\tau} \right)^2}{\tau^2\left( \gamma^0_{\tau\tau} + \gamma^r_{\tau\tau} \right)}} \label{eq:speed}
-\end{align}
-
-where the partial derivatives of the ideal-gas part $\gamma^0$ and the residual part $\gamma^r$ are:
-
-\begin{align}
-\gamma^0_\tau &= \sum_{i=1}^{N_0} n_i^0 J_i^0 \tau^{J_i^0 - 1}, &
-\gamma^0_{\tau\tau} &= \sum_{i=1}^{N_0} n_i^0 J_i^0 (J_i^0 - 1) \tau^{J_i^0 - 2} \\
-\gamma^r_\pi &= \sum_{i=1}^{N_r} n_i I_i \pi^{I_i - 1} \tau^{J_i}, &
-\gamma^r_{\pi\pi} &= \sum_{i=1}^{N_r} n_i I_i (I_i - 1) \pi^{I_i - 2} \tau^{J_i} \\
-\gamma^r_\tau &= \sum_{i=1}^{N_r} n_i J_i \pi^{I_i} \tau^{J_i - 1}, &
-\gamma^r_{\tau\tau} &= \sum_{i=1}^{N_r} n_i J_i (J_i - 1) \pi^{I_i} \tau^{J_i - 2} \\
-\gamma^r_{\pi\tau} &= \sum_{i=1}^{N_r} n_i I_i J_i \pi^{I_i - 1} \tau^{J_i - 1}
-\end{align}
-
-Other properties such as specific volume $v = \frac{RT}{p^*}(\gamma^0_\pi + \gamma^r_\pi)$ and specific isobaric heat capacity $c_p = -R\tau^2(\gamma^0_{\tau\tau} + \gamma^r_{\tau\tau})$ follow the same pattern. In Region 3, the analogous properties are derived from $\phi(\delta,\tau)$ with partial derivatives with respect to $\delta$ and $\tau$. Despite these differences, the core computation in all regions reduces to evaluating polynomial summations and their partial derivatives of various orders.
-
-\subsection{Formula Characteristics and Computational Implications}
-
-The IAPWS-IF97 formulation exhibits several key characteristics that directly impact computational performance:
-
-\textbf{Characteristic 1: Polynomial structure with integer exponents.} The residual parts of all fundamental equations are sums of terms of the form $n_i x^{I_i} y^{J_i}$, where $I_i$ and $J_i$ are integers and $(x, y)$ are the reduced variables for each region. This structure allows efficient evaluation using integer power operations rather than general exponentiation.
-
-\textbf{Characteristic 2: Derivatives share the same polynomial form.} The partial derivatives of the fundamental equations are themselves polynomials with the same base terms, 
-only with modified coefficients. For example, comparing Eq.~(\ref{eq:gibbs_residual}) $\gamma^r$ with the derivative $\gamma^r_\tau$:
-
-\begin{align}
-\gamma^r &= \sum_{i=1}^{N_r} n_i \, \pi^{I_i} \, \tau^{J_i} 
-\end{align}
-
-\begin{equation}\label{eq:gibbs_residual_tau}
-\left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi = \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1} =\frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
-\end{equation}
-
-This means that computing one thermodynamic properties requires evaluating several polynomials with the same power terms $n_i \pi^{I_i} \tau^{J_i}$ but different coefficient multipliers.
-
-\textbf{Characteristic 3: High term counts in main regions.} Regions 1 and 2, which cover the most commonly used thermodynamic conditions in engineering applications, contain 34 and 52 terms respectively. Each property calculation requires summing all these terms, making polynomial evaluation the dominant computational cost.
-
-These characteristics motivate the acceleration techniques presented in this paper. The shared polynomial structure (Characteristic 2) enables recurrence polynomial-derivative computation when multiple related derivatives are needed, while the high term counts (Characteristic 3) benefit from loop tiling for all polynomial evaluations.
+Table \ref{tab:formula_char} summarizes the fundamental equations across all IAPWS-IF97 regions, including the number of terms, exponent ranges, and formulation types. These characteristics directly influence the computational cost and motivate the acceleration techniques presented in this paper.
 
 \begin{table}[H]
 \centering
@@ -367,14 +320,57 @@ These characteristics motivate the acceleration techniques presented in this pap
 \toprule
 \textbf{Region} & \textbf{Terms} & \textbf{Exponent Range} & \textbf{Formulation} \\
 \midrule
-1 (Liquid) & 34 & $I_i$: 0--32, $J_i$: $-41$--17 & Gibbs (shifted) \\
+1 (Liquid) & 34 & $I_i$: 0--32, $J_i$: $-41$--17 & Gibbs \\
 2 (Vapor) & 9 + 43 & $I_i$: 1--24, $J_i$: $-5$--58 & Gibbs (ideal + residual) \\
 3 (Critical) & 1 + 39 & $I_i$: 0--11, $J_i$: 0--26 & Helmholtz ($\ln\delta$ + polynomial) \\
-4 (Saturation) & 9 & Simple polynomial & Exponential \\
+4 (Saturation) & 10 & --- & Exponential \\
 5 (High-T) & 6 + 6 & $I_i$: 1--3, $J_i$: $-3$--9 & Gibbs (ideal + residual) \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Thermodynamic Property Derivation}
+
+All thermodynamic properties are derived from the fundamental equations and their partial derivatives. In Regions 1, 2, and 5, properties are derived from the Gibbs free energy $\gamma(\pi,\tau)$, while in Region 3, properties are derived from the Helmholtz free energy $\phi(\delta,\tau)$. Although the specific expressions differ by region, all share the same computational pattern: evaluating polynomial summations and their partial derivatives. Taking Region 2 as a representative example, the key properties derived from $\gamma(\pi,\tau) = \gamma^0(\pi,\tau) + \gamma^r(\pi,\tau)$ are:
+
+\begin{align}
+h &= RT \cdot \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) \label{eq:enthalpy} \\
+s &= R \left[ \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) - \left( \gamma^0 + \gamma^r \right) \right] \label{eq:entropy} \\
+w^2 &= RT \cdot \frac{1 + 2\pi\gamma^r_\pi + \pi^2(\gamma^r_\pi)^2}{\left( 1 - \pi^2\gamma^r_{\pi\pi} \right) + \dfrac{\left( 1 + \pi\gamma^r_\pi - \tau\pi\gamma^r_{\pi\tau} \right)^2}{\tau^2\left( \gamma^0_{\tau\tau} + \gamma^r_{\tau\tau} \right)}} \label{eq:speed}
+\end{align}
+
+Other properties such as specific volume $v = \frac{RT}{p}(\gamma^0_\pi + \gamma^r_\pi)$ and specific isobaric heat capacity $c_p = -R\tau^2(\gamma^0_{\tau\tau} + \gamma^r_{\tau\tau})$ follow the same pattern.
+
+A key observation is that the partial derivatives share the same power terms as the original equations, only with modified coefficients. Taking the residual part $\gamma^r$ and its partial derivative with respect to $\tau$ as an example:
+
+\begin{equation}\label{eq:gibbs_residual_tau}
+\left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi = \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1} =\frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
+\end{equation}
+
+Comparing Eq.~(\ref{eq:gibbs_residual_tau}) with Eq.~(\ref{eq:gibbs_residual}), both share the identical base power product $\pi^{I_i} \tau^{J_i}$ and differ only in their coefficient multipliers ($n_i$ vs. $n_i J_i$). This means that computing a thermodynamic property requires evaluating polynomials with the same power terms but different coefficient multipliers.
+
+For properties requiring multiple derivative evaluations, such as specific entropy $s$ in Region 2 (Eq.~\ref{eq:entropy}), the computation involves both $\gamma^r$ and $\gamma^r_\tau$, which share the same power products $\pi^{I_i} \tau^{J_i}$. This mathematical relationship enables the shared-power scaling technique described in Section 3.2.
+
+\subsection{Backward Equations}
+
+The backward equations of IAPWS-IF97 and supplementary releases are integer-power polynomials used for inverse property calculations.
+For example, the backward equation $T(p,h)$ for subregion 2a in its dimensionless form reads:
+
+\begin{equation}\label{eq:backward_eq_reg2_ph_t_2a}
+\frac{T_{2a}(p,h)}{T^*} = \theta_{2a}(\pi,\eta) = \sum_{i=1}^{34} n_i \, \pi^{I_i} (\eta - 2.1)^{J_i}
+\end{equation}
+
+where $\theta = T/T^*$, $\pi = p/p^*$, and $\eta = h/h^*$ with $T^* = 1$ K, $p^* = 1$ MPa, and $h^* = 2000$ kJ kg$^{-1}$. The 34 coefficients $n_i$ and exponents $I_i$, $J_i$ are provided in tabular form in the IAPWS supplementary release. Similar backward equations exist for other input parameter pairs across all regions, all sharing the same integer-power polynomial structure. Since these backward equations are also integer-power polynomials, they benefit from the same acceleration techniques as the fundamental equations. 
+
+\subsection{Formula Characteristics}
+
+The IAPWS-IF97 formulation exhibits three key characteristics that motivate the acceleration techniques:
+
+\textbf{Characteristic 1: Integer exponents.} All fundamental and backward equations are sums of terms $n_i x^{I_i} y^{J_i}$ with integer $I_i$, $J_i$, enabling efficient integer power operations. In C/C++ implementations, this typically requires manual optimization such as repeated squaring, while languages like Rust provide built-in integer power functions (e.g., \texttt{powi()}) that can be used directly.
+
+\textbf{Characteristic 2: Shared power terms.} The partial derivatives share the same base power products with the original equations, differing only in coefficients. For example, when computing specific entropy $s$ in Region 2, both $\gamma^r$ and $\gamma^r_\tau$ share the identical base power product $\pi^{I_i}\tau^{J_i}$ (Section 2.2). This enables shared-power scaling.
+
+\textbf{Characteristic 3: High term counts.} The fundamental equations and backward equations in the main regions contain numerous terms, making polynomial evaluation the dominant computational cost and benefiting from loop tiling. For example, Regions 1 and 2 contain 34 and 52 terms respectively (Table \ref{tab:formula_char}).
 
 \section{Acceleration Techniques}
 
@@ -382,13 +378,7 @@ These characteristics motivate the acceleration techniques presented in this pap
 
 Loop tiling (also known as loop blocking) \cite{LoopTiling,Grosser2012Polly} is a general optimization technique that partitions a single loop into multiple smaller loops (tiles) to improve cache locality and enable effective SIMD vectorization. For IF97 polynomial evaluation, this technique applies to any property computation that involves a single polynomial summation.
 
-Taking specific enthalpy $h$ in Region 2 as an example, the computation requires only the first-order partial derivative $\gamma_\tau$:
-
-\begin{equation}
-h = RT \cdot \tau \left( \gamma^0_\tau + \gamma^r_\tau \right)
-\end{equation}
-
-Each summation is a simple polynomial evaluation with a single accumulator. The loop tiling technique partitions the term indices into tiles that fit within CPU cache, reducing memory access latency and allowing the compiler to optimize each tile independently.
+Taking specific enthalpy $h$ in Region 2 as an example (Eq.~\ref{eq:enthalpy}), the computation requires only the first-order partial derivative $\gamma_\tau$. The loop tiling technique partitions the term indices into tiles that fit within CPU cache, reducing memory access latency and allowing the compiler to optimize each tile independently.
 
 Algorithm \ref{alg:loop_tiling} presents the loop tiling approach for a single polynomial summation:
 
@@ -414,29 +404,13 @@ Algorithm \ref{alg:loop_tiling} presents the loop tiling approach for a single p
 
 The optimal tile boundaries vary across regions and polynomial types, and are determined empirically through performance profiling to identify the partitioning that maximizes compiler optimization potential. For Region 2 (43 residual terms), we use three tiles: 0--13, 13--26, and 26--43. This partitioning allows the Rust compiler to optimize each tile independently through loop unrolling, SIMD vectorization, and register allocation. The same loop tiling strategy applies to all single-polynomial computations, including $h$, $c_p$, $v$, and individual derivative evaluations.
 
-Performance profiling demonstrates the effectiveness of this approach. All measurements were conducted on an Intel Core i7-13700K processor (24 cores, up to 5.4 GHz) with 32 GB DDR5 RAM, running Windows 11, using Rust 1.75.0 compiled in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}. For Region 2 enthalpy computation ($h$), loop tiling reduces the execution time from approximately 1.07 µs to 53.8 ns, achieving a ~20x speedup. This improvement stems from better cache utilization and the compiler's ability to apply aggressive optimizations to each tile independently.
-
 \subsection{Shared-Power Scaling}
 
-When a thermodynamic property requires multiple derivative-related polynomial evaluations,shared power terms are precomputed once. 
-Remaining polynomial components are obtained by scaling pre-evaluated power values with corresponding exponents through multiplication or post-processing division. 
-This strategy eliminates redundant repeated power evaluations and improves computational efficiency.
+When a thermodynamic property requires both the polynomial value and its derivatives, shared-power scaling eliminates redundant computation. The base power product is computed once per term, and the derivative contributions are obtained by scaling with the corresponding exponents. This single-pass evaluation avoids repeated power calculations.
 
-Taking specific entropy $s$ in Region 2 as an example, the computation requires both $\gamma$ and $\gamma_\tau$:
+Taking specific entropy $s$ in Region 2 as an example (Eq.~\ref{eq:entropy}), the computation requires both $\gamma$ and $\gamma_\tau$. As shown in Eq.~\eqref{eq:gibbs_residual} and Eq.~\eqref{eq:gibbs_residual_tau}, $\gamma^r$ and $\gamma^r_\tau$ share the identical base power product $\pi^{I_i}\tau^{J_i}$ and differ only in their coefficients. The shared-power scaling technique computes this base power product once per term, then accumulates contributions to both $\gamma^r$ and $\gamma^r_\tau$ simultaneously in a single loop. The $\gamma^r$ accumulator collects $n_i \pi^{I_i}\tau^{J_i}$ directly, while the $\gamma^r_\tau$ accumulator collects $(n_i J_i) \pi^{I_i}\tau^{J_i}$ and is divided by $\tau$ after the loop to obtain the final derivative value. This single-pass evaluation eliminates redundant computation of the expensive base power term.
 
-\begin{equation}
-s = R \left[ \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) - \left( \gamma^0 + \gamma^r \right) \right]
-\end{equation}
-
-Where,Eq.~\eqref{eq:gibbs_residual} \(\gamma^r\) and Eq.~\eqref{eq:gibbs_residual_tau} \(\gamma^r_\tau\)  rely on an identical base power product \(n_i \pi^{I_i}\tau^{J_i}\) and differ merely in their attached scaling coefficients.
-
-During polynomial evaluation for \(\gamma^r\) and \(\gamma^r_\tau\), the shared base power product \(n_i \pi^{I_i}\tau^{J_i}\) is precomputed once per entry. The incremental contribution for \(\gamma^r_\tau\) is subsequently derived by scaling this pre-evaluated base value with exponent \(J_i\).
-All accumulations for \(\gamma^r\) and \(\gamma^r_\tau\) are executed concurrently inside one unified loop.
-Upon loop completion, the accumulated sum yields \(\gamma^r\) directly, while the accumulator reserved for \(\gamma^r_\tau\) is post-scaled via division by \(\tau\) to produce the final \(\gamma^r_\tau\).
-This single-pass evaluation eliminates duplicate recalculations of the expensive base power term \(n_i \pi^{I_i}\tau^{J_i}\) across the two derivative-associated polynomials.
-
-Algorithm \ref{alg:scaling} presents the shared-power scaling approach for derivative-related polynomial computation 
-combined with loop tiling for the case of computing the polynomial value and its two first-order partial derivatives simultaneously:
+Algorithm \ref{alg:scaling} presents the shared-power scaling approach for derivative-related polynomial computation combined with loop tiling, for the case of computing the polynomial value and its two first-order partial derivatives simultaneously:
 
 \begin{algorithm}[H]
 \caption{Shared-Power Scaling with Loop Tiling}
@@ -464,28 +438,26 @@ combined with loop tiling for the case of computing the polynomial value and its
 
 For properties requiring only one derivative (e.g., entropy $s$ needs $\gamma$ and $\gamma_\tau$), the same pattern applies with only the relevant derivative accumulator active. For properties requiring higher-order or mixed derivatives (e.g., speed of sound $w$), additional accumulators are added following the same coefficient-multiplication principle.
 
-Performance profiling under the same hardware and software environment as Section 3.1 demonstrates the effectiveness of this approach. 
-For Region 2 entropy $s$ computation , which requires both $\gamma$ and $\gamma_\tau$, the shared-power scaling combined with loop tiling reduces the execution time from approximately 2.2 µs to 138.7 ns, achieving a ~15x speedup. 
-This confirms that the combined optimization strategy can drastically accelerate the overall computational speed of IAPWS-IF97 property calculation.
-
 \subsection{Combined Application}
 
 The two techniques are applied based on the computational requirements of each property:
 
 \begin{itemize}
     \item \textbf{Loop tiling only}: Applied to properties requiring a single polynomial summation, such as $h = RT\tau\gamma_\tau$ and $c_p = -R\tau^2\gamma_{\tau\tau}$. Each derivative is computed independently with its own tiled loop.
-    \item \textbf{Shared-Power Scaling + Loop tiling}: Applied to properties requiring multiple related polynomials, such as $s = R[\tau\gamma_\tau - \gamma]$ and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The recurrence technique computes all required derivatives simultaneously, and loop tiling is applied to the combined loop.
+    \item \textbf{Shared-Power Scaling + Loop tiling}: Applied to properties requiring multiple related polynomials, such as $s = R[\tau\gamma_\tau - \gamma]$ and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The shared-power scaling technique computes all required derivatives simultaneously, and loop tiling is applied to the combined loop.
 \end{itemize}
 
-This selective application ensures that the overhead of recurrence computation is only incurred when it provides a net benefit, while loop tiling is universally applied to all polynomial summations.
+This selective application ensures that the overhead of shared-power scaling is only incurred when it provides a net benefit, while loop tiling is universally applied to all polynomial summations.
 
 \section{Performance Benchmarks}
 
-The proposed techniques are implemented in Rust as SEUIF97, a high-performance IAPWS-IF97 property calculation library. Benchmarks were performed using the Criterion framework \cite{Criterion}. Table \ref{tab:benchmarks} shows the benchmark results for representative points in each region.
+The proposed techniques are implemented in SEUIF97, a Rust-based IAPWS-IF97 property calculation library. All measurements were conducted on an Intel Core i7-13700K processor (24 cores, up to 5.4 GHz) with 32 GB DDR5 RAM, running Windows 11, using Rust 1.75.0 compiled in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}. Benchmarks were performed using the Criterion framework \cite{Criterion}. Table \ref{tab:benchmarks} shows the benchmark results for representative points in each region.
+
+For Region 2 enthalpy computation ($h$), loop tiling reduces the execution time from approximately 1.07~µs to 53.8~ns, achieving a ~20x speedup. For Region 2 entropy $s$ computation, which requires both $\gamma$ and $\gamma_\tau$, shared-power scaling combined with loop tiling reduces the execution time from approximately 2.2~µs to 138.7~ns, achieving a ~15x speedup. These improvements stem from better cache utilization, SIMD vectorization, and the elimination of redundant power calculations.
 
 \begin{table}[H]
 \centering
-\caption{Performance benchmark results}
+\caption{Performance benchmark results (speedup relative to baseline with fast integer power functions and single loop)}
 \label{tab:benchmarks}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lcllc@{}}
@@ -493,28 +465,28 @@ The proposed techniques are implemented in Rust as SEUIF97, a high-performance I
 \textbf{Test} & \textbf{Region} & \textbf{Input} & \textbf{Method} & \textbf{Speedup} \\
 \midrule
 $(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & Loop tiling & 13x \\
-$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & Loop tiling + Scaling & 20x \\
+$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & Loop tiling + Shared-power scaling & 20x \\
 $(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & Loop tiling & 20x \\
-$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & Loop tiling + Scaling & 15x \\
+$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & Loop tiling + Shared-power scaling & 15x \\
 $(T,v)\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling & 17x \\
-$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling + Scaling & 13x \\
-$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & None & 1x \\
-$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Scaling & 5x \\
+$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling + Shared-power scaling & 13x \\
+$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & Baseline (\texttt{powi()}) & 1x \\
+$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Shared-power scaling & 5x \\
 \bottomrule
 \end{tabular}%
 }
 \end{table}
 
-The results show significant speedups across all regions, with the largest improvements in Regions 1, 2 and 3 where the polynomial forms are most complex and the loop tiling technique has the greatest impact.
+The results show significant speedups across all regions, with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. Region 5, with only 12 terms (6 ideal + 6 residual), has relatively low computational cost, so the optimization techniques provide limited benefit.
 
 \section{Software Implementation: SEUIF97}
 
-Based on the acceleration techniques presented in Section 3, SEUIF97 is implemented in Rust as a high-performance IAPWS-IF97 property calculation library. The library follows a modular three-layer architecture:
+SEUIF97 follows a modular three-layer architecture:
 
 \begin{enumerate}
     \item \textbf{Public API}: User-facing functions supporting multiple input parameter pairs (p-T, p-h, p-s, etc.)
     \item \textbf{Region wrapper}: Region-specific functions handling coordinate transformations and step boundary definitions
-    \item \textbf{Optimized kernel}: The core \texttt{polys\_i\_j\_powi\_steps} function implementing loop tiling and recurrence polynomial-derivative computation
+    \item \textbf{Optimized kernel}: A family of tile-based polynomial evaluation functions implementing loop tiling and shared-power scaling
 \end{enumerate}
 
 This layered design ensures flexibility while maintaining optimal performance. The architecture is illustrated in Figure \ref{fig:architecture}.
@@ -540,7 +512,7 @@ This layered design ensures flexibility while maintaining optimal performance. T
 
     \node[box, fill=orange!10, draw=orange, below=0.5cm of wrapper] (kernel) {
         \textbf{Optimized Kernel Layer}\\
-        \texttt{polys\_i\_j\_powi\_steps}
+        \texttt{tile\_based\_polynomial\_eval}
     };
     \node[label, left=0.4cm of kernel] (l3) {Core Algorithms};
 
@@ -557,8 +529,10 @@ To facilitate integration into diverse software ecosystems, SEUIF97 is publicly 
 
 \section{Conclusions}
 
-This paper proposed two acceleration techniques for the IAPWS-IF97 formula evaluation: loop tiling and
-shared-power scaling in derivative-related polynomials. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same power terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2 and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. The Rust-based software package SEUIF97, available in multiple package formats, provides convenience for developers working in different programming environments.
+This paper proposes two acceleration techniques for the IAPWS-IF97 formula evaluation: loop tiling and
+shared-power scaling in derivative-related polynomials. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same power terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single loop (Table~\ref{tab:benchmarks}), with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. The Rust-based software package SEUIF97, available in multiple package formats, provides convenience for developers working in different programming environments.
+
+The shared-power scaling technique is not limited to IAPWS-IF97 property calculations. It is applicable to any computational problem where a function and its derivatives share the same base power terms, which is common in thermodynamic formulations, equation of state evaluations, and other scientific computing domains involving polynomial-based derivative computations.
 
 \begin{thebibliography}{99}
 
