@@ -9,7 +9,7 @@
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric,arrows.meta,positioning}
 
-\title{Fast IAPWS-IF97 Evaluation: Loop Tiling and Scaling for Derivatively Related Polynomial Computation}
+\title{Fast IAPWS-IF97 Evaluation: Loop Tiling and Scaling for Derivative-Related Polynomial Computation}
 
 \author{Maohua Cheng \\
   School of Energy and Environment, Southeast University \\
@@ -26,14 +26,12 @@
 The IAPWS-IF97 formulation is the international standard for water and steam thermodynamic properties, 
 but direct formula evaluation cannot meet the compute-intensive demands of large-scale simulations requiring millions of property calculations. Existing approaches to improve computational speed fall into two categories: 
  (1) direct formula evaluation with fast integer power functions (repeated squaring), which provides limited acceleration; and
-  (2) alternative methods such as TTSE and SBTL that avoid direct formula evaluation but sacrifice accuracy and support only limited 
-  input parameter pairs. This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
+  (2) alternative methods such as TTSE and SBTL that avoid direct formula evaluation but sacrifice accuracy and support only limited input parameter pairs. This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
    loop tiling and scaling for derivatively related polynomial computation. 
    Loop tiling partitions polynomial summation into cache-friendly tiles that enable effective SIMD vectorization. 
    Scaling for derivatively related polynomial computation exploits the mathematical relationship 
    between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
-   eliminating redundant calculations. These techniques maintain full formula accuracy while supporting all 12 input parameter pairs. 
-   A Rust-based software package, SEUIF97, implements these methods and computes 36 thermodynamic, transport, and derived properties. 
+   eliminating redundant calculations. These techniques maintain full formula accuracy while supporting all 12 input parameter pairs. A Rust-based software package, SEUIF97, implements these methods and computes 36 thermodynamic, transport, and derived properties. 
    Benchmark results demonstrate 5x to 20x speedups compared to baseline implementations using fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2, and 3 where polynomial forms are most complex.
 \end{abstract}
 
@@ -56,11 +54,14 @@ The second category uses alternative formulations that avoid direct polynomial e
 IAPWS has proposed the TTSE (Tabular Taylor Series Expansion) \cite{TTSE} and SBTL (Spline-Based Table Lookup) \cite{SBTL} methods, 
 which use precomputed tables with interpolation to achieve fast lookups. However, these methods do not directly evaluate the IF97 formulas, have limited applicability to specific input parameter pairs, and require additional memory for table storage.
 
-Despite these efforts, significant opportunities for optimization remain unexplored: (1) the recurrence relationship between polynomial terms and their derivatives has not been exploited to eliminate redundant calculations; (2) loop tiling for improving cache locality in polynomial evaluation has not been applied in the IF97 context; and (3) no existing implementation systematically combines multiple optimization techniques while maintaining full formula accuracy and support for all input parameter pairs.
+Despite these efforts, significant opportunities for optimization remain unexplored: 
+(1) loop tiling for improving cache locality in polynomial evaluation has not been applied in the IF97 context;
+(2) the scaling relationship between polynomial terms and their derivatives has not been exploited to eliminate redundant calculations;
+ and no existing implementation systematically combines multiple optimization techniques while maintaining full formula accuracy and support for all input parameter pairs.
 
 This paper proposes two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
 \begin{enumerate}
-    \item \textbf{Loop tiling}: Splitting single loops into cache-friendly tiles to improve cache locality and SIMD vectorization
+    \item \textbf{Loop tiling}: Splitting single loops into cache-friendly tiles to improve cache locality and SIMD(Single Instruction Multiple Data) vectorization
     \item \textbf{Scaling for derivatively related polynomial computation}: Computing polynomials and their partial derivatives simultaneously in a single pass to eliminate redundant calculations
 \end{enumerate}
 
@@ -342,14 +343,18 @@ The IAPWS-IF97 formulation exhibits several key characteristics that directly im
 
 \textbf{Characteristic 1: Polynomial structure with integer exponents.} The residual parts of all fundamental equations are sums of terms of the form $n_i x^{I_i} y^{J_i}$, where $I_i$ and $J_i$ are integers and $(x, y)$ are the reduced variables for each region. This structure allows efficient evaluation using integer power operations rather than general exponentiation.
 
-\textbf{Characteristic 2: Derivatives share the same polynomial form.} The partial derivatives of the fundamental equations are themselves polynomials with the same base terms, only with modified coefficients. For example, comparing Eq.~(\ref{eq:gibbs_residual}) with the derivative $\gamma^r_\tau$:
+\textbf{Characteristic 2: Derivatives share the same polynomial form.} The partial derivatives of the fundamental equations are themselves polynomials with the same base terms, 
+only with modified coefficients. For example, comparing Eq.~(\ref{eq:gibbs_residual}) $\gamma^r$ with the derivative $\gamma^r_\tau$:
 
 \begin{align}
-\gamma^r &= \sum_{i=1}^{N_r} n_i \, \pi^{I_i} \, \tau^{J_i} \\
-\left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi &= \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1} =\frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
+\gamma^r &= \sum_{i=1}^{N_r} n_i \, \pi^{I_i} \, \tau^{J_i} 
 \end{align}
 
-This means that computing multiple thermodynamic properties requires evaluating several polynomials with the same base terms $\pi^{I_i} \tau^{J_i}$ but different coefficient multipliers.
+\begin{equation}\label{eq:gibbs_residual_tau}
+\left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi = \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1} =\frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
+\end{equation}
+
+This means that computing multiple thermodynamic properties requires evaluating several polynomials with the same base terms $n_i \pi^{I_i} \tau^{J_i}$ but different coefficient multipliers.
 
 \textbf{Characteristic 3: High term counts in main regions.} Regions 1 and 2, which cover the most commonly used thermodynamic conditions in engineering applications, contain 34 and 52 terms respectively. Each property calculation requires summing all these terms, making polynomial evaluation the dominant computational cost.
 
@@ -422,20 +427,17 @@ Taking specific entropy $s$ in Region 2 as an example, the computation requires 
 s = R \left[ \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) - \left( \gamma^0 + \gamma^r \right) \right]
 \end{equation}
 
-The key observation is that $\gamma^r$ and its partial derivatives with respect to $\tau$ share the same base term $n_i \pi^{I_i} \tau^{J_i}$ and differ only in their coefficient multipliers:
+Where,Eq.~\eqref{eq:gibbs_residual} \(\gamma^r\) and Eq.~\eqref{eq:gibbs_residual_tau} \(\gamma^r_\tau\)  rely on an identical base power product \(n_i \pi^{I_i}\tau^{J_i}\) and differ merely in their attached scaling coefficients.
+During polynomial evaluation for \(\gamma^r\) and \(\gamma^r_\tau\), the shared base power product \(n_i \pi^{I_i}\tau^{J_i}\) is precomputed once per entry. The incremental contribution for \(\gamma^r_\tau\) is subsequently derived by scaling this pre-evaluated base value with exponent \(J_i\).
+All accumulations for \(\gamma^r\) and \(\gamma^r_\tau\) are executed concurrently inside one unified loop.
+Upon loop completion, the accumulated sum yields \(\gamma^r\) directly, while the accumulator reserved for \(\gamma^r_\tau\) is post-scaled via division by \(\tau\) to produce the final \(\gamma^r_\tau\).
+This single-pass evaluation eliminates duplicate recalculations of the expensive base power term \(n_i \pi^{I_i}\tau^{J_i}\) across the two derivative-associated polynomials.
 
-\begin{align}
-\gamma^0_\tau &= \sum_{i=1}^{N_0} n_i^0 J_i^0 \tau^{J_i^0 - 1} \\
-\gamma^r_\tau &= \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i-1} = \frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
-\end{align}
-
-By accumulating these coefficient-weighted sums in parallel within the same loop, we eliminate the redundant recomputation of the base terms $\pi^{I_i} \tau^{J_i}$.
-
-Algorithm \ref{alg:recurrence} presents the recurrence polynomial-derivative computation combined with loop tiling for the common case of computing the polynomial value and its two first-order partial derivatives simultaneously:
+Algorithm \ref{alg:scaling} presents the scaling for derivatively related polynomial computation combined with loop tiling for the common case of computing the polynomial value and its two first-order partial derivatives simultaneously:
 
 \begin{algorithm}[H]
 \caption{Scaling for Derivatively Related Polynomial Computation with Loop Tiling}
-\label{alg:recurrence}
+\label{alg:scaling}
 \begin{algorithmic}[1]
 \REQUIRE $x, y$: reduced variables (e.g., $\pi, \tau$ for Regions 2/5; $7.1{-}\pi, \tau{-}1.222$ for Region 1; $\delta, \tau$ for Region 3)
 \REQUIRE $IJn$: array of $(I_i, J_i, n_i)$ polynomial coefficients
@@ -457,7 +459,7 @@ Algorithm \ref{alg:recurrence} presents the recurrence polynomial-derivative com
 \end{algorithmic}
 \end{algorithm}
 
-Algorithm \ref{alg:recurrence} shows the general case of computing one polynomial value and two first-order partial derivatives simultaneously. For properties requiring only one derivative (e.g., entropy $s$ needs $\gamma$ and $\gamma_\tau$), the same pattern applies with only the relevant derivative accumulator active. For properties requiring higher-order or mixed derivatives (e.g., speed of sound $w$), additional accumulators are added following the same coefficient-multiplication principle.
+For properties requiring only one derivative (e.g., entropy $s$ needs $\gamma$ and $\gamma_\tau$), the same pattern applies with only the relevant derivative accumulator active. For properties requiring higher-order or mixed derivatives (e.g., speed of sound $w$), additional accumulators are added following the same coefficient-multiplication principle.
 
 Performance profiling under the same hardware and software environment as 
 Section 3.1 demonstrates the effectiveness of this approach. 

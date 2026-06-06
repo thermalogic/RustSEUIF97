@@ -14,7 +14,7 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 * Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-* Scaling for Derivatively Related Polynomial Computation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts performance.
+* Scaling for Derivatively-Related Polynomial Computation: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
 
 ## What's New in SEUIF97 2 
 
