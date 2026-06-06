@@ -176,9 +176,9 @@ SEUIF97 employs two core acceleration techniques that directly optimize IAPWS-IF
 
 **Design Principles**:
 1. **Loop Tiling**: Splits a single loop into multiple steps, improving cache locality and enabling LLVM's auto-vectorizer to generate SIMD instructions
-2. **Scaling for Derivatively Related Polynomial Evaluation**: Computes polynomial values and their partial derivatives simultaneously in a single traversal, eliminating redundant exponentiation operations
+2. **Scaling for Derivatively Related Polynomial Computation**: Computes polynomial values and their partial derivatives simultaneously in a single traversal, eliminating redundant exponentiation operations
 
-#### 3.1.1 Loop Tiling Method
+#### 3.1.1 Loop Tiling 
 
 The loop tiling method splits the polynomial summation loop into multiple smaller loops (tiles). This enables the Rust compiler and LLVM optimizer to:
 - Automatically unroll inner tile loops to reduce loop overhead
@@ -210,7 +210,7 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
 }
 ```
 
-#### 3.1.2 Scaling for Derivatively Related Polynomial Evaluation
+#### 3.1.2 Scaling for Derivatively Related Polynomial Computation
 
 The IAPWS-IF97 formulation uses polynomials of the form:
 
