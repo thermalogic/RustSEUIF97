@@ -2,9 +2,7 @@
 
  ![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97)
 
-**SEUIF97 Version 2** is the Python API of the high-speed IAPWS-IF97 package in Rust. 
-
-SEUIF97 2, built on Rust, is a major upgrade over [SEUIF97 1.* (built on C)](https://pypi.org/project/seuif97/1.2.0/), delivering significant improvements in performance, functionality and ecosystem support.
+**SEUIF97 2**, built on Rust, is a major upgrade over [SEUIF97 1 (built on C)](https://pypi.org/project/seuif97/1.2.0/), delivering significant improvements in performance, functionality and ecosystem support.
 
 It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
 
@@ -14,9 +12,9 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 ## Acceleration Methods
 
-* Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
+* Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-* Scaling Method for Derivatively Related Polynomial Evaluation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts performance.
+* Scaling for Derivatively Related Polynomial Computation: By leveraging the relationship between polynomials and their derivatives, only a single polynomial needs to be computed directly. The remaining values are derived via multiplication or division by the base. This approach eliminates redundant calculations and significantly boosts performance.
 
 ## What's New in SEUIF97 2 
 

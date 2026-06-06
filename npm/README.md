@@ -10,9 +10,9 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 ## Acceleration Methods
 
-* Loop Tiling Method: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
+* Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
 
-* Scaling Method for Derivatively Related Polynomial Evaluation: By leveraging the inherent derivative relationship among polynomials, only one base polynomial is directly computed. All remaining derivatively related polynomial values are efficiently obtained through simple variable multiplication or division. This strategy eliminates redundant polynomial calculations and substantially accelerates the overall evaluation process.
+* Scaling for Derivatively Related Polynomial Computation: By leveraging the inherent derivative relationship among polynomials, only one base polynomial is directly computed. All remaining derivatively related polynomial values are efficiently obtained through simple variable multiplication or division. This strategy eliminates redundant polynomial calculations and substantially accelerates the overall evaluation process.
 
 ## Related Packages
 
