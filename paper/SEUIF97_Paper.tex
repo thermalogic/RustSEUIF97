@@ -87,12 +87,13 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     \node[right] at (12.5,-0.75) {$t/^\circ$C};
 
      % x-axis tick vertical line
-    \draw[black,thick] (1.0, -0.8) -- (1.0, -0.6);  
-    \draw[black,thick] (3.0, -0.8) -- (3.0, -0.6);  
-    \draw[black,thick] (5.0, -0.8) -- (5.0, -0.6);  
-    \draw[black,thick] (7.0, -0.8) -- (7.0, -0.6);  
-    \draw[black,thick] (9.0, -0.8) -- (9.0, -0.6);  
-    \draw[black,thick] (11.5, -0.8) -- (11.5, -0.6);
+    \draw[black,thick] (0, -0.75) -- (0, -0.55);  
+    \draw[black,thick] (1.0, -0.75) -- (1.0, -0.55);  
+    \draw[black,thick] (3.0, -0.75) -- (3.0, -0.55);  
+    \draw[black,thick] (5.0, -0.75) -- (5.0, -0.55);  
+    \draw[black,thick] (7.0, -0.75) -- (7.0, -0.55);  
+    \draw[black,thick] (9.0, -0.75) -- (9.0, -0.55);  
+    \draw[black,thick] (11.5, -0.75) -- (11.5, -0.55);
 
      % X-axis second rbreak
     \draw (10.2,-0.85) -- (10.3,-0.70);
@@ -101,16 +102,16 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     % Y-axis arrow
     \draw[->, thick] (0,0) -- (0,10.3);
      % Y-axis labels (p/MPa)
-    \node[left] at (0,1.0) {0.000611};
-    \node[left] at (0,2.3) {16.529};
-    \node[left] at (0,2.9) {22.064};
+    \node[left, font=\small] at (0,1.25) {0.000611};
+    \node[left, font=\small, yshift=-4pt] at (0,2.57) {16.529};
+    \node[left, font=\small, yshift=-4pt] at (0,3.02) {22.064};
     \node[left] at (0,3.25) {25};
     \node[left] at (0,5.25) {50};
     \node[left] at (0,7.25) {75};
     \node[left] at (0,9.25) {100};
     
       % Y-axis label
-    \node[rotate=90, left=0.8cm] at (-1.0,5.5) {Pressure $p$ [MPa]};
+    \node[rotate=90, left=0.7cm, font=\small] at (-0.7,7.0) {Pressure $p$ [MPa]};
 
     % Y-axis tick line
     \draw[black,thick] (0, 3.25) -- (0.2,3.25);  
@@ -120,26 +121,41 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     
     % Region boundaries - solid lines
     % Left boundary T = 273.15 K
-    \draw[thick] (1,1.0) -- (1.0,9.25);
+    \draw[thick] (1,1.25) -- (1.0,9.25);
     \node[rotate=90, right] at (1.3,6.0) {$T = 273.15$ K};
     
     % Top boundary p = 100 MPa
     \draw[thick] (1.0,9.25) -- (9.0,9.25);
     \node[above] at (2.2,9.25) {$p = 100$ MPa};
     
-    % T = 623.15 K vertical line
-    \draw[thick] (4.4,1.0) -- (4.4,9.25);
-    \node[above] at (4.8,9.25) {$623.15$};
+    % Isobar p = 22.064 MPa (dashed line from Y-axis to T=647.096)
+    \draw[dashed] (0,3.02) -- (4.74,3.02);
+    
+    % Isobar p = 16.529 MPa (dashed line from Y-axis to T=623.15)
+    \draw[dashed] (0,2.57) -- (4.5,2.57);
+    
+    % Isotherm T = 647.096 K (dashed line from critical point to X-axis)
+    \draw[dashed] (4.74,3.02) -- (4.74,0);
+    
+    % T = 623.15 K vertical line (starts from saturation curve at p=16.529)
+    \draw[thick] (4.5,2.57) -- (4.5,9.25);
+    \node[above] at (4.5,9.25) {$623.15$};
 
      % T = 863.15 K label
-    \node[above] at (6.3,9.25) {$863.15$};
+    \node[above] at (6.9,9.25) {$863.15$};
     
     % T = 1073.15 K vertical line
-    \draw[thick] (9.0,1.0) -- (9.0,9.25);
+    \draw[thick] (9.0,1.25) -- (9.0,9.25);
     \node[rotate=90, right] at (9.3,6.5) {$T = 1073.15$ K};
     
+    % Dashed line from T=1073.15 to X-axis
+    \draw[dashed] (9.0,1.25) -- (9.0,0);
+    
      % T = 2273.15 K vertical line
-    \draw[thick] (11.5,1.0) -- (11.5,5.25);
+    \draw[thick] (11.5,1.25) -- (11.5,5.25);
+    
+    % Dashed line from T=2273.15 to X-axis
+    \draw[dashed] (11.5,1.25) -- (11.5,0);
     
     % p = 50 MPa horizontal line (Region 5)
     \draw[thick] (9.0,5.25) -- (11.5,5.25);
@@ -148,22 +164,28 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     \draw (9.6,5.1) -- (9.65,5.4);
     \draw (9.68,5.1) -- (9.71,5.4);
     
-    % Bottom boundary p = p_s(273.15 K)
-    \draw[thick] (1.0,1.0) -- (11.5,1.0);
-    \node[below] at (2.8,1.0) {$p = p_s(273.15$ K)};
+    % Bottom boundary p = p_s(273.15 K) ≈ 0.000611 MPa
+    \draw[thick] (1.0,1.25) -- (11.5,1.25);
+    \node[below, font=\small] at (2.8,1.25) {$p = p_s(273.15$ K)};
     
-    % Saturation curve (Region 4) - from triple point to critical point
-    \draw[thick] (1.0,1.0) .. controls (2.0,1.4) and (3.5,1.8) .. (4.5,2.5);
-    \draw[thick] (4.5,2.5) .. controls (4.7,2.7) .. (4.8,2.8);
+    % Dashed line from T=273.15 to X-axis
+    \draw[dashed] (1.0,1.25) -- (1.0,0);
     
-    % Critical point
-    \fill (4.8,2.8) circle (2pt);
-    \node[above right] at (4.8,2.8) {c};
+    % Saturation curve (Region 4) - from triple point through (T=623.15, p=16.529) to critical point (T=647.096, p=22.064)
+    % Starts very flat, gradually curves upward, steeper near critical point
+    \draw[thick] (1.0,1.25) .. controls (2.5,1.27) and (3.5,1.4) .. (4.0,1.9);
+    \draw[thick] (4.0,1.9) .. controls (4.3,2.3) and (4.4,2.5) .. (4.5,2.57);
+    \draw[thick] (4.5,2.57) .. controls (4.6,2.8) and (4.7,2.98) .. (4.74,3.02);
     
-    % p_B23(T) curve - from critical region upward
-    \draw[thick] (3.8,1.8) .. controls (4.5,3.0) and (5.2,4.5) .. (5.8,7.0);
-    \node[right] at (5.8,5.8) {$p_{\text{B23}}(T)$};
-    \node[right] at (5.8,5.1) {$T_{\text{B23}}(p)$};
+    % Critical point (p=22.064 MPa, T=647.096 K)
+    \fill (4.74,3.02) circle (2pt);
+    \node[above right] at (4.74,3.02) {c};
+    
+    % p_B23(T) curve - starts from (T=623.15, p=16.529) on saturation curve, curves right-up to (T=863.15, p=100)
+    % Initial segment bends right below saturation curve
+    \draw[thick] (4.5,2.57) .. controls (5.0,2.7) and (5.8,5.0) .. (6.9,9.25);
+    \node[right] at (7.2,8.5) {$p_{\text{B23}}(T)$};
+    \node[right] at (7.2,7.8) {$T_{\text{B23}}(p)$};
     
     % Region 1 - left side
     \draw (2.5,7.5) circle (0.3);
@@ -171,22 +193,22 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
     \node[draw, fill=gray!00, align=center] at (2.5,6.6) {$g_1(p,T)$};
     \node[draw, fill=gray!15, align=center, font=\small] at (2.5,5.3) {$T_1(p,h)$\\$T_1(p,s)$\\$p_1(h,s)$};
     
-    % Region 2 - right side (larger area)
-    \draw (5.8,6.0) circle (0.3);
-    \node at (5.8,6.0) {2};
-    \node[draw, fill=gray!15, align=center] at (5.8,5.0) {$g_2(p,T)$};
-    \node[draw, fill=gray!15, align=center, font=\small] at (5.8,3.8) {$T_2(p,h)$\\$T_2(p,s)$\\$p_2(h,s)$};
+    % Region 2 - right side (larger area, elements shifted right)
+    \draw (7.5,6.5) circle (0.3);
+    \node at (7.5,6.5) {2};
+    \node[draw, fill=gray!00, align=center] at (7.5,5.5) {$g_2(p,T)$};
+    \node[draw, fill=gray!15, align=center, font=\small] at (7.5,4.2) {$T_2(p,h)$\\$T_2(p,s)$\\$p_2(h,s)$};
     
-    % Region 3 - top middle (narrower, shifted left)
-    \draw (4.5,6.6) circle (0.3);
-    \node at (4.5,6.6) {3};
-    \node[draw, fill=gray!15, align=center] at (4.5,5.9) {$f_3(\rho,T)$};
-    \node[draw, fill=gray!15, align=center, font=\small] at (4.5,4.6) {$v_3(p,h)$\\$T_3(p,h)$\\$v_3(p,s)$\\$T_3(p,s)$\\$p_3(h,s)$\\$v_3(p,T)$};
+    % Region 3 - top middle (narrow strip between T=623.15K and p_B23 curve)
+    \draw (5.5,8.6) circle (0.3);
+    \node at (5.5,8.6) {3};
+    \node[draw, fill=gray!00, align=center] at (5.5,7.8) {$f_3(\rho,T)$};
+    \node[draw, fill=gray!15, align=center, font=\small] at (5.5,5.8) {$v_3(p,h)$\\$T_3(p,h)$\\$v_3(p,s)$\\$T_3(p,s)$\\$p_3(h,s)$\\$v_3(p,T)$};
     
     % Region 4 - saturation curve area
     \draw (5.2,2.2) circle (0.3);
     \node at (5.2,2.2) {4};
-    \node[draw, fill=gray!15, align=center] at (6.2,2.2) {$p_s(T)$\\$T_s(p)$};
+    \node[draw, fill=gray!00, align=center] at (6.2,2.2) {$p_s(T)$\\$T_s(p)$};
     \node[draw, fill=gray!15, align=center] at (2.5,2.5) {$T_s(h,s)$};
     
     % Region 5 - far right
