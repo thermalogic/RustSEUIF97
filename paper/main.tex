@@ -8,7 +8,7 @@
 \usepackage{url}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric,arrows.meta,positioning}
-\title{Fast IAPWS-IF97 Evaluation: Loop Tiling and Shared-Power Scaling in Derivative Polynomials}
+\title{Fast IAPWS-IF97 Evaluation: Loop Tiling and Shared-Power Scaling in Derivative-Related Polynomials}
 
 \author{Maohua Cheng \\
   School of Energy and Environment, Southeast University \\
@@ -28,10 +28,10 @@ but direct formula evaluation cannot meet the compute-intensive demands of large
   (2) alternative methods such as TTSE and SBTL that avoid direct formula evaluation but sacrifice accuracy and support only limited input parameter pairs. This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
    loop tiling and scaling for derivatively related polynomial computation. 
    Loop tiling partitions polynomial summation into cache-friendly tiles that enable effective SIMD vectorization. 
-   Scaling for derivatively related polynomial computation exploits the mathematical relationship 
+   Shared-power scaling for derivative-related polynomial computation exploits the mathematical relationship 
    between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
-   eliminating redundant calculations. These techniques maintain full formula accuracy while supporting all 12 input parameter pairs. A Rust-based software package, SEUIF97, implements these methods and computes 36 thermodynamic, transport, and derived properties. 
-   Benchmark results demonstrate 5x to 20x speedups compared to baseline implementations using fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2, and 3 where polynomial forms are most complex.
+   eliminating redundant power calculations. These techniques maintain full formula accuracy while supporting all 12 input parameter pairs. A Rust-based software package, SEUIF97, implements these methods and computes 36 thermodynamic, transport, and derived properties. 
+   Benchmark results demonstrate 5x to 20x speedups compared to baseline implementations using fast integer power functions with a single loop, with the largest improvements in Regions 1, 2, and 3 where polynomial forms are most complex.
 \end{abstract}
 
 \section{Introduction}
@@ -55,13 +55,13 @@ which use precomputed tables with interpolation to achieve fast lookups. However
 
 Despite these efforts, significant opportunities for optimization remain unexplored: 
 (1) loop tiling for improving cache locality in polynomial evaluation has not been applied in the IF97 context;
-(2) the scaling relationship between polynomial terms and their derivatives has not been exploited to eliminate redundant calculations;
+(2) the scaling relationship between powers terms of derivative-realted polynomials  has not been exploited to eliminate redundant calculations;
  and no existing implementation systematically combines multiple optimization techniques while maintaining full formula accuracy and support for all input parameter pairs.
 
 This paper proposes two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
 \begin{enumerate}
     \item \textbf{Loop tiling}: Splitting single loops into cache-friendly tiles to improve cache locality and SIMD(Single Instruction Multiple Data) vectorization
-    \item \textbf{Scaling for derivatively related polynomial computation}: Computing polynomials and their partial derivatives simultaneously in a single pass to eliminate redundant calculations
+    \item \textbf{Shared-power scaling in derivative-related polynomials}: Based on the link between polynomials and their derivatives, we compute shared power terms once and obtain other results by exponent scaling, removing redundant calculations for higher computation efficiency.
 \end{enumerate}
 
 The paper is organized as follows: Section 2 provides an overview of the IAPWS-IF97 formulation and its key characteristics; Section 3 details the acceleration techniques; Section 4 presents comprehensive benchmark results; Section 5 describes the software implementation; and Section 6 concludes the paper.
@@ -416,9 +416,9 @@ The optimal tile boundaries vary across regions and polynomial types, and are de
 
 Performance profiling demonstrates the effectiveness of this approach. All measurements were conducted on an Intel Core i7-13700K processor (24 cores, up to 5.4 GHz) with 32 GB DDR5 RAM, running Windows 11, using Rust 1.75.0 compiled in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}. For Region 2 enthalpy computation ($h$), loop tiling reduces the execution time from approximately 1.07 µs to 53.8 ns, achieving a ~20x speedup. This improvement stems from better cache utilization and the compiler's ability to apply aggressive optimizations to each tile independently.
 
-\subsection{Scaling for Derivatively Related Polynomial computation}
+\subsection{Shared-Power Scaling in Derivative-Related Polynomials}
 
-When a thermodynamic property requires multiple polynomial evaluations that share the same base terms, scaling for derivatively related polynomial computation eliminates redundant calculations by computing them simultaneously in a single pass.
+When a thermodynamic property requires multiple polynomial evaluations that share the same power terms, Shared power terms are precomputed once, and remaining polynomial items are obtained by scaling pre-evaluated power values with corresponding exponents. Coupled with cache-friendly loop tiling, redundant power calculations are removed to improve computational efficiency of thermodynamic property calculation
 
 Taking specific entropy $s$ in Region 2 as an example, the computation requires both $\gamma$ and $\gamma_\tau$:
 
@@ -471,7 +471,7 @@ The two techniques are applied based on the computational requirements of each p
 
 \begin{itemize}
     \item \textbf{Loop tiling only}: Applied to properties requiring a single polynomial summation, such as $h = RT\tau\gamma_\tau$ and $c_p = -R\tau^2\gamma_{\tau\tau}$. Each derivative is computed independently with its own tiled loop.
-    \item \textbf{Scaling + Loop tiling}: Applied to properties requiring multiple related polynomials, such as $s = R[\tau\gamma_\tau - \gamma]$ and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The recurrence technique computes all required derivatives simultaneously, and loop tiling is applied to the combined loop.
+    \item \textbf{Shared-Power Scaling + Loop tiling}: Applied to properties requiring multiple related polynomials, such as $s = R[\tau\gamma_\tau - \gamma]$ and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The recurrence technique computes all required derivatives simultaneously, and loop tiling is applied to the combined loop.
 \end{itemize}
 
 This selective application ensures that the overhead of recurrence computation is only incurred when it provides a net benefit, while loop tiling is universally applied to all polynomial summations.
@@ -555,7 +555,7 @@ To facilitate integration into diverse software ecosystems, SEUIF97 is publicly 
 \section{Conclusions}
 
 This paper proposed two acceleration techniques for the IAPWS-IF97 formula evaluation: loop tiling and
-scaling for derivatively related polynomial computation. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same polynomial base terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2 and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. The Rust-based software package SEUIF97, available in multiple package formats, provides convenience for developers working in different programming environments.
+shared-power scaling in derivative-related polynomials. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same power terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2 and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. The Rust-based software package SEUIF97, available in multiple package formats, provides convenience for developers working in different programming environments.
 
 \begin{thebibliography}{99}
 
