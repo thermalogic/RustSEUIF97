@@ -402,7 +402,9 @@ Algorithm \ref{alg:loop_tiling} presents the loop tiling approach for a single p
 \end{algorithmic}
 \end{algorithm}
 
-The optimal tile boundaries vary across regions and polynomial types, and are determined empirically through performance profiling to identify the partitioning that maximizes compiler optimization potential. For Region 2 (43 residual terms), we use three tiles: 0--13, 13--26, and 26--43. This partitioning allows the Rust compiler to optimize each tile independently through loop unrolling, SIMD vectorization, and register allocation. The same loop tiling strategy applies to all single-polynomial computations, including $h$, $c_p$, $v$, and individual derivative evaluations.
+The optimal tile boundaries are determined through empirical performance profiling rather than theoretical analysis, as they depend on complex interactions between polynomial term count, CPU cache hierarchy, and compiler optimization behavior. For Region 2 (43 residual terms), profiling reveals that three tiles (0--13, 13--26, and 26--43) yield the best results, enabling the Rust compiler to optimize each tile independently through loop unrolling, SIMD vectorization, and register allocation. This experimental methodology is applied to all polynomials across all regions.
+
+Loop tiling provides the most significant speedup for polynomials with many terms (Regions 1, 2, and 3), as shown in Table~\ref{tab:benchmarks}. For polynomials with few terms (Region 5, 12 terms total), loop tiling is selectively applied based on profiling results.
 
 \subsection{Shared-Power Scaling}
 
@@ -443,11 +445,11 @@ For properties requiring only one derivative (e.g., entropy $s$ needs $\gamma$ a
 The two techniques are applied based on the computational requirements of each property:
 
 \begin{itemize}
-    \item \textbf{Loop tiling only}: Applied to properties requiring a single polynomial summation, such as $h = RT\tau\gamma_\tau$ and $c_p = -R\tau^2\gamma_{\tau\tau}$. Each derivative is computed independently with its own tiled loop.
-    \item \textbf{Shared-Power Scaling + Loop tiling}: Applied to properties requiring multiple related polynomials, such as $s = R[\tau\gamma_\tau - \gamma]$ and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The shared-power scaling technique computes all required derivatives simultaneously, and loop tiling is applied to the combined loop.
+    \item \textbf{Loop Tiling}: Applied to polynomial summations where profiling demonstrates performance improvement (typically Regions 1, 2, and 3 with many terms). For properties with few terms (Region 5), loop tiling is omitted as the tile overhead may outweigh the benefits.
+    \item \textbf{Shared-Power Scaling}: Applied to all properties requiring both the polynomial and its derivatives, such as $s = R[\tau\gamma_\tau - \gamma]$ and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The shared-power scaling technique computes all required derivatives simultaneously, eliminating redundant power calculations.
 \end{itemize}
 
-This selective application ensures that the overhead of shared-power scaling is only incurred when it provides a net benefit, while loop tiling is universally applied to all polynomial summations.
+These techniques are orthogonal and can be applied independently. For example, Region 5 entropy computation uses shared-power scaling alone (Table~\ref{tab:benchmarks}), while Region 2 enthalpy uses loop tiling alone. When both techniques are applicable, they are combined for maximum performance improvement.
 
 \section{Performance Benchmarks}
 
@@ -523,7 +525,7 @@ This layered design ensures flexibility while maintaining optimal performance. T
 \label{fig:architecture}
 \end{figure}
 
-To meet the needs of comprehensive water and steam property calculations across diverse engineering applications, SEUIF97 supports 12 input parameter pairs: $(p,t)$, $(p,h)$, $(p,s)$, $(p,v)$, $(t,h)$, $(t,s)$, $(t,v)$, $(h,s)$, $(p,x)$, $(t,x)$, $(h,x)$, $(s,x)$, and computes 36 thermodynamic, transport, and derived properties, including basic properties ($p$, $t$, $\rho$, $v$, $h$, $s$, $u$), derived properties ($c_p$, $c_v$, $w$, Helmholtz/Gibbs free energy, compressibility factor), partial derivatives, and transport properties ($\mu$, $\lambda$, $\sigma$).
+To meet the needs of comprehensive water and steam property calculations across diverse engineering applications, SEUIF97 supports 12 input parameter pairs: $(p,t)$, $(p,h)$, $(p,s)$, $(p,v)$, $(t,h)$, $(t,s)$, $(t,v)$, $(h,s)$, $(p,x)$, $(t,x)$, $(h,x)$, $(s,x)$ (where $x$ is vapor quality), and computes 36 thermodynamic, transport, and derived properties, including basic properties, derived properties, partial derivatives, and transport properties.
 
 To facilitate integration into diverse software ecosystems, SEUIF97 is publicly available as a Rust crate on crates.io, a Python package on PyPI, a WebAssembly package on npm, and with C bindings for broad compatibility. The source code is available at \texttt{https://github.com/thermalogic/RustSEUIF97} under the MIT license.
 
