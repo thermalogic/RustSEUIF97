@@ -30,13 +30,13 @@ The IAPWS-IF97 formulation is the international standard for water and steam the
 
 The IAPWS-IF97 formulation \cite{IAPWS-IF97} is the international standard for calculating thermodynamic properties of water and steam. Since its release, it has become the de facto standard in power engineering, process simulation, and thermal system analysis \cite{Wagner2008}. High-performance computing scenarios such as real-time simulation, optimization, and large-scale model training require fast and accurate water/steam property calculations to meet compute-intensive demands.
 
-The core computational work of IF97 consists of evaluations of Gibbs and Helmholtz free energy polynomials and their partial derivatives, which can become a bottleneck in large-scale simulations requiring millions of property calculations. Since the fundamental form of IF97 equations is based on polynomials with integer exponents and their partial derivatives, achieving fast property calculations fundamentally requires designing efficient evaluation methods for these polynomials. This creates a critical need for optimization techniques that can accelerate such polynomial computations without sacrificing accuracy.
+The core computational work of IF97 consists of evaluations of Gibbs and Helmholtz free energy polynomials and their partial derivatives, which can become a bottleneck in large-scale simulations requiring millions of property calculations. Since IF97 equations are based on polynomials with integer exponents and their partial derivatives, achieving fast property calculations requires designing efficient evaluation methods for these polynomials. This creates a critical need for optimization techniques that can accelerate such polynomial computations without sacrificing accuracy.
 
-Existing approaches to improving IAPWS-IF97 computational speed fall into two categories. The first category directly evaluates the IF97 formulas with limited optimization. Among open-source implementations, freeSteam \cite{FreeSteam} and CoolProp/IF97 \cite{CoolPropIF97} have applied the repeated squaring method in their C implementations to optimize integer power computation. Most other implementations, including widely used libraries, directly evaluate the formulas term by term without exploiting the polynomial structure for acceleration. The second category uses alternative formulations that avoid direct polynomial evaluation. IAPWS has proposed the TTSE (Tabular Taylor Series Expansion) \cite{TTSE} and SBTL (Spline-Based Table Lookup) \cite{SBTL} methods, which use precomputed tables with interpolation to achieve fast lookups. However, these methods do not directly evaluate the IF97 formulas, have limited applicability to specific input parameter pairs, and require additional memory for table storage.
+Existing approaches to improving IAPWS-IF97 computational speed fall into two categories. The first category directly evaluates the IF97 formulas with limited optimization. Among open-source implementations, freesteam \cite{FreeSteam} and CoolProp/IF97 \cite{CoolProp,CoolPropIF97} have applied the repeated squaring method in their C implementations to optimize integer power computation. Most other implementations, including widely used libraries, directly evaluate the formulas term by term without exploiting the polynomial structure for acceleration. The second category uses alternative formulations that avoid direct polynomial evaluation. IAPWS has proposed the TTSE (Tabular Taylor Series Expansion) \cite{TTSE} and SBTL (Spline-Based Table Lookup) \cite{SBTL} methods, which use precomputed tables with interpolation to achieve fast lookups. However, these methods do not directly evaluate the IF97 formulas, have limited applicability to specific input parameter pairs, and require additional memory for table storage.
 
 Despite these efforts, significant opportunities for optimization remain unexplored: (1) the recurrence relationship between polynomial terms and their derivatives has not been exploited to eliminate redundant calculations; (2) loop tiling for improving cache locality in polynomial evaluation has not been applied in the IF97 context; and (3) no existing implementation systematically combines multiple optimization techniques while maintaining full formula accuracy and support for all input parameter pairs.
 
-This paper proposes two acceleration techniques that directly accelerate the IAPWS-IF97 formula evaluation:
+This paper proposes two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
 \begin{enumerate}
     \item \textbf{Loop tiling}: Splitting single loops into cache-friendly tiles to improve cache locality and SIMD vectorization
     \item \textbf{Recurrence polynomial-derivative computation}: Computing polynomials and their partial derivatives simultaneously in a single pass to eliminate redundant calculations
@@ -222,11 +222,7 @@ The IAPWS-IF97 (International Association for the Properties of Water and Steam,
 \label{fig:if97_regions}
 \end{figure}
 
-In addition, the IAPWS-IF97 Supplementary Release \cite{IAPWS-Supplementary} extends the original standard with formulations for:
-\begin{itemize}
-    \item Transport properties: dynamic viscosity $\mu$ and thermal conductivity $\lambda$
-    \item Additional thermodynamic properties: isothermal compressibility $\kappa_T$, isobaric thermal expansion coefficient $\alpha_p$, and specific heat ratio $c_p/c_v$
-\end{itemize}
+In addition, IAPWS\cite{IAPWS-Releases} provides formulations for transport properties, etc.
 
 \subsection{Basic Equations}
 
@@ -274,7 +270,7 @@ where $\pi = p/p^{*}$ with $p^{*} = 16.53$ MPa and $\tau = T^{*}/T$ with $T^{*} 
 \midrule
 1 (Liquid) & Gibbs & 16.53 & 1386 & 34 & Shifted polynomial \\
 2 (Vapor) & Gibbs & 1.0 & 540 & 9 + 43 & Ideal + residual \\
-3 (High-T/High-P) & Helmholtz & --- & 647.096 & 1 + 39 & $\ln\delta$ + polynomial \\
+3 (Critical) & Helmholtz & --- & 647.096 & 1 + 39 & $\ln\delta$ + polynomial \\
 5 (High-T) & Gibbs & 1.0 & 1000 & 6 + 6 & Ideal + residual \\
 \bottomrule
 \end{tabular}
@@ -358,7 +354,7 @@ These characteristics motivate the acceleration techniques presented in this pap
 
 \subsection{Loop Tiling}
 
-Loop tiling (also known as loop blocking) \cite{LoopTiling} is a general optimization technique that partitions a single loop into multiple smaller loops (tiles) to improve cache locality and enable effective SIMD vectorization. For IF97 polynomial evaluation, this technique applies to any property computation that involves a single polynomial summation.
+Loop tiling (also known as loop blocking) \cite{LoopTiling,Grosser2012Polly} is a general optimization technique that partitions a single loop into multiple smaller loops (tiles) to improve cache locality and enable effective SIMD vectorization. For IF97 polynomial evaluation, this technique applies to any property computation that involves a single polynomial summation.
 
 Taking specific enthalpy $h$ in Region 2 as an example, the computation requires only the first-order partial derivative $\gamma_\tau$:
 
@@ -532,15 +528,24 @@ To facilitate integration into diverse software ecosystems, SEUIF97 is publicly 
 
 \section{Conclusions}
 
-This paper proposed two acceleration techniques for the IAPWS-IF97 formula evaluation: recurrence polynomial-derivative computation and loop tiling. The key insight is that the IF97 fundamental equations and their partial derivatives share the same polynomial base terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2 and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. The Rust-based software package SEUIF97, available in multiple package formats, provides convenience for developers working in different programming environments.
+This paper proposed two acceleration techniques for the IAPWS-IF97 formula evaluation: loop tiling and recurrence polynomial-derivative computation. The key insight is that the IF97 fundamental equations and their partial derivatives share the same polynomial base terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single for loop, with the largest improvements in Regions 1, 2 and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. The Rust-based software package SEUIF97, available in multiple package formats, provides convenience for developers working in different programming environments.
 
 \begin{thebibliography}{99}
 
 \bibitem{IAPWS-IF97}
-IAPWS, ``R7-97(2012): Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam,'' International Association for the Properties of Water and Steam, 2012. (The revision only relates to the extension of region 5 to 50 MPa) (August 2007).
+IAPWS, ``R7-97(2012): Revised Release on the IAPWS Industrial Formulation 1997 for the Thermodynamic Properties of Water and Steam,'' International Association for the Properties of Water and Steam, 2012.
 
 \bibitem{Wagner2008}
 W. Wagner, H.-J. Kretzschmar, ``International Steam Tables: Properties of Water and Steam Based on the Industrial Formulation IAPWS-IF97,'' 2nd ed., Springer, Berlin, 2008.
+
+\bibitem{FreeSteam}
+John Pye, ``freesteam: Open source steam property routines in C,'' SourceForge. [Online]. Available: \url{https://sourceforge.net/projects/freesteam/}. Accessed: Jun. 6, 2026.
+
+\bibitem{CoolProp}
+I.H. Bell, J. Wronski, S. Quoilin, and V. Lemort, ``Pure and Pseudo-pure Fluid Thermophysical Property Evaluation and the Open-Source Thermophysical Property Library CoolProp,'' \textit{Industrial \& Engineering Chemistry Research}, vol. 53, no. 6, pp. 2498--2508, 2014.
+
+\bibitem{CoolPropIF97}
+Ian Bell and the CoolProp Team, ``CoolProp/IF97: Open-source C++ implementation of the IAPWS-IF97 equations,'' GitHub, 2023. [Online]. Available: \url{https://github.com/CoolProp/IF97}. Accessed: Jun. 6, 2026.
 
 \bibitem{TTSE}
 IAPWS, ``Release on the Tabular Taylor Series Expansion (TTSE) Method for the Calculation of Thermodynamic Properties of Water and Steam,'' International Association for the Properties of Water and Steam, 1997.
@@ -548,21 +553,17 @@ IAPWS, ``Release on the Tabular Taylor Series Expansion (TTSE) Method for the Ca
 \bibitem{SBTL}
 IAPWS, ``Release on the Spline-Based Table Lookup (SBTL) Method for the Calculation of Thermodynamic Properties of Water and Steam,'' International Association for the Properties of Water and Steam, 2015.
 
-\bibitem{FreeSteam}
-P. Colby, ``freeSteam: A C library for water/steam properties,'' \url{https://sourceforge.net/projects/freesteam/}.
-
-\bibitem{CoolPropIF97}
-I. Bell et al., ``CoolProp/IF97: Open-source C++ implementation of the IAPWS-IF97 equations,'' \url{https://github.com/CoolProp/IF97}.
-
-\bibitem{IAPWS-Supplementary}
-IAPWS, ``Release on the IAPWS Formulation 2008 for the Viscosity of Ordinary Water Substance,'' International Association for the Properties of Water and Steam, 2008; ``Release on the IAPWS Formulation 2011 for the Thermal Conductivity of Ordinary Water Substance,'' 2011.
+\bibitem{IAPWS-Releases}
+IAPWS, ``IAPWS Releases, Supplementary Releases, Guidelines, and Advisory Notes,'' International Association for the Properties of Water and Steam, [Online]. Available: \url{https://iapws.org/documents/release}. Accessed: Jun. 6, 2026.
 
 \bibitem{LoopTiling}
 M.E. Wolf, M.S. Lam, ``A data locality optimizing algorithm,'' Proceedings of the ACM SIGPLAN Conference on Programming Language Design and Implementation, 1991, pp. 30-44.
 
-\bibitem{Criterion}
-J. Boucher, ``Criterion.rs: Statistics-driven micro-benchmarking in Rust,'' \url{https://github.com/bheisler/criterion.rs}.
+\bibitem{Grosser2012Polly}
+T. Grosser, A. Groesslinger and C. Lengauer, ``Polly - Performing polyhedral optimizations on a low-level intermediate representation,'' Parallel Process. Lett., vol. 22, no. 4, Dec. 2012.
 
+\bibitem{Criterion}
+J. Boucher, ``Criterion.rs: Statistics-driven micro-benchmarking in Rust,'' GitHub, 2022. [Online]. Available: \url{https://github.com/bheisler/criterion.rs}. Accessed: Jun. 6, 2026.
 
 \end{thebibliography}
 
