@@ -448,9 +448,12 @@ These techniques are orthogonal and can be applied independently. For example, R
 
 \section{Performance Benchmarks}
 
-The proposed techniques are implemented in SEUIF97(Section \ref{sec:software-implementation-seuif97}). All measurements were conducted on an Intel Core i7-1165G7@2.80GHz processor with 8 GB DDR4 RAM, 
+The proposed techniques are implemented in SEUIF97(Section \ref{sec:software-implementation-seuif97}). All measurements were conducted on an Intel Core i7-1165G7@2.80GHz processor with 8 GB DDR4 RAM. 
+
+\subsection{Benchmarks of IF97 Basic Equation}
+
 using Rust 1.96.0 compiled in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native} on Windows 11 25H2. 
-Benchmarks were performed using the Criterion framework \cite{Criterion},baselined with integer power function \texttt{powi()} and single loop. Table \ref{tab:benchmarks} shows the results for representative points in each region.
+Benchmarks of IF97 Basic Equations were performed using the Criterion framework \cite{Criterion},baselined with integer power function \texttt{powi()} and single loop. Table \ref{tab:benchmarks} shows the results for representative points in each region.
 
 \begin{table}[H]
 \centering
@@ -467,7 +470,7 @@ $(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & Loop tiling &1042.2 &45.9 & 23
 $(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & Loop tiling + Shared-power scaling & 2076.3 &57.8 & 35.9x \\
 $(T,v)\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling &1835.8 &120.8 & 15.2x \\
 $(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling + Shared-power scaling &1968.8 &116.2 & 16.9x \\
-$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & Baseline & 9.7& - & 1x \\
+$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & Baseline & 9.7& - & - \\
 $(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Shared-power scaling &75.1 &14.8& 5.1x \\
 \bottomrule
 \end{tabular}%
@@ -475,6 +478,35 @@ $(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Shared-power scaling &75.1 &14.8
 \end{table}
 
 The results show significant speedups across all regions, with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. Region 5, with only 12 terms (6 ideal + 6 residual), has relatively low computational cost, so the optimization techniques provide limited benefit.
+
+\subsection{Benchmarks of SEUIF97 VS CoolProp/IF97}
+
+The shared library was compiled using Rust 1.96.0 in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native} 
+and Benchmarks C++ code was compiled using GCC 11.4.0 on Ubuntu 22.04.2 LTS.
+Benchmarks of SEUIF97 VS CoolProp/IF97 were performed using \texttt{clock\_t} \cite{MusserClock2024}. 
+
+\begin{table}[H]
+\centering
+\caption{Benchmark SEUIF97 VS CoolProp/IF97}
+\label{tab:benchmarks_seuif97_coolprop_if97}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}lclcccc@{}}
+\toprule
+\textbf{Case} & \textbf{Reg.} & \textbf{Input} & \textbf{CoolProp/IF97(ns)}& \textbf{SEUIF97(ns)} &\textbf{Speedup} \\
+\midrule
+$(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & 868.1 &61.4  &14.1x \\
+$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & 1461.3&60.4 & 24.1x \\
+$(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K&1270.9 & 70.4 &18.1x \\
+$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K &2231.4&84.8 & 27.5x \\
+$(p,T)\!\rightarrow\!h$ & 3 & 50 MPa, 630 K &3094.5 & 103.3 &29.9x \\
+$(p,T)\!\rightarrow\!s$ & 3 & 50 MPa, 630 K &3053.1&101.1 & 30.2x \\
+$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & 229.2 & 12.9 & 17.8x \\
+$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & 415.8 & 20.8 & 20.0x \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
 
 \section{Software Implementation: SEUIF97}
 \label{sec:software-implementation-seuif97}  
@@ -570,6 +602,9 @@ T. Grosser, A. Groesslinger and C. Lengauer, ``Polly - Performing polyhedral opt
 \bibitem{Criterion}
 Brook Heisler, ``Criterion.rs: Statistics-driven benchmarking library for Rust,'' GitHub, 2022. [Online]. Available: \url{https://github.com/bheisler/criterion.rs}. Accessed: Jun. 6, 2026.
 
+\bibitem{MusserClock2024}
+David R. Musser, ``Measuring Computing Times and Operation Counts,'' Rensselaer Polytechnic Institute (RPI), Oct 2024.
+[Online]. Available: \url{https://cs.rpi.edu/~musser/gp/timing.html}. Accessed: Jun. 6, 2026.
 \end{thebibliography}
 
 \end{document}

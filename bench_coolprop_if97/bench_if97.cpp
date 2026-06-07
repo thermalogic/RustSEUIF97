@@ -320,13 +320,13 @@ static void run_single_test(const TestCase* tc, int count)
     BenchmarkResult coolprop = run_coolprop_benchmark_pt(tc->p, tc->t, count);
     BenchmarkResult rust_seuif97 = run_rust_seuif97_benchmark_pt(tc->p, tc->t, count);
 
-    printf("  h (kJ/kg)    %11.4f   %10.4f     %6.0f ns      %6.0f ns       %6.2fx\n",
+    printf("  h (kJ/kg)    %11.4f   %10.4f     %6.1f ns      %6.1f ns       %6.2fx\n",
            coolprop.h_val, rust_seuif97.h_val,
            coolprop.h_avg_ns, rust_seuif97.h_avg_ns, coolprop.h_avg_ns / rust_seuif97.h_avg_ns);
-    printf("  s (kJ/kgK)   %11.6f   %10.6f     %6.0f ns      %6.0f ns       %6.2fx\n",
+    printf("  s (kJ/kgK)   %11.6f   %10.6f     %6.1f ns      %6.1f ns       %6.2fx\n",
            coolprop.s_val, rust_seuif97.s_val,
            coolprop.s_avg_ns, rust_seuif97.s_avg_ns, coolprop.s_avg_ns / rust_seuif97.s_avg_ns);
-    printf("  v (L/kg)     %11.6f   %10.6f     %6.0f ns      %6.0f ns       %6.2fx\n",
+    printf("  v (L/kg)     %11.6f   %10.6f     %6.1f ns      %6.1f ns       %6.2fx\n",
            coolprop.v_val, rust_seuif97.v_val,
            coolprop.v_avg_ns, rust_seuif97.v_avg_ns, coolprop.v_avg_ns / rust_seuif97.v_avg_ns);
 
@@ -334,7 +334,7 @@ static void run_single_test(const TestCase* tc, int count)
     double avg_rust = (rust_seuif97.h_avg_ns + rust_seuif97.s_avg_ns + rust_seuif97.v_avg_ns) / 3.0;
 
     printf("  --------    --------    ------------    -------\n");
-    printf("  Average      %6.0f ns      %6.0f ns       %6.2fx\n",
+    printf("  Average      %6.1f ns      %6.1f ns       %6.2fx\n",
            avg_coolprop, avg_rust, avg_coolprop / avg_rust);
     printf("\n");
 }
@@ -345,9 +345,9 @@ int main(void)
 
     // Define 4 test cases
     TestCase test_cases[] = {
-        {"Case 1: High Pressure", TEST_PT, 30.0, 300 - 273.15, 0.0},
+        {"Case 1: High Pressure", TEST_PT, 3.0, 300 - 273.15, 0.0},
         {"Case 2: Low Pressure", TEST_PT, 0.0035, 300 - 273.15, 0.0},
-        {"Case 3: Critical", TEST_PT, 50.0, 650.0-273.15, 0.0},
+        {"Case 3: Critical", TEST_PT, 50.0, 630.0-273.15, 0.0},
         {"Case 4: High Temperature", TEST_PT, 0.5, 1500 - 273.15, 0.0}
     };
     const int num_cases = sizeof(test_cases) / sizeof(test_cases[0]);
