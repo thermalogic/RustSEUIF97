@@ -347,9 +347,7 @@ A key observation is that the partial derivatives share the same power terms as 
 \left( \frac{\partial \gamma^r}{\partial \tau} \right)_\pi = \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i - 1} =\frac{1}{\tau} \sum_{i=1}^{N_r} (n_i J_i) \, \pi^{I_i} \, \tau^{J_i}
 \end{equation}
 
-Comparing Eq.~(\ref{eq:gibbs_residual_tau}) with Eq.~(\ref{eq:gibbs_residual}), both share the identical base power product $\pi^{I_i} \tau^{J_i}$ and differ only in their coefficient multipliers ($n_i$ vs. $n_i J_i$). This means that computing a thermodynamic property requires evaluating polynomials with the same power terms but different coefficient multipliers.
-
-For properties requiring multiple derivative evaluations, such as specific entropy $s$ in Region 2 (Eq.~\ref{eq:entropy}), the computation involves both $\gamma^r$ and $\gamma^r_\tau$, which share the same power products $\pi^{I_i} \tau^{J_i}$. This mathematical relationship enables the shared-power scaling technique described in Section 3.2.
+Comparing Eq.~(\ref{eq:gibbs_residual_tau}) with Eq.~(\ref{eq:gibbs_residual}), both share the identical base power product $\pi^{I_i} \tau^{J_i}$ and differ only in their coefficient multipliers ($n_i$ vs. $n_i J_i$). This shared structure enables the shared-power scaling technique described in Section 3.2.
 
 \subsection{Backward Equations}
 
@@ -360,7 +358,7 @@ For example, the backward equation $T(p,h)$ for subregion 2a in its dimensionles
 \frac{T_{2a}(p,h)}{T^*} = \theta_{2a}(\pi,\eta) = \sum_{i=1}^{34} n_i \, \pi^{I_i} (\eta - 2.1)^{J_i}
 \end{equation}
 
-where $\theta = T/T^*$, $\pi = p/p^*$, and $\eta = h/h^*$ with $T^* = 1$ K, $p^* = 1$ MPa, and $h^* = 2000$ kJ kg$^{-1}$. The 34 coefficients $n_i$ and exponents $I_i$, $J_i$ are provided in tabular form in the IAPWS supplementary release. Similar backward equations exist for other input parameter pairs across all regions, all sharing the same integer-power polynomial structure. Since these backward equations are also integer-power polynomials, they benefit from the same acceleration techniques as the fundamental equations. 
+where $\theta = T/T^*$, $\pi = p/p^*$, and $\eta = h/h^*$ with $T^* = 1$ K, $p^* = 1$ MPa, and $h^* = 2000$ kJ kg$^{-1}$. The 34 coefficients $n_i$ and exponents $I_i$, $J_i$ are provided in tabular form in the IAPWS supplementary release. Similar backward equations exist for other input parameter pairs across all regions, benefiting from the same acceleration techniques as the fundamental equations. 
 
 \subsection{Formula Characteristics}
 
@@ -526,14 +524,14 @@ This layered design ensures flexibility while maintaining optimal performance. T
 \label{fig:architecture}
 \end{figure}
 
-To meet the needs of comprehensive water and steam property calculations across diverse engineering applications, SEUIF97 supports 12 input parameter pairs: $(p,t)$, $(p,h)$, $(p,s)$, $(p,v)$, $(t,h)$, $(t,s)$, $(t,v)$, $(h,s)$, $(p,x)$, $(t,x)$, $(h,x)$, $(s,x)$ (where $x$ is vapor quality), and computes 36 thermodynamic, transport, and derived properties, including basic properties, derived properties, partial derivatives, and transport properties.
+SEUIF97 supports 12 input parameter pairs ($(p,t)$, $(p,h)$, $(p,s)$, $(p,v)$, $(t,h)$, $(t,s)$, $(t,v)$, $(h,s)$, $(p,x)$, $(t,x)$, $(h,x)$, $(s,x)$, where $x$ is vapor quality) and computes 36 thermodynamic, transport, and derived properties.
 
 To facilitate integration into diverse software ecosystems, SEUIF97 is publicly available as a Rust crate on crates.io, a Python package on PyPI, a WebAssembly package on npm, and with C bindings for broad compatibility. The source code is available at \texttt{https://github.com/thermalogic/RustSEUIF97} under the MIT license.
 
 \section{Conclusions}
 
 This paper proposes two acceleration techniques for the IAPWS-IF97 formula evaluation: loop tiling and
-shared-power scaling in derivative-related polynomials. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same power terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single loop (Table~\ref{tab:benchmarks}), with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. The Rust-based software package SEUIF97, available in multiple package formats, provides convenience for developers working in different programming environments.
+shared-power scaling in derivative-related polynomials. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same power terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single loop (Table~\ref{tab:benchmarks}), with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. SEUIF97 is available as a Rust crate, Python package, WebAssembly module, and C library.
 
 The shared-power scaling technique is applicable to any computational problem where a function and its derivatives share the same base power terms.
 
