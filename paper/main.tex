@@ -446,7 +446,8 @@ The two techniques are applied based on the computational requirements of each p
 
 \begin{itemize}
     \item \textbf{Loop Tiling}: Applied to polynomial summations where profiling demonstrates performance improvement (typically Regions 1, 2, and 3 with many terms). For properties with few terms (Region 5), loop tiling is omitted as the tile overhead may outweigh the benefits.
-    \item \textbf{Shared-Power Scaling}: Applied to all properties requiring both the polynomial and its derivatives, such as $s = R[\tau\gamma_\tau - \gamma]$ and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The shared-power scaling technique computes all required derivatives simultaneously, eliminating redundant power calculations.
+    \item \textbf{Shared-Power Scaling}: Applied to all properties requiring both the polynomial and its derivatives, 
+    such as $s$ (which requires $\gamma_\tau$,$\gamma$) and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The shared-power scaling technique computes all required derivatives simultaneously, eliminating redundant power calculations.
 \end{itemize}
 
 These techniques are orthogonal and can be applied independently. For example, Region 5 entropy computation uses shared-power scaling alone (Table~\ref{tab:benchmarks}), while Region 2 enthalpy uses loop tiling alone. When both techniques are applicable, they are combined for maximum performance improvement.
@@ -534,7 +535,7 @@ To facilitate integration into diverse software ecosystems, SEUIF97 is publicly 
 This paper proposes two acceleration techniques for the IAPWS-IF97 formula evaluation: loop tiling and
 shared-power scaling in derivative-related polynomials. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same power terms, enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, the proposed approach achieves 5x to 20x speedups over baseline implementations that use fast integer power functions with a single loop (Table~\ref{tab:benchmarks}), with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without resorting to approximation-based methods such as TTSE and SBTL. The Rust-based software package SEUIF97, available in multiple package formats, provides convenience for developers working in different programming environments.
 
-The shared-power scaling technique is not limited to IAPWS-IF97 property calculations. It is applicable to any computational problem where a function and its derivatives share the same base power terms, which is common in thermodynamic formulations, equation of state evaluations, and other scientific computing domains involving polynomial-based derivative computations.
+The shared-power scaling technique is applicable to any computational problem where a function and its derivatives share the same base power terms.
 
 \begin{thebibliography}{99}
 
