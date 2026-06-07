@@ -331,7 +331,7 @@ Table \ref{tab:formula_char} summarizes the fundamental equations across all IAP
 
 \subsection{Thermodynamic Property Derivation}
 
-All thermodynamic properties are derived from the fundamental equations and their partial derivatives. In Regions 1, 2, and 5, properties are derived from the Gibbs free energy $\gamma(\pi,\tau)$, while in Region 3, properties are derived from the Helmholtz free energy $\phi(\delta,\tau)$. Although the specific expressions differ by region, all share the same computational pattern: evaluating polynomial summations and their partial derivatives. Taking Region 2 as a representative example, the key properties derived from $\gamma(\pi,\tau) = \gamma^0(\pi,\tau) + \gamma^r(\pi,\tau)$ are:
+All thermodynamic properties are derived from the fundamental equations and their partial derivatives. In Regions 1, 2, and 5, properties are derived from the Gibbs free energy $\gamma(\pi,\tau)$, while in Region 3, properties are derived from the Helmholtz free energy $\phi(\delta,\tau)$. Taking Region 2 as a representative example, the key properties derived from $\gamma(\pi,\tau) = \gamma^0(\pi,\tau) + \gamma^r(\pi,\tau)$ are:
 
 \begin{align}
 h &= RT \cdot \tau \left( \gamma^0_\tau + \gamma^r_\tau \right) \label{eq:enthalpy} \\
@@ -408,9 +408,9 @@ Loop tiling provides the most significant speedup for polynomials with many term
 
 \subsection{Shared-Power Scaling}
 
-When a thermodynamic property requires both the polynomial value and its derivatives, shared-power scaling eliminates redundant computation. The base power product is computed once per term, and the derivative contributions are obtained by scaling with the corresponding exponents. This single-pass evaluation avoids repeated power calculations.
+When a thermodynamic property requires both the polynomial value and its derivatives, shared-power scaling computes the base power product once per term and obtains derivative contributions by scaling with the corresponding exponents, eliminating redundant power calculations.
 
-Taking specific entropy $s$ in Region 2 as an example (Eq.~\ref{eq:entropy}), the computation requires both $\gamma$ and $\gamma_\tau$. As shown in Eq.~\eqref{eq:gibbs_residual} and Eq.~\eqref{eq:gibbs_residual_tau}, $\gamma^r$ and $\gamma^r_\tau$ share the identical base power product $\pi^{I_i}\tau^{J_i}$ and differ only in their coefficients. The shared-power scaling technique computes each term (coefficient $\times$ base power product) once per iteration, then accumulates contributions to both $\gamma^r$ and $\gamma^r_\tau$ simultaneously in a single loop. The $\gamma^r$ accumulator collects $n_i \pi^{I_i}\tau^{J_i}$ directly, while the $\gamma^r_\tau$ accumulator collects $(n_i J_i) \pi^{I_i}\tau^{J_i}$ and is divided by $\tau$ after the loop to obtain the final derivative value. This single-pass evaluation eliminates redundant computation of the expensive power terms.
+Taking specific entropy $s$ in Region 2 as an example (Eq.~\ref{eq:entropy}), the computation requires both $\gamma$ and $\gamma_\tau$. Since $\gamma^r$ and $\gamma^r_\tau$ share the identical base power product $\pi^{I_i}\tau^{J_i}$ (Eqs.~\eqref{eq:gibbs_residual} and \eqref{eq:gibbs_residual_tau}), shared-power scaling computes each term once and accumulates contributions to both simultaneously. The $\gamma^r_\tau$ accumulator collects $(n_i J_i) \pi^{I_i}\tau^{J_i}$ and is divided by $\tau$ after the loop.
 
 Algorithm \ref{alg:scaling} presents the shared-power scaling approach for derivative-related polynomial computation combined with loop tiling, for the case of computing the polynomial value and its two first-order partial derivatives simultaneously:
 
@@ -456,7 +456,7 @@ These techniques are orthogonal and can be applied independently. For example, R
 
 The proposed techniques are implemented in SEUIF97, a Rust-based IAPWS-IF97 property calculation library. All measurements were conducted on an Intel Core i7-13700K processor (24 cores, up to 5.4 GHz) with 32 GB DDR5 RAM, running Windows 11, using Rust 1.75.0 compiled in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}. Benchmarks were performed using the Criterion framework \cite{Criterion}. Table \ref{tab:benchmarks} shows the benchmark results for representative points in each region.
 
-For Region 2 enthalpy computation ($h$), loop tiling reduces the execution time from approximately 1.07~µs to 53.8~ns, achieving a ~20x speedup. For Region 2 entropy $s$ computation, which requires both $\gamma$ and $\gamma_\tau$, shared-power scaling combined with loop tiling reduces the execution time from approximately 2.2~µs to 138.7~ns, achieving a ~15x speedup. These improvements stem from better cache utilization, SIMD vectorization, and the elimination of redundant power calculations.
+For Region 2 enthalpy computation ($h$), loop tiling achieves a ~20x speedup. For Region 2 entropy $s$ computation, shared-power scaling combined with loop tiling achieves a ~15x speedup. These improvements stem from better cache utilization, SIMD vectorization, and elimination of redundant power calculations.
 
 \begin{table}[H]
 \centering
