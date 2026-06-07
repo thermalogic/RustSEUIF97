@@ -28,10 +28,10 @@ static void benchmark_if97_h(double p, double t, int count)
     clock_t end = clock();
 
     double elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-    double avg_us = elapsed_ms * 1000.0 / count;
+    double avg_ns = elapsed_ms * 1000000.0 / count;
 
-    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n",
-           "h", result / 1000.0, elapsed_ms, avg_us);
+    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n",
+           "h", result / 1000.0, elapsed_ms, avg_ns);
 }
 
 static void benchmark_if97_s(double p, double t, int count)
@@ -46,10 +46,10 @@ static void benchmark_if97_s(double p, double t, int count)
     clock_t end = clock();
 
     double elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-    double avg_us = elapsed_ms * 1000.0 / count;
+    double avg_ns = elapsed_ms * 1000000.0 / count;
 
-    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n",
-           "s", result / 1000.0, elapsed_ms, avg_us);
+    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n",
+           "s", result / 1000.0, elapsed_ms, avg_ns);
 }
 
 static void benchmark_if97_v(double p, double t, int count)
@@ -64,10 +64,10 @@ static void benchmark_if97_v(double p, double t, int count)
     clock_t end = clock();
 
     double elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-    double avg_us = elapsed_ms * 1000.0 / count;
+    double avg_ns = elapsed_ms * 1000000.0 / count;
 
-    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n",
-           "v", result * 1000.0, elapsed_ms, avg_us);
+    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n",
+           "v", result * 1000.0, elapsed_ms, avg_ns);
 }
 
 // Benchmark for Rust SEUIF97 C Shared Library
@@ -83,10 +83,10 @@ static void benchmark_rust_seuif97_h(double p, double t, int count)
     clock_t end = clock();
 
     double elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-    double avg_us = elapsed_ms * 1000.0 / count;
+    double avg_ns = elapsed_ms * 1000000.0 / count;
 
-    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n",
-           "h", result, elapsed_ms, avg_us);
+    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n",
+           "h", result, elapsed_ms, avg_ns);
 }
 
 static void benchmark_rust_seuif97_s(double p, double t, int count)
@@ -101,10 +101,10 @@ static void benchmark_rust_seuif97_s(double p, double t, int count)
     clock_t end = clock();
 
     double elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-    double avg_us = elapsed_ms * 1000.0 / count;
+    double avg_ns = elapsed_ms * 1000000.0 / count;
 
-    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n",
-           "s", result, elapsed_ms, avg_us);
+    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n",
+           "s", result, elapsed_ms, avg_ns);
 }
 
 static void benchmark_rust_seuif97_v(double p, double t, int count)
@@ -119,10 +119,10 @@ static void benchmark_rust_seuif97_v(double p, double t, int count)
     clock_t end = clock();
 
     double elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-    double avg_us = elapsed_ms * 1000.0 / count;
+    double avg_ns = elapsed_ms * 1000000.0 / count;
 
-    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n",
-           "v", result, elapsed_ms, avg_us);
+    printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n",
+           "v", result, elapsed_ms, avg_ns);
 }
 
 // Test case types
@@ -142,9 +142,9 @@ typedef struct {
 
 // Struct to store benchmark results
 typedef struct {
-    double h_avg_us;
-    double s_avg_us;
-    double v_avg_us;
+    double h_avg_ns;
+    double s_avg_ns;
+    double v_avg_ns;
     double h_val;
     double s_val;
     double v_val;
@@ -160,21 +160,21 @@ static BenchmarkResult run_coolprop_benchmark_pt(double p, double t, int count)
     start = clock();
     for (int i = 0; i < count; i++) result = IF97::hmass_Tp((t + 273.15), (p * 1e6));
     end = clock();
-    res.h_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.h_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
     res.h_val = result / 1000.0;
 
     // s
     start = clock();
     for (int i = 0; i < count; i++) result = IF97::smass_Tp((t + 273.15), (p * 1e6));
     end = clock();
-    res.s_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.s_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
     res.s_val = result / 1000.0;
 
     // v
     start = clock();
     for (int i = 0; i < count; i++) result = 1.0 / IF97::rhomass_Tp((t + 273.15), (p * 1e6));
     end = clock();
-    res.v_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.v_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
     res.v_val = result * 1000.0;
 
     return res;
@@ -198,21 +198,21 @@ static BenchmarkResult run_rust_seuif97_benchmark_pt(double p, double t, int cou
     start = clock();
     for (int i = 0; i < count; i++) result = pt(p, t, OH);
     end = clock();
-    res.h_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.h_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
     res.h_val = result;
 
     // s
     start = clock();
     for (int i = 0; i < count; i++) result = pt(p, t, OS);
     end = clock();
-    res.s_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.s_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
     res.s_val = result;
 
     // v
     start = clock();
     for (int i = 0; i < count; i++) result = pt(p, t, OV);
     end = clock();
-    res.v_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.v_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
     res.v_val = result;
 
     return res;
@@ -228,19 +228,19 @@ static BenchmarkResult run_rust_seuif97_benchmark_tv(double t, double v, int cou
     start = clock();
     for (int i = 0; i < count; i++) result = tv(t, v, OH);
     end = clock();
-    res.h_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.h_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
 
     // s
     start = clock();
     for (int i = 0; i < count; i++) result = tv(t, v, OS);
     end = clock();
-    res.s_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.s_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
 
     // v
     start = clock();
     for (int i = 0; i < count; i++) result = tv(t, v, OV);
     end = clock();
-    res.v_avg_us = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000.0 / count;
+    res.v_avg_ns = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC * 1000000.0 / count;
 
     return res;
 }
@@ -282,31 +282,31 @@ static void run_single_test(const TestCase* tc, int count)
         // TV type - just show tv results
         volatile double result;
         clock_t start, end;
-        double elapsed_ms, avg_us;
+        double elapsed_ms, avg_ns;
         
         // h
         start = clock();
         for (int i = 0; i < count; i++) result = tv(tc->t, tc->v, OH);
         end = clock();
         elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-        avg_us = elapsed_ms * 1000.0 / count;
-        printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n", "h", result, elapsed_ms, avg_us);
+        avg_ns = elapsed_ms * 1000000.0 / count;
+        printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n", "h", result, elapsed_ms, avg_ns);
         
         // s
         start = clock();
         for (int i = 0; i < count; i++) result = tv(tc->t, tc->v, OS);
         end = clock();
         elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-        avg_us = elapsed_ms * 1000.0 / count;
-        printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n", "s", result, elapsed_ms, avg_us);
+        avg_ns = elapsed_ms * 1000000.0 / count;
+        printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n", "s", result, elapsed_ms, avg_ns);
         
         // v
         start = clock();
         for (int i = 0; i < count; i++) result = tv(tc->t, tc->v, OV);
         end = clock();
         elapsed_ms = (double)(end - start) * 1000.0 / CLOCKS_PER_SEC;
-        avg_us = elapsed_ms * 1000.0 / count;
-        printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f us/call\n", "v", result, elapsed_ms, avg_us);
+        avg_ns = elapsed_ms * 1000000.0 / count;
+        printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.3f ns/call\n", "v", result, elapsed_ms, avg_ns);
     }
     printf("\n");
 
@@ -320,21 +320,21 @@ static void run_single_test(const TestCase* tc, int count)
     BenchmarkResult coolprop = run_coolprop_benchmark_pt(tc->p, tc->t, count);
     BenchmarkResult rust_seuif97 = run_rust_seuif97_benchmark_pt(tc->p, tc->t, count);
 
-    printf("  h (kJ/kg)    %11.4f   %10.4f     %6.2f us      %6.2f us       %6.2fx\n",
+    printf("  h (kJ/kg)    %11.4f   %10.4f     %6.0f ns      %6.0f ns       %6.2fx\n",
            coolprop.h_val, rust_seuif97.h_val,
-           coolprop.h_avg_us, rust_seuif97.h_avg_us, coolprop.h_avg_us / rust_seuif97.h_avg_us);
-    printf("  s (kJ/kgK)   %11.6f   %10.6f     %6.2f us      %6.2f us       %6.2fx\n",
+           coolprop.h_avg_ns, rust_seuif97.h_avg_ns, coolprop.h_avg_ns / rust_seuif97.h_avg_ns);
+    printf("  s (kJ/kgK)   %11.6f   %10.6f     %6.0f ns      %6.0f ns       %6.2fx\n",
            coolprop.s_val, rust_seuif97.s_val,
-           coolprop.s_avg_us, rust_seuif97.s_avg_us, coolprop.s_avg_us / rust_seuif97.s_avg_us);
-    printf("  v (L/kg)     %11.6f   %10.6f     %6.2f us      %6.2f us       %6.2fx\n",
+           coolprop.s_avg_ns, rust_seuif97.s_avg_ns, coolprop.s_avg_ns / rust_seuif97.s_avg_ns);
+    printf("  v (L/kg)     %11.6f   %10.6f     %6.0f ns      %6.0f ns       %6.2fx\n",
            coolprop.v_val, rust_seuif97.v_val,
-           coolprop.v_avg_us, rust_seuif97.v_avg_us, coolprop.v_avg_us / rust_seuif97.v_avg_us);
+           coolprop.v_avg_ns, rust_seuif97.v_avg_ns, coolprop.v_avg_ns / rust_seuif97.v_avg_ns);
 
-    double avg_coolprop = (coolprop.h_avg_us + coolprop.s_avg_us + coolprop.v_avg_us) / 3.0;
-    double avg_rust = (rust_seuif97.h_avg_us + rust_seuif97.s_avg_us + rust_seuif97.v_avg_us) / 3.0;
+    double avg_coolprop = (coolprop.h_avg_ns + coolprop.s_avg_ns + coolprop.v_avg_ns) / 3.0;
+    double avg_rust = (rust_seuif97.h_avg_ns + rust_seuif97.s_avg_ns + rust_seuif97.v_avg_ns) / 3.0;
 
     printf("  --------    --------    ------------    -------\n");
-    printf("  Average      %6.2f us      %6.2f us       %6.2fx\n",
+    printf("  Average      %6.0f ns      %6.0f ns       %6.2fx\n",
            avg_coolprop, avg_rust, avg_coolprop / avg_rust);
     printf("\n");
 }

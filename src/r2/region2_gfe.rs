@@ -147,7 +147,7 @@ pub fn gammar_pipi_reg2(pi: f64, tau: f64) -> f64 {
 #[inline(always)]
 pub fn gammar_tau_reg2(pi: f64, tau: f64) -> f64 {
     let steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
-    //poly_j_powi(pi, tau -0.5, &IJn)
+   // poly_j_powi(pi, tau -0.5, &IJn)
     poly_j_powi_steps(pi, tau - 0.5, &IJn, &steps)
 }
 

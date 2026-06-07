@@ -1,34 +1,32 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion, Throughput};
 
-use std::time::Duration;
 use seuif97::*;
+use std::time::Duration;
 
 fn criterion_benchmark(c: &mut Criterion) {
-
-    let mut group = c.benchmark_group("IF97_Region5");
-    // 设置更长的预热和测量时间，特别针对 Windows
+    let mut group = c.benchmark_group("IF97");
+  
     group.warm_up_time(Duration::from_secs(5));
     group.measurement_time(Duration::from_secs(10));
-    
-    // 添加吞吐量配置
-    group.throughput(Throughput::Elements(1));
-    //c.bench_function("pt2h_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), black_box(OH))));
-   // c.bench_function("pt2s_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), black_box(OS))));
-   // c.bench_function("pt2h_reg2", |b| b.iter(|| pt(black_box(0.0035), black_box(300.0 - 273.15), black_box(OH))));
-  //   c.bench_function("pt2s_reg2", |b| b.iter(|| pt(black_box(0.0035), black_box(300.0 - 273.15), black_box(OS))))
-  
-   //   c.bench_function("tv2h_reg3", |b| b.iter(|| tv(black_box(650.0 - 273.15), black_box(1.0 / 500.0), black_box(OH))));
-   //   c.bench_function("tv2s_reg3", |b| b.iter(|| tv(black_box(650.0 - 273.15), black_box(1.0 / 500.0), black_box(OS))));
-   // c.bench_function("pt2h_reg3", |b| b.iter(|| pt(black_box(50.0), black_box(630.0-273.15), black_box(OH))));
-   // c.bench_function("pt2s_reg3", |b| b.iter(|| pt(black_box(50.0), black_box(630.0-273.15), black_box(OS))));
-  
-   // c.bench_function("pt2h_reg5", |b| b.iter(|| pt(black_box(0.5), black_box(1500.0 - 273.15), black_box(OH))));
-     const P: f64 = 0.5;
-     const t: f64 = 1500.0 - 273.15;
-     group.bench_function("pt2s_reg5", |b| b.iter(|| pt(black_box(P), black_box(t), black_box(OS))));
-     group.finish();
-}
 
+    group.throughput(Throughput::Elements(1));
+    
+   // group.bench_function("pt2h_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), black_box(OH))));
+   // group.bench_function("pt2s_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), black_box(OS))));
+    
+   // group.bench_function("pt2h_reg2", |b| b.iter(|| pt(black_box(0.0035), black_box(300.0 - 273.15), black_box(OH))));
+   // group.bench_function("pt2s_reg2", |b| b.iter(|| pt(black_box(0.0035), black_box(300.0 - 273.15), black_box(OS))));
+
+   // group.bench_function("tv2h_reg3", |b| b.iter(|| tv(black_box(650.0 - 273.15), black_box(1.0 / 500.0), black_box(OH))));
+   // group.bench_function("tv2s_reg3", |b| b.iter(|| tv(black_box(650.0 - 273.15), black_box(1.0 / 500.0), black_box(OS))));
+   // group.bench_function("pt2h_reg3", |b| b.iter(|| pt(black_box(50.0), black_box(630.0-273.15), black_box(OH))));
+   // group.bench_function("pt2s_reg3", |b| b.iter(|| pt(black_box(50.0), black_box(630.0-273.15), black_box(OS))));
+
+    group.bench_function("pt2h_reg5", |b| b.iter(|| pt(black_box(0.5), black_box(1500.0 - 273.15), black_box(OH))));
+   // group.bench_function("pt2s_reg5", |b| b.iter(|| pt(black_box(0.5), black_box(1500.0-273.15), black_box(OS))));
+    
+    group.finish();
+}
 
 criterion_group!(benches, criterion_benchmark);
 criterion_main!(benches);

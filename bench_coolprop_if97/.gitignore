@@ -5,6 +5,7 @@
 /build
 /npm/pkg/
 /npm/package-lock.json
+/bin
 *.exe
 *.pdb
 *.jar

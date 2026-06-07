@@ -102,7 +102,7 @@ pub fn phi_deltatau_reg3(delta: f64, tau: f64) -> f64 {
 //---------- multiple -------------------------
 #[inline(always)]
 pub fn polys_0_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
-    let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
+     let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
      let (poly_phi, poly_tau) = polys_0_j_powi_steps(delta, tau, &IJn, &steps);
 
      //let poly_phi = poly_powi(delta, tau, &IJn);
