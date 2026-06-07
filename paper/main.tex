@@ -15,6 +15,7 @@
 \usepackage{cleveref}
 \usepackage{microtype}
 \usepackage{tikz}
+\newenvironment{keywords}{\noindent\textbf{Keywords: }}{}
 \usetikzlibrary{shapes.geometric,arrows.meta,positioning}
 \title{Fast IAPWS-IF97 Evaluation: Profiling-Guided Loop Tiling and Shared-Power Scaling}
 
@@ -45,6 +46,10 @@ maintaining full formula accuracy:
    eliminating redundant power calculations. A Rust-based software package, SEUIF97, implements these methods. 
    Benchmark results demonstrate 5x to 36x speedups over baseline implementations and 14x to 30x speedups over CoolProp IF97, the most widely used open-source implementation, with the largest improvements in Regions 1, 2, and 3.
 \end{abstract}
+
+\begin{keywords}
+IAPWS-IF97; Thermodynamic properties; Loop tiling; Shared-power scaling; Performance optimization
+\end{keywords}
 
 \section{Introduction}
 
@@ -253,7 +258,7 @@ In addition, IAPWS \cite{IAPWS-Releases} provides formulations for transport pro
 
 \subsection{Basic Equations}
 
-The core of IAPWS-IF97 consists of two types of fundamental equations, each optimized for specific thermodynamic regions (Regions 1, 2, 3, and 5). Region 4 (saturation line) provides explicit equations for saturation pressure $p_s(T)$ and saturation temperature $T_s(p)$.
+The core of IAPWS-IF97 consists of two types of fundamental equations  for specific thermodynamic regions (Regions 1, 2, 3, and 5). Region 4 (saturation line) provides explicit equations for saturation pressure $p_s(T)$ and saturation temperature $T_s(p)$.
 
 \subsubsection{Gibbs Free Energy Equation (Regions 1, 2, 5)}
 
@@ -452,10 +457,10 @@ The two techniques are applied based on the computational requirements of each p
 \begin{itemize}
     \item \textbf{Profiling-guided loop tiling}: Applied to polynomial summations where profiling demonstrates performance improvement (typically Regions 1, 2, and 3 with many terms). For properties with few terms (Region 5), loop tiling is omitted as the tile overhead may outweigh the benefits.
     \item \textbf{Shared-power scaling}: Applied to all properties requiring both the polynomial and its derivatives, 
-    such as $s$ (which requires $\gamma_\tau$,$\gamma$) and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The shared-power scaling technique computes all required derivatives simultaneously, eliminating redundant power calculations.
+    such as entropy  $s$ (which requires $\gamma_\tau$,$\gamma$) and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The shared-power scaling technique computes all required derivatives simultaneously, eliminating redundant power calculations.
 \end{itemize}
 
-These techniques are orthogonal and can be applied independently. For example, Region 5 entropy computation uses shared-power scaling alone, while Region 2 enthalpy uses profiling-guided loop tiling alone (Table~\ref{tab:benchmarks}). When both techniques are applicable, they are combined for maximum performance improvement.
+These techniques are orthogonal and can be applied independently. For example, Region 5 entropy $s$ computation uses shared-power scaling alone, while Region 2 enthalpy $h$ uses profiling-guided loop tiling alone (Table~\ref{tab:benchmarks}). When both techniques are applicable, they are combined for maximum performance improvement.
 
 \section{Performance Benchmarks}
 \label{sec:performance-benchmarks}
@@ -522,7 +527,7 @@ SEUIF97 achieves 14--30x speedups over CoolProp IF97. These gains stem from two 
 
 Region 5 isolates the compiler contribution. Enthalpy $(p,T)\rightarrow h$ uses only 12 terms with a single derivative, so neither loop tiling nor shared-power scaling applies; the 17.8x speedup reflects primarily LLVM's aggressive optimization of \texttt{powi()}. Entropy $(p,T)\rightarrow s$ in Region 5 reaches 20.0x, with the additional gain attributable to shared-power scaling.
 
-In Regions 1--3, all optimizations combine. Entropy calculations reach 24--30x because shared-power scaling eliminates redundant power calculations while loop tiling improves cache locality for the large polynomial sums. Enthalpy cases (14--23x) are lower because only loop tiling is active.
+In Regions 1--3, all optimizations combine. Entropy $s$ calculations reach 24.1--30.2x because shared-power scaling eliminates redundant power calculations while loop tiling improves cache locality for the large polynomial sums. Enthalpy $h$ cases (14.1--29.9x) are lower because only loop tiling is active.
 
 
 \section{Software Implementation: SEUIF97}
@@ -546,7 +551,7 @@ This layered design ensures flexibility while maintaining optimal performance. T
 ]
     \node[box, fill=blue!8, draw=blue] (api) {
         \textbf{Public API Layer}\\
-        \texttt{pt(p,T,0H) | ph(p,h,0V) | ps(p,s,0D) | \ldots}
+        \texttt{pt(p,t,0H) | ph(p,h,0V) | ps(p,s,0D) | \ldots}
     };
     \node[label, left=0.4cm of api] (l1) {User Interface};
 
@@ -569,9 +574,9 @@ This layered design ensures flexibility while maintaining optimal performance. T
 \label{fig:architecture}
 \end{figure}
 
-SEUIF97 supports 12 input parameter pairs ($(p,T)$, $(p,h)$, $(p,s)$, $(p,v)$, $(T,h)$, $(T,s)$, $(T,v)$, $(h,s)$, $(p,x)$, $(T,x)$, $(h,x)$, $(s,x)$, where $x$ is vapor quality) and computes 36 thermodynamic, transport, and derived properties.
+SEUIF97 supports 12 input parameter pairs ($(p,t)$, $(p,h)$, $(p,s)$, $(p,v)$, $(t,h)$, $(t,s)$, $(t,v)$, $(h,s)$, $(p,x)$, $(t,x)$, $(h,x)$, $(s,x)$, where $x$ is vapor quality) and computes 36 thermodynamic, transport, and derived properties.
 
-SEUIF97 is available as a Rust crate on crates.io, a Python package on PyPI, a WebAssembly module on npm, and with C bindings. The source code is at \texttt{https://github.com/thermalogic/RustSEUIF97} under the MIT license.
+SEUIF97 is available as a Rust crate on crates.io, a Python package on PyPI, a WebAssembly module on npm, and  shared library with C bindings. The source code is at \texttt{https://github.com/thermalogic/RustSEUIF97} under the MIT license.
 
 \section{Conclusions}
 
