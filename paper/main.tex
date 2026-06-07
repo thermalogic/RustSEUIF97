@@ -1,4 +1,7 @@
 \documentclass{article}
+\usepackage{arxiv}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{amsmath,amssymb}
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -6,10 +9,12 @@
 \usepackage{algorithmic}
 \usepackage{float}
 \usepackage{url}
+\usepackage{hyperref}
+\usepackage{cleveref}
+\usepackage{microtype}
 \usepackage{tikz}
-%\usepackage{hyperref}
 \usetikzlibrary{shapes.geometric,arrows.meta,positioning}
-\title{Fast IAPWS-IF97 Evaluation: Loop Tiling and Shared-Power Scaling in Derivative-Related Polynomials}
+\title{Fast IAPWS-IF97 Evaluation: Profiling-Guided Loop Tiling and Shared-Power Scaling}
 
 \author{Maohua Cheng \\
   School of Energy and Environment, Southeast University \\
@@ -24,14 +29,19 @@
 
 \begin{abstract}
 The IAPWS-IF97 formulation is the international standard for water and steam thermodynamic properties,
-but direct formula evaluation cannot meet the performance demands of compute-intensive applications requiring millions of property calculations. Existing approaches to improve computational speed fall into two categories: 
- (1) direct formula evaluation with fast integer power functions (repeated squaring), which provides limited acceleration; and
-  (2) alternative methods such as TTSE and SBTL that avoid direct formula evaluation but sacrifice accuracy and support only limited input parameter pairs. This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
-   loop tiling and shared-power scaling.
-   Loop tiling partitions polynomial summation into cache-friendly tiles that enable effective SIMD vectorization.
+but direct formula evaluation without optimization cannot meet the performance demands of compute-intensive applications 
+requiring millions of property calculations. Existing fast direct formula evaluations achieve only limited acceleration 
+through repeated squaring. 
+Alternative methods such as TTSE and SBTL avoid direct evaluation but sacrifice formula-level accuracy. 
+This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation while 
+maintaining full formula accuracy:
+   profiling-guided loop tiling and shared-power scaling.
+   Profiling-guided loop tiling partitions polynomial summation into cache-friendly tiles with empirically determined boundaries, 
+   enabling more effective SIMD vectorization.
    Shared-power scaling exploits the mathematical relationship 
    between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
-   eliminating redundant power calculations. A Rust-based software package, SEUIF97, implements these methods. Benchmark results demonstrate 5x to 36x speedups over baseline implementations, with the largest improvements in Regions 1, 2, and 3.
+   eliminating redundant power calculations. A Rust-based software package, SEUIF97, implements these methods. 
+   Benchmark results demonstrate 5x to 36x speedups over baseline implementations and 14x to 30x speedups over CoolProp IF97, with the largest improvements in Regions 1, 2, and 3.
 \end{abstract}
 
 \section{Introduction}
@@ -41,19 +51,19 @@ Since its release, it has become the de facto standard in power engineering, pro
 
 Existing approaches to improving IAPWS-IF97 computational speed fall into two categories. The first category directly evaluates 
 the IF97 formulas with limited optimization. 
-Among open-source implementations, freesteam \cite{FreeSteam} and CoolProp/IF97 \cite{CoolProp,CoolPropIF97} 
-have applied the repeated squaring method in their C implementations to optimize integer power computation. 
+Among open-source implementations, freesteam \cite{FreeSteam} and CoolProp IF97 \cite{CoolProp,CoolPropIF97} 
+have applied the repeated squaring method in their C/C++ implementations to optimize integer power computation. 
 Most other implementations, including widely used libraries, directly evaluate the formulas term by term 
 without exploiting the polynomial structure for acceleration. 
-The second category uses alternative formulations that avoid direct polynomial evaluation. 
-IAPWS has proposed the TTSE (Tabular Taylor Series Expansion) \cite{TTSE} and SBTL (Spline-Based Table Lookup) \cite{SBTL} methods, 
-which use precomputed tables with interpolation to achieve fast lookups. However, these methods do not directly evaluate the IF97 formulas, have limited applicability to specific input parameter pairs, and require additional memory for table storage.
+The second category uses alternative formulations that avoid direct polynomial evaluation. IAPWS has proposed the TTSE (Tabular Taylor Series Expansion) \cite{TTSE} and SBTL (Spline-Based Table Lookup) \cite{SBTL} methods, which use precomputed tables with interpolation to achieve fast lookups. These methods are designed for extremely high-speed applications but sacrifice formula-level accuracy and require extensive precomputation and storage.
 
-Despite these efforts, significant opportunities remain unexplored: loop tiling has not been applied to IF97 polynomial evaluation, and the scaling relationship between derivative-related power terms has not been exploited to eliminate redundant calculations. No existing implementation systematically combines these optimizations while maintaining full formula accuracy and support for frequently used input parameter pairs.
+Despite these efforts, significant opportunities remain unexplored in direct formula evaluation: the optimal tile 
+boundaries for IF97 polynomial evaluation have not been determined, limiting the effectiveness of compiler loop optimizations, 
+and the scaling relationship between derivative-related power terms has not been exploited to eliminate redundant calculations.
 
 This paper proposes two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation:
 \begin{enumerate}
-    \item \textbf{Loop tiling}: Splitting single loops into cache-friendly tiles to improve cache locality and SIMD (Single Instruction Multiple Data) vectorization
+    \item \textbf{Profiling-guided loop tiling}: Partitioning polynomial summation into cache-friendly tiles with empirically determined boundaries, enabling more effective SIMD vectorization and loop unrolling
     \item \textbf{Shared-power scaling}: Exploiting the mathematical relationship between polynomials and their derivatives to compute shared power terms once and obtain derivative results by exponent scaling, eliminating redundant calculations
 \end{enumerate}
 
@@ -65,7 +75,7 @@ The IAPWS-IF97 formulation \cite{IAPWS-IF97} divides the thermodynamic phase dia
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[scale=0.9]
+\begin{tikzpicture}[scale=0.78]
     % Axes
    
     % X-axis labels (T/K)
@@ -277,7 +287,7 @@ where $\pi = p/p^{*}$ with $p^{*} = 16.53$ MPa and $\tau = T^{*}/T$ with $T^{*} 
 
 \begin{table}[H]
 \centering
-\caption{Scaling parameters for fundamental equations in Regions 1, 2, and 5}
+\caption{Scaling parameters for Regions 1, 2, and 5}
 \label{tab:region_params}
 \begin{tabular}{lccc}
 \toprule
@@ -357,7 +367,7 @@ where $\theta = T/T^*$, $\pi = p/p^*$, and $\eta = h/h^*$ with $T^* = 1$ K, $p^*
 
 Three key characteristics motivate the acceleration techniques:
 
-\textbf{Characteristic 1: Integer exponents.} All fundamental and backward equations are sums of terms $n_i x^{I_i} y^{J_i}$ with integer $I_i$, $J_i$, enabling efficient integer power operations. In C/C++ implementations, this typically requires manual optimization such as repeated squaring, while languages like Rust provide built-in integer power function \texttt{powi()} that can be used directly.
+\textbf{Characteristic 1: Integer exponents.} All fundamental and backward equations are sums of terms $n_i x^{I_i} y^{J_i}$ with integer $I_i$, $J_i$, enabling efficient integer power operations. In C/C++ implementations, this typically requires manual optimization such as repeated squaring, while Rust provides a built-in integer power function \texttt{powi()} that the compiler optimizes aggressively as an intrinsic.
 
 \textbf{Characteristic 2: Shared power terms.} The partial derivatives share the same base power products with the original equations, differing only in coefficients. For example, when computing specific entropy $s$ in Region 2, both $\gamma^r$ and $\gamma^r_\tau$ share the identical base power product $\pi^{I_i}\tau^{J_i}$ (Section \ref{sec:thermodynamic_property_derivation}). This enables shared-power scaling.
 
@@ -367,15 +377,13 @@ This enables loop tiling.
 
 \section{Acceleration Techniques}
 
-\subsection{Loop Tiling}
+\subsection{Profiling-Guided Loop Tiling}
 
-Loop tiling (also known as loop blocking) \cite{LoopTiling,Grosser2012Polly} is a general optimization technique that partitions a single loop into multiple smaller loops (tiles) to improve cache locality and enable effective SIMD vectorization. While the technique is well-established, its application to a specific problem requires determining the optimal tile boundaries, which depend on the computational structure, data access patterns, and hardware characteristics.
+Loop tiling (also known as loop blocking) \cite{LoopTiling,Grosser2012Polly} is a general optimization technique that partitions a single loop into multiple smaller loops (tiles) to improve cache locality and enable effective SIMD vectorization. Modern compilers can automatically vectorize simple loops, but without appropriate tile boundaries, the compiler's optimization potential remains limited due to register pressure and cache constraints.
 
-For IF97 polynomial evaluation, the optimal tile boundaries are determined through empirical performance profiling. The boundaries depend on complex interactions between polynomial term count, CPU cache hierarchy, and compiler optimization behavior. For Region 2 (43 residual terms), profiling reveals that three tiles (0--13, 13--26, and 26--43) yield the best results, enabling the compiler to optimize each tile independently. This experimental methodology is applied to all polynomials across all regions.
+The critical challenge in applying loop tiling is determining the optimal tile boundaries for a specific computational problem. For IF97 polynomial evaluation, the boundaries depend on complex interactions between polynomial term count, CPU cache hierarchy, and compiler optimization behavior. This paper addresses this challenge through empirical performance profiling: for Region 2 (43 residual terms), profiling reveals that three tiles (0--13, 13--26, and 26--43) yield the best results, enabling more effective SIMD vectorization and loop unrolling. The optimal tile boundaries identified through profiling are hard-coded into the polynomial evaluation functions for each region and property type.
 
-Taking specific enthalpy $h$ in Region 2 as an example (Eq.~\ref{eq:enthalpy}), the computation requires only the first-order partial derivative $\gamma_\tau$. The loop tiling technique partitions the term indices into tiles that fit within CPU cache, reducing memory access latency and allowing the compiler to optimize each tile independently.
-
-Algorithm \ref{alg:loop_tiling} presents the loop tiling approach for a single polynomial summation:
+Algorithm \ref{alg:loop_tiling} presents the tiled polynomial evaluation:
 
 \begin{algorithm}[H]
 \caption{Loop Tiling for Single Polynomial}
@@ -404,7 +412,8 @@ Loop tiling provides the most significant speedup for polynomials with many term
 
 Shared-power scaling computes the base power product once per term and obtains derivatives by scaling with the corresponding exponents, eliminating redundant calculations.
 
-For example, entropy $s$ in Region 2 (Eq.~\ref{eq:entropy}) requires both $\gamma$ and $\gamma_\tau$. Since $\gamma^r$ and $\gamma^r_\tau$ share the base power product $\pi^{I_i}\tau^{J_i}$ (Eqs.~\eqref{eq:gibbs_residual} and \eqref{eq:gibbs_residual_tau}), each term is computed once and accumulated to both results simultaneously. The $\gamma^r_\tau$ accumulator collects $(n_i J_i) \pi^{I_i}\tau^{J_i}$ and is divided by $\tau$ after the loop.
+For example, entropy $s$ in Region 2 (Eq.~\ref{eq:entropy}) requires both $\gamma$ and $\gamma_\tau$.  Since $\gamma^r$ and $\gamma^r_\tau$ share the base power product $\pi^{I_i}\tau^{J_i}$ (Eqs.~\eqref{eq:gibbs_residual} and \eqref{eq:gibbs_residual_tau}), each term is computed once and accumulated to both results simultaneously. The $\gamma^r_\tau$ accumulator collects $(n_i J_i) \pi^{I_i}\tau^{J_i}$ and is divided by $\tau$ after the loop.
+The same principle applies to the ideal-gas part $\gamma^0$ and its derivative $\gamma^0_\tau$, which share the power terms $\tau^{J_i^0}$.
 
 Algorithm \ref{alg:scaling} presents the shared-power scaling approach for derivative-related polynomial computation combined with loop tiling, for the case of computing the polynomial value and its two first-order partial derivatives simultaneously:
 
@@ -439,39 +448,40 @@ For properties requiring only one derivative (e.g., entropy $s$ needs $\gamma$ a
 The two techniques are applied based on the computational requirements of each property:
 
 \begin{itemize}
-    \item \textbf{Loop tiling}: Applied to polynomial summations where profiling demonstrates performance improvement (typically Regions 1, 2, and 3 with many terms). For properties with few terms (Region 5), loop tiling is omitted as the tile overhead may outweigh the benefits.
+    \item \textbf{Profiling-guided loop tiling}: Applied to polynomial summations where profiling demonstrates performance improvement (typically Regions 1, 2, and 3 with many terms). For properties with few terms (Region 5), loop tiling is omitted as the tile overhead may outweigh the benefits.
     \item \textbf{Shared-power scaling}: Applied to all properties requiring both the polynomial and its derivatives, 
     such as $s$ (which requires $\gamma_\tau$,$\gamma$) and $w$ (which requires $\gamma_\pi$, $\gamma_{\pi\pi}$, $\gamma_{\pi\tau}$, $\gamma_{\tau\tau}$). The shared-power scaling technique computes all required derivatives simultaneously, eliminating redundant power calculations.
 \end{itemize}
 
-These techniques are orthogonal and can be applied independently. For example, Region 5 entropy computation uses shared-power scaling alone (Table~\ref{tab:benchmarks}), while Region 2 enthalpy uses loop tiling alone. When both techniques are applicable, they are combined for maximum performance improvement.
+These techniques are orthogonal and can be applied independently. For example, Region 5 entropy computation uses shared-power scaling alone, while Region 2 enthalpy uses profiling-guided loop tiling alone (Table~\ref{tab:benchmarks}). When both techniques are applicable, they are combined for maximum performance improvement.
 
 \section{Performance Benchmarks}
+\label{sec:performance-benchmarks}
 
-The proposed techniques are implemented in SEUIF97(Section \ref{sec:software-implementation-seuif97}). All measurements were conducted on an Intel Core i7-1165G7@2.80GHz processor with 8 GB DDR4 RAM. 
+All benchmarks were conducted on the same hardware: an Intel Core i7-1165G7 @ 2.80~GHz processor with 8~GB DDR4 RAM. Note that the two benchmarks use different software platforms and measurement frameworks; therefore, absolute execution times are not directly comparable across tables.
 
-\subsection{Benchmarks of IF97 Basic Equation}
+\subsection{Speedup over Baseline Implementation}
 
-using Rust 1.96.0 compiled in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native} on Windows 11 25H2. 
-Benchmarks of IF97 Basic Equations were performed using the Criterion framework \cite{Criterion},baselined with integer power function \texttt{powi()} and single loop. Table \ref{tab:benchmarks} shows the results for representative points in each region.
+The first benchmark evaluates the proposed acceleration techniques by comparing the optimized SEUIF97 implementation against a baseline that uses only Rust's built-in integer power function \texttt{powi()} with a single loop, without loop tiling or shared-power scaling. Both implementations evaluate the IF97 basic equations. This benchmark was performed on Windows~11, with SEUIF97 compiled using Rust 1.96.0 in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}. Measurements were conducted using the Criterion framework \cite{Criterion}.
 
+Table~\ref{tab:benchmarks} shows the results for representative points in each region.
 \begin{table}[H]
 \centering
-\caption{Performance benchmark results}
+\caption{Speedup over baseline (\texttt{powi()} with single loop)}
 \label{tab:benchmarks}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lcllccc@{}}
 \toprule
-\textbf{Case} & \textbf{Reg.} & \textbf{Input} & \textbf{Method} & \textbf{Baseline(ns)}& \textbf{Acc.(ns)} &\textbf{Speedup} \\
+\textbf{Case} & \textbf{Reg.} & \textbf{Input} & \textbf{Method} & \textbf{Baseline (ns)} & \textbf{Acc. (ns)} & \textbf{Speedup} \\
 \midrule
-$(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & Loop tiling &767.3 &37.0  &20.7x \\
-$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & Loop tiling + Shared-power scaling & 1449.9&41.5& 34.9x \\
-$(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & Loop tiling &1042.2 &45.9 & 23.7x \\
-$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & Loop tiling + Shared-power scaling & 2076.3 &57.8 & 35.9x \\
-$(T,v)\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling &1835.8 &120.8 & 15.2x \\
-$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling + Shared-power scaling &1968.8 &116.2 & 16.9x \\
-$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & Baseline & 9.7& - & - \\
-$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Shared-power scaling &75.1 &14.8& 5.1x \\
+$(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & Loop tiling & 767.3 & 37.0 & 20.7x \\
+$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & Loop tiling + Shared-power scaling & 1449.9 & 41.5 & 34.9x \\
+$(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & Loop tiling & 1042.2 & 45.9 & 23.7x \\
+$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & Loop tiling + Shared-power scaling & 2076.3 & 57.8 & 35.9x \\
+$(T,v)\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling & 1835.8 & 120.8 & 15.2x \\
+$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling + Shared-power scaling & 1968.8 & 116.2 & 16.9x \\
+$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & Baseline & 9.7 & --- & --- \\
+$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Shared-power scaling & 75.1 & 14.8 & 5.1x \\
 \bottomrule
 \end{tabular}%
 }
@@ -479,33 +489,40 @@ $(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Shared-power scaling &75.1 &14.8
 
 The results show significant speedups across all regions, with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. Region 5, with only 12 terms (6 ideal + 6 residual), has relatively low computational cost, so the optimization techniques provide limited benefit.
 
-\subsection{Benchmarks of SEUIF97 VS CoolProp/IF97}
+\subsection{Comparison with CoolProp IF97}
 
-The shared library was compiled using Rust 1.96.0 in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native} 
-and Benchmarks C++ code was compiled using GCC 11.4.0 on Ubuntu 22.04.2 LTS.
-Benchmarks of SEUIF97 VS CoolProp/IF97 were performed using \texttt{clock\_t} \cite{MusserClock2024}. 
+The second benchmark compares SEUIF97 against CoolProp IF97 \cite{CoolPropIF97}, the most widely used open-source C++ implementation of IF97 on GitHub. CoolProp IF97 employs its own optimized repeated-squaring fast integer power algorithm, making it representative of existing optimized implementations.
+
+This benchmark was performed on Ubuntu~22.04. SEUIF97 was compiled using Rust 1.96.0 in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}, and CoolProp IF97 was compiled using GCC 11.4.0 with \texttt{-O3} optimization. Measurements were performed using \texttt{clock\_t} \cite{MusserClock2024}.
+Table~\ref{tab:benchmarks_seuif97_coolprop_if97} shows the comparison results.
 
 \begin{table}[H]
 \centering
-\caption{Benchmark SEUIF97 VS CoolProp/IF97}
+\caption{SEUIF97 vs. CoolProp IF97}
 \label{tab:benchmarks_seuif97_coolprop_if97}
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lclcccc@{}}
 \toprule
-\textbf{Case} & \textbf{Reg.} & \textbf{Input} & \textbf{CoolProp/IF97(ns)}& \textbf{SEUIF97(ns)} &\textbf{Speedup} \\
+\textbf{Case} & \textbf{Reg.} & \textbf{Input} & \textbf{CoolProp IF97 (ns)} & \textbf{SEUIF97 (ns)} & \textbf{Speedup} \\
 \midrule
-$(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & 868.1 &61.4  &14.1x \\
-$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & 1461.3&60.4 & 24.1x \\
-$(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K&1270.9 & 70.4 &18.1x \\
-$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K &2231.4&84.8 & 27.5x \\
-$(p,T)\!\rightarrow\!h$ & 3 & 50 MPa, 630 K &3094.5 & 103.3 &29.9x \\
-$(p,T)\!\rightarrow\!s$ & 3 & 50 MPa, 630 K &3053.1&101.1 & 30.2x \\
+$(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & 868.1 & 61.4 & 14.1x \\
+$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & 1461.3 & 60.4 & 24.1x \\
+$(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & 1270.9 & 70.4 & 18.1x \\
+$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & 2231.4 & 84.8 & 27.5x \\
+$(p,T)\!\rightarrow\!h$ & 3 & 50 MPa, 630 K & 3094.5 & 103.3 & 29.9x \\
+$(p,T)\!\rightarrow\!s$ & 3 & 50 MPa, 630 K & 3053.1 & 101.1 & 30.2x \\
 $(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & 229.2 & 12.9 & 17.8x \\
 $(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & 415.8 & 20.8 & 20.0x \\
 \bottomrule
 \end{tabular}%
 }
 \end{table}
+
+SEUIF97 achieves 14--30x speedups over CoolProp IF97. These gains stem from two sources: the proposed algorithmic optimizations, and compiler-level optimization of Rust's \texttt{powi()} intrinsic compared to CoolProp's hand-coded repeated-squaring routine.
+
+Region 5 isolates the compiler contribution. Enthalpy $(p,T)\rightarrow h$ uses only 12 terms with a single derivative, so neither loop tiling nor shared-power scaling applies; the 17.8x speedup reflects primarily LLVM's aggressive optimization of \texttt{powi()}. Entropy $(p,T)\rightarrow s$ in Region 5 reaches 20.0x, with the additional gain attributable to shared-power scaling.
+
+In Regions 1--3, all optimizations combine. Entropy calculations reach 24--30x because shared-power scaling eliminates redundant power calculations while loop tiling improves cache locality for the large polynomial sums. Enthalpy cases (14--23x) are lower because only loop tiling is active.
 
 
 \section{Software Implementation: SEUIF97}
@@ -552,20 +569,19 @@ This layered design ensures flexibility while maintaining optimal performance. T
 \label{fig:architecture}
 \end{figure}
 
-SEUIF97 supports 12 input parameter pairs ($(p,t)$, $(p,h)$, $(p,s)$, $(p,v)$, $(t,h)$, $(t,s)$, $(t,v)$, $(h,s)$, $(p,x)$, $(t,x)$, $(h,x)$, $(s,x)$, where $x$ is vapor quality) and computes 36 thermodynamic, transport, and derived properties.
+SEUIF97 supports 12 input parameter pairs ($(p,T)$, $(p,h)$, $(p,s)$, $(p,v)$, $(T,h)$, $(T,s)$, $(T,v)$, $(h,s)$, $(p,x)$, $(T,x)$, $(h,x)$, $(s,x)$, where $x$ is vapor quality) and computes 36 thermodynamic, transport, and derived properties.
 
 SEUIF97 is available as a Rust crate on crates.io, a Python package on PyPI, a WebAssembly module on npm, and with C bindings. The source code is at \texttt{https://github.com/thermalogic/RustSEUIF97} under the MIT license.
 
 \section{Conclusions}
 
-This paper proposes two acceleration techniques for the IAPWS-IF97 formula evaluation: loop tiling and
+This paper proposes two acceleration techniques for the IAPWS-IF97 formula evaluation: profiling-guided loop tiling and
 shared-power scaling in derivative-related polynomials. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same power terms, 
-enabling simultaneous computation in a single pass. Combined with loop tiling for cache optimization, 
-the proposed approach achieves 5x to 36x speedups over baseline implementations that use fast integer power functions with a single loop (Table~\ref{tab:benchmarks}), with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. 
-These results demonstrate that directly accelerating the IAPWS-IF97 formulas can achieve competitive performance without 
-resorting to approximation-based methods such as TTSE and SBTL. SEUIF97 is available as a Rust crate, Python package, WebAssembly module, and C library.
+enabling simultaneous computation in a single pass. Combined with profiling-guided loop tiling for cache optimization, 
+the proposed approach achieves 5x to 36x speedups over baseline implementations that use fast integer power functions with a single loop (Table~\ref{tab:benchmarks}), and 14x to 30x speedups over CoolProp IF97 (Table~\ref{tab:benchmarks_seuif97_coolprop_if97}), with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. 
+These results demonstrate that direct IAPWS-IF97 formula evaluation can achieve substantial speedup while maintaining full formula accuracy, substantially improving performance for compute-intensive applications. SEUIF97 is available as a Rust crate, Python package, WebAssembly module, and shared library with C bindings.
 
-Shared-power scaling is applicable to any problem where a function and its derivatives share the same base power terms.
+
 
 \begin{thebibliography}{99}
 
@@ -582,7 +598,7 @@ John Pye, ``freesteam: Open source steam property routines in C,'' SourceForge. 
 I.H. Bell, J. Wronski, S. Quoilin, and V. Lemort, ``Pure and Pseudo-pure Fluid Thermophysical Property Evaluation and the Open-Source Thermophysical Property Library CoolProp,'' \textit{Industrial \& Engineering Chemistry Research}, vol. 53, no. 6, pp. 2498--2508, 2014.
 
 \bibitem{CoolPropIF97}
-Ian Bell and the CoolProp Team, ``CoolProp/IF97: Open-source C++ implementation of the IAPWS-IF97 equations,'' GitHub, 2023. [Online]. Available: \url{https://github.com/CoolProp/IF97}. Accessed: Jun. 6, 2026.
+Ian Bell and the CoolProp Team, ``CoolProp IF97: Open-source C++ implementation of the IAPWS-IF97 equations,'' GitHub, 2023. [Online]. Available: \url{https://github.com/CoolProp/IF97}. Accessed: Jun. 6, 2026.
 
 \bibitem{TTSE}
 IAPWS, ``Release on the Tabular Taylor Series Expansion (TTSE) Method for the Calculation of Thermodynamic Properties of Water and Steam,'' International Association for the Properties of Water and Steam, 1997.
