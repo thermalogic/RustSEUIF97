@@ -1,0 +1,13 @@
+/target
+/Cargo.lock
+/python/seuif97.egg-info
+/dist
+/build
+/npm/pkg/
+/npm/package-lock.json
+*.exe
+*.pdb
+*.jar
+*.class
+*.mod
+*.wasm

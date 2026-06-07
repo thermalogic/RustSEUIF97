@@ -1,0 +1,135 @@
+
+=========================================================
+          SEUIF97 vs CoolProp-IF97 Benchmark
+=========================================================
+  Iterations per test: 1000000
+  Number of test cases: 4
+=========================================================
+
+---------------------------------------------------------
+Test Case: Case 1: High Pressure
+  Input:      p = 30.0000 MPa, t = 26.85 C
+---------------------------------------------------------
+
+[1] CoolProp-IF97
+  Property      Value          Total Time     Avg Time
+  --------      -----          ----------     --------
+  h    =   139.885037   Total:  167.000 ms   Avg:    0.167 us/call
+  s    =     0.384477   Total:  346.000 ms   Avg:    0.346 us/call
+  v    =     0.990527   Total:  157.000 ms   Avg:    0.157 us/call
+
+[2] Rust SEUIF97 (C Shared Library)
+  Property      Value          Total Time     Avg Time
+  --------      -----          ----------     --------
+  h    =   139.885037   Total:   39.000 ms   Avg:    0.039 us/call
+  s    =     0.384477   Total:   44.000 ms   Avg:    0.044 us/call
+  v    =     0.000991   Total:   37.000 ms   Avg:    0.037 us/call
+
+Performance Comparison
+  Input: p=30.0000 MPa, t=26.85 C
+  ------------------------------------------------------------------------
+  Property    CoolProp Val   Rust Val     CoolProp    Rust SEUIF97    Speedup
+  --------    -----------   --------     --------    ------------    -------
+  h (kJ/kg)       139.8850     139.8850       0.20 us        0.04 us         5.21x
+  s (kJ/kgK)      0.384477     0.384477       0.34 us        0.04 us         7.51x
+  v (L/kg)        0.990527     0.000991       0.16 us        0.04 us         4.10x
+  --------    --------    ------------    -------
+  Average        0.24 us        0.04 us         5.69x
+
+
+---------------------------------------------------------
+Test Case: Case 2: Low Pressure
+  Input:      p = 0.0035 MPa, t = 26.85 C
+---------------------------------------------------------
+
+[1] CoolProp-IF97
+  Property      Value          Total Time     Avg Time
+  --------      -----          ----------     --------
+  h    =  2549.911451   Total:  290.000 ms   Avg:    0.290 us/call
+  s    =     8.522390   Total:  550.000 ms   Avg:    0.550 us/call
+  v    = 39491.386638   Total:  262.000 ms   Avg:    0.262 us/call
+
+[2] Rust SEUIF97 (C Shared Library)
+  Property      Value          Total Time     Avg Time
+  --------      -----          ----------     --------
+  h    =  2549.911451   Total:   50.000 ms   Avg:    0.050 us/call
+  s    =     8.522390   Total:   58.000 ms   Avg:    0.058 us/call
+  v    =    39.491387   Total:   40.000 ms   Avg:    0.040 us/call
+
+Performance Comparison
+  Input: p=0.0035 MPa, t=26.85 C
+  ------------------------------------------------------------------------
+  Property    CoolProp Val   Rust Val     CoolProp    Rust SEUIF97    Speedup
+  --------    -----------   --------     --------    ------------    -------
+  h (kJ/kg)      2549.9115    2549.9115       0.27 us        0.05 us         5.64x
+  s (kJ/kgK)      8.522390     8.522390       0.56 us        0.06 us         9.74x
+  v (L/kg)     39491.386638    39.491387       0.26 us        0.04 us         6.72x
+  --------    --------    ------------    -------
+  Average        0.36 us        0.05 us         7.57x
+
+
+---------------------------------------------------------
+Test Case: Case 3: Critical
+  Input:      p = 50.0000 MPa, t = 376.85 C
+---------------------------------------------------------
+
+[1] CoolProp-IF97
+  Property      Value          Total Time     Avg Time
+  --------      -----          ----------     --------
+  h    =  1727.580438   Total:  434.000 ms   Avg:    0.434 us/call
+  s    =     3.781077   Total:  452.000 ms   Avg:    0.452 us/call
+  v    =     1.570081   Total:  145.000 ms   Avg:    0.145 us/call
+
+[2] Rust SEUIF97 (C Shared Library)
+  Property      Value          Total Time     Avg Time
+  --------      -----          ----------     --------
+  h    =  1727.580438   Total:   87.000 ms   Avg:    0.087 us/call
+  s    =     3.781077   Total:   88.000 ms   Avg:    0.088 us/call
+  v    =     0.001570   Total:   36.000 ms   Avg:    0.036 us/call
+
+Performance Comparison
+  Input: p=50.0000 MPa, t=376.85 C
+  ------------------------------------------------------------------------
+  Property    CoolProp Val   Rust Val     CoolProp    Rust SEUIF97    Speedup
+  --------    -----------   --------     --------    ------------    -------
+  h (kJ/kg)      1727.5804    1727.5804       0.45 us        0.09 us         5.28x
+  s (kJ/kgK)      3.781077     3.781077       0.45 us        0.09 us         5.09x
+  v (L/kg)        1.570081     0.001570       0.14 us        0.04 us         3.86x
+  --------    --------    ------------    -------
+  Average        0.35 us        0.07 us         4.95x
+
+
+---------------------------------------------------------
+Test Case: Case 4: High Temperature
+  Input:      p = 0.5000 MPa, t = 1226.85 C
+---------------------------------------------------------
+
+[1] CoolProp-IF97
+  Property      Value          Total Time     Avg Time
+  --------      -----          ----------     --------
+  h    =  5219.768551   Total:   35.000 ms   Avg:    0.035 us/call
+  s    =     9.654089   Total:   70.000 ms   Avg:    0.070 us/call
+  v    =  1384.550899   Total:   25.000 ms   Avg:    0.025 us/call
+
+[2] Rust SEUIF97 (C Shared Library)
+  Property      Value          Total Time     Avg Time
+  --------      -----          ----------     --------
+  h    =  5219.768551   Total:   11.000 ms   Avg:    0.011 us/call
+  s    =     9.654089   Total:   16.000 ms   Avg:    0.016 us/call
+  v    =     1.384551   Total:   10.000 ms   Avg:    0.010 us/call
+
+Performance Comparison
+  Input: p=0.5000 MPa, t=1226.85 C
+  ------------------------------------------------------------------------
+  Property    CoolProp Val   Rust Val     CoolProp    Rust SEUIF97    Speedup
+  --------    -----------   --------     --------    ------------    -------
+  h (kJ/kg)      5219.7686    5219.7686       0.04 us        0.01 us         3.18x
+  s (kJ/kgK)      9.654089     9.654089       0.07 us        0.02 us         4.38x
+  v (L/kg)     1384.550899     1.384551       0.02 us        0.01 us         2.40x
+  --------    --------    ------------    -------
+  Average        0.04 us        0.01 us         3.49x
+
+=========================================================
+  Note: Speedup = CoolProp time / Rust SEUIF97 time
+        Values > 1 indicate Rust SEUIF97 is faster
+=========================================================

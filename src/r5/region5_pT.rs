@@ -26,10 +26,10 @@ pub fn pT2u_reg5(p: f64, T: f64) -> f64 {
 pub fn pT2s_reg5(p: f64, T: f64) -> f64 {
     let pi: f64 = p / r5Pstar;
     let tau: f64 = r5Tstar / T;
-    //let (sum_gammar, sum_gammar_tau) = polys_0_j_powi(pi, tau, &IJn);
+    let (sum_gammar, sum_gammar_tau) = polys_0_j_powi(pi, tau, &IJn);
 
-    let sum_gammar=poly_powi(pi, tau, &IJn);
-    let sum_gammar_tau = poly_j_powi(pi, tau, &IJn);
+    //let sum_gammar=poly_powi(pi, tau, &IJn);
+    // let sum_gammar_tau = poly_j_powi(pi, tau, &IJn);
     
     let a: f64 = tau * (gamma0_tau_reg5(tau) + sum_gammar_tau) - (gamma0_reg5(pi, tau) + sum_gammar);
     RGAS_WATER * a
