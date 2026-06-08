@@ -43,7 +43,7 @@ maintaining full formula accuracy:
    Shared-power scaling exploits the mathematical relationship 
    between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
    eliminating redundant power calculations. A Rust-based software package, SEUIF97, implements these methods. 
-   Benchmark results demonstrate 5x to 36x speedups over baseline implementations and 14x to 30x speedups over CoolProp IF97, with the largest improvements in Regions 1, 2, and 3.
+   Benchmark results demonstrate 5x to 36x speedups over baseline implementations and 14x to 30x speedups over CoolProp IF97, the most widely used open-source implementation, with the largest improvements in Regions 1, 2, and 3.
 \end{abstract}
 
 \section{Introduction}
@@ -388,7 +388,7 @@ The critical challenge in applying loop tiling is determining the optimal tile b
 Algorithm \ref{alg:loop_tiling} presents the tiled polynomial evaluation:
 
 \begin{algorithm}[H]
-\caption{Loop Tiling for Single Polynomial}
+\caption{Loop Tiling for Single Polynomial (for $N$ terms partitioned into $M$ tiles)}
 \label{alg:loop_tiling}
 \begin{algorithmic}[1]
 \REQUIRE $x, y$: reduced variables (e.g., $\pi, \tau$ for Regions 2/5; $7.1{-}\pi, \tau{-}1.222$ for Region 1; $\delta, \tau$ for Region 3)
@@ -469,9 +469,9 @@ The first benchmark evaluates the proposed acceleration techniques by comparing 
 Table~\ref{tab:benchmarks} shows the results for representative points in each region.
 \begin{table}[H]
 \centering
+\small
 \caption{Speedup over baseline (\texttt{powi()} with single loop)}
 \label{tab:benchmarks}
-\resizebox{\textwidth}{!}{%
 \begin{tabular}{@{}lcllccc@{}}
 \toprule
 \textbf{Case} & \textbf{Reg.} & \textbf{Input} & \textbf{Method} & \textbf{Baseline (ns)} & \textbf{Acc. (ns)} & \textbf{Speedup} \\
@@ -485,8 +485,7 @@ $(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & Loop tiling + Shared-power
 $(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & Baseline & 9.7 & --- & --- \\
 $(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & Shared-power scaling & 75.1 & 14.8 & 5.1x \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table}
 
 The results show significant speedups across all regions, with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. Region 5, with only 12 terms (6 ideal + 6 residual), has relatively low computational cost, so the optimization techniques provide limited benefit.
@@ -496,14 +495,14 @@ The results show significant speedups across all regions, with the largest impro
 The second benchmark compares SEUIF97 against CoolProp IF97 \cite{CoolPropIF97}, the most widely used open-source C++ implementation of IF97 on GitHub. CoolProp IF97 employs its own optimized repeated-squaring fast integer power algorithm, making it representative of existing optimized implementations.
 
 This benchmark was performed on Ubuntu~22.04. SEUIF97 was compiled using Rust 1.96.0 in release mode with \texttt{opt-level = 3} and \texttt{target-cpu = native}, and CoolProp IF97 was compiled using GCC 11.4.0 with \texttt{-O3} optimization. Measurements were performed using \texttt{clock\_t} \cite{MusserClock2024}.
-Table~\ref{tab:benchmarks_seuif97_coolprop_if97} shows the comparison results.
+Table~\ref{tab:benchmarks_seuif97_coolprop_if97} shows the comparison results. Note that Region 3 results use backward equations $(p,T)$ since CoolProp IF97 does not implement the $(T,v)$ fundamental equation interface.
 
 \begin{table}[H]
 \centering
+\small
 \caption{SEUIF97 vs. CoolProp IF97}
 \label{tab:benchmarks_seuif97_coolprop_if97}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{@{}lclcccc@{}}
+\begin{tabular}{@{}lclccc@{}}
 \toprule
 \textbf{Case} & \textbf{Reg.} & \textbf{Input} & \textbf{CoolProp IF97 (ns)} & \textbf{SEUIF97 (ns)} & \textbf{Speedup} \\
 \midrule
@@ -516,8 +515,7 @@ $(p,T)\!\rightarrow\!s$ & 3 & 50 MPa, 630 K & 3053.1 & 101.1 & 30.2x \\
 $(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & 229.2 & 12.9 & 17.8x \\
 $(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & 415.8 & 20.8 & 20.0x \\
 \bottomrule
-\end{tabular}%
-}
+\end{tabular}
 \end{table}
 
 SEUIF97 achieves 14--30x speedups over CoolProp IF97. These gains stem from two sources: the proposed algorithmic optimizations, and compiler-level optimization of Rust's \texttt{powi()} intrinsic compared to CoolProp's hand-coded repeated-squaring routine.
