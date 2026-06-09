@@ -28,6 +28,10 @@ For detailed comparison and key improvements, see [Rust vs C Version Comparison]
 
 For more details on these algorithms, see [code snippets of the acceleration methods](./docs/code_snippets_acceleration_method.md).
 
+## Performance Comparison
+
+SEUIF97 achieves **3.7–6.6x speedups** over CoolProp IF97. See [Performance Comparison: SEUIF97 vs CoolProp IF97](./docs/seuif97_coolprop_if97.md) for detailed benchmark results.
+
 ## Install the crate
 
 ```bash
