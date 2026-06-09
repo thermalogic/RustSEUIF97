@@ -2,6 +2,8 @@
 
 The comparison evaluates SEUIF97 against [CoolProp IF97](https://github.com/CoolProp/IF97), which employs its own repeated-squaring fast integer power algorithm. 
 
+SEUIF97 achieves 3.7–6.6x speedups over CoolProp IF97. These gains stem from the proposed algorithmic optimizations.
+
 **Test Environment:** 
 - CPU: Intel Core i7-1165G7 @ 2.80GHz
 - RAM: 8GB DDR4 
@@ -24,4 +26,3 @@ Measurements were performed using `clock_t`.
 |(p, T) → h |5| 0.5, 1500 | 54.2| 9.9| 5.5x|
 |(p, T) → s |5| 0.5, 1500 | 74.8 |16.8| 4.5x|
 
-SEUIF97 achieves 3.7–6.6x speedups over CoolProp IF97. These gains stem from the proposed algorithmic optimizations.
