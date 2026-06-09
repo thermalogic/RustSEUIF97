@@ -1,6 +1,6 @@
 # Performance Comparison: SEUIF97 vs CoolProp IF97SEUIF97 vs CoolProp IF9
 
-The comparison evaluates SEUIF97 against CoolProp IF97, which employs its own repeated-squaring fast integer power algorithm. 
+The comparison evaluates SEUIF97 against [CoolProp IF97](https://github.com/CoolProp/IF97), which employs its own repeated-squaring fast integer power algorithm. 
 
 **Test Environment:** 
 - CPU: Intel Core i7-1165G7 @ 2.80GHz
