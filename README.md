@@ -8,12 +8,6 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedu
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)), and **thermodynamic process functions** (see [Thermodynamic Process Functions](#thermodynamic-process-functions)).
 
-## Acceleration Methods: 
-- **Profiling-guided loop tiling** partitions polynomial summation into cache-friendly tiles with empirically determined boundaries, enabling more effective SIMD vectorization.
-- **Shared-power scaling** exploits the mathematical relationship between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, eliminating redundant power calculations.
-
-Please refer to [code snippets of the acceleration methods](./docs/code_snippets_acceleration_method.md) for more details on the algorithm
-
 ## What's New in the Rust Version
 
 The Rust version of SEUIF97 is a major upgrade over [the original C implementation](https://github.com/thermalogic/SEUIF97), delivering significant improvements in performance, functionality, and ecosystem support.
@@ -27,12 +21,18 @@ The Rust version of SEUIF97 is a major upgrade over [the original C implementati
 
 For detailed comparison and key improvements, see [Rust vs C Version Comparison](./docs/RUST_VS_C_COMPARISON.md).
 
+## Acceleration Methods: 
+
+- **Profiling-guided loop tiling** partitions polynomial summation into cache-friendly tiles with empirically determined boundaries, enabling more effective SIMD vectorization.
+- **Shared-power scaling** exploits the mathematical relationship between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, eliminating redundant power calculations.
+
+For more details on these algorithms, see [code snippets of the acceleration methods](./docs/code_snippets_acceleration_method.md).
+
 ## Install the crate
 
 ```bash
 cargo add seuif97
 ```
-
 ## Property Calculation Functions
 
 The package provides two types of API for property calculation.
