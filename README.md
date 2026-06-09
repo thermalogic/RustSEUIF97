@@ -8,12 +8,11 @@ Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedu
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)), and **thermodynamic process functions** (see [Thermodynamic Process Functions](#thermodynamic-process-functions)).
 
-## Acceleration Methods
+## Acceleration Methods: 
+- **Profiling-guided loop tiling** partitions polynomial summation into cache-friendly tiles with empirically determined boundaries, enabling more effective SIMD vectorization.
+- **Shared-power scaling** exploits the mathematical relationship between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, eliminating redundant power calculations.
 
-- Loop Tiling: Unleashes the full power of compiler optimizations, surpassing the performance of the single loop.
-- Shared-Power Scaling: By leveraging the mathematical relationship between polynomials and their derivatives, we compute shared power terms only once. Subsequent results are derived through exponent scaling, thereby eliminating redundant calculations and significantly improving computational efficiency
-
-Please refer to [The acceleration methods](./docs/the_acceleration_methods.md) for more details on the algorithm
+Please refer to [code snippets of the acceleration methods](./docs/code_snippets_acceleration_method.md) for more details on the algorithm
 
 ## What's New in the Rust Version
 
