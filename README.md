@@ -19,7 +19,7 @@ The Rust version of SEUIF97 is a major upgrade over [the original C implementati
 | **Package Distribution**              | PyPI only      | **Crates.io, PyPI, npm**   |
 | **Direct Property Functions**         | ✗              | **✓** (new)                |
 
-For detailed comparison and key improvements, see [Rust vs C Version Comparison](./docs/RUST_VS_C_COMPARISON.md).
+For detailed comparison and key improvements, see [Rust vs C](./docs/RUST_VS_C.md).
 
 ## Acceleration Methods: 
 
