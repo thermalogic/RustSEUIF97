@@ -33,7 +33,7 @@ optional = true
 
 [dev-dependencies]
 assert_approx_eq = "1.1.0"
-criterion = { version = "0.5.1", features = ["html_reports"] }
+criterion = { version = "0.8.2", features = ["html_reports"] }
 
 [[bench]]
 name = "speed_benchmark"
