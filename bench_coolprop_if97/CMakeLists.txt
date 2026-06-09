@@ -26,7 +26,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_link_options(bench_if97 PRIVATE
         $<$<CONFIG:Release>:-flto>
     )
-elif(MSVC)
+elseif(MSVC)
     # MSVC 优化选项
     target_compile_options(bench_if97 PRIVATE
         $<$<CONFIG:Release>:/O2>
