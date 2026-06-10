@@ -55,6 +55,12 @@ pub unsafe extern "C" fn tv(t: f64, v: f64, o_id: i32) -> f64 {
     core_tv(t, v, o_id)
 }
 
+/// double tv_reg3(double t,double v,short o_id)- Region 3 direct (t,v) without region judgment
+#[no_mangle]
+pub unsafe extern "C" fn tv_reg3(t: f64, v: f64, o_id: i32) -> f64 {
+    crate::r3::region3::tv_reg3(t, v, o_id)
+}
+
 /// double th(double t,double h,short o_id)- the property of `o_id` (thermodynamic,transport,etc)
 #[no_mangle]
 pub unsafe extern "C" fn th(t: f64, h: f64, o_id: i32) -> f64 {

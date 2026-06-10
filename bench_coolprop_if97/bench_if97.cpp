@@ -10,7 +10,7 @@
 #include "IF97.h"
 
 extern "C" double pt(double p, double t, int o_id);
-extern "C" double tv(double t, double v, int o_id);
+extern "C" double tv_reg3(double t, double v, int o_id);
 extern "C" double dummy_func(double x);
 
 #define OH 4
@@ -297,23 +297,23 @@ static BenchmarkResult run_rust_seuif97_benchmark_tv(double t, double v, int cou
     BenchmarkResult res = {0};
     volatile double result = 0.0;
 
-    // h
+    // h - use tv_reg3 for direct Region 3 calculation
     auto start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < count; i++) result = tv(t, v, OH);
+    for (int i = 0; i < count; i++) result = tv_reg3(t, v, OH);
     auto end = std::chrono::high_resolution_clock::now();
     res.h_avg_ns = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() * 1000.0 / count - ffi_overhead;
     res.h_val = result;
 
-    // s
+    // s - use tv_reg3 for direct Region 3 calculation
     start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < count; i++) result = tv(t, v, OS);
+    for (int i = 0; i < count; i++) result = tv_reg3(t, v, OS);
     end = std::chrono::high_resolution_clock::now();
     res.s_avg_ns = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() * 1000.0 / count - ffi_overhead;
     res.s_val = result;
 
-    // v
+    // v - use tv_reg3 for direct Region 3 calculation
     start = std::chrono::high_resolution_clock::now();
-    for (int i = 0; i < count; i++) result = tv(t, v, OV);
+    for (int i = 0; i < count; i++) result = tv_reg3(t, v, OV);
     end = std::chrono::high_resolution_clock::now();
     res.v_avg_ns = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() * 1000.0 / count - ffi_overhead;
     res.v_val = result * 1000.0;
@@ -357,12 +357,12 @@ static void run_single_test(const TestCase* tc, int count)
         benchmark_rust_seuif97_s(tc->p, tc->t, count);
         benchmark_rust_seuif97_v(tc->p, tc->t, count);
     } else {
-        // TV type - just show tv results
+        // TV type - use tv_reg3 for direct Region 3 calculation
         volatile double result;
         
         // h
         auto start = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < count; i++) result = tv(tc->t, tc->v, OH);
+        for (int i = 0; i < count; i++) result = tv_reg3(tc->t, tc->v, OH);
         auto end = std::chrono::high_resolution_clock::now();
         double elapsed_us = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         double avg_ns = elapsed_us * 1000.0 / count;
@@ -370,7 +370,7 @@ static void run_single_test(const TestCase* tc, int count)
         
         // s
         start = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < count; i++) result = tv(tc->t, tc->v, OS);
+        for (int i = 0; i < count; i++) result = tv_reg3(tc->t, tc->v, OS);
         end = std::chrono::high_resolution_clock::now();
         elapsed_us = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         avg_ns = elapsed_us * 1000.0 / count;
@@ -378,7 +378,7 @@ static void run_single_test(const TestCase* tc, int count)
         
         // v
         start = std::chrono::high_resolution_clock::now();
-        for (int i = 0; i < count; i++) result = tv(tc->t, tc->v, OV);
+        for (int i = 0; i < count; i++) result = tv_reg3(tc->t, tc->v, OV);
         end = std::chrono::high_resolution_clock::now();
         elapsed_us = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
         avg_ns = elapsed_us * 1000.0 / count;
