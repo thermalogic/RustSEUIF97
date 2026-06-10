@@ -34,18 +34,13 @@
 The IAPWS-IF97 formulation is the international standard for water and steam thermodynamic properties,
 but direct formula evaluation without optimization cannot meet the performance demands of compute-intensive applications 
 requiring millions of property calculations. Existing fast direct formula evaluations achieve only limited acceleration 
-through repeated squaring. 
-Alternative methods such as TTSE and SBTL avoid direct evaluation but sacrifice formula-level accuracy. 
+through repeated squaring. Alternative methods such as TTSE and SBTL avoid direct evaluation but sacrifice formula-level accuracy. 
 This paper presents two acceleration techniques that directly optimize the IAPWS-IF97 formula evaluation while 
-maintaining full formula accuracy:
-   profiling-guided loop tiling and shared-power scaling.
-   Profiling-guided loop tiling partitions polynomial summation into cache-friendly tiles with empirically determined boundaries, 
-   enabling more effective SIMD vectorization.
-   Shared-power scaling exploits the mathematical relationship 
-   between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
-   eliminating redundant power calculations. A Rust-based software package, SEUIF97, implements these methods. 
-   Benchmark results demonstrate 5x to 36x speedups over baseline implementations and 
-   1.9x to 6.9x speedups over CoolProp IF97, the most widely used open-source implementation, with the largest improvements in Regions 1, 2, and 3.
+maintaining full formula accuracy: profiling-guided loop tiling and shared-power scaling. 
+Profiling-guided loop tiling partitions polynomial summation into cache-friendly tiles with empirically determined boundaries, enabling more effective SIMD vectorization.
+ Shared-power scaling exploits the mathematical relationship between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
+ eliminating redundant power calculations. A Rust-based software package, SEUIF97, implements these methods. 
+ Benchmark results demonstrate 5x to 36x speedups over baseline implementations and 1.9x to 6.9x speedups over CoolProp IF97, the most widely used open-source implementation, with the largest improvements in Regions 1, 2, and 3.
 \end{abstract}
 
 \begin{keywords}
