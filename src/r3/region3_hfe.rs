@@ -78,23 +78,20 @@ pub fn phi_deltadelta_reg3(delta: f64, tau: f64) -> f64 {
 /// First derivative in tau of fundamental equation for region 3
 #[inline(always)]
 pub fn phi_tau_reg3(delta: f64, tau: f64) -> f64 {
-    let mut result: f64 = 0.0;
-    let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    const steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
     poly_j_powi_steps(delta, tau, &IJn, &steps)
 }
 
 /// Second derivative in tau of fundamental equation for region 3
 #[inline(always)]
 pub fn phi_tautau_reg3(delta: f64, tau: f64) -> f64 {
-    let mut result: f64 = 0.0;
-    let steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    const steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
     poly_jj_powi_steps(delta, tau, &IJn, &steps)
 }
 
 /// Second derivative in delta and tau of fundamental equation for region 3
 #[inline(always)]
 pub fn phi_deltatau_reg3(delta: f64, tau: f64) -> f64 {
-    let mut result: f64 = 0.0;
     let steps: [(usize, usize); 3] = [(0, 17), (17, 34), (34, 39)];
     poly_ij_powi_steps(delta, tau, &IJn, &steps)
 }
@@ -102,7 +99,7 @@ pub fn phi_deltatau_reg3(delta: f64, tau: f64) -> f64 {
 //---------- multiple -------------------------
 #[inline(always)]
 pub fn polys_0_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
-     let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
+     const steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
      let (poly_phi, poly_tau) = polys_0_j_powi_steps(delta, tau, &IJn, &steps);
 
      //let poly_phi = poly_powi(delta, tau, &IJn);
@@ -113,7 +110,7 @@ pub fn polys_0_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
 
 #[inline(always)]
 pub fn polys_i_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
-    let steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
+    const steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
     let (poly_delta, poly_tau) = polys_i_j_powi_steps(delta, tau, &IJn, &steps);
     //let poly_delta = poly_i_powi(delta, tau, &IJn);
     //let poly_tau = poly_j_powi(delta, tau, &IJn);
