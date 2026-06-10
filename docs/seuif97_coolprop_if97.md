@@ -2,7 +2,9 @@
 
 The comparison evaluates SEUIF97 against [CoolProp IF97](https://github.com/CoolProp/IF97), which employs its own repeated-squaring fast integer power algorithm. 
 
-SEUIF97 achieves 1.9–6.7x speedups over CoolProp IF97. These gains stem from the proposed algorithmic optimizations.
+SEUIF97 achieves 1.9–6.9x speedups over CoolProp IF97. These gains stem from the proposed algorithmic optimizations.
+
+**Note:** SEUIF97 is accessed via C FFI (foreign function interface). The FFI call overhead (~1.5 ns/call) was measured using a dummy function and subtracted from the reported times to ensure a fair comparison with the natively compiled CoolProp IF97.
 
 **Test Environment:** 
 - CPU: Intel Core i7-1165G7 @ 2.80GHz
@@ -17,11 +19,11 @@ Measurements were performed using `std::chrono::high_resolution_clock`.
 
 |Case|Reg. | Input | CoolProp IF97(ns) | SEUIF97(ns) |Speedup|
 |---|:---:|---:|:------:|:---:|:---:|
-|(p, T) → h| 1 |3.0Mpa, 300K |136.1|42.6|3.2x|
-|(p, T) → s |1| 3.0Mpa, 300K|255.5|45.8|5.6x|
-|(p, T) → h |2| 0.0035Mpa, 300K |188.0|48.8|3.9x|
-|(p, T) → s |2| 0.0035Mpa, 300K |381.9|56.8|6.7x|
-|(T, v) → h |3| 630K,0.002m^3/kg |203.6|106.7|1.9x|
-|(T, v) → s |3 |630K,0.002m^3/kg |212.8|107.4|2.0x|
-|(p, T) → h |5| 0.5Mpa, 1500K | 32.0| 10.9| 2.9x|
-|(p, T) → s |5| 0.5Mpa, 1500K | 56.9 |17.4| 3.3x|
+|(p, T) → h| 1 |3.0 MPa, 300 K |134.7|38.4|3.5x|
+|(p, T) → s |1| 3.0 MPa, 300 K|255.8|42.8|6.0x|
+|(p, T) → h |2| 0.0035 MPa, 300 K |188.5|49.6|3.8x|
+|(p, T) → s |2| 0.0035 MPa, 300 K |374.2|54.1|6.9x|
+|(T, v) → h |3| 650 K, 0.002 m³/kg |199.0|105.7|1.9x|
+|(T, v) → s |3 |650 K, 0.002 m³/kg |211.4|105.2|2.0x|
+|(p, T) → h |5| 0.5 MPa, 1500 K | 30.9| 9.1| 3.4x|
+|(p, T) → s |5| 0.5 MPa, 1500 K | 56.7 |15.1| 3.8x|

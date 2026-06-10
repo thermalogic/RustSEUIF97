@@ -2,6 +2,11 @@
 //!
 use crate::if97_core::*;
 
+#[no_mangle]
+pub unsafe extern "C" fn dummy_func(x:f64) -> f64 {
+    x
+}
+
 /// double pt(double p,double t,short o_id)- the property of `o_id` (thermodynamic,transport,etc)
 #[no_mangle]
 pub unsafe extern "C" fn pt(p: f64, t: f64, o_id: i32) -> f64 {

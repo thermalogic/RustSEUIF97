@@ -45,7 +45,7 @@ maintaining full formula accuracy:
    between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, 
    eliminating redundant power calculations. A Rust-based software package, SEUIF97, implements these methods. 
    Benchmark results demonstrate 5x to 36x speedups over baseline implementations and 
-   1.9x to 6.7x speedups over CoolProp IF97, the most widely used open-source implementation, with the largest improvements in Regions 1, 2, and 3.
+   1.9x to 6.9x speedups over CoolProp IF97, the most widely used open-source implementation, with the largest improvements in Regions 1, 2, and 3.
 \end{abstract}
 
 \begin{keywords}
@@ -507,6 +507,7 @@ The results show significant speedups across all regions, with the largest impro
 The second benchmark compares SEUIF97 against CoolProp IF97 \cite{CoolPropIF97}, the most widely used open-source C++ implementation of IF97 on GitHub. CoolProp IF97 employs its own optimized repeated-squaring fast integer power algorithm, making it representative of existing optimized implementations.
 CoolProp IF97 was compiled using MSVC 19.50.35719.0 with \texttt{-O3} and \texttt{-march=native} optimization. Measurements were performed using \texttt{std::chrono::high\_resolution\_clock} \cite{MusserClock2024}.
 Table~\ref{tab:benchmarks_seuif97_coolprop_if97} shows the comparison results.
+SEUIF97 is accessed via C FFI (foreign function interface). The FFI call overhead (approximately 1.5 ns per call) was measured using a dummy function and subtracted from the reported times to ensure a fair comparison with the natively compiled CoolProp IF97.
 
 \begin{table}[H]
 \centering
@@ -517,19 +518,19 @@ Table~\ref{tab:benchmarks_seuif97_coolprop_if97} shows the comparison results.
 \toprule
 \textbf{Case} & \textbf{Reg.} & \textbf{Input} & \textbf{CoolProp IF97 (ns)} & \textbf{SEUIF97 (ns)} & \textbf{Speedup} \\
 \midrule
-$(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & 136.1 & 42.6 & 3.2x \\
-$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & 255.5 & 45.8 & 5.6x \\
-$(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & 188.0 & 48.8 & 3.9x \\
-$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & 381.9 & 56.8 & 6.7x \\
-$(T,v)\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & 203.6 & 106.7 & 1.9x \\
-$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & 212.8 & 107.4 & 2.0x \\
-$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & 32.0 & 10.9 & 2.9x \\
-$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & 56.9 & 17.4 & 3.3x \\
+$(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & 134.7 & 38.4 & 3.5x \\
+$(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & 255.8 & 42.8 & 6.0x \\
+$(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & 188.5 & 49.6 & 3.8x \\
+$(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & 374.2 & 54.1 & 6.9x \\
+$(T,v)\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & 199.0 & 105.7 & 1.9x \\
+$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & 211.4 & 105.2 & 2.0x \\
+$(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & 30.9 & 9.1 & 3.4x \\
+$(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & 56.7 & 15.1 & 3.8x \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-SEUIF97 achieves 1.9--6.7x speedups over CoolProp IF97. These gains stem from the proposed algorithmic optimizations.
+SEUIF97 achieves 1.9--6.9x speedups over CoolProp IF97. These gains stem from the proposed algorithmic optimizations.
 
 \section{Software Implementation: SEUIF97}
 \label{sec:software-implementation-seuif97}  
@@ -584,7 +585,7 @@ SEUIF97 is available as a Rust crate on crates.io, a Python package on PyPI, a W
 This paper proposes two acceleration techniques for the IAPWS-IF97 formula evaluation: profiling-guided loop tiling and
 shared-power scaling in derivative-related polynomials. The key insight is that the IAPWS-IF97 fundamental equations and their partial derivatives share the same power terms, 
 enabling simultaneous computation in a single pass. Combined with profiling-guided loop tiling for cache optimization, 
-the proposed approach achieves 5x to 36x speedups over baseline implementations that use fast integer power functions with a single loop (Table~\ref{tab:benchmarks}), and 14x to 30x speedups over CoolProp IF97 (Table~\ref{tab:benchmarks_seuif97_coolprop_if97}), with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. 
+the proposed approach achieves 5x to 36x speedups over baseline implementations that use fast integer power functions with a single loop (Table~\ref{tab:benchmarks}), and 1.9x to 6.9x speedups over CoolProp IF97 (Table~\ref{tab:benchmarks_seuif97_coolprop_if97}), with the largest improvements in Regions 1, 2, and 3 where the polynomial forms are most complex. 
 These results demonstrate that direct IAPWS-IF97 formula evaluation can achieve substantial speedup while maintaining full formula accuracy, substantially improving performance for compute-intensive applications. SEUIF97 is available as a Rust crate, Python package, WebAssembly module, and shared library with C bindings.
 
 
