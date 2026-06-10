@@ -48,7 +48,9 @@ The package provides two types of API for property calculation.
 
 **C, Python and WASM** bindings support all functions of both types in Rust, **except for the** **`optional region`** **parameter**.
 
-### Universal Functions (with o\_id and `<optional>` region parameter)
+### Universal Functions (with o_id and `<optional>` region parameter)
+
+> **Performance Tip:** Region detection adds overhead. If the region is known, pass it explicitly for faster computation.
 
 The following function signature is provided:
 
