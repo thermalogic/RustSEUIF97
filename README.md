@@ -1,7 +1,6 @@
 # SEUIF97
 
 ![docs.rs](https://img.shields.io/docsrs/seuif97)  [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml) ![Crates.io Version](https://img.shields.io/crates/v/seuif97) ![Crates.io Total Downloads](https://img.shields.io/crates/d/seuif97) ![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/seuif97)
-
 This is the Rust implementation of the high-speed IAPWS-IF97 package **SEUIF97** with **C, Python and WASM** bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
 
 Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
