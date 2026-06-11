@@ -292,11 +292,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
    
     let mut v: f64 = 0.0;
     let mut hs: f64 = 0.0;
-    let s13: f64 = pT2s_reg1(100.0, 623.15);
-    let s13s: f64 = pT2s_reg1(Ps_623, 623.15);
-    let sTPmax: f64 = pT2s_reg2(100.0, 1073.15);
-    let s2ab: f64 = pT2s_reg2(4.0, 1073.15); // TODO： p=4 2ab s2ab
-
+   
     // Left point in h-s plot
     let mut smin: f64 = pT2s_reg1(100.0, 273.15);
     let mut hmin: f64 = 0.0;
@@ -307,6 +303,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
     //let mut hmax: f64 = pT2h_reg2(P_MIN, 1073.15);
     let mut smax: f64 = pT2s_reg2(P_MIN, 1073.15);
 
+    let s13: f64 = pT2s_reg1(100.0, 623.15);
     if smin <= s && s <= s13 {
         T = ps2T_reg1(100.0, s) - 0.0218;
         hmax = pT2h_reg1(100.0, T);
@@ -319,7 +316,8 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
             return 4;
         }
      };
-
+  
+    let s13s: f64 = pT2s_reg1(Ps_623, 623.15);
     if s13 < s && s <= s13s {
         hs = hs_region_h1_s(s);
         let h13: f64 = hs_region_h13_s(s);
@@ -410,7 +408,8 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
             return 4;
         }
     }
-
+ 
+    let sTPmax: f64 = pT2s_reg2(100.0, 1073.15);
     if 5.85 <= s && s < sTPmax {
         hs = hs_region_h2ab_s(s);
         T = ps2T_reg2(100.0, s) - 0.019;
@@ -423,6 +422,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         }
     };
 
+    let s2ab: f64 = pT2s_reg2(4.0, 1073.15); // TODO： p=4 2ab s2ab
     if sTPmax <= s && s < s2ab {
         hs = hs_region_h2ab_s(s);
         p = hs2p_reg2(h, s);
@@ -435,7 +435,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
             return 4;
         }
     };
-   
+
     let s4v: f64 = pT2s_reg2(P_MIN, 273.15);
     if s2ab <= s && s < s4v {
         hs = hs_region_h2ab_s(s);
