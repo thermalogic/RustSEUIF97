@@ -29,7 +29,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
 elseif(MSVC)
     # MSVC 优化选项
     target_compile_options(bench_if97 PRIVATE
-        $<$<CONFIG:Release>:/O2>
+        $<$<CONFIG:Release>:/O3>
         $<$<CONFIG:Release>:/GL>
         $<$<CONFIG:Release>:/arch:AVX2>
         $<$<CONFIG:Release>:/fp:fast>
