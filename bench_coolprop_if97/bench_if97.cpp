@@ -74,7 +74,7 @@ static void benchmark_if97_v(double p, double t, int count)
     double avg_ns = elapsed_us * 1000.0 / count;
 
     printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.1f ns/call\n",
-           "v", result * 1000.0, elapsed_us / 1000.0, avg_ns);
+           "v", result, elapsed_us / 1000.0, avg_ns);
 }
 
 // Benchmark for CoolProp-IF97 with (T, v) input via Region3::hmass/smass
@@ -105,7 +105,7 @@ static void benchmark_if97_tv(double t, double v, int count)
 
     // v (trivial)
     printf("  %-4s = %12.6f   Total: %8.3f ms   Avg: %8.1f ns/call\n",
-           "v", v * 1000.0, 0.0, 0.0);
+           "v", v, 0.0, 0.0);
 }
 
 // Benchmark for Rust SEUIF97 C Shared Library
@@ -214,7 +214,7 @@ static BenchmarkResult run_coolprop_benchmark_pt(double p, double t, int count)
     for (int i = 0; i < count; i++) result = 1.0 / IF97::rhomass_Tp(T_K, p_Pa);
     end = std::chrono::high_resolution_clock::now();
     res.v_avg_ns = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() * 1000.0 / count;
-    res.v_val = result * 1000.0;
+    res.v_val = result;
 
     return res;
 }
@@ -245,7 +245,7 @@ static BenchmarkResult run_coolprop_benchmark_tv(double t, double v, int count)
 
     // v (trivial: input v itself)
     res.v_avg_ns = 0.0;
-    res.v_val = v * 1000.0;
+    res.v_val = v;
 
     return res;
 }
@@ -316,7 +316,7 @@ static BenchmarkResult run_rust_seuif97_benchmark_tv(double t, double v, int cou
     for (int i = 0; i < count; i++) result = tv_reg3(t, v, OV);
     end = std::chrono::high_resolution_clock::now();
     res.v_avg_ns = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() * 1000.0 / count - ffi_overhead;
-    res.v_val = result * 1000.0;
+    res.v_val = result;
 
     return res;
 }
@@ -417,7 +417,7 @@ static void run_single_test(const TestCase* tc, int count)
     printf("  s (kJ/kgK)   %11.6f   %10.6f     %6.1f ns      %6.1f ns       %6.2fx\n",
            coolprop.s_val, rust_seuif97.s_val,
            coolprop.s_avg_ns, rust_seuif97.s_avg_ns, coolprop.s_avg_ns / rust_seuif97.s_avg_ns);
-    printf("  v (L/kg)     %11.6f   %10.6f     %6.1f ns      %6.1f ns       %6.2fx\n",
+    printf("  v (m3/kg)    %11.6f   %10.6f     %6.1f ns      %6.1f ns       %6.2fx\n",
            coolprop.v_val, rust_seuif97.v_val,
            coolprop.v_avg_ns, rust_seuif97.v_avg_ns, coolprop.v_avg_ns / rust_seuif97.v_avg_ns);
 

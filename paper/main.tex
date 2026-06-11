@@ -517,15 +517,15 @@ $(p,T)\!\rightarrow\!h$ & 1 & 3.0 MPa, 300 K & 134.7 & 38.4 & 3.5x \\
 $(p,T)\!\rightarrow\!s$ & 1 & 3.0 MPa, 300 K & 255.8 & 42.8 & 6.0x \\
 $(p,T)\!\rightarrow\!h$ & 2 & 0.0035 MPa, 300 K & 188.5 & 49.6 & 3.8x \\
 $(p,T)\!\rightarrow\!s$ & 2 & 0.0035 MPa, 300 K & 374.2 & 54.1 & 6.9x \\
-$(T,v)\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & 213.0 & 29.6 & 7.2x \\
-$(T,v)\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & 213.1 & 28.0 & 7.6x \\
+$(T,v)_3\!\rightarrow\!h$ & 3 & 650 K, 0.002 m$^3$/kg & 213.0 & 29.6 & 7.2x \\
+$(T,v)_3\!\rightarrow\!s$ & 3 & 650 K, 0.002 m$^3$/kg & 213.1 & 28.0 & 7.6x \\
 $(p,T)\!\rightarrow\!h$ & 5 & 0.5 MPa, 1500 K & 30.9 & 9.1 & 3.4x \\
 $(p,T)\!\rightarrow\!s$ & 5 & 0.5 MPa, 1500 K & 56.7 & 15.1 & 3.8x \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-SEUIF97 achieves 3.4--7.6x speedups over CoolProp IF97. These gains stem from the proposed algorithmic optimizations.
+SEUIF97 achieves 3.4--7.6x speedups over CoolProp IF97. These gains stem from the proposed algorithmic optimizations. For Region 3 $(T,v)_3$ inputs, CoolProp IF97 provides only a direct evaluation function without region detection; SEUIF97 uses its corresponding direct function for a fair comparison.
 
 \section{Software Implementation: SEUIF97}
 \label{sec:software-implementation-seuif97}  
