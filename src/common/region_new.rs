@@ -1,14 +1,14 @@
 //! Check the Region
 //! * Basic input pairs :  (p,T) (p,h) (p,s) (h,s)  
 //! * Extented input pairs:: (p,v) (t,v) (t,h)
-//! 
+//!
 //! Fast region judgment
-//!   Instead of invoking all boundary calculation functions upfront, 
-//!   we only call the required boundary functions for each individual judgment segment to compute boundary values. 
+//!   Instead of invoking all boundary calculation functions upfront,
+//!   we only call the required boundary functions for each individual judgment segment to compute boundary values.
 //!   There is some code duplication, yet the execution speed is improved.
 //!
-//!  ph,ph,hs ok!!
-//!   TODO: pv,etc 
+//!  ph,ph,hs ok!! faster
+//!   TODO: pv  slower???
 //!  
 use crate::common::boundaries::*;
 use crate::common::constant::*;
@@ -109,13 +109,13 @@ pub fn ph_sub_region(p: f64, h: f64) -> i32 {
         let h24: f64 = pT2h_reg2(p, T_sat);
         if h14 < h && h < h24 {
             return 4;
-        } 
+        }
         let h25: f64 = pT2h_reg2(p, 1073.15);
         if h24 <= h && h <= h25 {
             return 2;
-        } 
-       let hmax: f64 = pT2h_reg5(p, 2273.15);
-       if h25 < h && h <= hmax {
+        }
+        let hmax: f64 = pT2h_reg5(p, 2273.15);
+        if h25 < h && h <= hmax {
             return 5;
         }
     };
@@ -135,7 +135,7 @@ pub fn ph_sub_region(p: f64, h: f64) -> i32 {
                 return 3;
             }
         };
-       
+
         let h25: f64 = pT2h_reg2(p, 1073.15);
         if h32 <= h && h <= h25 {
             return 2;
@@ -150,7 +150,7 @@ pub fn ph_sub_region(p: f64, h: f64) -> i32 {
     if PC_WATER <= p && p <= 100.0 {
         let hmin: f64 = pT2h_reg1(p, 273.15);
         let h13: f64 = pT2h_reg1(p, 623.15);
-       
+
         if hmin <= h && h <= h13 {
             return 1;
         }
@@ -184,17 +184,17 @@ pub fn ps_sub_region(p: f64, s: f64) -> i32 {
         if smin <= s && s <= s14 {
             return 1;
         }
-       
+
         let s24: f64 = pT2s_reg2(p, Tsat);
         if s14 < s && s < s24 {
             return 4;
         }
-       
+
         let s25: f64 = pT2s_reg2(p, 1073.15);
         if s24 <= s && s <= s25 {
             return 2;
         }
-       
+
         let smax: f64 = pT2s_reg5(p, 2273.15);
         if s25 < s && s <= smax {
             return 5;
@@ -208,7 +208,7 @@ pub fn ps_sub_region(p: f64, s: f64) -> i32 {
         if smin <= s && s <= s13 {
             return 1;
         }
-       
+
         let s32: f64 = pT2s_reg2(p, B23_p2T(p));
         if s13 < s && s < s32 {
             let p34: f64 = s2p_sat_reg3(s); // boundaries;
@@ -218,12 +218,12 @@ pub fn ps_sub_region(p: f64, s: f64) -> i32 {
                 return 3;
             }
         };
-       
+
         let s25: f64 = pT2s_reg2(p, 1073.15);
         if s32 <= s && s <= s25 {
             return 2;
         }
-       
+
         let smax: f64 = pT2s_reg5(p, 2273.15);
         if s25 < s && s <= smax {
             return 5;
@@ -237,17 +237,17 @@ pub fn ps_sub_region(p: f64, s: f64) -> i32 {
         if smin <= s && s <= s13 {
             return 1;
         }
-    
+
         let s32: f64 = pT2s_reg2(p, B23_p2T(p));
         if s13 < s && s < s32 {
             return 3;
         }
-       
+
         let s25: f64 = pT2s_reg2(p, 1073.15);
         if s32 <= s && s <= s25 {
             return 2;
         }
-     
+
         let smax: f64 = pT2s_reg5(p, 2273.15);
         if p <= 50.0 && s25 <= s && s <= smax {
             return 5;
@@ -265,7 +265,7 @@ macro_rules! define_region4_hs_boundary_points {
 
         let h4v: f64 = pT2h_reg2(P_MIN, 273.15);
         let s4v: f64 = pT2s_reg2(P_MIN, 273.15);
-        
+
         // Calculate hmin directly
         $hmin = h4l + ($s - s4l) / (s4v - s4l) * (h4v - h4l);
     };
@@ -277,7 +277,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
     // if （s4v <= s && s<= smax） (h,s)may be setup to error region2
     let mut T: f64 = 0.0;
     let mut p: f64 = 0.0;
-   
+
     if pT2s_reg5(50.0, 1073.15) < s
         && s <= pT2s_reg5(P_MIN, 2273.15)
         && pT2h_reg5(50.0, 1073.15) < h
@@ -289,10 +289,10 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
             return 5;
         }
     };
-   
+
     let mut v: f64 = 0.0;
     let mut hs: f64 = 0.0;
-   
+
     // Left point in h-s plot
     let mut smin: f64 = pT2s_reg1(100.0, 273.15);
     let mut hmin: f64 = 0.0;
@@ -315,8 +315,8 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         if hmin <= h && h < hs {
             return 4;
         }
-     };
-  
+    };
+
     let s13s: f64 = pT2s_reg1(Ps_623, 623.15);
     if s13 < s && s <= s13s {
         hs = hs_region_h1_s(s);
@@ -327,13 +327,13 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         v = ps2v_reg3(100.0, s) * (1.0 + 9.6e-5);
         T = ps2T_reg3(100.0, s) - 0.0248;
         hmax = Td2h_reg3(T, 1.0 / v);
-       if h13 <= h && h <= hmax {
+        if h13 <= h && h <= hmax {
             return 3;
         }
         define_region4_hs_boundary_points!(s, hmin);
         if hmin <= h && h < hs {
             return 4;
-        }      
+        }
     };
 
     if s13s < s && s <= SC_WATER {
@@ -343,11 +343,11 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         hmax = Td2h_reg3(T, 1.0 / v);
         if hs <= h && h <= hmax {
             return 3;
-        } 
+        }
         define_region4_hs_boundary_points!(s, hmin);
         if hmin <= h && h < hs {
             return 4;
-        }      
+        }
     };
 
     if SC_WATER < s && s < 5.049096828 {
@@ -361,14 +361,14 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         define_region4_hs_boundary_points!(s, hmin);
         if hmin <= h && h < hs {
             return 4;
-        }    
+        }
     };
 
     if 5.049096828 <= s && s < 5.260578707 {
         // Specific zone with 2-3 boundary in s shape
         hs = hs_region_h2c3b_s(s);
         let h23min: f64 = pT2h_reg2(Ps_623, 623.15);
-           if hs <= h && h < h23min {
+        if hs <= h && h < h23min {
             return 3;
         }
 
@@ -388,12 +388,11 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         if h23max <= h && h <= hmax {
             return 2;
         }
-   
+
         define_region4_hs_boundary_points!(s, hmin);
         if hmin <= h && h < hs {
             return 4;
         }
-      
     };
 
     if 5.260578707 <= s && s < 5.85 {
@@ -408,7 +407,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
             return 4;
         }
     }
- 
+
     let sTPmax: f64 = pT2s_reg2(100.0, 1073.15);
     if 5.85 <= s && s < sTPmax {
         hs = hs_region_h2ab_s(s);
@@ -468,53 +467,95 @@ pub fn pv_sub_region(p: f64, v: f64) -> i32 {
         return INVALID_VALUE;
     }
 
-    let vt273: f64 = pT2v_reg1(p, 273.15);
-    let vt1073: f64 = pT2v_reg2(p, 1073.15);
-    let mut vt2273: f64 = 0.0;
-    if (p >= P_MIN5) && (p <= P_MAX5) {
-        vt2273 = pT2v_reg5(p, 2273.15);
-    }
-
     let mut T1: f64 = 0.0;
     let mut vsw: f64 = 0.0;
     let mut vss: f64 = 0.0;
+    let mut vt273: f64 = 0.0;
     let mut vt623: f64 = 0.0;
+    let mut vt1073: f64 = 0.0;
     let mut vB23: f64 = 0.0;
 
-    if (p > 0.000611213) && (p <= P_MIN3) {
+    if ((p >= P_MIN1) && (p <= P_MIN3)) {
+        vt273 = pT2v_reg1(p, 273.15);
         T1 = T_saturation(p);
         vsw = pT2v_reg1(p, T1);
-        vss = pT2v_reg2(p, T1);
-    } else if (p > P_MIN3) && (p <= P_MAX3) {
+        if ((v >= vt273) && (v <= vsw)) {
+            return 1;
+        }
+    };
+
+    if ((p > P_MIN3) && (p <= P_MAX1)) {
+        vt273 = pT2v_reg1(p, 273.15);
         vt623 = pT2v_reg1(p, 623.15);
+        if ((v >= vt273) && (v <= vt623)) {
+            return 1;
+        }
+    };
+
+    if ((p >= P_MIN2) && (p <= P_MIN3)) {
+        T1 = T_saturation(p);
+        vss = pT2v_reg2(p, T1);
+        vt1073 = pT2v_reg2(p, 1073.15);
+        if ((v > vss) && (v <= vt1073)) {
+            return 2;
+        };
+    };
+
+    if ((p > P_MIN3) && (p <= P_MAX2)) {
+        vt1073 = pT2v_reg2(p, 1073.15);
         T1 = B23_p2T(p);
         vB23 = pT2v_reg2(p, T1); //
-        if p <= PC_WATER {
-            T1 = T_saturation(p);
-            vsw = pT2v_sat_reg3(p, T1, 0.0);
-            vss = pT2v_sat_reg3(p, T1, 1.0);
+        if ((v >= vB23) && (v <= vt1073)) {
+            return 2;
         }
-    }
-    if ((p >= P_MIN1) && (p <= P_MIN3)) && ((v >= vt273) && (v <= vsw))
-        || ((p > P_MIN3) && (p <= P_MAX1)) && ((v >= vt273) && (v <= vt623))
-    {
-        return 1;
     };
-    if ((p >= P_MIN2) && (p <= P_MIN3) && (v > vss) && (v <= vt1073))
-        || ((p > P_MIN3) && (p <= P_MAX2) && (v >= vB23) && (v <= vt1073))
-    {
-        return 2;
+
+    if ((p > P_MIN3) && (p <= PC_WATER)) {
+        vt623 = pT2v_reg1(p, 623.15);
+        T1 = T_saturation(p);
+        vsw = pT2v_sat_reg3(p, T1, 0.0);
+        if ((v > vt623) && (v < vsw)) {
+            return 3;
+        }
+        vss = pT2v_sat_reg3(p, T1, 1.0);
+        T1 = B23_p2T(p);
+        vB23 = pT2v_reg2(p, T1);
+        if ((v > vss) && (v < vB23)) {
+            return 3;
+        }
     };
-    if ((p > P_MIN3) && (p <= PC_WATER) && (((v > vt623) && (v < vsw)) || ((v > vss) && (v < vB23))))
-        || ((p > PC_WATER) && (p <= P_MAX3) && (v > vt623) && (v < vB23))
-    {
-        return 3;
+
+    if ((p > PC_WATER) && (p <= P_MAX3)) {
+        vt623 = pT2v_reg1(p, 623.15);
+        T1 = B23_p2T(p);
+        vB23 = pT2v_reg2(p, T1);
+        if ((v > vt623) && (v < vB23)) {
+            return 3;
+        }
     };
-    if (p > P_MIN) && (p <= PC_WATER) && (v >= vsw) && (v <= vss) {
-        return 4; // x is obtained in r4::region4_pair_ext::pv2x_reg4
+
+    if (p > P_MIN) && (p <= PC_WATER) {
+        T1 = T_saturation(p);
+        if (p > 0.000611213) && (p <= P_MIN3) {
+            vsw = pT2v_reg1(p, T1);
+            vss = pT2v_reg2(p, T1);
+        } else if (p > P_MIN3) && (p <= P_MAX3) {
+            if p <= PC_WATER {
+                vsw = pT2v_sat_reg3(p, T1, 0.0);
+                vss = pT2v_sat_reg3(p, T1, 1.0);
+            }
+        }
+        if ((v >= vsw) && (v <= vss)) {
+            return 4; // x is obtained in r4::region4_pair_ext::pv2x_reg4
+        }
     };
-    if (p > P_MIN5) && (p <= P_MAX5) && (v > vt1073) && (v <= vt2273) {
-        return 5;
+
+    if (p > P_MIN5) && (p <= P_MAX5) {
+        vt1073 = pT2v_reg2(p, 1073.15);
+        let vt2273 = pT2v_reg5(p, 2273.15);
+        if ((v > vt1073) && (v <= vt2273)) {
+            return 5;
+        }
     };
     INVALID_VALUE
 }
@@ -570,26 +611,23 @@ pub fn tv_sub_region(t: f64, v: f64) -> i32 {
     };
 
     // simple bool and fun in if{}  to fast check region 1,2,3,4,5
-    if (T >= T_MIN1) && (T <= T_MAX1)  {
+    if (T >= T_MIN1) && (T <= T_MAX1) {
         let mut vsw = T2sat_water(T, OV);
         let mut vp100 = pT2v_reg1(100.0, T);
-        if (v < vsw) && (v > vp100)
-        {  
-          return 1;
+        if (v < vsw) && (v > vp100) {
+            return 1;
         }
     };
-    if ((T >= T_MIN2) && (T <= T_MAX1) && (v > vss) && (v < vpmax2))
-    {
+    if ((T >= T_MIN2) && (T <= T_MAX1) && (v > vss) && (v < vpmax2)) {
         let mut vss = T2sat_steam(T, OV);
         let mut vpmax2 = pT2v_reg2(P_MIN2, T);
-  
+
         return 2;
     };
-    if  ((T > T_MAX1) && (T <= T_MAX3) && (v >= vB23) && (v < vpmax2))
-    {
+    if ((T > T_MAX1) && (T <= T_MAX3) && (v >= vB23) && (v < vpmax2)) {
         return 2;
     };
-   
+
     if ((T > T_MIN3) && (T <= TC_WATER) && (((v > vss) && (v < vB23)) || ((v >= vp100) && (v < vsw))))
         || ((T > TC_WATER) && (T <= T_MAX3) && (v >= vp100) && (v < vB23))
     {
@@ -764,12 +802,10 @@ pub fn ts_sub_region(t: f64, s: f64) -> i32 {
     if (T >= T_MIN1) && (T <= T_MAX1) && (s < ssw) && (s > sp100) {
         return 1;
     };
-    if ((T >= T_MIN2) && (T <= T_MAX1) && (s > sss) && (s < spmax2))
-    {
+    if ((T >= T_MIN2) && (T <= T_MAX1) && (s > sss) && (s < spmax2)) {
         return 2;
     };
-    if ((T > T_MAX1) && (T <= T_MAX3) && (s >= sB23) && (s < spmax2))
-    {
+    if ((T > T_MAX1) && (T <= T_MAX3) && (s >= sB23) && (s < spmax2)) {
         return 2;
     };
     if ((T > T_MIN3) && (T <= TC_WATER) && (((s > sss) && (s < sB23)) || ((s >= sp100) && (s < ssw))))
