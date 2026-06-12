@@ -50,6 +50,8 @@ hs(h,s,o_id)
 px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id) sx(s,x,o_id)
 ```
 
+> **Note:** Only linearly related thermodynamic properties are calculable in the wet steam region.
+
 ## Direct Property Functions
 
 The following 12 input pairs are implemented:

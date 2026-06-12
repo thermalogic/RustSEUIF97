@@ -91,6 +91,8 @@ hx(h:f64,x:f64,o_id:i32)->f64
 sx(s:f64,x:f64,o_id:i32)->f64
 ```
 
+> **Note:** Only linearly related thermodynamic properties are calculable in the wet steam region.
+
 ### Direct Property Functions
 
 The following 12 input pairs are implemented:

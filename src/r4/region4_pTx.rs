@@ -1,4 +1,6 @@
 //! Region 4 - saturation water, steam and wet steam
+//!  
+//!  Only linearly related thermodynamic properties are calculable in the wet steam region.
 //!
 //!  p,MPa T, K
 //!     p2sat_water, p2sat_steam
