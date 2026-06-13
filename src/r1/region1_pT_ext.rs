@@ -16,8 +16,8 @@
 //!  *  dpdtcv:  Partial derivative (dP/dT)v  MPa/K
 //!  *  dvdtcp: Partial derivative (dV/dT)p  m³/(kg·K)
 //!  *  dvdpct: Partial derivative (dV/dP)T  m³/(kg·MPa)
-//! *  batap ：Isothermal stress coefficient, kg/m³
-//! *  fi: Fugacity coefficient
+//!  *  batap :Isothermal stress coefficient, kg/m³
+//!  *  fi: Fugacity coefficient
 //!  *  fu: Fugacity, MPa
 //!  * alfap: relative pressure coefficient  1/K
 

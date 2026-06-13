@@ -49,7 +49,7 @@ pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
     let mut f1: f64 = v - v1;
 
     //let mut T2:f64 = T_MAX2;
-    let mut T2: f64 = 1.1 * T1; //fast ,because the teh value of volume in region2 ig larger
+    let mut T2: f64 = 1.1 * T1; //fast ,because the value of volume in region2 ig larger
     let mut v2 = pT2v_reg2(p, T2);
     let mut f = v - v2;
     T1 = T1 + (T2 - T1) * (v - v1) / (v2 - v1).abs();

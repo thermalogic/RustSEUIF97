@@ -1,9 +1,9 @@
 //! Region 3 - Backward Equation(p,T)->v, sub-region
 //! IAPWS-IF97-S05rev:  (p,T)->v  
 //!   *  p : pressure  MPa
-//!   *  T :temperature  K
-//!  *  v ：the specific volume  m3/kg
-//!Note: The function sub-region 3n is the special one！
+//!   *  T : temperature  K
+//!   *  v : the specific volume  m3/kg
+//! Note: The function sub-region 3n is the special one!
 
 use crate::algo::*;
 use crate::common::constant::*;

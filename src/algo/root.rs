@@ -1,5 +1,5 @@
 //! The secant method to find the root
-//！* Numerical Reciples  Ch.9.2
+//! * Numerical Reciples  Ch.9.2
 
 type IF97_EQ = fn(f64, f64) -> f64;
 
@@ -51,7 +51,7 @@ pub fn rtsec1(
     return rts;
 }
 
-/// rtsec2 :fun(con_var1，x),the result is the second x，x={x1,x2}
+/// rtsec2 :fun(con_var1,x),the result is the second x，x={x1,x2}
 ///  * the first con_var1 is constant
 ///  *  fr: the value of func(con_var1,x)
 ///  *  fl: fr-func(con_var1,x1)

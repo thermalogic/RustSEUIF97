@@ -36,7 +36,7 @@ pub fn pT2h_reg2(p: f64, T: f64) -> f64 {
 pub fn pT2s_reg2(p: f64, T: f64) -> f64 {
     let tau: f64 = r2Tstar / T;
     let pi: f64 = p;
-    // ----------- fast recursion  get mutil gamma0's items -------------------
+    // ----------- fast recursion  get mutiple gamma0's items -------------------
     let mut gamma0: f64 = pi.ln();
     let mut gamma0_tau: f64 = 0.0;
     let mut gamma0_item: f64 = 0.0;

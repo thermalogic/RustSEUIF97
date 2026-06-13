@@ -29,7 +29,7 @@ use crate::r5::region5_pT::*;
 use crate::r5::region5_ph_ps_hs::*;
 
 
-/// T in the order to fast check region，
+/// T in the order to fast check region,
 ///    p in MPa ,  T in K, returns the region
 pub fn pT_sub_region(p: f64, T: f64) -> i32 {
     if p < P_MIN || p > P_MAX {
@@ -92,9 +92,9 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
     INVALID_PT
 }
 
-/// Pmin -> Ps_623-> Pc-> 100MP ，3 range to check region
+/// Pmin -> Ps_623-> Pc-> 100MP, 3 range to check region
 ///  in each sub region use(hmin, hmax) to check region
-///   - lazy version： -reg1 +47%, reg2 +5%  reg3 +22% reg5 same
+///   - lazy version: -reg1 +47%, reg2 +5%  reg3 +22% reg5 same
 pub fn ph_sub_region(p: f64, h: f64) -> i32 {
     let hmin: f64 = pT2h_reg1(p, 273.15);
 
@@ -170,9 +170,9 @@ pub fn ph_sub_region(p: f64, h: f64) -> i32 {
     INVALID_VALUE
 }
 
-/// Pmin -> Ps_623-> Pc-> 100MP ，3 range to check region
+/// Pmin -> Ps_623-> Pc-> 100MP, 3 range to check region
 ///  in each sub region use(smin ,smax) to check region
-///  - lazy version： -reg1 +71%, reg2 +3%, reg3 +25%, reg4%, reg5 same
+///  - lazy version: -reg1 +71%, reg2 +3%, reg3 +25%, reg4%, reg5 same
 pub fn ps_sub_region(p: f64, s: f64) -> i32 {
     let smin: f64 = pT2s_reg1(p, 273.15);
 
@@ -265,7 +265,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
     const s4v:f64=9.15575940;  // pT2s_reg2(P_MIN, 273.15);
    
     // !!!! Check region 5 MUST BE On TOP !!!
-    // if （s4v <= s && s<= smax） (h,s)may be setup to error region2
+    // if (s4v <= s && s<= smax) (h,s)may be setup to error region2
     let s_r5_1=6.51708829;//pT2s_reg5(50.0, 1073.15);
     let s_r5_2=13.90495608;//pT2s_reg5(P_MIN, 2273.15);
     let h_r5_1=3926.05014007;//pT2h_reg5(50.0, 1073.15); 
