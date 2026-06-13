@@ -26,8 +26,6 @@ use crate::r4::region4_sat_pT::*;
 use crate::r5::region5_pT::*;
 use crate::r5::region5_ph_ps_hs::*;
 
-/// const for none region input
-pub const REGION_NONE: i32 = 10;
 
 /// T in the order to fast check region，
 ///    p in MPa ,  T in K, returns the region
@@ -52,7 +50,7 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
     }
 
     if T >= T_MIN1 && T <= T_MIN3 {
-        if (p > P_MIN3 && p < P_MAX1) {
+        if p > P_MIN3 && p < P_MAX1 {
             return 1;
         }
         let p_s = p_saturation(T);
@@ -66,7 +64,7 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
 
     // T（623.15,T_MAX3)
     if T > T_MIN3 && T <= T_MAX3 {
-        if (p < P_MIN3) && (p > P_MIN) {
+        if p < P_MIN3 && p > P_MIN {
             return 2;
         }
         let p23 = B23_T2p(T);
@@ -79,25 +77,21 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
     };
 
     // Bottom of the Saturaton lines、critical point  to fast check the region
-    //  tolerance
-    const p_tol: f64 = 1.0e-15;
-    const t_tol: f64 = 1.0e-5;
-    if T >= 273.15 && T < TC_WATER {
+    if T >= T_MIN && T < TC_WATER {
         let p_s: f64 = p_saturation(T);
-        if (p - p_s).abs() < p_tol {
+        if (p - p_s).abs() < P_TOL {
             return 4;
         }
     }
     // the critical point in region 3
-    if (T - TC_WATER).abs() < t_tol && (p - PC_WATER).abs() < p_tol {
+    if (T - TC_WATER).abs() < T_TOL && (p - PC_WATER).abs() < P_TOL {
         return 3;
     }
-
-    INVALID_VALUE
+    INVALID_PT
 }
 
 /// Pmin -> Ps_623-> Pc-> 100MP ，3 range to check region
-///  in each sub region use(hmin, hmax) to chack region
+///  in each sub region use(hmin, hmax) to check region
 ///   - lazy version： -reg1 +47%, reg2 +5%  reg3 +22% reg5 same
 pub fn ph_sub_region(p: f64, h: f64) -> i32 {
     let hmin: f64 = pT2h_reg1(p, 273.15);
@@ -174,7 +168,7 @@ pub fn ph_sub_region(p: f64, h: f64) -> i32 {
 }
 
 /// Pmin -> Ps_623-> Pc-> 100MP ，3 range to check region
-///  in each sub region use(smin ,smax) to chack region
+///  in each sub region use(smin ,smax) to check region
 ///  - lazy version： -reg1 +71%, reg2 +3%, reg3 +25%, reg4%, reg5 same
 pub fn ps_sub_region(p: f64, s: f64) -> i32 {
     let smin: f64 = pT2s_reg1(p, 273.15);
@@ -200,7 +194,7 @@ pub fn ps_sub_region(p: f64, s: f64) -> i32 {
         }
     };
 
-    // 2. Secode Range: (Ps_623,PC_WATER)
+    // 2. Second Range: (Ps_623,PC_WATER)
     if Ps_623 < p && p < PC_WATER {
         let s13: f64 = pT2s_reg1(p, 623.15);
         if smin <= s && s <= s13 {
@@ -276,7 +270,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
     let mut T: f64 = 0.0;
     let mut p: f64 = 0.0;
 
-    // !!!! Check region 5 MUST On TOP !!!
+    // !!!! Check region 5 MUST BE On TOP !!!
     // if （s4v <= s && s<= smax） (h,s)may be setup to error region2
     if pT2s_reg5(50.0, 1073.15) < s
         && s <= pT2s_reg5(P_MIN, 2273.15)
@@ -538,8 +532,7 @@ pub fn tv_sub_region(t: f64, v: f64) -> i32 {
     let mut vsw: f64 = 0.0;
     let mut vss: f64 = 0.0;
     let mut vB23: f64 = 0.0;
-    let mut p1: f64 = 0.0;
-
+   
     if (T >= T_MIN1) && (T <= T_MAX1) {
         let p_s = p_saturation(T);
         vsw = pT2v_reg1(p_s, T);
@@ -607,20 +600,20 @@ pub fn th_sub_region(t: f64, h: f64) -> i32 {
 
     let mut hsw: f64 = 0.0;
     let mut hss: f64 = 0.0;
-    let mut p1: f64 = 0.0;
+    let mut p_s: f64 = 0.0;
     let mut hB23: f64 = 0.0;
     if (T >= T_MIN1) && (T <= T_MAX1) {
-        p1 = p_saturation(T);
-        hsw = pT2h_reg1(p1, T);
-        hss = pT2h_reg2(p1, T);
+        p_s = p_saturation(T);
+        hsw = pT2h_reg1(p_s, T);
+        hss = pT2h_reg2(p_s, T);
     } else if (T > T_MIN3) && (T <= T_MAX3) {
-        p1 = B23_T2p(T);
-        hB23 = pT2h_reg2(p1, T);
+        let p_b23 = B23_T2p(T);
+        hB23 = pT2h_reg2(p_b23, T);
         if T <= TC_WATER {
-            p1 = p_saturation(T);
-            let mut v: f64 = pT2v_sat_reg3(p1, T, 0.0);
+            p_s = p_saturation(T);
+            let mut v: f64 = pT2v_sat_reg3(p_s, T, 0.0);
             hsw = Td2h_reg3(T, 1.0 / v);
-            v = pT2v_sat_reg3(p1, T, 1.0);
+            v = pT2v_sat_reg3(p_s, T, 1.0);
             hss = Td2h_reg3(T, 1.0 / v);
         };
     };
@@ -632,7 +625,7 @@ pub fn th_sub_region(t: f64, h: f64) -> i32 {
     //  if p>Ps, p^, h--, Hmin,p^,h++, h<hsat_water(T)
     if (T >= (250.0 + 273.15)) && (T <= T_MAX1) && (h < hsw) && (h <= hp100) {
         let mut Hmin: f64 = hsw;
-        let mut p11: f64 = p1 + 0.1;
+        let mut p11: f64 = p_s + 0.1;
         let mut Hmid: f64 = pT2h_reg1(p11, T);
         if Hmid < Hmin {
             let mut HminFounded: bool = false;

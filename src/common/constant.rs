@@ -12,6 +12,10 @@ pub const INVALID_HS: i32 = -2202;
 
 ///  FLOAT_ERROR for float value with `==`
 pub const FLOAT_ERROR: f64 = 1.0e-6;
+pub const P_TOL: f64 = 1.0e-15;
+pub const T_TOL: f64 = 1.0e-5;
+/// const for none region input
+pub const REGION_NONE: i32 = 10;
 
 /// constants  
 pub const K: f64 = 273.15;
