@@ -1,6 +1,6 @@
-//！IAPWS-IF97 Basic Equation for Region 1
+//! Region 1 - IAPWS-IF97 Basic Equation for Region 1
 //! * The basic equation of the dimensionless Gibbs free energy(p,T) and its derivatives
-//！   Eq.(7), P6 http://www.iapws.org/relguide/IF97-Rev.html
+//!   Eq.(7), P6 http://www.iapws.org/relguide/IF97-Rev.html
 
 use crate::algo::*;
 use crate::common::constant::*;

@@ -1,8 +1,8 @@
 //! Region 2 - Backward Equation(h,s)->p
-//！
-//！ <http://www.iapws.org/relguide/Supp-PHS12-2014.pdf>
 //!
-//！ Backward Equations p(h,s) for Region 2:  hs2p_reg2(h,s)
+//! <http://www.iapws.org/relguide/Supp-PHS12-2014.pdf>
+//!
+//! Backward Equations p(h,s) for Region 2:  hs2p_reg2(h,s)
 
 use crate::algo::*;
 use crate::common::constant::*;

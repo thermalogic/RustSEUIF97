@@ -1,6 +1,6 @@
 //! Region 2 - Backward Equation:(p.s)->T
 //! *  Page 25: 6.3.2 The Backward Equations T( p, s ) for Subregions 2a, 2b, and 2c.
-//！   ps2T_reg2(p,s)
+//!   ps2T_reg2(p,s)
 
 use crate::algo::*;
 use crate::common::constant::*;

@@ -10,7 +10,7 @@ use crate::r3::*;
 use crate::r4::*;
 use crate::r5::*;
 
-/// the paramters: <br/>
+/// the  parameters: <br/>
 ///   `o_id`: the property of id;<br/>
 ///   `region`: the region in the IAPWS-IF97,**optional**
 pub struct o_id_region_args {
@@ -149,7 +149,7 @@ where
 ///```
 ///  use seuif97::*;
 ///
-/// let h:f64= 0.115331273e+3;;
+/// let h:f64= 0.115331273e+3;
 /// let s:f64= 0.392294792;
 /// let p=hs(h,s,OP);
 /// // set the region
@@ -266,7 +266,7 @@ where
 /// let t:f64=300.0-273.15;
 /// let v:f64= 0.100215168e-2;
 /// let p=tv(t,v,OP);
-/// //set the regiion
+/// //set the region
 /// let s=tv(t,v,(OS,1));
 /// println!("t={p:.6} v={v:.6} p={p:.6} s={s:.6}");    
 /// ```

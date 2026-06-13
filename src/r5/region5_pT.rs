@@ -1,4 +1,4 @@
-//! Region 5 - Baisic Equation:(p,T)-->v, u,h,s,cp, cv,w
+//! Region 5 - Basic Equation:(p,T)-->v, u,h,s,cp, cv,w
 //!
 //!    <http://www.iapws.org/relguide/IF97-Rev.html>, Eq 32-34
 //!     P39 (p,T).   T,K   p, MPa        

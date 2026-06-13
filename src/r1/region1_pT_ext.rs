@@ -1,13 +1,13 @@
-//！Region1: The extended Properties:
+//!   Region1: The extended Properties:
 //!  * pT_ext_reg1(p: f64, T: f64, o_id: i32) -> f64
 //! # Properties(17):
 //!
 //!  *  ks: Isentropic exponent
 //!  *  ec: Isobaric cubic expansion coefficient  1/K
 //!  *  kt: Isothermal compressibility, [1/MPa]
-//!
+//!  *  k: Isentropic compressibility, [1/MPa]
 //!  *  z: Compressibility factor   -
-//！ *  e: Specific exergy    kJ/kg
+//!  *  e: Specific exergy    kJ/kg
 //!  *  f: Specific Helmholtz free energy kJ/kg
 //!  *  g: Specific Gibbs free energy  kJ/kg
 //!  *  joule : Joule-Thomson coefficient    K/MPa
@@ -16,8 +16,8 @@
 //!  *  dpdtcv:  Partial derivative (dP/dT)v  MPa/K
 //!  *  dvdtcp: Partial derivative (dV/dT)p  m³/(kg·K)
 //!  *  dvdpct: Partial derivative (dV/dP)T  m³/(kg·MPa)
-//！ *  batap ：Isothermal stress coefficient, kg/m³
-//！ *  fi: Fugacity coefficient
+//! *  batap ：Isothermal stress coefficient, kg/m³
+//! *  fi: Fugacity coefficient
 //!  *  fu: Fugacity, MPa
 //!  * alfap: relative pressure coefficient  1/K
 

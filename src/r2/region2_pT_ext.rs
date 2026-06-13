@@ -1,4 +1,4 @@
-//！Region2: The extended Properties:
+//!Region2: The extended Properties:
 //! pT_ext_reg2(p: f64, T: f64, o_id: i32) -> f64
 
 use crate::algo::*;

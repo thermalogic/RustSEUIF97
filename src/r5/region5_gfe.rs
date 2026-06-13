@@ -1,5 +1,5 @@
-//！ Region 5 Basic Equation： the dimensionless Gibbs free energy
-//！    <http://www.iapws.org/relguide/IF97-Rev.html>, Eq32-34
+//! Region 5 Basic Equation: the dimensionless Gibbs free energy
+//!    <http://www.iapws.org/relguide/IF97-Rev.html>, Eq32-34
 
 use crate::algo::*;
 use crate::common::constant::*;

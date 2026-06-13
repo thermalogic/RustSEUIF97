@@ -1,4 +1,4 @@
-//！IAPWS-IF97 Region1: The extended input pair
+//!IAPWS-IF97 Region1: The extended input pair
 //!    (p,v), (t,h),(t,s),(t,v))
 use crate::algo::root::*;
 use crate::common::constant::*;

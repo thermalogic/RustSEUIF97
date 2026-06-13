@@ -121,18 +121,18 @@ pub fn ts_reg4(t: f64, s: f64, o_id: i32) -> f64 {
     Tx_reg4(t + 273.15, x, o_id)
 }
 
-/// function for getting the steam quality,residuals: x(T,y)-x
-fn Ty2x_residuals(T: f64, x: f64, y: f64, y_id: i32) -> f64 {
+/// function for getting the steam quality,residual: x(T,y)-x
+fn Ty2x_residual(T: f64, x: f64, y: f64, y_id: i32) -> f64 {
     let sw = T2sat_water(T, y_id);
     let ss = T2sat_steam(T, y_id);
     (y - sw) / (ss - sw) - x
 }
 
-/// Bisection for the root : Ty2x_residuals(T,x, y, y_id)=0
+/// Bisection for the root : Ty2x_residual(T,x, y, y_id)=0
 fn bisection_reg4(x: f64, y: f64, y_id: i32, mut Tl: f64, mut Tr: f64, tol: f64, maxiter: i32) -> f64 {
     let mut T: f64 = 0.0;
-    let mut fl: f64 = Ty2x_residuals(Tl, x, y, y_id); // residual for left  bound
-    let mut fr: f64 = Ty2x_residuals(Tr, x, y, y_id); //resdiual for right bound
+    let mut fl: f64 = Ty2x_residual(Tl, x, y, y_id); // residual for left  bound
+    let mut fr: f64 = Ty2x_residual(Tr, x, y, y_id); //resdiual for right bound
     let mut f: f64 = 0.0;
     let mut numIters: i32 = 0;
 
@@ -141,7 +141,7 @@ fn bisection_reg4(x: f64, y: f64, y_id: i32, mut Tl: f64, mut Tr: f64, tol: f64,
         // get midpoint
         T = 0.5 * (Tl + Tr);
         // evaluate resdiual at midpoint
-        f = Ty2x_residuals(T, x, y, y_id);
+        f = Ty2x_residual(T, x, y, y_id);
         //  check for convergence
         if f.abs() < tol {
             break;

@@ -1,12 +1,12 @@
 //! Region 3 :the dimensionless Helmholtz free energy
 //!  *  tau :dimensionless temperature K
-//1  *  delta: dimensionless density kg/m3
+//!  *  delta: dimensionless density kg/m3
 
 use crate::algo::*;
 use crate::common::constant::*;
 use crate::r3::*;
 
-//  Initialize coefphicients and exponents for region 3(Table 30, page 30)
+//  Initialize coefficients and exponents for region 3(Table 30, page 30)
 pub const n1: f64 = 0.10658070028513e1;
 
 pub const IJn: [(i32, i32, f64); 39] = [

@@ -1,5 +1,5 @@
-//！ Backward Equation for Region 2: (P,H)->T
-//！ * 6.3.1 The Backward Equations T( p, h ) for Subregions 2a, 2b, and 2c.
+//! Backward Equation for Region 2: (P,H)->T
+//! * 6.3.1 The Backward Equations T( p, h ) for Subregions 2a, 2b, and 2c.
 //!     *  ph2T_reg2(p,h)
 use crate::algo::*;
 use crate::common::constant::*;

@@ -1,5 +1,5 @@
-//!  Region 1 - Backward Equation(h,s)->p
-//！ * http://www.iapws.org/relguide/Supp-PHS12-2014.pdf
+//! Region 1 - Backward Equation(h,s)->p
+//! * http://www.iapws.org/relguide/Supp-PHS12-2014.pdfS
 
 use crate::algo::*;
 use crate::common::constant::*;

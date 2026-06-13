@@ -1,7 +1,7 @@
 //! Region 3 - (p,T),(p,h), (p,s),(h,s); (p,v),(t,v),(t,h),(t,s)
-//！* Basic Equation of  IAPWS -IF 97 Region3 IAPWS-IF97, R7-97(2012)
-//！    * (T,d)-> p,h,u,s,cp,cv,w
-//！* Backward Equation for Region 3.
+//! Basic Equation of  IAPWS -IF 97 Region3 IAPWS-IF97, R7-97(2012)
+//!    * (T,d)-> p,h,u,s,cp,cv,w
+//! Backward Equation for Region 3.
 //!    * (p,h)-> T,v   (p,s)->T,v in IAPWS-IF97-S03rev
 //!    * (h,s)-> p  in IAPWS-IF97-S04rev, the region methods of Supp-phs3-2014.pdf in the `boundarie` module
 //!    * (p,T)-> d in IAPWS-IF97-S05rev

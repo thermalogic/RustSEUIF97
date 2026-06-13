@@ -1,4 +1,4 @@
-//！   IAPWS-IF97 Region2: The extended input pair
+//!   IAPWS-IF97 Region2: The extended input pair
 //!       (p,v)
 //!       (t,h),(t,s),(t,v)
 use crate::algo::root::*;
@@ -39,7 +39,7 @@ fn T2pmax_reg2(T: f64) -> f64 {
 }
 
 /// Region 2  (p,v)->T using the secant method and refine adjust
-///      p: pressure  Map
+///      p: pressure  MPa
 //       v: specific volume m^3/kg
 ///      T: temperature  K
 pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
@@ -99,7 +99,7 @@ pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
 
 /// Region 2  (T,v)->p using the secant method
 ///      T: temperature  K
-///      p: pressure  Map
+///      p: pressure  MPa
 //       v: specific volume m^3/kg
 pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
     let mut p1: f64 = P_MIN2;
@@ -171,7 +171,7 @@ pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
 /// Region 2  (T,h)->p using the secant method
 ///      T: temperature  K
 ///      h: specific enthalpy kJ/kg
-///      p: pressure  Map
+///      p: pressure  MPa
 pub fn Th2p_reg2(T: f64, h: f64) -> f64 {
     let pmax2: f64 = T2pmax_reg2(T);
     let mut p1: f64 = P_MIN2;
@@ -244,7 +244,7 @@ pub fn Th2p_reg2(T: f64, h: f64) -> f64 {
 /// Region 2  (T,s)->p using the secant method
 ///  * T: temperature  K
 ///  * s: specific entropy  kJ/(kg K)
-///  * p: pressure  Map
+///  * p: pressure  MPa
 pub fn Ts2p_reg2(T: f64, s: f64) -> f64 {
     let pmax2: f64 = T2pmax_reg2(T);
 

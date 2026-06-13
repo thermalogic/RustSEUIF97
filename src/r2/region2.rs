@@ -1,11 +1,11 @@
 //! Region 2 - (p,T),(p,h), (p,s),(h,s); (p,v),(t,v),(t,h),(t,s)
 //!
-//！IAPWS-IF97 and supp release
-//！  1. IF97 IAPWS, R7-97(2012) IF97-Rev.pdf: P12-32
-//！      * basic: (p,t)->v,u,s,h,cp,cv,w
-//！      * backward: (p,h)->T, (p,s)->T
-//！  2. IAPWS, SR2-01(2014)
-//！       * Supp-PHS12-2014.pdf  (h,s)->p
+//! IAPWS-IF97 and supp release
+//!  1. IF97 IAPWS, R7-97(2012) IF97-Rev.pdf: P12-32
+//!      * basic: (p,t)->v,u,s,h,cp,cv,w
+//!      * backward: (p,h)->T, (p,s)->T
+//!  2. IAPWS, SR2-01(2014)
+//!       * Supp-PHS12-2014.pdf  (h,s)->p
 
 use crate::common::constant::*;
 use crate::common::property_id::*;

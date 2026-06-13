@@ -21,14 +21,14 @@ pub fn Td2p_reg3(T: f64, d: f64) -> f64 {
     0.001 * d * RGAS_WATER * T * delta * phi_delta
 }
 
-/// speciphic internal energy in region 3 in kJ/kg
+/// specific internal energy in region 3 in kJ/kg
 pub fn Td2u_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
     RGAS_WATER * T * tau * phi_tau_reg3(delta, tau)
 }
 
-/// speciphic entropy in region 3 in kJ/(kg K)
+/// specific entropy in region 3 in kJ/(kg K)
 pub fn Td2s_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
@@ -36,7 +36,7 @@ pub fn Td2s_reg3(T: f64, d: f64) -> f64 {
     RGAS_WATER * (tau * poly_tau - poly_phi)
 }
 
-/// speciphic enthalpy in region 3 in kJ/kg
+/// specific enthalpy in region 3 in kJ/kg
 pub fn Td2h_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
@@ -44,7 +44,7 @@ pub fn Td2h_reg3(T: f64, d: f64) -> f64 {
     RGAS_WATER * T * (tau * poly_tau + delta * poly_delta)
 }
 
-/// speciphic isobaric heat capacity in region 3 in kJ/(kg K)
+/// specific isobaric heat capacity in region 3 in kJ/(kg K)
 pub fn Td2cp_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;
@@ -56,7 +56,7 @@ pub fn Td2cp_reg3(T: f64, d: f64) -> f64 {
     RGAS_WATER * (-tau * tau * phi_tautau + a / b)
 }
 
-/// speciphic isochoric heat capacity in region 3  in kJ/(kg K)
+/// specific isochoric heat capacity in region 3  in kJ/(kg K)
 pub fn Td2cv_reg3(T: f64, d: f64) -> f64 {
     let tau: f64 = TC_WATER / T;
     let delta: f64 = d / DC_WATER;

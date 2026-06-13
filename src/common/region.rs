@@ -1,6 +1,6 @@
 //! Check the Region
 //! * Basic input pairs :  (p,T) (p,h) (p,s) (h,s)  
-//! * Extented input pairs:: (p,v) (t,v) (t,h) (t,s)
+//! * Extended input pairs:: (p,v) (t,v) (t,h) (t,s)
 //! * lazy version: (p,h),(p,s),h,s)
 //!    ph - reg 1 +47%,reg2 +5% reg3 +22% reg5 same 
 //!    ps - reg1 +71%, reg2 +3%, reg3 +25%,reg 5 same
@@ -78,7 +78,7 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
         }
     };
 
-    // Bottom of the Saturaton lines、critical point  to fast check the region
+    // Bottom of the  Saturation lines、critical point  to fast check the region
     if T >= T_MIN && T < TC_WATER {
         let p_s: f64 = p_saturation(T);
         if (p - p_s).abs() < P_TOL {

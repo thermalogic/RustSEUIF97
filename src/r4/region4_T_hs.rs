@@ -1,8 +1,8 @@
 //! Region 4 - Backward Equation Tsat(h,s)
-//!！Page25,Page30 Eq 9: <http://www.iapws.org/relguide/Supp-phs3-2014.pdf>
-//！*  5.3 Backward Equation Tsat(h,s)
-//！   * s> 5.210 887 825
-//！   * Temperature range is T（273.15,623.15）
+//! Page25,Page30 Eq 9: <http://www.iapws.org/relguide/Supp-phs3-2014.pdf>
+//! *  5.3 Backward Equation Tsat(h,s)
+//!   * s> 5.210 887 825
+//!   * Temperature range is T(273.15,623.15)
 
 use crate::algo::*;
 use crate::common::boundaries::*;
@@ -142,7 +142,7 @@ pub fn hs2T_reg4(h: f64, s: f64) -> f64 {
             p_Low_Bound = p;
             p_High_Bound = (1.0 + (sss - s) / s) * p;
         }
-    } // end of while  ( abs(s - sss).abd() > 1.0e-6)
+    } // end of while  ( abs(s - sss).abs() > 1.0e-6)
 
     T_saturation(p)
 }
