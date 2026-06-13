@@ -97,7 +97,6 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
 
 /// Pmin -> Ps_623-> Pc-> 100MP ，3 range to check region
 ///  in each sub region use(hmin, hmax) to chack region
-///  TODO --- benching on
 pub fn ph_sub_region(p: f64, h: f64) -> i32 {
     if P_MIN <= p && p <= Ps_623
     // Ps_623
