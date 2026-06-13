@@ -32,57 +32,58 @@ pub const REGION_NONE: i32 = 10;
 /// T in up-order  to check region，
 ///    p in MPa ,  T in K, returns the region
 pub fn pT_sub_region(p: f64, T: f64) -> i32 {
-    if p < P_MIN || p > 100.0 {
+    if p < P_MIN || p > P_MAX {
         return INVALID_P;
     }
-    if T < 273.15 || T > 2273.15 {
+    if T < T_MIN || T > T_MAX {
         return INVALID_T;
     }
-    if T > 1073.15 && T <= 2273.15 && p > 50.0 {
+    if T > T_MIN5 && T <= T_MAX5 && p > P_MAX5 {
         return INVALID_P;
     }
 
-    if T >= 273.15 && T <= 623.15 {
-        let ps=p_saturation(T);
-        if p >= ps && p <= 100.0 {
+    if T >= T_MIN1 && T <= T_MIN3 {
+        let p_s=p_saturation(T);
+        if p >= p_s && p <= P_MAX1 {
             return 1;
         }
-        if p < ps && p > P_MIN {
+        if p < p_s && p > P_MIN {
             return 2;
         }
     };
 
-    // T（623.15,tc_water)
-    if T > 623.15 && T <= 863.15 {
+    // T（623.15,T_MAX3)
+    if T > T_MIN3 && T <= T_MAX3 {
         let p23=B23_T2p(T);
         if p >= P_MIN && p <= p23 {
             return 2;
         }
-        if p > p23 && p <= 100.0 {
+        if p > p23 && p <= P_MAX3 {
             return 3;
         }
     };
 
-    if T > 863.15 && T <= 1073.15 && p >= P_MIN && p <= 100.0 {
+    if T > T_MAX3 && T <=  T_MAX2 && p >= P_MIN && p <= P_MAX2 {
         return 2;
     }
 
-    if 1073.15 < T && T <= 2273.15 && P_MIN <= p && p <= 50.0 {
+    if  T_MIN5 < T && T <= T_MAX5 && P_MIN5 <= p && p <= P_MAX5 {
         return 5;
     }
    
-    // On Bottom : to check the Saturaton lines、critical point firstly
+    // Bottom :  check the Saturaton lines、critical point firstly
     // to fast check the region
-    //TODO: Saturation Pressure Tolerance
-    const psatTol: f64 = 1.0e-6;
+    //  tolerance
+    const p_tol: f64 = 1.0e-15;
+    const t_tol: f64 = 1.0e-5;
     if T >= 273.15 && T < TC_WATER {
-        let ps: f64 = p_saturation(T);
-        if (p - ps).abs() / ps < psatTol {
+        let p_s: f64 = p_saturation(T);
+        if (p - p_s).abs()  < p_tol {
             return 4;
         }
     }
     // the critical point in region 3
-    if T == TC_WATER && p == PC_WATER {
+    if (T -TC_WATER).abs()<t_tol && (p-PC_WATER).abs()<p_tol {
         return 3;
     }
 

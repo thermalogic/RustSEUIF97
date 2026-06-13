@@ -36,6 +36,9 @@ pub const ht_water: f64 = 0.611783; // the triple point specific enthalpy in kJ/
 pub const Ps_623: f64 = 16.5291642526045; // P_MIN3 Ps_623 = _PSat_T(623.15)  P Saturation at 623.15 K, boundary region 1-3
 
 pub const P_MIN: f64 = 0.000611212677444; // P_MIN = _PSat_T(273.15)  Mininum pressure
+pub const P_MAX: f64 = 100.00;
+pub const T_MAX: f64 = 2273.15;
+pub const T_MIN: f64 = 273.15;
 pub const V_MAX: f64 = 1.0E+10;
 pub const V_MIN: f64 = 0.00095;
 pub const H_MAX: f64 = 7376.99;
