@@ -46,6 +46,8 @@ fn main() {
      println!(" s2ab={s2ab:.8}"); 
      let hmin: f64 = pt(P_MIN, 273.15-273.15,(OH,2)); 
      println!(" hmin={hmin:.8}");  
+     let hmax=pt(P_MIN, 1073.15-273.13,(OH,2));
+     println!(" hmax={hmax:.8}");  
 
     let h4l: f64 = pt(P_MIN, 273.15-273.15,(OH,1));
     let s4l: f64 = pt(P_MIN, 273.15-273.15,(OS,1));
