@@ -2,7 +2,9 @@
 //! * Basic input pairs :  (p,T) (p,h) (p,s) (h,s)  
 //! * Extented input pairs:: (p,v) (t,v) (t,h) (t,s)
 //! * lazy version: (p,h),(p,s),h,s)
-//!
+//!    ph - reg 1 +47%,reg2 +5% reg3 +22% reg5 same 
+//!    ps - reg1 +71%, reg2 +3%, reg3 +25%,reg 5 same
+//!    hs - reg +96%, reg 2 same ,reg 3 69%, reg5 same 
 
 use crate::common::boundaries::*;
 use crate::common::constant::*;
@@ -100,67 +102,68 @@ pub fn ph_sub_region(p: f64, h: f64) -> i32 {
     // Ps_623
     {
         let T_sat: f64 = T_saturation(p);
-        let h14: f64 = pT2h_reg1(p, T_sat);
-        if hmin <= h && h <= h14 {
+        let h_sw: f64 = pT2h_reg1(p, T_sat);
+        if hmin <= h && h <= h_sw {
             return 1;
         };
 
-        let h24: f64 = pT2h_reg2(p, T_sat);
-        if h14 < h && h < h24 {
+        let h_ss: f64 = pT2h_reg2(p, T_sat);
+        if h_sw < h && h < h_ss {
             return 4;
         };
-        let h25: f64 = pT2h_reg2(p, 1073.15);
-        if h24 <= h && h <= h25 {
+        let h_25: f64 = pT2h_reg2(p, 1073.15);
+        if h_ss <= h && h <= h_25 {
             return 2;
         };
         let hmax: f64 = pT2h_reg5(p, 2273.15);
-        if h25 < h && h <= hmax {
+        if h_25 < h && h <= hmax {
             return 5;
         };
     };
 
     if Ps_623 < p && p < PC_WATER {
-        let h13: f64 = pT2h_reg1(p, 623.15);
-        if hmin <= h && h <= h13 {
+        let h_13: f64 = pT2h_reg1(p, 623.15);
+        if hmin <= h && h <= h_13 {
             return 1;
         }
-        let h32: f64 = pT2h_reg2(p, B23_p2T(p)); //boundaries
-        if h13 < h && h < h32 {
-            let p34: f64 = h2p_sat_reg3(h); //boundaries
-            if p < p34 {
+        let h_32: f64 = pT2h_reg2(p, B23_p2T(p)); //boundaries
+        if h_13 < h && h < h_32 {
+            let p_34: f64 = h2p_sat_reg3(h); //boundaries
+            if p < p_34 {
                 return 4;
-            } else {
+            } 
+            else {
                 return 3;
             }
         };
-        let h25: f64 = pT2h_reg2(p, 1073.15);
-        if h32 <= h && h <= h25 {
+        let h_25: f64 = pT2h_reg2(p, 1073.15);
+        if h_32 <= h && h <= h_25 {
             return 2;
         }
         let hmax: f64 = pT2h_reg5(p, 2273.15);
-        if h25 < h && h <= hmax {
+        if h_25 < h && h <= hmax {
             return 5;
         }
     };
 
     if PC_WATER <= p && p <= 100.0 {
-        let h13: f64 = pT2h_reg1(p, 623.15);
-        if hmin <= h && h <= h13 {
+        let h_13: f64 = pT2h_reg1(p, 623.15);
+        if hmin <= h && h <= h_13 {
             return 1;
         }
 
-        let h32: f64 = pT2h_reg2(p, B23_p2T(p));
-        if h13 < h && h < h32 {
+        let h_32: f64 = pT2h_reg2(p, B23_p2T(p));
+        if h_13 < h && h < h_32 {
             return 3;
         }
 
-        let h25: f64 = pT2h_reg2(p, 1073.15);
-        if h32 <= h && h <= h25 {
+        let h_25: f64 = pT2h_reg2(p, 1073.15);
+        if h_32 <= h && h <= h_25 {
             return 2;
         }
 
         let hmax: f64 = pT2h_reg5(p, 2273.15);
-        if (p <= 50.0) && (h25 <= h && h <= hmax) {
+        if (p <= 50.0) && (h_25 <= h && h <= hmax) {
             return 5;
         }
     };

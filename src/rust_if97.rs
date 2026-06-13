@@ -2,6 +2,8 @@
 //!  
 use crate::algo::*;
 use crate::common::*;
+use crate::common::*;
+
 use crate::r1::*;
 use crate::r2::*;
 use crate::r3::*;
