@@ -1,6 +1,6 @@
 //! Check the Region
 //! * Basic input pairs :  (p,T) (p,h) (p,s) (h,s)  
-//! * Extented input pairs:: (p,v) (t,v) (t,h)
+//! * Extented input pairs:: (p,v) (t,v) (t,h) (t,s)
 
 use crate::common::boundaries::*;
 use crate::common::constant::*;
@@ -518,8 +518,9 @@ pub fn tv_sub_region(t: f64, v: f64) -> i32 {
     let mut p1: f64 = 0.0;
 
     if (T >= T_MIN1) && (T <= T_MAX1) {
-        vsw = T2sat_water(T, OV);
-        vss = T2sat_steam(T, OV);
+        p1 = p_saturation(T);
+        vsw = pT2v_reg1(p1, T);
+        vss = pT2v_reg2(p1, T);
     } else if (T > T_MIN3) && (T <= T_MAX3) {
         p1 = B23_T2p(T);
         vB23 = pT2v_reg2(p1, T); //
@@ -586,8 +587,9 @@ pub fn th_sub_region(t: f64, h: f64) -> i32 {
     let mut p1: f64 = 0.0;
     let mut hB23: f64 = 0.0;
     if (T >= T_MIN1) && (T <= T_MAX1) {
-        hsw = T2sat_water(T, OH);
-        hss = T2sat_steam(T, OH);
+        p1 = p_saturation(T);
+        hsw = pT2h_reg1(p1, T);
+        hss = pT2h_reg2(p1, T);
     } else if (T > T_MIN3) && (T <= T_MAX3) {
         p1 = B23_T2p(T);
         hB23 = pT2h_reg2(p1, T);
