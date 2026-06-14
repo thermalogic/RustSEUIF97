@@ -108,8 +108,6 @@ fn main() {
 
 Pre-compiled dynamic link libraries for Windows, Linux and macOS are available in [GitHub Releases](https://github.com/thermalogic/RustSEUIF97/releases).
 
-> **Note:** GitHub Releases builds produce library names with platform-specific suffixes. Example: `seuif97-windows-x86_64-cdecl.dll`. Linux and macOS follow the same naming pattern. Rename them to `seuif97.dll` / `libseuif97.so` / `libseuif97.dylib` before use to match the local build naming convention.
-
 Interfaces and examples are provided in the [./demo\_using\_lib/](./demo_using_lib/) directory, supporting a wide range of languages and environments.
 
 - C/C++, Python, C#, Java, Excel VBA, Rust, Fortran, Golang, JavaScript/TypeScript
