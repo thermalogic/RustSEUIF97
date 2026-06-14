@@ -13,8 +13,8 @@ OS = 5
 p = 16.0
 t = 535.1
 
-# Universal Functions (with o_id parameter))
+# universal functions with o_id parameter
 h = pt(p, t, OH)
-# Direct Property Functions
+# direct property functions
 s = pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")

@@ -12,11 +12,11 @@ use seuif97::*;
 fn main() {
     let mut p: f64 = 3.0;
     let mut t: f64 = 300.0 - 273.15;
-    // Universal Functions (with o_id parameter)
+    // universal function with o_id parameter
     let mut h = pt(p, t, OH);
-    //  Universal Functions (with o_id parameter and region parameter)
+    // the funnction with o_id and region for faster calculation
     let s = pt(p, t, (OS, 1));
-    // Direct Property Functions
+    // direct property function
     let mut v = pt2v(p, t);
     println!("pt: p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");   
     

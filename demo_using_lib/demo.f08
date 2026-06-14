@@ -29,9 +29,9 @@ program demo
    real(c_double) :: p,t,h,s
    p = 16.13;
    t = 535.0;
-   ! Universal Functions (with o_id parameter))
+   ! universal property functions with o_id parameter
    h = pt(p, t, 4);
-   ! Direct Property Functions
+   ! direct property functions
    s = pt2s(p, t);
    write (*,'(A,F10.2,F10.2,F10.2,F10.4)')  "(p,t) ->h,s",p,t,h,s
 end program demo

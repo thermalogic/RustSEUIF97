@@ -20,9 +20,9 @@ int main(void)
     double p = 16.0;
     double t = 530.0;
     double h, s;
-    // Universal Functions (with o_id parameter))
+    // universal functions with o_id parameter
     h = pt(p, t, OH);
-    // Direct Property Functions
+    // direct property functions
     s = pt2s(p, t);
     printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
     return EXIT_SUCCESS;
