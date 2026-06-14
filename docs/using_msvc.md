@@ -15,9 +15,3 @@ cd build
 cmake ..
 cmake --build . --config release
 ``
-
-* make under Linux
-
-```bash
-make 
-```
