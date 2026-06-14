@@ -86,16 +86,16 @@ use seuif97::*;
 fn main() {    
     let p: f64 = 3.0;
     let t: f64 = 300.0-273.15;
-    // universal property functions with o_id parameter only
+    // universal property function with o_id only
     let h = pt(p,t,OH);   
-    // universal property functions with explicit region for faster calculation
+    // the funnction with o_id and region for faster calculation
     let s = pt(p,t,(OS,1)); 
-    // direct property functions
+    // direct property function
     let v = pt2v(p,t);
 
     println!("p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");   
 
-    // thermodynamic process functions
+    // thermodynamic process function
     let pi: f64 = 16.0;
     let ti: f64 = 535.1;
     let pe: f64 = 5.0;
@@ -127,9 +127,9 @@ int main(void)
 {
     double p = 16.0;
     double t = 530.0;
-    // universal property functions with o_id parameter only
+    // universal property function with o_id only
     double h = pt(p, t, OH);
-    // direct property functions
+    // direct property function
     double s = pt2s(p, t);
     printf("p,t %f,%f h= %f s= %f\n", p, t, h, s);
     return EXIT_SUCCESS;
@@ -157,9 +157,9 @@ OH=4
 
 p=16.0
 t=535.1
-# universal property functions with o_id parameter only
+# universal property function with o_id only
 h=pt(p,t,OH)
-# direct property functions
+# direct property function
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
@@ -190,9 +190,9 @@ await init();
 
 const p = 16.0;  // MPa
 const t = 535.1; // °C
-// universal property functions (with o_id parameter only)
+// universal property function with o_id only
 const h = pt(p, t, 4);     // kJ/kg
-// direct property functions
+// direct property function
 const s = pt2s(p, t);      // kJ/(kg·K)
 
 console.log('Properties at p = 16.0 MPa, t = 535.1 °C:');

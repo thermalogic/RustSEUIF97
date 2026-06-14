@@ -79,9 +79,9 @@ OH=4
 
 p=16.0
 t=535.1
-# universal property functions with o_id parameter
+# universal property function with o_id
 h=pt(p,t,OH)
-# direct property functions
+# direct property function
 s=pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ```
