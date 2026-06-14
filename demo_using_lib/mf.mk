@@ -1,10 +1,10 @@
 ifeq ($(OS),Windows_NT)
-	LIBFLAGS= -L../../target/release/ -lseuif97  
-	EXEDIR=../../target/release/
+	LIBFLAGS= -L../target/release/ -lseuif97  
+	EXEDIR=../target/release/
 else
 	UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
-        LIBFLAGS= -L../../target/release -Wl,-rpath=../../target/release  -lseuif97 -lm
+        LIBFLAGS= -L../target/release -Wl,-rpath=../target/release  -lseuif97 -lm
 		EXEDIR=./
     endif
 endif

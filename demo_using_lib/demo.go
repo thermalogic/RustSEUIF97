@@ -1,4 +1,5 @@
 // The Go example to call the shared library: cdel
+// make -f mgo.mk
 package main
 /*
 double pt(double p, double t, int o_id);

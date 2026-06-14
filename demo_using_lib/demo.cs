@@ -1,5 +1,11 @@
 /*
 The C# example to call the shared library on Windows x64 
+  
+  winget install Microsoft.DotNet.SDK.8
+
+  Add the path of C# compiler,for example
+  
+  *  C:\Windows\Microsoft.NET\Framework64\v4.0.30319\ to the system environment variables #Path# 
 
   csc -out:demo.exe demo.cs /platform:"x64"
 

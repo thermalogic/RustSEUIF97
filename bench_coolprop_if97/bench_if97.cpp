@@ -1,10 +1,11 @@
 /*
- * Benchmark: C Shared Library(cdel) SEUIF97 in Rust VS CoolProp-IF97
- */
+   Benchmark: C Shared Library(cdel) SEUIF97 in Rust VS CoolProp-IF97
+      cargo build -r --features cdecl
+      make  
+*/
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <stdint.h>
 #include <chrono>
 #include "IF97.h"

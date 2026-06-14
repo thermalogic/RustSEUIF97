@@ -1,13 +1,13 @@
 
 /*
    The C example to call the shared library: cdel
+    cargo build -r --features cdecl
     make  
-
 */
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
+
 
 #define OH 4
 

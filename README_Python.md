@@ -2,20 +2,20 @@
 
  ![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97)
 
-**SEUIF97 2**, built on Rust, is a major upgrade over [SEUIF97 1 (built on C)](https://pypi.org/project/seuif97/1.2.0/), delivering significant improvements in performance, functionality and ecosystem support.
+**SEUIF97 2**, built on Rust, is a major upgrade over [SEUIF97 1 built on C](https://pypi.org/project/seuif97/1.2.0/), delivering significant improvements in performance, functionality and ecosystem support.
+
+SEUIF97 achieves a **5-20x** speedup over naive implementations that use the Rust standard library's `powi()` in `for` loops for the basic equations of Regions 1, 2, and 3.
 
 It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
 
-Through the high-speed package, IAPWS-IF97 calculations achieve a **5-20x speedup** compared to direct implementations using the Rust standard library's `powi()` within loops for the basic equations of Regions 1, 2 and 3.
-
-This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)), plus **thermodynamic process functions** for isentropic enthalpy drop and efficiency calculations.
+This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties** (see [Properties](#properties)), and **thermodynamic process functions** (see [Thermodynamic Process Functions](#thermodynamic-process-functions)).
 
 ## What's New in SEUIF97 2 
 
 | Feature                               | 1.*            | 2.*                        |
 | ------------------------------------- | -------------- | -------------------------- |
 | **Implementation**                    | C              | **Rust**                   |
-| **Calculation Speed**                 | Baseline       | **~2x speedup**            |
+| **Calculation Speed**                 | Baseline       | **~2× speedup**            |
 | **Supported Properties**              | 30 properties  | **36 properties** (+6 new) |
 | **Supported OS**                      | Windows, Linux | **Windows, Linux, macOS**  |
 
@@ -23,17 +23,13 @@ This package supports **12 distinct input state pairs** for calculating **36 the
 
 The package provides two types of APIs.
 
- 1.  Universal Functions (with o_id parameter)
-     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` specifies the output property.
+### Universal Property Functions 
 
- 2. Direct Property Functions
-    -  These functions directly calculate a specific property `(p,t,h,s,v,x)` without requiring the property ID parameter. For example: `pt2h(p,t)`.
-
-### Universal Functions (with o_id parameter) 
+Each function accepts an input pair, an output property ID ([o_id](#properties)).
 
 The following 12 input pairs are implemented:
 
-```python
+```bash
 pt(p,t,o_id) ph(p,h,o_id) ps(p,s,o_id) pv(p,v,o_id)
 
 th(t,h,o_id) ts(t,s,o_id) tv(t,v,o_id)
@@ -43,13 +39,13 @@ hs(h,s,o_id)
 px(p,x,o_id) tx(p,x,o_id) hx(h,x,o_id) sx(s,x,o_id)
 ```
 
-> **Note:** Only linearly related thermodynamic properties are calculable in the wet steam region.
+**Note:** Only linearly related thermodynamic properties are calculable in the wet steam region.
 
 ### Direct Property Functions
 
 The following 12 input pairs are implemented:
 
-```python
+```bash
 pt2h(p, t)  pt2s(p, t)  pt2v(p, t)  pt2x(p, t)
 ph2t(p, h)  ph2s(p, h)  ph2v(p, h)  ph2x(p, h)   
 ps2t(p, s)  ps2h(p, s)  ps2v(p, s)  ps2x(p, s)  
@@ -71,24 +67,19 @@ sx2p(s, x)  sx2t(s, x)  sx2h(s, x)  sx2v(s, x)
 
 The following thermodynamic process functions are also available:
 
-```python
-ishd(pi, ti, pe)        # Isentropic enthalpy drop (kJ/kg)
-ief(pi, ti, pe, te)     # Isentropic efficiency (%)
-```
-
-- `ishd`: Calculates the isentropic enthalpy drop for steam expansion from inlet state `(pi, ti)` to outlet pressure `pe`.
-- `ief`: Calculates the isentropic efficiency (%) for superheated steam expansion from inlet state `(pi, ti)` to outlet state `(pe, te)`.
+- `ishd(pi, ti, pe)`: isentropic enthalpy drop for steam expansion (kJ/kg)
+- `ief(pi, ti, pe, te)`: isentropic efficiency for superheated steam expansion (%)
 
 ## Usage 
 
 ```python
-from seuif97 import *
+from seuif97 import  pt, pt2s
 
 OH=4
 
 p=16.0
 t=535.1
-# universal functions (with o_id parameter)
+# universal property functions with o_id parameter
 h=pt(p,t,OH)
 # direct property functions
 s=pt2s(p,t)
@@ -109,41 +100,42 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## Properties
 
-| Property                              |    Unit     | Symbol | o_id  | o_id(i32)|
-| ------------------------------------- | :---------: |:------:|------:|:--------:|
-| Pressure                              |     MPa     |      p |   OP  |       0  |
-| Temperature                           |     °C      |      t |   OT  |       1  |
-| Density                               |   kg/m³     |      ρ |   OD  |       2  |
-| Specific Volume                       |   m³/kg     |      v |   OV  |       3  |
-| Specific enthalpy                     |    kJ/kg    |      h |   OH  |       4  |
-| Specific entropy                      |  kJ/(kg·K)  |      s |   OS  |       5  |
-| Specific exergy                       |    kJ/kg    |      e |   OE  |       6  |
-| Specific internal energy              |    kJ/kg    |      u |   OU  |       7  |
-| Specific isobaric heat capacity       |  kJ/(kg·K)  |     cp |  OCP  |       8  |
-| Specific isochoric heat capacity      |  kJ/(kg·K)  |     cv |  OCV  |       9  |
-| Speed of sound                        |     m/s     |      w |   OW  |       10 |
-| Isentropic exponent                   |             |     k  |  OKS  |       11 |
-| Specific Helmholtz free energy        |    kJ/kg    |     f  |   OF  |       12 |
-| Specific Gibbs free energy            |    kJ/kg    |     g  |   OG  |       13 |
-| Compressibility factor                |             |     z  |   OZ  |       14 |
-| Steam quality                         |             |     x  |   OX  |       15 |
-| Region                                |             |     r  |   OR  |       16 |
-| Isobaric cubic expansion coefficient  |     1/K     |   ɑv   |  OEC  |       17 |
-| Isothermal compressibility            |    1/MPa    |    kT  |  OKT  |       18 |
-| Partial derivative (∂V/∂T)p           |  m³/(kg·K)  |(∂V/∂T)p| ODVDT |       19 |
-| Partial derivative (∂V/∂p)T           | m³/(kg·MPa) |(∂v/∂p)T| ODVDP |       20 |
-| Partial derivative (∂P/∂T)v           |    MPa/K    |(∂p/∂T)v| ODPDT |       21 |
-| Isothermal throttling coefficient     | kJ/(kg·MPa) |   δt   | OIJTC |       22 |
-| Joule-Thomson coefficient             |    K/MPa    |    μ   | OJTC  |       23 |
-| Dynamic viscosity                     |   Pa·s      |    η   |  ODV  |       24 |
-| Kinematic viscosity                   |    m²/s     |    ν   |  OKV  |       25 |
-| Thermal conductivity                  |   W/(m.K)   |    λ   |  OTC  |       26 |
-| Thermal diffusivity                   |    m²/s     |    a   |  OTD  |       27 |
-| Prandtl number                        |             |    Pr  |  OPR  |       28 |
-| Surface tension                       |    N/m      |    σ   |  OST  |       29 |
-| Static Dielectric Constant            |             |    ε   | OSDC  |       30 |
-| Isochoric pressure coefficient        |    1/K      |    β   | OPC   |       31 |
-| Isothermal stress coefficient         |   kg/m³     |    βp  | OBETAP|       32 |
-| Fugacity coefficient                  |             |    fi  |   OFI |       33 |
-| Fugacity                              |     MPa     |     f* |   OFU |       34 |
-| Relative pressure coefficient         |     1/K     |    αp  | OAFLAP|       35 |
+| Property                             |     Unit    |  Symbol  |  o\_id | o\_id(i32) |
+| ------------------------------------ | :---------: | :------: | -----: | :--------: |
+| Pressure                             |     MPa     |     p    |     OP |      0     |
+| Temperature                          |      °C     |     t    |     OT |      1     |
+| Density                              |    kg/m³    |     ρ    |     OD |      2     |
+| Specific Volume                      |    m³/kg    |     v    |     OV |      3     |
+| Specific enthalpy                    |    kJ/kg    |     h    |     OH |      4     |
+| Specific entropy                     |  kJ/(kg·K)  |     s    |     OS |      5     |
+| Specific exergy                      |    kJ/kg    |     e    |     OE |      6     |
+| Specific internal energy             |    kJ/kg    |     u    |     OU |      7     |
+| Specific isobaric heat capacity      |  kJ/(kg·K)  |    cp    |    OCP |      8     |
+| Specific isochoric heat capacity     |  kJ/(kg·K)  |    cv    |    OCV |      9     |
+| Speed of sound                       |     m/s     |     w    |     OW |     10     |
+| Isentropic exponent                  |    —        |     k    |    OKS |     11     |
+| Specific Helmholtz free energy       |    kJ/kg    |     f    |     OF |     12     |
+| Specific Gibbs free energy           |    kJ/kg    |     g    |     OG |     13     |
+| Compressibility factor               |    —        |     z    |     OZ |     14     |
+| Steam quality                        |    —        |     x    |     OX |     15     |
+| Region                               |    —        |     r    |     OR |     16     |
+| Isobaric cubic expansion coefficient |     1/K     |    ɑv    |    OEC |     17     |
+| Isothermal compressibility           |    1/MPa    |    kT    |    OKT |     18     |
+| Partial derivative (∂v/∂T)p          |  m³/(kg·K)  | (∂v/∂T)p |  ODVDT |     19     |
+| Partial derivative (∂v/∂p)T          | m³/(kg·MPa) | (∂v/∂p)T |  ODVDP |     20     |
+| Partial derivative (∂p/∂T)v          |    MPa/K    | (∂p/∂T)v |  ODPDT |     21     |
+| Isothermal throttling coefficient    | kJ/(kg·MPa) |    δt    |  OIJTC |     22     |
+| Joule-Thomson coefficient            |    K/MPa    |     μ    |   OJTC |     23     |
+| Dynamic viscosity                    |     Pa·s    |     η    |    ODV |     24     |
+| Kinematic viscosity                  |     m²/s    |     ν    |    OKV |     25     |
+| Thermal conductivity                 |   W/(m.K)   |     λ    |    OTC |     26     |
+| Thermal diffusivity                  |     m²/s    |     a    |    OTD |     27     |
+| Prandtl number                       |    —        |    Pr    |    OPR |     28     |
+| Surface tension                      |     N/m     |     σ    |    OST |     29     |
+| Static Dielectric Constant           |    —        |     ε    |   OSDC |     30     |
+| Isochoric pressure coefficient       |     1/K     |     β    |    OPC |     31     |
+| Isothermal stress coefficient        |    kg/m³    |    βp    | OBETAP |     32     |
+| Fugacity coefficient                 |    —        |    φ    |    OFI |     33     |
+| Fugacity                             |     MPa     |    f    |    OFU |     34     |
+| Relative pressure coefficient        |     1/K     |    αp    | OAFLAP |     35     |
+

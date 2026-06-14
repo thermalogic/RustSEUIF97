@@ -1,9 +1,21 @@
-# SEUIF97 VS CoolProp 97
+# Using MSVC to build the lib
 
-## Building the lib with cdecl
+##  Building 
 
 ```bash
 cargo build -r --features cdecl
+```
+
+- stdcall: Windows API functions(MSVC 64bit)
+
+```bash
+cargo build -r --features stdcall
+```
+
+- stdcall: Windows API functions(MSVC 32bit)
+
+```bash
+cargo build -r  --target=i686-pc-windows-msvc --features stdcall
 ```
 
 ## Building test

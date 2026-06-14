@@ -1,7 +1,7 @@
 
 ifeq ($(OS),Windows_NT)
-	LIBFLAGS= -L../target/x86_64-pc-windows-gnu/release/ -lseuif97  
-	EXEDIR=../target/x86_64-pc-windows-gnu/release/
+	LIBFLAGS= -L../target/release/ -lseuif97  
+	EXEDIR=../target/release/
 else
 	UNAME_S := $(shell uname -s)
     ifeq ($(UNAME_S),Linux)
