@@ -55,3 +55,20 @@ fn test_region5_pt() {
         assert_approx_eq!(r5_pT_data[i][7], pt(p, t, OW), 1.0e-6f64);
     }
 }
+
+
+#[test]
+fn  test_pt_critical()
+{
+  // critical point
+  const tc_water:f64 = 647.096 - 273.15; // critical temperature in K
+  const pc_water:f64 = 22.064;           // critical p in MPa
+  const dc_water:f64 = 322.0;            // critical density in kg/m**3
+  const sc_water:f64 = 4.41202148223476; // Critical entropy
+  const hc_water:f64 = 2.087546845e+03;  // Critical enthalpy h
+  assert_approx_eq!(dc_water, pt(pc_water, tc_water, OD));
+  assert_approx_eq!(sc_water, pt(pc_water, tc_water, OS));
+  assert_approx_eq!(hc_water, pt(pc_water, tc_water, OH));
+  assert_approx_eq!(tc_water, pt(pc_water, tc_water, OT));
+  assert_approx_eq!(pc_water, pt(pc_water, tc_water, OP));
+}
