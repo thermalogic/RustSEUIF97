@@ -4,6 +4,7 @@
 /dist
 /build
 /npm/pkg/
+/demo_using_lib/demo_wasm/pkg
 /npm/package-lock.json
 *.exe
 *.pdb

@@ -83,8 +83,7 @@ cargo build --release --features wasm --target wasm32-unknown-unknown
 wasm-bindgen ../../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target web
 
 # 3. Generate JS bindings for Node.js
-wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm \
-    --out-dir pkg --target nodejs
+wasm-bindgen ../../target/wasm32-unknown-unknown/release/seuif97.wasm   --out-dir pkg --target nodejs
 ```
 
 ## 4. Using in Web Browsers
