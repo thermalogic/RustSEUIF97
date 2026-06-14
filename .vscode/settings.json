@@ -1,3 +1,4 @@
 {
-    "cmake.sourceDirectory": "C:/Working_Projects/RustSEUIF97/bench_coolprop_if97"
+    "cmake.sourceDirectory": "C:/Working_Projects/RustSEUIF97/bench_coolprop_if97",
+    "liveServer.settings.port": 5501
 }
