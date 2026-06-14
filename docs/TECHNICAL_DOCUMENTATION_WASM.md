@@ -56,6 +56,10 @@ cargo install wasm-pack
 cargo install wasm-bindgen-cli
 ```
 
+```bash
+ rustup target add wasm32-unknown-unknown  
+```
+
 ### 3.2 Build Commands
 
 ```bash
@@ -76,8 +80,7 @@ npm run prepack
 cargo build --release --features wasm --target wasm32-unknown-unknown
 
 # 2. Generate JS bindings for web
-wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm \
-    --out-dir pkg --target web
+wasm-bindgen ../../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target web
 
 # 3. Generate JS bindings for Node.js
 wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm \
