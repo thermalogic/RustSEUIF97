@@ -5,12 +5,19 @@ pub const INVALID_VALUE: i32 = -9999;
 pub const INVALID_OUTID: i32 = -1000;
 pub const INVALID_P: i32 = -2100;
 pub const INVALID_T: i32 = -2101;
-pub const INVALID_S: i32 = -2102;
-pub const INVALID_H: i32 = -2103;
+pub const INVALID_V: i32 = -2102;
+pub const INVALID_S: i32 = -2103;
+pub const INVALID_H: i32 = -2104;
 pub const INVALID_PT: i32 = -2201;
-pub const INVALID_HS: i32 = -2202;
+pub const INVALID_PH: i32 = -2202;
+pub const INVALID_PS: i32 = -2203;
+pub const INVALID_PV: i32 = -2204;
+pub const INVALID_HS: i32 = -2205;
+pub const INVALID_TH: i32 = -2206;
+pub const INVALID_TS: i32 = -2207;
+pub const INVALID_TV: i32 = -2208;
 
-///  FLOAT_ERROR for float value with `==`
+///  FLOAT_TOL for float value comparison
 pub const FLOAT_ERROR: f64 = 1.0e-6;
 pub const P_TOL: f64 = 1.0e-15;
 pub const T_TOL: f64 = 1.0e-5;
@@ -43,12 +50,12 @@ pub const P_MIN: f64 = 0.000611212677444; // P_MIN = _PSat_T(273.15)  Mininum pr
 pub const P_MAX: f64 = 100.00;
 pub const T_MAX: f64 = 2273.15;
 pub const T_MIN: f64 = 273.15;
-pub const V_MAX: f64 = 1.0E+10;
-pub const V_MIN: f64 = 0.00095;
+pub const V_MAX: f64 = 1.71645345e3; // P=6.112127e-4 MPa, T=2273.15
+pub const V_MIN: f64 = 0.00095;      //  P=6.112127e-4 MPa, T=273.15 K v=1.00020698e-3
 pub const H_MAX: f64 = 7376.99;
-pub const H_MIN: f64 = -0.1;
-pub const S_MAX: f64 = 18.992; // 1.0E-8, 2273.15
-pub const S_MIN: f64 = -0.008583; // 100,273.15
+pub const H_MIN: f64 = 0.0;
+pub const S_MAX: f64 = 11.92105507;//18.992; // 1.0E-8, 2273.15
+pub const S_MIN: f64 = 0.0;//-0.008583; // 100,273.15
 
 /// Region1  boundary constants
 pub const P01: f64 = 16.53;
