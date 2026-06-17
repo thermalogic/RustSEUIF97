@@ -1,6 +1,6 @@
 # SEUIF97
 
-![docs.rs](https://img.shields.io/docsrs/seuif97)  [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml) ![Crates.io Version](https://img.shields.io/crates/v/seuif97) ![Crates.io Total Downloads](https://img.shields.io/crates/d/seuif97) ![Crates.io Downloads (recent)](https://img.shields.io/crates/dr/seuif97)
+![docs.rs](https://img.shields.io/docsrs/seuif97) [![Build test](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml/badge.svg)](https://github.com/thermalogic/RustSEUIF97/actions/workflows/rust.yml) 
 
 This is the Rust implementation of the high-speed IAPWS-IF97 package **SEUIF97** with **C, Python and WASM** bindings. It is designed for computation-intensive tasks, such as simulating non-stationary processes, on-line process monitoring, and optimization.
 
@@ -21,16 +21,19 @@ The Rust version of SEUIF97 is a major upgrade over [the original C implementati
 
 For detailed comparison and key improvements, see [Rust vs C](./docs/RUST_VS_C.md).
 
-## Acceleration Methods
+## Acceleration Algorithms
 
-- **Profiling-guided loop tiling** partitions polynomial summation into cache-friendly tiles with empirically determined boundaries, enabling more effective SIMD vectorization.
-- **Shared-power scaling** exploits the mathematical relationship between Gibbs/Helmholtz free energy polynomials and their partial derivatives to compute them simultaneously in a single pass, eliminating redundant power calculations.
+The acceleration algorithms are detailed in paper: 
+[Fast IAPWS-IF97 Evaluation: Profiling-Guided Loop Tiling and Shared-Power Scaling](https://doi.org/10.20944/preprints202606.0793.v1)
 
-For more details on these algorithms, see: [code snippets of the acceleration methods](./docs/code_snippets_acceleration_method.md).
+- **Profiling-guided loop tiling**: Partitions polynomial summation into cache-efficient tiles with empirically optimized boundaries to boost SIMD vectorization efficiency.
+- **Shared-power scaling**: Leverages the mathematical correlation between Gibbs and Helmholtz free energy polynomials alongside their partial derivatives to evaluate all quantities in a single pass, removing redundant power-term computations.
+
+For code examples, see: [Code Snippets for Acceleration Methods](./docs/code_snippets_acceleration_method.md)
 
 ## Performance Comparison with CoolProp IF97
 
-SEUIF97 achieves **3.4 - 7.6x speedups** over [CoolProp IF97](https://github.com/CoolProp/IF97). See [Performance Comparison](./docs/seuif97_coolprop_if97.md) for detailed benchmark results.
+SEUIF97 achieves **3.4-7.6x speedups** over [CoolProp IF97](https://github.com/CoolProp/IF97). See [Performance Comparison](./docs/seuif97_coolprop_if97.md) for detailed benchmark results.
 
 ## Property Calculation Functions
 
@@ -142,8 +145,6 @@ int main(void)
 
 **Install from PyPI**
 
-- <https://pypi.org/project/seuif97/>
-
 ```bash
 pip install seuif97
 ```
@@ -174,6 +175,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 ## WASM binding
 
 **Install from npm:**
+
 ```bash
 npm install seuif97
 ```
@@ -238,4 +240,3 @@ console.log(`S: ${s.toFixed(5)} kJ/(kg·K)`);
 | Fugacity coefficient                 |    —        |    φ    |    OFI |     33     |
 | Fugacity                             |     MPa     |    f    |    OFU |     34     |
 | Relative pressure coefficient        |     1/K     |    αp    | OAFLAP |     35     |
-

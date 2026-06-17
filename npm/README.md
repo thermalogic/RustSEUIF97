@@ -1,6 +1,6 @@
 # SEUIF97
 
-![npm version](https://img.shields.io/npm/v/seuif97) ![NPM Downloads](https://img.shields.io/npm/dt/seuif97) ![NPM Downloads](https://img.shields.io/npm/dm/seuif97)
+![npm version](https://img.shields.io/npm/v/seuif97) [![DOI](https://img.shields.io/badge/DOI-10.20944/preprints202606.0793.v1-blue?style=flat-square)](https://doi.org/10.20944/preprints202606.0793.v1)
 
 The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust, enabling fast and accurate thermodynamic property calculations for water and steam in the browser or Node.js. 
  

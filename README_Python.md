@@ -1,6 +1,6 @@
 # SEUIF97
 
- ![PyPI](https://img.shields.io/pypi/v/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97)](https://pepy.tech/project/seuif97) [![Downloads](https://static.pepy.tech/badge/seuif97/month)](https://pepy.tech/project/seuif97)
+ ![PyPI](https://img.shields.io/pypi/v/seuif97) [![DOI](https://img.shields.io/badge/DOI-10.20944/preprints202606.0793.v1-blue?style=flat-square)](https://doi.org/10.20944/preprints202606.0793.v1)
 
 **SEUIF97 2**, built on Rust, is a major upgrade over [SEUIF97 1 built on C](https://pypi.org/project/seuif97/1.2.0/), delivering significant improvements in performance, functionality and ecosystem support.
 
