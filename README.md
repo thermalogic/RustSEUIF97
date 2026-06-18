@@ -33,7 +33,7 @@ For code examples, see: [Code Snippets for Acceleration Methods](./docs/code_sni
 
 ## Performance Comparison with CoolProp IF97
 
-SEUIF97 achieves **3.4-7.6x speedups** over [CoolProp IF97](https://github.com/CoolProp/IF97). See [Performance Comparison](./docs/seuif97_coolprop_if97.md) for detailed benchmark results.
+SEUIF97 achieves **3-7x speedup** over [CoolProp IF97](https://github.com/CoolProp/IF97) in Region 1,2,and 3. Benchmarking code and data are available in the [bench_coolprop_if97](./bench_coolprop_if97/) directory.
 
 ## Property Calculation Functions
 
