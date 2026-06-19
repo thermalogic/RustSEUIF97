@@ -26,9 +26,19 @@ const no: [f64; 6] = [
 #[inline(always)]
 pub fn gamma0_reg5(pi: f64, tau: f64) -> f64 {
     let mut result: f64 = pi.ln();
-    for i in 0..6 {
-        result += no[i] * tau.powi(Jo[i]);
-    }
+    let tau_inv: f64 = 1.0 / tau;
+	let tau_inv2: f64 = tau_inv * tau_inv;
+	// 0, 1, -3, -2, -1, 2
+	result += no[0];
+    result += no[1]*tau;
+	result += no[2]*tau_inv2*tau_inv;
+    result += no[3]*tau_inv2;
+    result += no[4]*tau_inv;
+    result += no[5]*tau*tau;
+
+    //for i in 0..6 {
+    //    result += no[i] * tau.powi(Jo[i]);
+    //}
     result
 }
 
@@ -41,24 +51,50 @@ pub fn gamma0_pi_reg5(pi: f64) -> f64 {
 ///  region 5 38p
 #[inline(always)]
 pub fn gamma0_pipi_reg5(pi: f64) -> f64 {
-    return -1.0 / pi / pi;
+    let pi_inv: f64 = 1.0 / pi;
+    return pi_inv*pi_inv;
 }
 
 #[inline(always)]
 pub fn gamma0_tau_reg5(tau: f64) -> f64 {
     let mut result: f64 = 0.0;
-    for i in 0..6 {
-        result += no[i] * Jo[i] as f64 * tau.powi(Jo[i] - 1);
-    }
+    //   Jo   0, 1, -3, -2, -1, 2
+    // Jo-1  -1, 0, -4, -3, -2, 1
+    let tau_inv:f64 = 1.0 / tau;
+	let tau_inv2 = tau_inv * tau_inv;
+    result += no[1];
+	result += no[2]*(-3.0)*tau_inv2*tau_inv2;
+    result += no[3]*(-2.0)*tau_inv2*tau_inv;
+    result += no[4]*(-1.0)*tau_inv2;
+    result += no[5]*(2.0)*tau;
+
+   // for i in 0..6 {
+    //    result += no[i] * Jo[i] as f64 * tau.powi(Jo[i] - 1);
+    //}
     result
 }
 
 #[inline(always)]
 pub fn gamma0_tautau_reg5(tau: f64) -> f64 {
     let mut result: f64 = 0.0;
-    for i in 0..6 {
-        result += no[i] * (Jo[i] * (Jo[i] - 1)) as f64 * tau.powi(Jo[i] - 2);
-    }
+    //   Jo      0,  1, -3, -2, -1,  2 
+    // Jo-1     -1,  0, -4, -3, -2,  1 
+    // Jo-2     -2, -1, -5, -4, -3,  0 
+    // Jo×(Jo-1) 0,  0, 12,  6,  2,  2 
+    
+    let tau_inv:f64 = 1.0 / tau;
+    let tau_inv3:f64 =  tau_inv *tau_inv * tau_inv;
+    let tau_inv4:f64 = tau_inv3 * tau_inv;
+    
+    // i=0,1: Jo×(Jo-1)=0 -> 0.0
+    result += no[2] * 12.0 * tau_inv4*tau_inv;    // Jo=-3,  12
+    result += no[3] * 6.0 * tau_inv4;             // Jo=-2,  6
+    result += no[4] * 2.0 * tau_inv3;      // Jo=-1,  2
+    result += no[5] * 2.0;                        // Jo=2,  2
+
+   // for i in 0..6 {
+    //    result += no[i] * (Jo[i] * (Jo[i] - 1)) as f64 * tau.powi(Jo[i] - 2);
+    //}
     result
 }
 
