@@ -28,7 +28,7 @@ pub fn gamma0_reg5(pi: f64, tau: f64) -> f64 {
     let mut result: f64 = pi.ln();
     let tau_inv: f64 = 1.0 / tau;
 	let tau_inv2: f64 = tau_inv * tau_inv;
-	// 0, 1, -3, -2, -1, 2
+	// Jo 0, 1, -3, -2, -1, 2
 	result += no[0];
     result += no[1]*tau;
 	result += no[2]*tau_inv2*tau_inv;
@@ -80,16 +80,16 @@ pub fn gamma0_tautau_reg5(tau: f64) -> f64 {
     //   Jo      0,  1, -3, -2, -1,  2 
     // Jo-1     -1,  0, -4, -3, -2,  1 
     // Jo-2     -2, -1, -5, -4, -3,  0 
-    // Jo×(Jo-1) 0,  0, 12,  6,  2,  2 
+    // Jo*(Jo-1) 0,  0, 12,  6,  2,  2 
     
     let tau_inv:f64 = 1.0 / tau;
     let tau_inv3:f64 =  tau_inv *tau_inv * tau_inv;
     let tau_inv4:f64 = tau_inv3 * tau_inv;
     
-    // i=0,1: Jo×(Jo-1)=0 -> 0.0
+    // i=0,1: Jo*(Jo-1) = 0 
     result += no[2] * 12.0 * tau_inv4*tau_inv;    // Jo=-3,  12
     result += no[3] * 6.0 * tau_inv4;             // Jo=-2,  6
-    result += no[4] * 2.0 * tau_inv3;      // Jo=-1,  2
+    result += no[4] * 2.0 * tau_inv3;             // Jo=-1,  2
     result += no[5] * 2.0;                        // Jo=2,  2
 
    // for i in 0..6 {
@@ -117,7 +117,21 @@ pub const IJn: [(i32, i32, f64); 6] = [
 
 #[inline(always)]
 pub fn gammar_reg5(pi: f64, tau: f64) -> f64 {
-    poly_powi(pi, tau, &IJn)
+    let mut result: f64 = 0.0;
+	// I 1 1 1 2 2 3
+	// J 1 2 3 3 9 7
+	let pi_2:f64 = pi*pi;
+	let tau_2:f64=tau*tau;
+	let tau_3:f64=tau_2*tau;
+	let tau_6:f64=tau_3*tau_3;
+	result += IJn[0].2 * pi*tau;
+    result += IJn[1].2 * pi*tau_2;
+	result += IJn[2].2 * pi*tau_3;
+	result += IJn[3].2 * pi_2*tau_3;
+	result += IJn[4].2 * pi_2*tau_6*tau_3;
+	result += IJn[5].2 * pi_2*pi*tau_6*tau;
+    return result
+    //poly_powi(pi, tau, &IJn)
 }
 
 // Table 41. The residual part gammar of the dimensionless Gibbs free energy and its derivatives a according to Eq. (34)
@@ -125,26 +139,99 @@ pub fn gammar_reg5(pi: f64, tau: f64) -> f64 {
 /// The residual part gammar of the dimensionless Gibbs free energy
 #[inline(always)]
 pub fn gammar_pi_reg5(pi: f64, tau: f64) -> f64 {
-    poly_i_powi(pi, tau, &IJn)
+	let mut result: f64 = 0.0;
+	//   I  1 1 1 2 2 3
+	// I-1  0 0 0 1 1 2
+	//   J  1 2 3 3 9 7
+	let tau_2:f64=tau*tau;
+	let tau_3:f64=tau_2*tau;
+	let tau_6:f64=tau_3*tau_3;
+	result += IJn[0].2 *tau;
+    result += IJn[1].2 * tau_2;
+	result += IJn[2].2 * tau_3;
+	result += IJn[3].2 * 2.0 * pi*tau_3;
+	result += IJn[4].2 * 2.0 *pi*tau_6*tau_3;
+	result += IJn[5].2 * 3.0 *pi*pi*tau_6*tau;
+    return result
+    //poly_i_powi(pi, tau, &IJn)
 }
 
 #[inline(always)]
 pub fn gammar_pipi_reg5(pi: f64, tau: f64) -> f64 {
-    poly_ii_powi(pi, tau, &IJn)
+    let mut result: f64 = 0.0;
+	//   I   1  1  1  2  2  3
+	// I-1   0  0  0  1  1  2
+	// I-2  -1 -1 -1  0  0  1
+	//   J   1  2  3  3  9  7
+	let tau_2:f64=tau*tau;
+	let tau_3:f64=tau_2*tau;
+	let tau_6:f64=tau_3*tau_3;
+	result += IJn[3].2 * 2.0 * tau_3;
+    result += IJn[4].2 * 2.0 * tau_6*tau_3;
+	result += IJn[5].2 *6.0 *pi*tau_6*tau;
+    return result
+    //poly_ii_powi(pi, tau, &IJn)
 }
 
 #[inline(always)]
 pub fn gammar_tau_reg5(pi: f64, tau: f64) -> f64 {
-    poly_j_powi(pi, tau, &IJn)
+	let mut result: f64 = 0.0;
+	//   I   1  1  1  2  2  3
+	//   J   1  2  3  3  9  7
+	// J-1   0  1  2  2  8  6
+	let pi_2:f64 = pi * pi;
+    let tau_2:f64 = tau * tau;
+	let tau_6:f64 = tau_2 * tau_2 * tau_2;
+    
+    result += IJn[0].2 * pi;                           // J=1
+    result += IJn[1].2 * 2.0 * pi * tau;               // J=2
+    result += IJn[2].2 * 3.0 * pi * tau_2;             // J=3
+    result += IJn[3].2 * 3.0 * pi_2 * tau_2;           // J=3
+    result += IJn[4].2 * 9.0 * pi_2 * tau_6* tau_2;    // J=9
+    result += IJn[5].2 * 7.0 * pi_2 * pi * tau_6;       // J=7
+    return result
+   // poly_j_powi(pi, tau, &IJn)
 }
 
 /// region5 39p
 #[inline(always)]
 pub fn gammar_tautau_reg5(pi: f64, tau: f64) -> f64 {
-    poly_jj_powi(pi, tau, &IJn)
+	let mut result: f64 = 0.0;
+	//   I   1  1  1  2  2  3
+	//   J   1  2  3  3  9  7
+	// J-1   0  1  2  2  8  6
+	// J-2  -1  0  1  1  7  5
+
+	let pi_2:f64 = pi * pi;
+    let tau_2:f64 = tau * tau;
+	let tau_5:f64 = tau_2 * tau_2 * tau;
+    // i=0: J=1, J*(J-1)=0 
+    result += IJn[1].2 * 2.0 * pi;                           // J=2,  2
+    result += IJn[2].2 * 6.0 * pi * tau;                      // J=3,  6
+    result += IJn[3].2 * 6.0 * pi_2 * tau;                    // J=3,  6
+    result += IJn[4].2 * 72.0 * pi_2 * tau_5*tau_2;           // J=9, 72
+    result += IJn[5].2 * 42.0 * pi_2 * pi * tau_5; 
+	return result
+    // poly_jj_powi(pi, tau, &IJn)
 }
 
 #[inline(always)]
 pub fn gammar_pitau_reg5(pi: f64, tau: f64) -> f64 {
-    poly_ij_powi(pi, tau, &IJn)
+
+    let mut result: f64 = 0.0;
+	//   I   1  1  1  2  2  3
+	// I-1   0  0  0  1  1  2
+	//   J   1  2  3  3  9  7
+	// J-1   0  1  2  2  8  6
+	let tau_2:f64 = tau * tau;
+    let tau_6:f64 = tau_2 * tau_2 * tau_2;
+    
+    result += IJn[0].2;                                 // I=1,J=1,  1
+    result += IJn[1].2 * 2.0 * tau;                     // I=1,J=2,  2
+    result += IJn[2].2 * 3.0 * tau_2;                   // I=1,J=3,  3
+    result += IJn[3].2 * 6.0 * pi * tau_2;              // I=2,J=3,  6
+    result += IJn[4].2 * 18.0 * pi * tau_6*tau_2;       // I=2,J=9,  18
+	result += IJn[5].2 * 21.0 * pi*pi * tau_6;          // I=3,J=27, 21
+	return result
+    // poly_ij_powi(pi, tau, &IJn)
 }

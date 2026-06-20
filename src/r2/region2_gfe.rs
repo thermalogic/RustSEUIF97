@@ -93,7 +93,8 @@ pub fn gamma0_pi_reg2(pi: f64) -> f64 {
 /// Second derivative in pi of ideal-gas part of fundamental equation for region 2
 #[inline(always)]
 pub fn gamma0_pipi_reg2(pi: f64) -> f64 {
-    -1.0 / pi / pi
+    let pi_inv = 1.0 / pi;
+    pi_inv * pi_inv
 }
 
 /// First derivative in tau of ideal-gas part of fundamental equation for region 2

@@ -21,7 +21,7 @@ run:
 
 save: 
 	g++ bench_if97.cpp $(CFLAGS) -o$(EXEDIR)bench_if97 $(LIBFLAGS) 
-	$(EXEDIR)bench_if97 > benchmark_results.txt
+	$(EXEDIR)bench_if97 > seuif97_coolprop_if97.txt
 
 clean:
-	rm -f $(EXEDIR)bench_if97 benchmark_results.txt
+	rm -f $(EXEDIR)bench_if97 seuif97_coolprop_if97.txt
