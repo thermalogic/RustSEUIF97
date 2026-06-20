@@ -233,5 +233,38 @@ pub fn gammar_pitau_reg5(pi: f64, tau: f64) -> f64 {
     result += IJn[4].2 * 18.0 * pi * tau_6*tau_2;       // I=2,J=9,  18
 	result += IJn[5].2 * 21.0 * pi*pi * tau_6;          // I=3,J=27, 21
 	return result
-    // poly_ij_powi(pi, tau, &IJn)
+   // poly_ij_powi(pi, tau, &IJn)
+}
+
+// improve performance 10% ,but code complexity is increased
+#[inline(always)]
+pub fn gammar_pi_tau_reg5(pi: f64, tau: f64) -> (f64, f64) {
+    let mut item:f64=0.0;
+    let mut result_pi: f64 = 0.0;
+	let mut result_tau: f64 = 0.0;
+	// I 1 1 1 2 2 3
+	// J 1 2 3 3 9 7
+	let pi_2:f64 = pi*pi;
+	let tau_2:f64=tau*tau;
+	let tau_3:f64=tau_2*tau;
+	let tau_6:f64=tau_3*tau_3;
+	item = IJn[0].2 * pi*tau;
+    result_pi += item;
+    result_tau += item;
+    item = IJn[1].2 * pi*tau_2;
+    result_pi += item;
+    result_tau += 2.0*item;
+    item = IJn[2].2 * pi*tau_3;
+    result_pi += item;
+    result_tau += 3.0*item;
+    item = IJn[3].2 * pi_2*tau_3;
+	result_pi += 2.0*item;
+    result_tau += 3.0*item;
+    item = IJn[4].2 * pi_2*tau_6*tau_3;
+	result_pi += 2.0*item;
+    result_tau += 9.0*item;
+    item = IJn[5].2 * pi_2*pi*tau_6*tau;
+    result_pi += 3.0*item;
+    result_tau += 7.0*item;
+    (result_pi/pi, result_tau/tau)
 }
