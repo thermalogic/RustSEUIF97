@@ -28,8 +28,6 @@ pub fn pT2s_reg5(p: f64, T: f64) -> f64 {
     let tau: f64 = r5Tstar / T;
     
     let (sum_gammar, sum_gammar_tau) = polys_0_j_powi(pi, tau, &IJn);
-   
-    //let (sum_gammar, sum_gammar_tau) = gammar_pi_tau_reg5(pi, tau);
     //let sum_gammar=poly_powi(pi, tau, &IJn);
     //let sum_gammar_tau = poly_j_powi(pi, tau, &IJn);
     
