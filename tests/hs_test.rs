@@ -93,3 +93,9 @@ fn test_region4_hs() {
         assert_approx_eq!(x, hs(h, s, OX), 1.0e-3f64);
     }
 }
+
+#[test]
+fn test_special_hs() {
+       assert_approx_eq!(0.03653974055475902, hs(1800.0, 5.3, OP), 1.0e-4f64);
+       assert_approx_eq!(0.270298590472939, hs(1500.0, 4.0, OP), 1.0e-4f64);
+}
