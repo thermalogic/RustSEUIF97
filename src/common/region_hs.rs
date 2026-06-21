@@ -29,26 +29,40 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
     let mut p: f64 = 0.0;
     let mut v: f64 = 0.0;
     let mut hs: f64 = 0.0;
-    let s13: f64 = pT2s_reg1(100.0, 623.15);
-    let s13s: f64 = pT2s_reg1(Ps_623, 623.15);
-    let sTPmax: f64 = pT2s_reg2(100.0, 1073.15);
-    let s2ab: f64 = pT2s_reg2(4.0, 1073.15); // TODO： p=4 2ab s2ab
+    let s13: f64 = 3.3977829547018907;// pT2s_reg1(100.0, 623.15);
+    let s13s: f64 =  3.7782813395443466;//pT2s_reg1(Ps_623, 623.15);
+    let sTPmax: f64 = 6.040483671712382;//pT2s_reg2(100.0, 1073.15);
+    let s2ab: f64 = 7.85234039987851;//pT2s_reg2(4.0, 1073.15); // TODO： p=4 2ab s2ab
 
     // Left point in h-s plot
-    let mut smin: f64 = pT2s_reg1(100.0, 273.15);
-    let mut hmin: f64 = pT2h_reg1(P_MIN, 273.15);
+    let mut smin: f64 =-0.00858228709262268;// pT2s_reg1(100.0, 273.15);
+    let mut hmin: f64 = -0.0415878259881163;//pT2h_reg1(P_MIN, 273.15);
 
     // Right point in h-s plot
-    let mut hmax: f64 = pT2h_reg2(P_MIN, 1073.15);
-    let mut smax: f64 = pT2s_reg2(P_MIN, 1073.15);
+    let mut hmax: f64 =4160.660928250124;// pT2h_reg2(P_MIN, 1073.15);
+    let mut smax: f64 =  11.921055068613795;//pT2s_reg2(P_MIN, 1073.15);
 
     // Region 4 left and right point
-    let h4l: f64 = pT2h_reg1(P_MIN, 273.15);
-    let s4l: f64 = pT2s_reg1(P_MIN, 273.15);
+    let h4l: f64 = -0.0415878259881163 ;//pT2h_reg1(P_MIN, 273.15);
+    let s4l: f64 = -0.00015454959194230702;//pT2s_reg1(P_MIN, 273.15);
 
-    let h4v: f64 = pT2h_reg2(P_MIN, 273.15);
-    let s4v: f64 = pT2s_reg2(P_MIN, 273.15);
+    let h4v: f64 = 2500.892617817172;//pT2h_reg2(P_MIN, 273.15);
+    let s4v: f64 = 9.155759395224662;//pT2s_reg2(P_MIN, 273.15);
 
+    // !!!! Check region 5 MUST On TOP !!!
+    // if （s4v <= s && s<= smax） (h,s)may be setup to error region2
+    if pT2s_reg5(50.0, 1073.15) < s
+        && s <= pT2s_reg5(P_MIN, 2273.15)
+        && pT2h_reg5(50.0, 1073.15) < h
+        && h <= pT2h_reg5(P_MIN, 2273.15)
+    {
+        p = hs2p_reg5(h, s);
+        T = ph2T_reg5(p, h);
+        if 1073.15 < T && T <= 2273.15 && P_MIN <= p && p <= 50.0 {
+            return 5;
+        }
+    };
+   
     if smin <= s && s <= s13 {
         hmin = h4l + (s - s4l) / (s4v - s4l) * (h4v - h4l);
         hs = hs_region_h1_s(s);
@@ -86,7 +100,13 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         v = ps2v_reg3(100.0, s) * (1.0 + 9.6e-5);
         T = ps2T_reg3(100.0, s) - 0.0248;
         hmax = Td2h_reg3(T, 1.0 / v);
+      //  println!("hmin={:.6}",hmin);
+       // println!("hs={:.6}",hs);
+       // println!("hmax={:.6}",hmax);
+       // println!("v={:.6}",v);
+       // println!("T={:.6}",T);
         if hmin <= h && h < hs {
+         //   println!("4");
             return 4;
         }
         if hs <= h && h <= hmax {
@@ -199,5 +219,5 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         }
     }
     
-    INVALID_VALUE
+    INVALID_HS
 }
