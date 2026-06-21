@@ -1,16 +1,15 @@
-//! The functions compute the polynomial values of the base variable and its derivatives
-//!  1. To the polynomial of base variable and its derivatives
-//!  2. To the polynomial of base variable and its derivatives recursively
-//! # Variables
+//! The functions compute the polynomial and its derivatives values 
+//!    using  shared-power scaling method 
+//! 
 //! * IJn[(i32,i32,f64)]
-//!     *  e - the element in IJn[k]
-//!     *  n = e.2, i=e.0, j=e.1  
-//! * vi - the base of i=IJn[k][0]
-//! * vj - the base of j=IJn[k][1]
-//!     * power = n * vi^i * i^j = e.2 * vi^e.0 * vj^e.1
+//!   * I - IJn[k].0
+//!   * J - IJn[k].1
+//!   * n - IJn[k].2
+//! * vi - the base of I
+//! * vj - the base of J
+//!    polynomial = n * vi^I * vj^J =  IJn[k].2 * vi^ IJn[k].0 * vj^ IJn[k].1
 
-///  powi()
-///  * n*vi^i *  vj^j
+///  the polynomial:  n*vi^i* vj^j
 pub fn poly_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let mut value: f64 = 0.0;
     for e in IJn {
@@ -50,7 +49,7 @@ pub fn poly_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
 }
 
 /// the polynomial of vi and the derivative (∂²f/∂²vj)
-/// *  n* vi^i  *j*(j-1)* vi^(j-2)
+/// *  n* vi^i  *j*(j-1)* vj^(j-2)
 pub fn poly_jj_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let mut value = 0.0;
     for e in IJn {

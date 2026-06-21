@@ -1,15 +1,17 @@
-//! The multi-step method to enable the compiler optimizations for using powi() within `for` loop
-//!
-//! The functions compute the polynomial values of the base variable and its derivatives
-//!  1. To the polynomial of base variable and its derivatives
-//!  2. To the polynomial of base variable and its derivatives recursively
-//! # Variables
+//! The functions compute the polynomial and its derivatives values 
+//!    using loop tiling and shared-power scaling method 
+//! 
 //! * IJn[(i32,i32,f64)]
-//!   * vi - the base of i=IJn[k][0]
-//!   * vj - the base of j=IJn[k][1]
-//!   * power = n * vi^i * i^j =  IJn[k].2 * vi^ IJn[k].0 * vj^ IJn[k].1
+//!   * I - IJn[k].0
+//!   * J - IJn[k].1
+//!   * n - IJn[k].2
+//!       let (I, J, n) = IJn[k];
+//! * vi - the base of I
+//! * vj - the base of J
+//!    polynomial = n * vi^I * vj^J =  IJn[k].2 * vi^ IJn[k].0 * vj^ IJn[k].1
 //!
 
+///  the polynomial:  n*vi^i* vj^j
 #[inline(always)]
 pub fn poly_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
@@ -21,6 +23,8 @@ pub fn poly_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usiz
     value
 }
 
+/// the polynomial of the derivative (∂f/∂vi)   
+/// * n * i*vi^(i-1) * vj^j
 #[inline(always)]
 pub fn poly_i_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
@@ -32,6 +36,8 @@ pub fn poly_i_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(us
     value
 }
 
+/// the polynomial of the derivative (∂²f/∂²vi) 
+/// * n*i*(i-1)*vi^(i-2) * vj^j
 #[inline(always)]
 pub fn poly_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
@@ -43,17 +49,21 @@ pub fn poly_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(u
     value
 }
 
+/// the polynomial of the derivative (∂²f/∂vi∂vj) 
+/// * n*i*vi^(i-1) *j*vj^(j-1)
 #[inline(always)]
 pub fn poly_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
     for m in 0..steps.len() {
         for k in steps[m].0..steps[m].1 {
-            value += IJn[k].2 * IJn[k].0 as f64 * vi.powi(IJn[k].0) * IJn[k].1 as f64 * vj.powi(IJn[k].1);
+            value += IJn[k].2 * IJn[k].0 as f64 * vi.powi(IJn[k].0-1) * IJn[k].1 as f64 * vj.powi(IJn[k].1-1);
         }
     }
-    value / vi / vj
+    value
 }
 
+/// the polynomial of derivative (∂f/∂vj)
+///  n* vi^i  *j* vj^(j-1)
 #[inline(always)]
 pub fn poly_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
@@ -65,8 +75,8 @@ pub fn poly_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(us
     value
 }
 
-/// the polynomial of vi and the derivative (∂²f/∂²vj)
-/// *  n* vi^i  *j*(j-1)* vi^(j-2)
+/// the polynomial of the derivative (∂²f/∂²vj)
+/// *  n* vi^i  *j*(j-1)* vj^(j-2)
 #[inline(always)]
 pub fn poly_jj_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value = 0.0;
