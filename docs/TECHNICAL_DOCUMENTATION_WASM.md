@@ -86,6 +86,21 @@ wasm-bindgen ../../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir 
 wasm-bindgen ../../target/wasm32-unknown-unknown/release/seuif97.wasm   --out-dir pkg --target nodejs
 ```
 
+### 3.4 NPM Package Distribution
+
+```bash
+cd \npm
+```
+
+```bash
+npm run build:wasm
+```
+
+```bash
+npm login
+npm publish
+```
+
 ## 4. Using in Web Browsers
 
 ### 4.1 Basic Usage (ES Modules)
