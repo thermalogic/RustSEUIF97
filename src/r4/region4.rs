@@ -54,6 +54,7 @@ pub fn hs_reg4(h: f64, s: f64, o_id: i32) -> f64 {
     // for T<623.15 only
     let T: f64 = hs2T_reg4(h, s);
     if o_id == OT {
+        println!("T: {}", T);
         return T - K;
     }
     let p: f64 = p_saturation(T);
@@ -63,17 +64,10 @@ pub fn hs_reg4(h: f64, s: f64, o_id: i32) -> f64 {
 
     let h1: f64 = p2sat_water(p, OH);
     let h2: f64 = p2sat_steam(p, OH);
-
     let x: f64 = (h - h1) / (h2 - h1);
     if o_id == OX {
         return x;
     }
-    // T is k
-   // if o_id == OT {
-    //    px_reg4(p, x, o_id) - 273.15
-    //} else {
-    //    px_reg4(p, x, o_id)
-    //}
     px_reg4(p, x, o_id) 
 }
 
@@ -122,40 +116,55 @@ pub fn ts_reg4(t: f64, s: f64, o_id: i32) -> f64 {
     Tx_reg4(t + 273.15, x, o_id)
 }
 
+/// function for getting the steam quality,residuals: x(T,y)-x
+fn Ty2x_residuals(T: f64, x: f64, y: f64, y_id: i32) -> f64 {
+    let sw = T2sat_water(T, y_id);
+    let ss = T2sat_steam(T, y_id);
+    (y - sw) / (ss - sw) - x
+}
+
+/// Bisection for the root : Ty2x_residuals(T,x, y, y_id)=0
+fn bisection_reg4(x: f64, y: f64, y_id: i32, mut Tl: f64, mut Tr: f64, tol: f64, maxiter: i32) -> f64 {
+    let mut T: f64 = 0.0;
+    let mut fl: f64 = Ty2x_residuals(Tl, x, y, y_id); // residual for left  bound
+    let mut fr: f64 = Ty2x_residuals(Tr, x, y, y_id); //resdiual for right bound
+    let mut f: f64 = 0.0;
+    let mut numIters: i32 = 0;
+
+    for i in 0..maxiter {
+        numIters += 1;
+        // get midpoint
+        T = 0.5 * (Tl + Tr);
+        // evaluate resdiual at midpoint
+        f = Ty2x_residuals(T, x, y, y_id);
+        //  check for convergence
+        if f.abs() < tol {
+            break;
+        };
+
+        // reset the bounds
+        if f * fl < 0.0 {
+            // move right bound info to mid
+            Tr = T;
+            fr = f;
+        } else {
+            // move left bound info to mid
+            Tl = T;
+            fl = f;
+        }
+    }
+    T
+}
+
+
 #[inline(always)]
 pub fn hx_reg4(h: f64, x: f64, o_id: i32) -> f64 {
     let mut Tl: f64 = T_MIN4;
     let mut Tr: f64 = T_MAX4;
-    let mut T: f64 = 0.5 * (Tl + Tr);
-    for _ in 0..200 {
-        let pl = p_saturation(Tl);
-        let hl1 = p2sat_water(pl, OH);
-        let hl2 = p2sat_steam(pl, OH);
-        let xl = (h - hl1) / (hl2 - hl1);
-
-        let pr = p_saturation(Tr);
-        let hr1 = p2sat_water(pr, OH);
-        let hr2 = p2sat_steam(pr, OH);
-        let xr = (h - hr1) / (hr2 - hr1);
-
-        let p = p_saturation(T);
-        let h1 = p2sat_water(p, OH);
-        let h2 = p2sat_steam(p, OH);
-        let x_cal = (h - h1) / (h2 - h1);
-
-        if x_cal > x {
-            Tl = T;
-        } else {
-            Tr = T;
-        }
-        T = 0.5 * (Tl + Tr);
-        if (Tr - Tl) < 1.0e-8 {
-            break;
-        }
-    }
+    let T: f64 = bisection_reg4(x, h, OH, Tl, Tr, 0.00001, 1000);
     if o_id == OT {
         return T - 273.15;
-    }
+    };
     Tx_reg4(T, x, o_id)
 }
 
@@ -163,35 +172,9 @@ pub fn hx_reg4(h: f64, x: f64, o_id: i32) -> f64 {
 pub fn sx_reg4(s: f64, x: f64, o_id: i32) -> f64 {
     let mut Tl: f64 = T_MIN4;
     let mut Tr: f64 = T_MAX4;
-    let mut T: f64 = 0.5 * (Tl + Tr);
-    for _ in 0..200 {
-        let pl = p_saturation(Tl);
-        let sl1 = p2sat_water(pl, OS);
-        let sl2 = p2sat_steam(pl, OS);
-        let xl = (s - sl1) / (sl2 - sl1);
-
-        let pr = p_saturation(Tr);
-        let sr1 = p2sat_water(pr, OS);
-        let sr2 = p2sat_steam(pr, OS);
-        let xr = (s - sr1) / (sr2 - sr1);
-
-        let p = p_saturation(T);
-        let s1 = p2sat_water(p, OS);
-        let s2 = p2sat_steam(p, OS);
-        let x_cal = (s - s1) / (s2 - s1);
-
-        if x_cal > x {
-            Tl = T;
-        } else {
-            Tr = T;
-        }
-        T = 0.5 * (Tl + Tr);
-        if (Tr - Tl) < 1.0e-8 {
-            break;
-        }
-    }
+    let T: f64 = bisection_reg4(x, s, OS, Tl, Tr, 0.00001, 1000);
     if o_id == OT {
         return T - 273.15;
-    }
+    };
     Tx_reg4(T, x, o_id)
 }
