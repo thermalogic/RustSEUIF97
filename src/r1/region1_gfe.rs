@@ -73,8 +73,7 @@ pub fn gamma_pipi_reg1(pi: f64, tau: f64) -> f64 {
 pub fn gamma_tau_reg1(pi: f64, tau: f64) -> f64 {
     const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
     poly_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
-    //poly_j_powi(7.1 - pi, tau - 1.222, &IJn)
-    
+    //poly_j_powi(7.1 - pi, tau - 1.222, &IJn)    
 }
 
 /// Second derivative of fundamental equation in tau for region 1

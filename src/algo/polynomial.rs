@@ -70,12 +70,10 @@ pub fn poly_ij_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
 ///  * the power of vi and vj  
 ///  * the power of vi and the derivative (∂f/∂vj)
 pub fn polys_0_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
-    let mut item: f64 = 0.0;
     let mut poly_0: f64 = 0.0;
     let mut poly_j: f64 = 0.0;
-
     for e in IJn {
-        item = e.2 * vi.powi(e.0) * vj.powi(e.1);
+        let item = e.2 * vi.powi(e.0) * vj.powi(e.1);
         poly_0 += item;
         poly_j += e.1 as f64 * item;
     }
@@ -87,12 +85,10 @@ pub fn polys_0_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
 ///  * the power of the derivative (∂f/∂vi) and vj
 ///  * the power of vi and the derivative (∂f/∂vj)
 pub fn polys_i_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
-    let mut item: f64 = 0.0;
     let mut poly_i: f64 = 0.0;
     let mut poly_j: f64 = 0.0;
-
     for e in IJn {
-        item = e.2 * vi.powi(e.0) * vj.powi(e.1);
+        let item = e.2 * vi.powi(e.0) * vj.powi(e.1);
         poly_i += e.0 as f64 * item;
         poly_j += e.1 as f64 * item;
     }
@@ -108,19 +104,15 @@ pub fn polys_i_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
 ///  * the power of  the derivative (∂f/∂vi) and (∂f/∂vi)
 ///  * the power of the derivative vi and (∂²f/∂²vj)the polynomiapoly
 pub fn polys_i_ii_ij_jj_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64, f64, f64) {
-    let mut item: f64 = 0.0;
-    let mut i_item: f64 = 0.0;
     let mut poly_i: f64 = 0.0;
     let mut poly_ii: f64 = 0.0;
     let mut poly_ij: f64 = 0.0;
     let mut poly_jj: f64 = 0.0;
 
     for e in IJn {
-        item = e.2 * vi.powi(e.0) * vj.powi(e.1);
-
+        let item = e.2 * vi.powi(e.0) * vj.powi(e.1);
+        let i_item = e.0 as f64 * item;
         poly_jj += (e.1 * (e.1 - 1)) as f64 * item;
-
-        i_item = e.0 as f64 * item;
         poly_i += i_item;
         poly_ii += (e.0 - 1) as f64 * i_item;
         poly_ij += e.1 as f64 * i_item;

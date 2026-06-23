@@ -17,7 +17,7 @@ fn ph2s_reg1(p: f64, h: f64) -> f64 {
 ///----------------------------------------------------------------
 pub fn hs2p_reg1(h: f64, s: f64) -> f64 {
     // Page 5, Table 2 :
-    // Initialize coefficients and exponents (H,S)->P for region 1
+    // coefficients and exponents (H,S)->P for region 1
     const IJn: [(i32, i32, f64); 19] = [
         (0, 0, -0.691997014660582),
         (0, 1, -0.183612548787560e2),
