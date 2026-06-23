@@ -86,16 +86,14 @@ pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
 ///      p: pressure  MPa
 //       v: specific volume m^3/kg
 pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
+    const stepa: f64 = 1.0;
+    const stepm: f64 = 5.0;
+   
     let mut p1: f64 = P_MIN2;
-
     let mut v1: f64 = pT2v_reg2(p1, T);
     if (v - v1).abs() < ESP {
         return p1;
     }
-
-    let stepa: f64 = 1.0;
-    let stepm: f64 = 5.0;
-    let mut p: f64 = 0.0;
     let mut p2: f64 = p1 * stepm;
     let mut v2: f64 = pT2v_reg2(p2, T);
     if (v - v2).abs() < ESP {
@@ -130,19 +128,21 @@ pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
         }
     }
 
-    let f2: f64 = v - v2;
-    let pmid: f64 = p2 - (p2 - p1) * (v - v2) / (v1 - v2);
+    let mut pmid: f64 = p2 - (p2 - p1) * (v - v2) / (v1 - v2);
+    if pmid < P_MIN2 {
+        pmid = P_MIN2;
+    }
+    if (v - pT2v_reg2(pmid, T)).abs() < ESP {
+        return pmid;
+    }   
     if v < pT2v_reg2(pmid, T) {
         p1 = pmid;
-    }
-    if p1 < P_MIN2 {
-        p1 = P_MIN2;
     }
     let f1: f64 = v - pT2v_reg2(p1, T);
     if f1.abs() < ESP {
         return p1;
     }
-
+    let f2: f64 = v - v2;
     let mut p: f64 = rtsec1(pT2v_reg2, T, v, p1, p2, f1, f2, ESP, I_MAX);
     if p < P_MIN2 {
         p = P_MIN2;
@@ -199,7 +199,7 @@ pub fn Th2p_reg2(T: f64, h: f64) -> f64 {
     }
     let mut pmid: f64 = p2 - (p2 - p1) * (h - h2) / (h1 - h2);
     if pmid < P_MIN2 {
-        pmid = P_MIN2;
+       pmid = P_MIN2;
     };
     let h_mid: f64 = pT2h_reg2(pmid, T);
     if (h_mid - h).abs() < ESP {
@@ -233,7 +233,6 @@ pub fn Ts2p_reg2(T: f64, s: f64) -> f64 {
     let mut f1: f64 = s - s1;
     let p2: f64 = pmax2;
     let s2: f64 = pT2s_reg2(p2, T);
-    let f2: f64 = s - s2;
     p1 = p2 - (p2 - p1) * (s - s2) / (s1 - s2);
     if p1 < P_MIN2 {
         p1 = P_MIN2;
@@ -243,6 +242,7 @@ pub fn Ts2p_reg2(T: f64, s: f64) -> f64 {
     if f1.abs() < ESP {
         return p1;
     }
+    let f2: f64 = s - s2;
     let mut p: f64 = rtsec1(pT2s_reg2, T, s, p1, p2, f1, f2, ESP, I_MAX);
     if p < P_MIN2 {
         p = P_MIN2;
