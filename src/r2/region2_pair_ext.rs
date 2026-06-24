@@ -9,35 +9,27 @@ use crate::r4::region4_sat_pT::*;
 
 /// the helper for the extended input pair
 fn p2Tmin_reg2(p: f64) -> f64 {
-    let mut Tmin = T_MIN2;
     if p > 0.0 && p < 0.000611213 {
-        Tmin = T_MIN2;
+        T_MIN2
+    } else if p <= p_saturation(623.15) {
+        T_saturation(p)
     } else {
-        if p >= 0.000611213 && p <= p_saturation(623.15) {
-            Tmin = T_saturation(p);
-        } else {
-            Tmin = B23_p2T(p);
-        }
+        B23_p2T(p)
     }
-    Tmin
 }
 
 fn T2pmax_reg2(T: f64) -> f64 {
-    let mut pmax: f64 = P_MAX2;
     if T >= 273.15 && T <= 623.15 {
-        pmax = p_saturation(T);
+        p_saturation(T)
+    } else if T <= 863.15 {
+        B23_T2p(T)
+    } else if T <= 1073.15 {
+        P_MAX2
     } else {
-        if T > 623.15 && T <= 863.15 {
-            pmax = B23_T2p(T);
-        } else {
-            if T > 863.15 && T <= 1073.15 {
-                pmax = 100.0;
-            };
-        };
-    };
-    pmax
-}
-
+        unreachable!()  
+    }
+ }
+ 
 /// Region 2  (p,v)->T using the secant method and refine adjust
 ///      p: pressure  MPa
 //       v: specific volume m^3/kg
@@ -60,12 +52,7 @@ pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
     if (v0 - v).abs()< ESP {
         return T;
     }
-    if T < Tmin2 {
-        T = Tmin2;
-    }
-    if T > T_MAX2 {
-        T = T_MAX2;
-    }
+    T = T.clamp(Tmin2, T_MAX2);
     // zoom the solution
     let mut steps: i32 = 0;
     let MAX_STEPS: i32 = 1000;
@@ -144,12 +131,7 @@ pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
     }
     let f2: f64 = v - v2;
     let mut p: f64 = rtsec1(pT2v_reg2, T, v, p1, p2, f1, f2, ESP, I_MAX);
-    if p < P_MIN2 {
-        p = P_MIN2;
-    } else if p > pmax2 {
-        p = pmax2;
-    }
-    p
+    p.clamp(P_MIN2, pmax2)
 }
 
 /// Region 2  (T,h)->p using the secant method
@@ -212,13 +194,7 @@ pub fn Th2p_reg2(T: f64, h: f64) -> f64 {
     let f1: f64 = h - h1;
     let f2: f64 = h - h2;
     let mut p: f64 = rtsec1(pT2h_reg2, T, h, p1, p2, f1, f2, ESP, I_MAX);
-    if p < P_MIN2 {
-        p = P_MIN2;
-    }
-    if p > pmax2 {
-        p = pmax2;
-    }
-    p
+    p.clamp(P_MIN2, pmax2)
 }
 
 /// Region 2  (T,s)->p using the secant method
@@ -244,10 +220,5 @@ pub fn Ts2p_reg2(T: f64, s: f64) -> f64 {
     }
     let f2: f64 = s - s2;
     let mut p: f64 = rtsec1(pT2s_reg2, T, s, p1, p2, f1, f2, ESP, I_MAX);
-    if p < P_MIN2 {
-        p = P_MIN2;
-    } else if p > pmax2 {
-        p = pmax2;
-    }
-    p
+    p.clamp(P_MIN2, pmax2)    
 }

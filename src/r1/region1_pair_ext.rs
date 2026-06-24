@@ -38,12 +38,7 @@ pub fn pv2T_reg1(p: f64, v: f64) -> f64 {
     if T >= T_MIN1 && T <= T_MAX1 && r_error.abs() < V_ESPION {
         return T;
     };
-    if T < T_MIN1 {
-         T = T_MIN1;
-    };
-    if T > T_MAX1 {
-        T = T_MAX1;
-    }
+    T = T.clamp(T_MIN1, T_MAX1);
     // Region 1 : 
     //  the difference of volume is the very small when the difference T is large
     //  so, we need to adjust the T
@@ -97,18 +92,10 @@ pub fn Th2p_reg1(T: f64, h: f64) -> f64 {
     if (h - h2).abs() < ESP {
         return p2;
     }
-
     let f1: f64 = h - pT2h_reg1(p1, T);
     let f: f64 = h - pT2h_reg1(p2, T);
     let mut p: f64 = rtsec1(pT2h_reg1, T, h, p1, p2, f1, f, ESP, I_MAX);
-
-    if p > P_MAX1 {
-        p = P_MAX1;
-    }
-    if p < pmin1 {
-        p = pmin1;
-    }
-    p
+    p.clamp(pmin1, P_MAX1)
 }
 
 /// Region 1  (T,s)->p using the secant method
@@ -133,10 +120,5 @@ pub fn Ts2p_reg1(T: f64, s: f64) -> f64 {
         return p1;
     }
     let mut p: f64 = rtsec1(pT2s_reg1, T, s, p1, p2, f1, f2, ESP, I_MAX);
-    if p > P_MAX1 {
-        p = P_MAX1;
-    } else if p < pmin1 {
-        p = pmin1;
-    }
-    p
+    p.clamp(pmin1, P_MAX1)
 }
