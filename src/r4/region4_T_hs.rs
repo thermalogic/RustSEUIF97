@@ -122,23 +122,8 @@ fn bisect_T(h: f64, s: f64, mut a: f64, mut b: f64, tol: f64) -> f64 {
         ra = residual_T(a, h, s);
         rb = residual_T(b, h, s);        
     }
-
-    // bisection
-    for _ in 0..200 {
-        let mid = 0.5 * (a + b);
-        let rm = residual_T(mid, h, s);
-        if rm.abs() < tol || (b - a) < 1.0e-10 {
-            return mid;
-        }
-        if ra * rm < 0.0 {
-            b = mid;
-            rb = rm;
-        } else {
-            a = mid;
-            ra = rm;
-        }
-    }
-    0.5 * (a + b)
+    let func = |T: f64| residual_T(T, h, s); 
+    return bisection(a, b, func,  200, tol, 1.0e-10)
 }
 
 pub fn hs2T_reg4(h: f64, s: f64) -> f64 {

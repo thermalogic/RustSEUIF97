@@ -93,3 +93,50 @@ pub fn rtsec2(
     }
     return rts;
 }
+
+
+// 使用二分法求解方程 f(x) = 0 的根
+///
+/// # Arguments
+/// * `mut t1` - 搜索区间的左边界
+/// * `mut t2` - 搜索区间的右边界
+/// * `f` - 目标函数（返回值为 f64，我们需要找 f(x) = 0 的点）
+/// * `max_iter` - 最大迭代次数
+/// * `tol` - 函数值容差 (|f(x)| < tol)
+/// * `x_tol` - 区间长度容差 (|t1 - t2| < x_tol)
+///
+/// # Returns
+/// 满足精度要求的近似根
+pub fn bisection<F>(
+    mut t1: f64,
+    mut t2: f64,
+    f: F,
+    max_iter: usize,
+    tol: f64,
+    x_tol: f64,
+) -> f64
+where
+    F: Fn(f64) -> f64,
+{
+    let mut r_t1 = f(t1);
+    let mut r_t2 = f(t2);
+     if r_t1 * r_t2 > 0.0 {
+         panic!("Bisection failed: f(t1) and f(t2) must have opposite signs!");
+     }
+
+    for _ in 0..max_iter {
+        let tm = 0.5 * (t1 + t2);
+        let r_tm = f(tm);
+       if r_tm.abs() < tol || (t1 - t2).abs() < x_tol {
+            return tm;
+        }
+       if r_t1 * r_tm < 0.0 {
+            t2 = tm;
+            r_t2 = r_tm;
+        } else {
+            t1 = tm;
+            r_t1 = r_tm;
+        }
+    }
+    0.5 * (t1 + t2)
+}
