@@ -99,7 +99,7 @@ pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
         if p1 > 1.0 {
             p2 = p1 + stepa;
         }
-        if p1 < 1.0 {
+        else if p1 < 1.0 {
             p2 = p1 * stepm;
         }
         if p2 >= pmax2 {
