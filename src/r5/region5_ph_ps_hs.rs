@@ -19,9 +19,6 @@ pub fn ph2T_reg5(p: f64, h: f64) -> f64 {
         } else {
             T2 = (1.0 - f1 / h) * T1;
         }
-
-        let f2: f64 = h - pT2h_reg5(p, T2);
-
         T = rtsec(pT2h_reg5, p, h, T1, T2, 1, ESP, I_MAX);
     } else {
         T = T1;
@@ -40,7 +37,6 @@ pub fn ps2T_reg5(p: f64, s: f64) -> f64 {
     let mut T: f64 = -1000.0;
     let T1: f64 = 0.5 * (2273.15 + 1073.15); // Get initial value
     let f1: f64 = s - pT2s_reg5(p, T1);
-
     if f1.abs() > ESP {
         let mut T2: f64 = -1000.0;
         if f1 > 0.0 {
@@ -48,8 +44,6 @@ pub fn ps2T_reg5(p: f64, s: f64) -> f64 {
         } else {
             T2 = (1.0 - f1 / s) * T1;
         }
-
-        let f2: f64 = s - pT2s_reg5(p, T2);
         T = rtsec(pT2s_reg5, p, s, T1, T2, 1, ESP, I_MAX);
     } else {
         T = T1;
@@ -60,7 +54,6 @@ pub fn ps2T_reg5(p: f64, s: f64) -> f64 {
     } else if T > T_MAX5 {
         T = T_MAX5;
     }
-
     T
 }
 
@@ -82,8 +75,6 @@ pub fn hs2p_reg5(h: f64, s: f64) -> f64 {
         } else {
             p2 = (1.0 - f1 / s) * p1;
         }
-
-        let f2: f64 = s - ph2s_reg5(p2, h);
         p = rtsec(ph2s_reg5, h, s, p1, p2, 2, ESP, I_MAX);
     } else {
         p = p1;
