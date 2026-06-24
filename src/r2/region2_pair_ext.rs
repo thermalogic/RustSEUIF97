@@ -55,7 +55,7 @@ pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
     T = T.clamp(Tmin2, T_MAX2);
     // zoom the solution
     let mut steps: i32 = 0;
-    let MAX_STEPS: i32 = 1000;
+    let MAX_STEPS: i32 = 100000;
     while steps < MAX_STEPS {
         T += if v0 > v { -0.001 } else { 0.001  };
         T = T.clamp(Tmin2, T_MAX2);
