@@ -30,9 +30,7 @@ pub fn pv2T_reg1(p: f64, v: f64) -> f64 {
 pub fn Tv2p_reg1(T: f64, v: f64) -> f64 {
     let p1: f64 = 0.3 * (p_saturation(T) + P_MAX1);
     let p2: f64 = 1.05 * p1;
-    let f1: f64 = v - pT2v_reg1(p1, T);
-    let f: f64 = v - pT2v_reg1(p2, T);
-    rtsec1(pT2v_reg1, T, v, p1, p2, f1, f, ESP, I_MAX)
+    rtsec(pT2v_reg1, T, v, p1, p2, 2, ESP, I_MAX)
 }
 
 /// Region 1  (T,h)->p using the bisection method

@@ -22,7 +22,7 @@ pub fn ph2T_reg5(p: f64, h: f64) -> f64 {
 
         let f2: f64 = h - pT2h_reg5(p, T2);
 
-        T = rtsec2(pT2h_reg5, p, h, T1, T2, f1, f2, ESP, I_MAX);
+        T = rtsec(pT2h_reg5, p, h, T1, T2, 1, ESP, I_MAX);
     } else {
         T = T1;
     }
@@ -50,7 +50,7 @@ pub fn ps2T_reg5(p: f64, s: f64) -> f64 {
         }
 
         let f2: f64 = s - pT2s_reg5(p, T2);
-        T = rtsec2(pT2s_reg5, p, s, T1, T2, f1, f2, ESP, I_MAX);
+        T = rtsec(pT2s_reg5, p, s, T1, T2, 1, ESP, I_MAX);
     } else {
         T = T1;
     }
@@ -84,7 +84,7 @@ pub fn hs2p_reg5(h: f64, s: f64) -> f64 {
         }
 
         let f2: f64 = s - ph2s_reg5(p2, h);
-        p = rtsec1(ph2s_reg5, h, s, p1, p2, f1, f2, ESP, I_MAX);
+        p = rtsec(ph2s_reg5, h, s, p1, p2, 2, ESP, I_MAX);
     } else {
         p = p1;
     }

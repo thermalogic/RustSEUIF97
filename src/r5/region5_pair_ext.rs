@@ -32,19 +32,13 @@ pub fn Th2p_reg5(T: f64, h: f64) -> f64 {
     let mut h1: f64 = pT2h_reg5(p1, T);
     let mut p2: f64 = P_MAX5; //
     let mut h2: f64 = pT2h_reg5(p2, T);
-    let f1: f64 = h - h1;
-    let f2: f64 = h - h2;
     p1 = p2 - (p2 - p1) * ((h - h2) / (h1 - h2)).abs();
-    rtsec1(pT2h_reg5, T, h, p1, p2, f1, f2, ESP, I_MAX)
+    rtsec(pT2h_reg5, T, h, p1, p2, 2, ESP, I_MAX)
 }
 
 /// Region 5: (T,s)-> s using the secant method
 pub fn Ts2p_reg5(T: f64, s: f64) -> f64 {
     let mut p1: f64 = P_MIN5;
-    let mut s1: f64 = pT2s_reg5(p1, T);
-    let mut f1: f64 = s - s1;
     let p2: f64 = P_MAX5;
-    let s2: f64 = pT2s_reg5(p2, T);
-    let f2: f64 = s - s2;
-    rtsec1(pT2s_reg5, T, s, p1, p2, f1, f2, ESP, I_MAX)
+    rtsec(pT2s_reg5, T, s, p1, p2, 2, ESP, I_MAX)
 }
