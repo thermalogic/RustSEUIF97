@@ -48,9 +48,9 @@ pub fn pv2T_reg1(p: f64, v: f64) -> f64 {
     f = v - pT2v_reg1(p, T);
     r_error = f / v;
    // r_error>0, v+ ,T+  r_error<0, v-, T- 
-   let step = if r_error > 0.0 { 0.01 } else { -0.001 };
-   let direction = if r_error > 0.0 { 1.0 } else { -1.0 };
-   while steps < MAX_STEPS {
+    let step = if r_error > 0.0 { 0.01 } else { -0.001 };
+    let direction = if r_error > 0.0 { 1.0 } else { -1.0 };
+    while steps < MAX_STEPS {
         T += step;
         if T < T_MIN1 || T > T_MAX1 {
             return if direction > 0.0 { T } else { T_MIN1 };
@@ -61,7 +61,7 @@ pub fn pv2T_reg1(p: f64, v: f64) -> f64 {
             return T;
         }
         steps += 1;
-     }
+    }
     T 
 }
 
