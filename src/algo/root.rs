@@ -6,20 +6,20 @@ type IF97_EQ = fn(f64, f64) -> f64;
 pub const ESP: f64 = 1.0E-08;
 pub const I_MAX: i32 = 100;
 
-/// 使用割线法求解方程 fun(x) = target 的根
+/// Finds the root of the equation fun(x) = target using the secant method.
 ///
 /// # Arguments
-/// * `fun` - 目标函数 fn(f64, f64) -> f64
-/// * `var` - 固定参数值
-/// * `target` - 目标值 (求解 fun = target)
-/// * `x1` - 搜索区间的左边界
-/// * `x2` - 搜索区间的右边界
-/// * `var_position` - 固定参数的位置: 1=fun(var,x), 2=fun(x,var)
-/// * `xacc` - 收敛精度
-/// * `i_max` - 最大迭代次数
+/// * `fun` - Target function fn(f64, f64) -> f64
+/// * `var` - Fixed parameter value
+/// * `target` - Target value (solve for fun = target)
+/// * `x1` - Left boundary of the search interval
+/// * `x2` - Right boundary of the search interval
+/// * `var_position` - Position of the fixed parameter: 1=fun(var,x), 2=fun(x,var)
+/// * `xacc` - Convergence precision
+/// * `i_max` - Maximum number of iterations
 ///
 /// # Returns
-/// 满足精度要求的近似根
+/// Approximate root satisfying the precision requirement
 pub fn rtsec(
     fun: IF97_EQ, var: f64, target: f64, x1: f64, x2: f64,
     var_position: i32, xacc: f64, i_max: i32,
@@ -78,18 +78,18 @@ pub fn rtsec(
 }
 
 
-// 使用二分法求解方程 f(x) = 0 的根
+/// Finds the root of the equation f(x) = 0 using the bisection method.
 ///
 /// # Arguments
-/// * `mut t1` - 搜索区间的左边界
-/// * `mut t2` - 搜索区间的右边界
-/// * `f` - 目标函数（返回值为 f64，我们需要找 f(x) = 0 的点）
-/// * `max_iter` - 最大迭代次数
-/// * `tol` - 函数值容差 (|f(x)| < tol)
-/// * `x_tol` - 区间长度容差 (|t1 - t2| < x_tol)
+/// * `t1` - Left boundary of the search interval
+/// * `t2` - Right boundary of the search interval
+/// * `f` - Target function (returns f64, we need to find x where f(x) = 0)
+/// * `max_iter` - Maximum number of iterations
+/// * `tol` - Function value tolerance (|f(x)| < tol)
+/// * `x_tol` - Interval length tolerance (|t1 - t2| < x_tol)
 ///
 /// # Returns
-/// 满足精度要求的近似根
+/// Approximate root satisfying the precision requirement
 pub fn bisection<F>(
     mut t1: f64,
     mut t2: f64,
