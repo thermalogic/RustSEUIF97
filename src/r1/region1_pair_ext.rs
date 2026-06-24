@@ -10,20 +10,19 @@ use crate::r4::region4_sat_pT::*;
 //  * v: specific volume m^3/kg
 /// * T: temperature  K
 pub fn pv2T_reg1(p: f64, v: f64) -> f64 {
-    const V_ESPION: f64 = 1.0e-8;
-    let mut T1: f64 = T_MIN1;
+   let mut T1: f64 = T_MIN1;
     let mut v1: f64 = pT2v_reg1(p, T1);
-    let mut f1: f64 = v - v1;
+    let mut f1: f64 = v - pT2v_reg1(p, T1);
 
-    let mut T2: f64 = if p >= 16.5291643 && p <= 100.0 {
-        T_MAX1
-     } else {
-        T_saturation(p)
+    let mut T2: f64 = T_MAX1;
+    if (p >= 16.5291643) && (p <= 100.0) {
+        T2 = T_MAX1;
+    } else {
+        T2 = T_saturation(p);
     };
-    
     let mut v2: f64 = pT2v_reg1(p, T2);
     let mut f: f64 = v - v2;
-    if (v2 - v1).abs() >ESP {
+    if (v2 - v1) != 0.0 {
         T2 = T1 + (T2 - T1) * (v - v1) / (v2 - v1);
     }
     v2 = pT2v_reg1(p, T2);
@@ -34,33 +33,36 @@ pub fn pv2T_reg1(p: f64, v: f64) -> f64 {
         f = v - v2;
     }
     let mut T: f64 = rtsec2(pT2v_reg1, p, v, T1, T2, f1, f, 1.0e-3, 100);
-    let mut r_error:f64 = (v - pT2v_reg1(p, T)) / v;//relative error
-    if T >= T_MIN1 && T <= T_MAX1 && r_error.abs() < V_ESPION {
+
+    let mut r_error = 0.0; //relative error
+    r_error = (v - pT2v_reg1(p, T)) / v;
+    if T >= T_MIN1 && T <= T_MAX1 && r_error.abs() < 1.0e-8 {
         return T;
     };
     T = T.clamp(T_MIN1, T_MAX1);
-    // Region 1 : 
-    //  the difference of volume is the very small when the difference T is large
-    //  so, we need to adjust the T
-    const MAX_STEPS: i32 = 1000000;
-    const STEP_UP: f64 = 0.01;
-    const STEP_DOWN: f64 = 0.001;
-    // T^ -> V^ 
-    //  r_error> 0.0, v is bigger than the real value, T need -
-    //  r_error< 0.0 , v is smqller than the real value, T need +   
-    let mut current_steps:i32=0;
-    let step = if r_error > 0.0 { STEP_UP } else { -STEP_DOWN };
-    let direction = if r_error > 0.0 { 1.0 } else { -1.0 };
-    while r_error.abs() > V_ESPION && current_steps < MAX_STEPS {
-          T += step;
-          if T < T_MIN1 || T > T_MAX1 {
-             return if direction > 0.0 { T_MAX1  } else { T_MIN1 };
-          }
-         f = v - pT2v_reg1(p, T);
-         r_error = f / v;
-         current_steps += 1;
-   }
-   INVALID_VALUE as f64
+    // Region 1 : the difference volume is the very small when the difference T is large
+    // so, we need to adjust the T
+    let V_ESPION: f64 = 1.0e-8;
+    let MAX_STEPS: i32 = 1000000;
+    let mut steps: i32 = 0;
+    f = v - pT2v_reg1(p, T);
+    r_error = f / v;
+   // r_error>0, v+ ,T+  r_error<0, v-, T- 
+   let step = if r_error > 0.0 { 0.01 } else { -0.001 };
+   let direction = if r_error > 0.0 { 1.0 } else { -1.0 };
+   while steps < MAX_STEPS {
+        T += step;
+        if T < T_MIN1 || T > T_MAX1 {
+            return if direction > 0.0 { T } else { T_MIN1 };
+        }
+        f = v - pT2v_reg1(p, T);
+        r_error = f / v;
+        if r_error.abs() < V_ESPION {
+            return T;
+        }
+        steps += 1;
+     }
+    T 
 }
 
 /// Region 1  (T,v)->p using the secant method
