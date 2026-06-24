@@ -1,6 +1,6 @@
 //! Algorithms
 //! * The secant method to find the root
-//! * The function to computer the ploynimal and its derivative on IJn[(i32,i32,f64)
+//! * The function to compute the polynomial and its derivative on IJn[(i32,i32,f64)
 
 pub mod polynomial;
 pub mod polynomial_steps;

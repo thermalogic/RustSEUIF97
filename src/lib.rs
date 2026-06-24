@@ -1,6 +1,8 @@
 #![allow(warnings)]
 // allow snake case for using the thermodynamics notation
 #![allow(non_snake_case)]
+#![allow(non_camel_case_types)]
+#![allow(non_upper_case_globals)]  
 #![allow(clippy::approx_constant)]
 #![doc=include_str!("../README.md")]
 //#![warn(missing_docs)]

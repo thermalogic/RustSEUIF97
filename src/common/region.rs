@@ -180,7 +180,7 @@ pub fn ph_sub_region(p: f64, h: f64) -> i32 {
             return 5;
         }
     };
-    INVALID_VALUE
+    INVALID_PH
 }
 
 /// Pmin -> Ps_623-> Pc-> 100MP, 3 range to check region
@@ -262,7 +262,7 @@ pub fn ps_sub_region(p: f64, s: f64) -> i32 {
             return 5;
         }
     };
-    INVALID_VALUE
+    INVALID_PS
 }
 
 
@@ -517,7 +517,7 @@ pub fn pv_sub_region(p: f64, v: f64) -> i32 {
     if (p > P_MIN5) && (p <= P_MAX5) && (v > vt1073) && (v <= vt2273) {
         return 5;
     };
-    INVALID_VALUE
+    INVALID_PV
 }
 
 ///  Region (t,v)
@@ -593,7 +593,7 @@ pub fn tv_sub_region(t: f64, v: f64) -> i32 {
     if (T > T_MIN5) && (T <= T_MAX5) && (v >= vp50) && (v <= vpmax5) {
         return 5;
     };
-    INVALID_VALUE
+    INVALID_TV
 }
 
 /// Region (t,h)
@@ -696,7 +696,7 @@ pub fn th_sub_region(t: f64, h: f64) -> i32 {
     if (T > T_MIN5) && (T <= T_MAX5) && (h >= hpm50) && (h <= hpmax5) {
         return 5;
     };
-    INVALID_VALUE
+    INVALID_TH
 }
 
 ///  Region (t,s)
@@ -771,5 +771,5 @@ pub fn ts_sub_region(t: f64, s: f64) -> i32 {
     if (T > T_MIN5) && (T <= T_MAX5) && (s >= sp50) && (s <= spmax5) {
         return 5;
     };
-    INVALID_VALUE
+    INVALID_TS
 }
