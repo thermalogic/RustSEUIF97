@@ -11,12 +11,23 @@ fn criterion_benchmark(c: &mut Criterion) {
 
     group.throughput(Throughput::Elements(1));
     
-    group.bench_function("pt2h_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OH)));
-    group.bench_function("pt2s_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OS)));
-    group.bench_function("pt2v_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OV)));
-    //group.bench_function("pt2u_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OU)));
-    //group.bench_function("pt2w_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OW)));
+    //  group.bench_function("pv2T_reg1", |b| b.iter(|| pv(black_box(3.0), black_box(0.100215168e-2), OT)));
+    //  group.bench_function("Tv2p_reg1", |b| b.iter(|| tv(black_box(300.0 - 273.15), black_box(0.100215168e-2), OP)));
+    //  group.bench_function("Th2p_reg1", |b| b.iter(|| th(black_box(300.0 - 273.15), black_box(0.115331273e+3), OP)));
+    //  group.bench_function("Ts2p_reg1", |b| b.iter(|| ts(black_box(300.0 - 273.15), black_box(0.392294792), OP)));
+      
+    // group.bench_function("pt2h_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OH)));
+    // group.bench_function("pt2s_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OS)));
+    // group.bench_function("pt2v_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OV)));
+    // group.bench_function("pt2u_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OU)));
+    // group.bench_function("pt2w_reg1", |b| b.iter(|| pt(black_box(3.0), black_box(300.0 - 273.15), OW)));
     
+   
+    // group.bench_function("pv2T_reg2", |b| b.iter(|| pv(black_box(0.0035), black_box(0.394913866E+02), OT)));
+    // group.bench_function("Tv2p_reg2", |b| b.iter(|| tv(black_box(300.0-273.15), black_box(0.394913866E+02), OP)));
+    // group.bench_function("Th2p_reg2", |b| b.iter(|| th(black_box(300.0-273.15), black_box(0.254991145E+04), OP)));
+    // group.bench_function("Ts2p_reg2", |b| b.iter(|| ts(black_box(300.0-273.15), black_box(0.852238967E+01), OP)));
+     
     //group.bench_function("pt2h_reg2", |b| b.iter(|| pt(black_box(0.0035), black_box(300.0 - 273.15), OH)));
     //group.bench_function("pt2s_reg2", |b| b.iter(|| pt(black_box(0.0035), black_box(300.0 - 273.15), OS)));
 
@@ -25,8 +36,16 @@ fn criterion_benchmark(c: &mut Criterion) {
     //group.bench_function("pt2h_reg3", |b| b.iter(|| pt(black_box(50.0), black_box(630.0-273.15), OH)));
     //group.bench_function("pt2s_reg3", |b| b.iter(|| pt(black_box(50.0), black_box(630.0-273.15), OS)));
 
+    //  group.bench_function("pv2T_reg3", |b| b.iter(|| pv(black_box(0.255837018E2), black_box(1.0 / 500.0), OT)));
+    // group.bench_function("Th2d_reg3", |b| b.iter(|| th(black_box(650.0 - 273.15), black_box(0.186343019E4), OD)));
+    //  group.bench_function("Ts2d_reg3", |b| b.iter(|| ts(black_box(650.0 - 273.15), black_box(0.405427273E1), OD)));
+    
+
     //group.bench_function("pt2h_reg5", |b| b.iter(|| pt(black_box(0.5), black_box(1500.0 - 273.15), OH)));
     //group.bench_function("pt2s_reg5", |b| b.iter(|| pt(black_box(0.5), black_box(1500.0-273.15), OS)));
+    // group.bench_function("pv2T_reg5", |b| b.iter(|| pv(black_box(0.5), black_box(0.521976855e+4), OT)));
+      group.bench_function("Tv2p_reg5", |b| b.iter(|| pv(black_box(1500.0 - 273.15), black_box(0.521976855e+4), OP)));
+      
     
     group.finish();
 }

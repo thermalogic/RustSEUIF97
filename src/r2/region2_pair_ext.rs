@@ -30,18 +30,14 @@ fn T2pmax_reg2(T: f64) -> f64 {
     }
  }
  
-/// Region 2  (p,v)->T using the bisection method
+/// Region 2  (p,v)->T using the  Brent's method
 ///      p: pressure  MPa
 //       v: specific volume m^3/kg
 ///      T: temperature  K
 pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
-    let Tmin2: f64 = p2Tmin_reg2(p);
-    let T1: f64 = Tmin2;
-    let T2:f64 = T_MAX2;
-    let func = |T: f64| -> f64 {
-        (v - pT2v_reg2(p, T)) / v
-    };
-    bisection(T1, T2, func,  20000, 1.0e-8, 1.0e-6) 
+    let T1: f64 = p2Tmin_reg2(p);
+    let T2: f64 = T_MAX2;
+    zbrent(pT2v_reg2, p, v, T1, T2, 1, ESP, I_MAX) 
 }
 
 /// Region 2  (T,v)->p using the bisection method
@@ -49,36 +45,31 @@ pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
 ///      p: pressure  MPa
 //       v: specific volume m^3/kg
 pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
-    let mut p1: f64 = P_MIN2;
-    let mut p2: f64 = P_MAX2;
+    let p1: f64 = P_MIN2;
+    let p2: f64 = P_MAX2;
     let func = |p: f64| -> f64 {
         (v - pT2v_reg2(p, T)) / v
     };
     bisection(p1, p2, func,  20000, 1.0e-8, 1.0e-6) 
+    //zbrent(pT2v_reg2, T, v, p1, p2, 2, ESP, I_MAX) 
 }
 
-/// Region 2  (T,h)->p using the bisection method
+/// Region 2  (T,h)->p using the Brent's method
 ///      T: temperature  K
 ///      h: specific enthalpy kJ/kg
 ///      p: pressure  MPa
 pub fn Th2p_reg2(T: f64, h: f64) -> f64 {
-    let mut p1: f64 = P_MIN2;
-    let mut p2: f64 = P_MAX2;
-    let func = |p: f64| -> f64 {
-        h - pT2h_reg2(p, T)
-    };
-    bisection(p1, p2, func,  20000, 1.0e-8, 1.0e-6) 
+    let p1: f64 = P_MIN2;
+    let p2: f64 = P_MAX2;
+    zbrent(pT2h_reg2, T, h, p1, p2, 2, ESP, I_MAX) 
 }
 
-/// Region 2  (T,s)->p using the bisection method
+/// Region 2  (T,s)->p using the Brent's method
 ///  * T: temperature  K
 ///  * s: specific entropy  kJ/(kg K)
 ///  * p: pressure  MPa
 pub fn Ts2p_reg2(T: f64, s: f64) -> f64 {
-    let mut p1: f64 = P_MIN2;
-    let mut p2: f64 =T2pmax_reg2(T);
-    let func = |p: f64| -> f64 {
-        s - pT2s_reg2(p, T)
-    };
-    bisection(p1, p2, func,  20000, 1.0e-8, 1.0e-6) 
+    let p1: f64 = P_MIN2;
+    let p2: f64 = T2pmax_reg2(T);
+    zbrent(pT2s_reg2, T, s, p1, p2, 2, ESP, I_MAX) 
 }
