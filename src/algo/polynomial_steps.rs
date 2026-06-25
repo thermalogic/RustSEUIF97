@@ -16,8 +16,7 @@
 pub fn poly_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             value += n * vi.powi(I) * vj.powi(J);  
         }
     }
@@ -30,8 +29,7 @@ pub fn poly_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usiz
 pub fn poly_i_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             value += n * I as f64* vi.powi(I - 1) * vj.powi(J);
         }
     }
@@ -44,8 +42,7 @@ pub fn poly_i_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(us
 pub fn poly_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             value += n * (I*(I-1))  as f64 *vi.powi(I - 2) * vj.powi(J);
         }
     }
@@ -58,8 +55,7 @@ pub fn poly_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(u
 pub fn poly_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             value += n * I as f64* vi.powi(I - 1) *J as f64* vj.powi(J - 1);
         }
     }
@@ -72,8 +68,7 @@ pub fn poly_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(u
 pub fn poly_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             value += n * vi.powi(I) *J as f64*vj.powi(J - 1);
         }
     }
@@ -86,8 +81,7 @@ pub fn poly_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(us
 pub fn poly_jj_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
     let mut value = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             value += n * vi.powi(I) * (J*(J-1)) as f64*vj.powi(J - 2);
         }
     }
@@ -105,8 +99,7 @@ pub fn polys_0_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
     let mut poly_j: f64 = 0.0;
 
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             let item = n * vi.powi(I) * vj.powi(J);
             poly_0 += item;
             poly_j += J as f64 * item;
@@ -122,8 +115,7 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
     let mut poly_j: f64 = 0.0;
 
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             let item = n * vi.powi(I) * vj.powi(J);
             poly_i += I as f64 * item;
             poly_j += J as f64 * item;
@@ -139,8 +131,7 @@ pub fn polys_i_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &
     let mut poly_i: f64 = 0.0;
     let mut poly_ij: f64 = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             let item = n *I as f64 * vi.powi(I - 1) * vj.powi(J);
             poly_i += item;
             poly_ij += J as f64 * item;
@@ -155,8 +146,7 @@ pub fn polys_i_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &
     let mut poly_i: f64 = 0.0;
     let mut poly_ii: f64 = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             let item = n * I as f64 * vi.powi(I - 1) * vj.powi(J);
             poly_i += item;
             poly_ii += (I - 1) as f64 * item;
@@ -175,8 +165,7 @@ pub fn polys_i_ii_ij_jj_powi_steps(
     let mut poly_ij: f64 = 0.0;
     let mut poly_jj: f64 = 0.0;
     for &(start, end) in steps {
-        for k in start..end {
-            let (I, J, n) = IJn[k];
+       for &(I, J, n) in &IJn[start..end] {
             let item = n * vi.powi(I) * vj.powi(J);
             let i_item = I as f64 * item;
             poly_i += i_item;

@@ -9,6 +9,7 @@ use crate::r2::*;
 use crate::r3::*;
 use crate::r4::*;
 use crate::r5::*;
+use crate::if97_core::*;
 
 /// the  parameters: <br/>
 ///   `o_id`: the property of id;<br/>
@@ -634,81 +635,11 @@ pub fn sx2v(s: f64, x: f64) -> f64 {
 }
 
 /// ishd(pi,ti,pe) - Isentropic enthalpy drop
-///
-/// # Examples
-///
-/// ```
-///  use seuif97::*;
-///
-/// let pi:f64 = 16.0;
-/// let ti:f64 = 535.1;
-/// let pe:f64 = 5.0;
-/// let delta_h = ishd(pi, ti, pe);
-/// println!("pi={pi} ti={ti} pe={pe} ishd={delta_h:.3}");
-/// ```
 pub fn ishd(pi: f64, ti: f64, pe: f64) -> f64 {
-    if pi <= pe {
-        return INVALID_VALUE as f64;
-    }
-    let hi = pt(pi, ti, OH);
-    if hi <= 0.0 {
-        return INVALID_VALUE as f64;
-    }
-    let si = pt(pi, ti, OS);
-    if si < -500.0 {
-        return INVALID_VALUE as f64;
-    }
-    let he_isos = ps(pe, si, OH);
-    if he_isos < 0.0 {
-        return INVALID_VALUE as f64;
-    }
-    hi - he_isos
+    core_ishd(pi, ti, pe) 
 }
 
 /// ief(pi,ti,pe,te) - Isentropic efficiency (%) for superheated steam expansion
-///
-/// # Examples
-///
-/// ```
-///  use seuif97::*;
-///
-/// let pi:f64 = 16.0;
-/// let ti:f64 = 535.1;
-/// let pe:f64 = 5.0;
-/// let te:f64 = 350.0;
-/// let eff = ief(pi, ti, pe, te);
-/// println!("pi={pi} ti={ti} pe={pe} te={te} ief={eff:.2}%");
-/// ```
 pub fn ief(pi: f64, ti: f64, pe: f64, te: f64) -> f64 {
-    if pi <= pe || ti <= te {
-        return INVALID_VALUE as f64;
-    }
-    let hi = pt(pi, ti, OH);
-    if hi < -500.0 {
-        return INVALID_VALUE as f64;
-    }
-    let si = pt(pi, ti, OS);
-    if si < -500.0 {
-        return INVALID_VALUE as f64;
-    }
-    let he_isos = ps(pe, si, OH);
-    if he_isos < -500.0 {
-        return INVALID_VALUE as f64;
-    }
-    let ishd_val = hi - he_isos;
-
-    let he = pt(pe, te, OH);
-    if he < -500.0 {
-        return INVALID_VALUE as f64;
-    }
-    let se = pt(pe, te, OS);
-    if se < -1000.0 {
-        return INVALID_VALUE as f64;
-    }
-    if (se - si) <= 0.0 {
-        return INVALID_VALUE as f64;
-    }
-
-    let ahd = hi - he;
-    100.0 * ahd / ishd_val
+   core_ief(pi, ti, pe,te) 
 }

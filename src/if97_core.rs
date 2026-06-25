@@ -250,6 +250,19 @@ pub fn core_sx2h(s: f64, x: f64) -> f64 { core_sx(s, x, OH) }
 pub fn core_sx2v(s: f64, x: f64) -> f64 { core_sx(s, x, OV) }
 
 /// Isentropic enthalpy drop: h(pi,ti) - h(pe, s=const)
+///   ishd(pi,ti,pe)
+///
+/// # Examples
+///
+/// ```
+/// use seuif97::*;
+///
+/// let pi:f64 = 16.0;
+/// let ti:f64 = 535.1;
+/// let pe:f64 = 5.0;
+/// let delta_h = ishd(pi, ti, pe);
+/// println!("pi={pi} ti={ti} pe={pe} ishd={delta_h:.3}");
+/// ```
 /// Returns INVALID_VALUE if input is invalid
 pub fn core_ishd(pi: f64, ti: f64, pe: f64) -> f64 {
     if pi <= pe {
@@ -260,7 +273,7 @@ pub fn core_ishd(pi: f64, ti: f64, pe: f64) -> f64 {
         return INVALID_VALUE as f64;
     }
     let si = core_pt(pi, ti, OS);
-    if si < -500.0 {
+    if si < 0.0 {
         return INVALID_VALUE as f64;
     }
     let he_isos = core_ps(pe, si, OH);
@@ -270,32 +283,45 @@ pub fn core_ishd(pi: f64, ti: f64, pe: f64) -> f64 {
     hi - he_isos
 }
 
-/// Isentropic efficiency (%) for superheated steam expansion
+/// ief(pi,ti,pe,te) - Isentropic efficiency (%) for superheated steam expansion
+///
+/// # Examples
+///
+/// ```
+///  use seuif97::*;
+///
+/// let pi:f64 = 16.0;
+/// let ti:f64 = 535.1;
+/// let pe:f64 = 5.0;
+/// let te:f64 = 350.0;
+/// let eff = ief(pi, ti, pe, te);
+/// println!("pi={pi} ti={ti} pe={pe} te={te} ief={eff:.2}%");
+/// ```
 /// Returns INVALID_VALUE if input is invalid
 pub fn core_ief(pi: f64, ti: f64, pe: f64, te: f64) -> f64 {
     if pi <= pe || ti <= te {
         return INVALID_VALUE as f64;
     }
     let hi = core_pt(pi, ti, OH);
-    if hi < -500.0 {
+    if hi < 0.0 {
         return INVALID_VALUE as f64;
     }
     let si = core_pt(pi, ti, OS);
-    if si < -500.0 {
+    if si < 0.0 {
         return INVALID_VALUE as f64;
     }
     let he_isos = core_ps(pe, si, OH);
-    if he_isos < -500.0 {
+    if he_isos < 0.0 {
         return INVALID_VALUE as f64;
     }
     let ishd_val = hi - he_isos;
 
     let he = core_pt(pe, te, OH);
-    if he < -500.0 {
+    if he < 0.0 {
         return INVALID_VALUE as f64;
     }
     let se = core_pt(pe, te, OS);
-    if se < -1000.0 {
+    if se < 0.0 {
         return INVALID_VALUE as f64;
     }
     if (se - si) <= 0.0 {
