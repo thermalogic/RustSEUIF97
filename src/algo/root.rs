@@ -1,13 +1,63 @@
-//! The secant method to find the root
-//! * Numerical Reciples  Ch.9.2
+//! Find the root of the equation f(x)
+//! Numerical Reciples  Ch.9
+//!   * Bisection method
+//!   * Secant method
+//!   * Brent's method
 
 type IF97_EQ = fn(f64, f64) -> f64;
 
 pub const ESP: f64 = 1.0E-08;
 pub const I_MAX: i32 = 100;
 
-/// Finds the root of the equation fun(x) = target using the secant method.
+
+/// Finds the root of the equation f(x) = 0 using the bisection method.
 ///
+/// # Arguments
+/// * `t1` - Left boundary of the search interval
+/// * `t2` - Right boundary of the search interval
+/// * `f` - Target function (returns f64, we need to find x where f(x) = 0)
+/// * `max_iter` - Maximum number of iterations
+/// * `tol` - Function value tolerance (|f(x)| < tol)
+/// * `x_tol` - Interval length tolerance (|t1 - t2| < x_tol)
+///
+/// # Returns
+/// Approximate root satisfying the precision requirement
+pub fn bisection<F>(
+    mut t1: f64,
+    mut t2: f64,
+    f: F,
+    max_iter: usize,
+    tol: f64,
+    x_tol: f64,
+) -> f64
+where
+    F: Fn(f64) -> f64,
+{
+    let mut r_t1 = f(t1);
+    let mut r_t2 = f(t2);
+     if r_t1 * r_t2 > 0.0 {
+         panic!("Bisection failed: f(t1) and f(t2) must have opposite signs!");
+     }
+
+    for _ in 0..max_iter {
+        let tm = 0.5 * (t1 + t2);
+        let r_tm = f(tm);
+       if r_tm.abs() < tol || (t1 - t2).abs() < x_tol {
+            return tm;
+        }
+       if r_t1 * r_tm < 0.0 {
+            t2 = tm;
+            r_t2 = r_tm;
+        } else {
+            t1 = tm;
+            r_t1 = r_tm;
+        }
+    }
+    0.5 * (t1 + t2)
+}
+
+/// Finds the root of the equation fun(x) = target using the secant method.
+/// Numerical Reciples  Ch.9.2
 /// # Arguments
 /// * `fun` - Target function fn(f64, f64) -> f64
 /// * `var` - Fixed parameter value
@@ -76,52 +126,6 @@ pub fn rtsec(
     rts
 }
 
-
-/// Finds the root of the equation f(x) = 0 using the bisection method.
-///
-/// # Arguments
-/// * `t1` - Left boundary of the search interval
-/// * `t2` - Right boundary of the search interval
-/// * `f` - Target function (returns f64, we need to find x where f(x) = 0)
-/// * `max_iter` - Maximum number of iterations
-/// * `tol` - Function value tolerance (|f(x)| < tol)
-/// * `x_tol` - Interval length tolerance (|t1 - t2| < x_tol)
-///
-/// # Returns
-/// Approximate root satisfying the precision requirement
-pub fn bisection<F>(
-    mut t1: f64,
-    mut t2: f64,
-    f: F,
-    max_iter: usize,
-    tol: f64,
-    x_tol: f64,
-) -> f64
-where
-    F: Fn(f64) -> f64,
-{
-    let mut r_t1 = f(t1);
-    let mut r_t2 = f(t2);
-     if r_t1 * r_t2 > 0.0 {
-         panic!("Bisection failed: f(t1) and f(t2) must have opposite signs!");
-     }
-
-    for _ in 0..max_iter {
-        let tm = 0.5 * (t1 + t2);
-        let r_tm = f(tm);
-       if r_tm.abs() < tol || (t1 - t2).abs() < x_tol {
-            return tm;
-        }
-       if r_t1 * r_tm < 0.0 {
-            t2 = tm;
-            r_t2 = r_tm;
-        } else {
-            t1 = tm;
-            r_t1 = r_tm;
-        }
-    }
-    0.5 * (t1 + t2)
-}
 
 // Brent's method: combines bisection, secant, and inverse quadratic interpolation
 /// to find the root of fun(x) = target within bracket [x1, x2].
@@ -275,3 +279,4 @@ pub fn zbrent(
     // Max iterations reached
     b
 }
+
