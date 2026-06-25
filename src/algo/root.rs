@@ -59,15 +59,14 @@ pub fn rtsec(
             xl = rts;
             fl = f;
             rts += dx;
-            
+            // rts <=0.0 out of bounds
+            if rts <= 0.0 {
+                 rts = 0.000001;
+             }
             // Calculate function value based on variable position
             if var_position == 1 {
                 f = target - fun(var, rts);
             } else {
-                // rts may be out-of-bounds in region X
-                if rts <= 0.0 {
-                    rts = 0.000001;
-                }
                 f = target - fun(rts, var);
             }
             i += 1;

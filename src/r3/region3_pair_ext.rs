@@ -29,7 +29,9 @@ pub fn Th2d_reg3(T: f64, h: f64) -> f64 {
 ///  * s: specific entropy  kJ/(kg K)
 ///  * d: density    kg/m^3
 pub fn Ts2d_reg3(T: f64, s: f64) -> f64 {
-    let d1: f64 = 100.0;
-    let d2: f64 = 1.1 * d1;
+    let p1: f64 = B23_T2p(T);
+    let d1: f64 = 1.0 / pT2v_reg3(p1, T);
+    let p2: f64 = P_MAX3;
+    let d2: f64 = 1.0 / pT2v_reg3(p2, T);
     rtsec(Td2s_reg3, T, s, d1, d2, 1, ESP, I_MAX)
 }
