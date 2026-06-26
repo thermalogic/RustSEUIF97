@@ -58,12 +58,12 @@ where
 
 
 
-/// Finds the root of the equation fun(x) = target using the secant method.
+/// Finds the root of the equation fun(f64, f64) = target using the secant method.
 /// Numerical Reciples  Ch.9.2
 /// # Arguments
-/// * `fun` - Target function fn(f64, f64) -> f64
-/// * `var` - Fixed parameter value
-/// * `target` - Target value (solve for fun = target)
+/// * `fun` - Target function fun(f64, f64) -> f64
+/// * `fvar` - Fixed parameter value
+/// * `target` - Target value (solve for fun(f64, f64) = target)
 /// * `x1` - Left boundary of the search interval
 /// * `x2` - Right boundary of the search interval
 /// * `var_position` - Position of the fixed parameter: 1=fun(var,x), 2=fun(x,var)
@@ -73,7 +73,7 @@ where
 /// # Returns
 /// Approximate root satisfying the precision requirement
 pub fn rtsec(
-    fun: IF97_EQ, var: f64, target: f64, x1: f64, x2: f64,
+    fun: IF97_EQ, fvar: f64, target: f64, x1: f64, x2: f64,
     var_position: i32, xacc: f64, i_max: i32,
 ) -> f64 {
     let mut xl: f64;
@@ -84,10 +84,10 @@ pub fn rtsec(
     // Calculate function values based on variable position
     let (mut fl, mut f) = if var_position == 1 {
         // fun(var, x) - first parameter is fixed
-        (target - fun(var, x1), target - fun(var, x2))
+        (target - fun(fvar, x1), target - fun(fvar, x2))
     } else {
         // fun(x, var) - second parameter is fixed
-        (target - fun(x1, var), target - fun(x2, var))
+        (target - fun(x1, fvar), target - fun(x2, fvar))
     };
     
     // pick the bound with the smaller function value as the most recent guess
@@ -115,11 +115,11 @@ pub fn rtsec(
             if rts <= 0.0 {
                  rts = 0.000001;
              }
-            // Calculate function value based on variable position
+            // Calculate function value based on fixed parameter position
             if var_position == 1 {
-                f = target - fun(var, rts);
+                f = target - fun(fvar, rts);
             } else {
-                f = target - fun(rts, var);
+                f = target - fun(rts, fvar);
             }
             i += 1;
         }
@@ -130,15 +130,15 @@ pub fn rtsec(
 
 
 // Brent's method: combines bisection, secant, and inverse quadratic interpolation
-/// to find the root of fun(x) = target within bracket [x1, x2].
+/// to find the root of fun(f64, f64) = target within bracket [x1, x2].
 ///
 /// # Arguments
 /// * `fun` - Target function fn(f64, f64) -> f64
-/// * `var` - Fixed parameter value
-/// * `target` - Target value (solve for fun = target)
+/// * `fvar` - Fixed parameter value
+/// * `target` - Target value (solve for fun(f64, f64) = target)
 /// * `x1` - Left boundary of the search interval
 /// * `x2` - Right boundary of the search interval
-/// * `var_position` - Position of the fixed parameter: 1=fun(var,x), 2=fun(x,var)
+/// * `fvar_position` - Position of the fixed parameter: 1=fun(fvar,x), 2=fun(x,fvar)
 /// * `tol` - Convergence precision (on x)
 /// * `i_max` - Maximum number of iterations
 ///
@@ -153,13 +153,13 @@ pub fn zbrent(
     target: f64,
     x1: f64,
     x2: f64,
-    var_position: i32,
+    fvar_position: i32,
     tol: f64,
     i_max: i32,
 ) -> f64 {
     // Helper closure to evaluate f(x) = target - fun(x)
     let mut eval = |x: f64| -> f64 {
-        if var_position == 1 {
+        if fvar_position == 1 {
             target - fun(var, x)
         } else {
             target - fun(x, var)
