@@ -57,7 +57,7 @@ cargo install wasm-bindgen-cli
 ```
 
 ```bash
- rustup target add wasm32-unknown-unknown  
+rustup target add wasm32-unknown-unknown  
 ```
 
 ### 3.2 Build Commands

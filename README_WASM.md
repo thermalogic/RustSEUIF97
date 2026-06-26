@@ -64,7 +64,16 @@ http://localhost:8080/
 * NPM package: [seuif97](https://www.npmjs.com/seuif97)
 
 ```bash
+npm install
+
+```
+
+```bash
 npm install seuif97
+```
+
+```bash
+npm run dev
 ```
 
 * NPM Package example: [./demo_using_lib/demo_npm](./demo_using_lib/demo_npm/)
