@@ -37,7 +37,7 @@ fn T2pmax_reg2(T: f64) -> f64 {
 pub fn pv2T_reg2(p: f64, v: f64) -> f64 {
     let T1: f64 = p2Tmin_reg2(p);
     let T2: f64 = T_MAX2;
-    zbrent(pT2v_reg2, p, v, T1, T2, 1, ESP, I_MAX) 
+    zbrent(pT2v_reg2, p, v, T1, T2, FIRST_FIXED, MAX_ITER, CONVERGENCE_PRECISION) 
 }
 
 /// Region 2  (T,v)->p using the bisection method
@@ -51,7 +51,7 @@ pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
         (v - pT2v_reg2(p, T)) / v
     };
     bisection(p1, p2, func,  20000, 1.0e-8, 1.0e-6) 
-    //zbrent(pT2v_reg2, T, v, p1, p2, 2, ESP, I_MAX) 
+    //zbrent(pT2v_reg2, T, v, p1, p2, SECOND_FIXED, ESP, I_MAX) 
 }
 
 /// Region 2  (T,h)->p using the Brent's method
@@ -61,7 +61,7 @@ pub fn Tv2p_reg2(T: f64, v: f64) -> f64 {
 pub fn Th2p_reg2(T: f64, h: f64) -> f64 {
     let p1: f64 = P_MIN2;
     let p2: f64 = P_MAX2;
-    zbrent(pT2h_reg2, T, h, p1, p2, 2, ESP, I_MAX) 
+    zbrent(pT2h_reg2, T, h, p1, p2, SECOND_FIXED, MAX_ITER, CONVERGENCE_PRECISION) 
 }
 
 /// Region 2  (T,s)->p using the Brent's method
@@ -71,5 +71,5 @@ pub fn Th2p_reg2(T: f64, h: f64) -> f64 {
 pub fn Ts2p_reg2(T: f64, s: f64) -> f64 {
     let p1: f64 = P_MIN2;
     let p2: f64 = T2pmax_reg2(T);
-    zbrent(pT2s_reg2, T, s, p1, p2, 2, ESP, I_MAX) 
+    zbrent(pT2s_reg2, T, s, p1, p2, SECOND_FIXED, MAX_ITER, CONVERGENCE_PRECISION) 
 }

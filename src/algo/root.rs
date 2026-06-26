@@ -6,9 +6,13 @@
 
 type IF97_EQ = fn(f64, f64) -> f64;
 
-pub const ESP: f64 = 1.0E-08;
-pub const I_MAX: i32 = 100;
-
+pub const FIRST_FIXED: i32 = 1;        /* f(fvar, x)：第一个参数固定，搜索第二个 */
+pub const SECOND_FIXED: i32 = 2;        /* f(x, fvar)：第二个参数固定，搜索第一个 */
+pub const CONVERGENCE_PRECISION: f64 = 1.0E-08; /* rtsec 的 xacc：搜索变量收敛阈值 */
+pub const FN_TOLERANCE: f64 = 1.0E-08;   /* bisection 的 tol：函数值阈值 */
+pub const INTERVAL_TOLERANCE: f64 = 1.0E-08;   /* bisection 的 x_tol：区间长度阈值 */
+pub const MAX_ITER: i32 = 20000;     /* 最大迭代次数 */
+pub const ESP: f64 = 3.0E-08; /* 机器的浮点精度 */
 
 /// Finds the root of the equation f(x) = 0 using the bisection method.
 ///
@@ -56,8 +60,6 @@ where
     0.5 * (x1 + x2)
 }
 
-
-
 /// Finds the root of the equation fun(f64, f64) = target using the secant method.
 /// Numerical Reciples  Ch.9.2
 /// # Arguments
@@ -66,29 +68,30 @@ where
 /// * `target` - Target value (solve for fun(f64, f64) = target)
 /// * `x1` - Left boundary of the search interval
 /// * `x2` - Right boundary of the search interval
-/// * `var_position` - Position of the fixed parameter: 1=fun(var,x), 2=fun(x,var)
-/// * `xacc` - Convergence precision
+/// * `fvar_position` - Position of the fixed parameter: 1=fun(fvar, x), 2=fun(x, fvar)
 /// * `i_max` - Maximum number of iterations
+/// * `xacc` - Convergence precisionerations
 ///
 /// # Returns
 /// Approximate root satisfying the precision requirement
-pub fn rtsec(
-    fun: IF97_EQ, fvar: f64, target: f64, x1: f64, x2: f64,
-    var_position: i32, xacc: f64, i_max: i32,
-) -> f64 {
+pub fn rtsec(fun: IF97_EQ, fvar: f64, target: f64, x1: f64, x2: f64,
+            fvar_position: i32, i_max: i32, xacc: f64) -> f64 {
     let mut xl: f64;
     let mut rts: f64;
     let mut swap: f64;
     let mut dx: f64 = 0.0;
     
-    // Calculate function values based on variable position
-    let (mut fl, mut f) = if var_position == 1 {
-        // fun(var, x) - first parameter is fixed
-        (target - fun(fvar, x1), target - fun(fvar, x2))
-    } else {
-        // fun(x, var) - second parameter is fixed
-        (target - fun(x1, fvar), target - fun(x2, fvar))
+    // Helper closure to evaluate f(x) = target - fun(x)
+    let mut eval = |x: f64| -> f64 {
+        if fvar_position == 1 {
+            target - fun(fvar, x)
+        } else {
+            target - fun(x, fvar)
+        }
     };
+    
+    // Calculate function values
+    let (mut fl, mut f) = (eval(x1), eval(x2));
     
     // pick the bound with the smaller function value as the most recent guess
     if fl.abs() < f.abs() {
@@ -115,16 +118,11 @@ pub fn rtsec(
             if rts <= 0.0 {
                  rts = 0.000001;
              }
-            // Calculate function value based on fixed parameter position
-            if var_position == 1 {
-                f = target - fun(fvar, rts);
-            } else {
-                f = target - fun(rts, fvar);
-            }
+            // Calculate function value
+            f = eval(rts);
             i += 1;
         }
     };
-    
     rts
 }
 
@@ -139,8 +137,8 @@ pub fn rtsec(
 /// * `x1` - Left boundary of the search interval
 /// * `x2` - Right boundary of the search interval
 /// * `fvar_position` - Position of the fixed parameter: 1=fun(fvar,x), 2=fun(x,fvar)
-/// * `tol` - Convergence precision (on x)
 /// * `i_max` - Maximum number of iterations
+/// * `tol` - Convergence precision (on x)
 ///
 /// # Returns
 /// Approximate root satisfying the precision requirement
@@ -154,8 +152,8 @@ pub fn zbrent(
     x1: f64,
     x2: f64,
     fvar_position: i32,
-    tol: f64,
     i_max: i32,
+    tol: f64,
 ) -> f64 {
     // Helper closure to evaluate f(x) = target - fun(x)
     let mut eval = |x: f64| -> f64 {
@@ -208,7 +206,7 @@ pub fn zbrent(
         }
 
         // Convergence criterion on x
-        let tol1 = 2.0 * f64::EPSILON * b.abs() + 0.5 * tol;
+        let tol1 = 2.0 * ESP * b.abs() + 0.5 * tol;
         let xm = 0.5 * (c - b);
 
         if xm.abs() <= tol1 || fb == 0.0 {

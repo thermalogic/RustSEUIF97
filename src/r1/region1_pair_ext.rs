@@ -30,7 +30,7 @@ pub fn pv2T_reg1(p: f64, v: f64) -> f64 {
 pub fn Tv2p_reg1(T: f64, v: f64) -> f64 {
     let p1: f64 = p_saturation(T);
     let p2: f64 = P_MAX1;
-    zbrent(pT2v_reg1, T, v, p1, p2, 2, ESP, I_MAX)   
+    zbrent(pT2v_reg1, T, v, p1, p2, SECOND_FIXED, MAX_ITER, CONVERGENCE_PRECISION)   
 }
 
 /// Region 1  (T,h)->p using the Brent's method
@@ -40,7 +40,7 @@ pub fn Tv2p_reg1(T: f64, v: f64) -> f64 {
 pub fn Th2p_reg1(T: f64, h: f64) -> f64 {
     let p1: f64 = p_saturation(T);
     let p2: f64 = P_MAX1;
-    zbrent(pT2h_reg1, T, h, p1, p2, 2, ESP, I_MAX)  
+    zbrent(pT2h_reg1, T, h, p1, p2, SECOND_FIXED, MAX_ITER, CONVERGENCE_PRECISION)  
 }
 
 /// Region 1  (T,s)->p using the Brent's method
@@ -50,5 +50,5 @@ pub fn Th2p_reg1(T: f64, h: f64) -> f64 {
 pub fn Ts2p_reg1(T: f64, s: f64) -> f64 {
     let p1: f64 = p_saturation(T);
     let p2: f64 = P_MAX1;
-    zbrent(pT2s_reg1, T, s, p1, p2, 2, ESP, I_MAX)  
+    zbrent(pT2s_reg1, T, s, p1, p2, SECOND_FIXED, MAX_ITER, CONVERGENCE_PRECISION)  
 }

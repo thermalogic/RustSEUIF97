@@ -3,7 +3,7 @@
 //! Backward of Region 5 using the secant method
 //!
 
-use crate::algo::root::I_MAX;
+use crate::algo::root::*;
 use crate::algo::*;
 use crate::common::constant::*;
 use crate::r5::region5_pT::*;
