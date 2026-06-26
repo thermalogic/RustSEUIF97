@@ -13,18 +13,18 @@ pub const I_MAX: i32 = 100;
 /// Finds the root of the equation f(x) = 0 using the bisection method.
 ///
 /// # Arguments
-/// * `t1` - Left boundary of the search interval
-/// * `t2` - Right boundary of the search interval
+/// * `x1` - Left boundary of the search interval
+/// * `x2` - Right boundary of the search interval
 /// * `f` - Target function (returns f64, we need to find x where f(x) = 0)
 /// * `max_iter` - Maximum number of iterations
 /// * `tol` - Function value tolerance (|f(x)| < tol)
-/// * `x_tol` - Interval length tolerance (|t1 - t2| < x_tol)
+/// * `x_tol` - Interval length tolerance (|x1 - x2| < x_tol)
 ///
 /// # Returns
 /// Approximate root satisfying the precision requirement
 pub fn bisection<F>(
-    mut t1: f64,
-    mut t2: f64,
+    mut x1: f64,
+    mut x2: f64,
     f: F,
     max_iter: usize,
     tol: f64,
@@ -33,28 +33,30 @@ pub fn bisection<F>(
 where
     F: Fn(f64) -> f64,
 {
-    let mut r_t1 = f(t1);
-    let mut r_t2 = f(t2);
-     if r_t1 * r_t2 > 0.0 {
-         panic!("Bisection failed: f(t1) and f(t2) must have opposite signs!");
+    let mut r_x1 = f(x1);
+    let mut r_x2 = f(x2);
+     if r_x1 * r_x2 > 0.0 {
+         panic!("Bisection failed: f(x1) and f(x2) must have opposite signs!");
      }
 
     for _ in 0..max_iter {
-        let tm = 0.5 * (t1 + t2);
-        let r_tm = f(tm);
-       if r_tm.abs() < tol || (t1 - t2).abs() < x_tol {
-            return tm;
+        let xm = 0.5 * (x1 + x2);
+        let r_xm = f(xm);
+       if r_xm.abs() < tol || (x1 - x2).abs() < x_tol {
+            return xm;
         }
-       if r_t1 * r_tm < 0.0 {
-            t2 = tm;
-            r_t2 = r_tm;
+       if r_x1 * r_xm < 0.0 {
+            x2 = xm;
+            r_x2 = r_xm;
         } else {
-            t1 = tm;
-            r_t1 = r_tm;
+            x1 = xm;
+            r_x1 = r_xm;
         }
     }
-    0.5 * (t1 + t2)
+    0.5 * (x1 + x2)
 }
+
+
 
 /// Finds the root of the equation fun(x) = target using the secant method.
 /// Numerical Reciples  Ch.9.2

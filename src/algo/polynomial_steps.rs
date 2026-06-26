@@ -97,7 +97,6 @@ pub fn poly_jj_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(u
 pub fn polys_0_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_0: f64 = 0.0;
     let mut poly_j: f64 = 0.0;
-
     for &(start, end) in steps {
        for &(I, J, n) in &IJn[start..end] {
             let item = n * vi.powi(I) * vj.powi(J);
