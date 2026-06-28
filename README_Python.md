@@ -4,7 +4,7 @@
 
 **SEUIF97 2**, built on Rust, is a major upgrade over [SEUIF97 1](https://pypi.org/project/seuif97/1.2.0/) built on C, delivering significant improvements in performance, functionality and ecosystem support.
 
-SEUIF97 achieves a **5-20x** speedup over naive implementations that use the Rust standard library's `powi()` in `for` loops for the basic equations of Regions 1, 2, and 3.
+SEUIF97 achieves a **5-20x** speedup over naive implementations that use the Rust standard library's `powi()` in `for` loops for the basic equations of Regions 1, 2, 3,and 5.
 
 It is suitable for computation-intensive calculations, such as heat cycle calculations, simulations of non-stationary processes, real-time process monitoring and optimizations.
 
