@@ -4,8 +4,10 @@
 
 pub mod polynomial;
 pub mod polynomial_steps;
+pub mod polynomial_auto_tiling;
 pub mod root;
 
 pub use self::polynomial::*;
 pub use self::polynomial_steps::*;
+pub use self::polynomial_auto_tiling::*;
 pub use self::root::*;
