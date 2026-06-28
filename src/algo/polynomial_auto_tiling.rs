@@ -12,27 +12,30 @@
 
 use crate::algo::*;
 
-/// 自动分片策略：
-/// - len < 36: 2段，平均分配
-/// - len >= 36: 3段，平均分配
+/// Auto tiling strategy:
+/// - len < 36: 2 segments, equally distributed
+/// - len >= 36: 3 segments, equally distributed
 fn auto_steps(len: usize) -> Vec<(usize, usize)> {
     if len < 36 {
         let mid = len / 2;
         vec![(0, mid), (mid, len)]
     } else {
         let third = len / 3;
-        vec![(0, third), (third, 2 * third), (2 * third, len)]
+        let third_2=third+third;
+        vec![(0, third), (third, third_2), (third_2, len)]
     }
 }
 
-/// 四输出函数专用：4段平均分配
+/// Dedicated for four-output functions: 4 segments equally distributed
 fn auto_steps_4(len: usize) -> Vec<(usize, usize)> {
     let quarter = len / 4;
+    let quarter_2=quarter+quarter;
+    let quarter_3=quarter_2+quarter;
     vec![
         (0, quarter),
-        (quarter, 2 * quarter),
-        (2 * quarter, 3 * quarter),
-        (3 * quarter, len)
+        (quarter, quarter_2),
+        (quarter_2, quarter_3),
+        (quarter_3, len)
     ]
 }
 
@@ -110,6 +113,8 @@ pub fn poly_jj_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f6
     }
 }
 
+/// the polynomial of the derivative (∂²f/∂vi∂vj) 
+/// * n*i*vi^(i-1) *j*vj^(j-1)
 pub fn poly_ij_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     let len:usize = IJn.len();
     if len >= 29  
@@ -123,7 +128,7 @@ pub fn poly_ij_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f6
     }
 }
 
-/// The recursive method to get the polynomials
+/// The shared-power scaling method to get the polynomials
 ///  * the power of vi and vj  
 ///  * the power of vi and the derivative (∂f/∂vj)
 pub fn polys_0_j_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
@@ -139,7 +144,7 @@ pub fn polys_0_j_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> 
     }
 }
 
-/// The recursive method to get the polynomials
+/// The shared-power scaling method to get the polynomials
 ///  * the power of the derivative (∂f/∂vi) and vj
 ///  * the power of vi and the derivative (∂f/∂vj)
 pub fn polys_i_j_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
@@ -155,12 +160,43 @@ pub fn polys_i_j_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> 
     }
 }
 
-/// recursion the powers of the derivatives of (∂f/∂vi),(∂²f/∂²vi),(∂²f/∂vi∂vj) and (∂²f/∂²vj)
-/// The recursive method to get the polynomials
+
+/// The shared-power scaling method to get the polynomials
+///  * the power of the derivative (∂f/∂vi) and vj
+///  * the power of the derivative (∂²f/∂vi∂vj)
+pub fn polys_i_ij_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
+    let len:usize = IJn.len();
+    if len >= 29  
+    { 
+       let steps = auto_steps(len);
+       polys_i_ij_powi_steps(vi, vj, &IJn, &steps)
+    }
+    else
+    {
+        polys_i_ij_powi(vi, vj, &IJn)
+    }
+}
+
+/// The shared-power scaling method to get the polynomials
+///  * the power of the derivative (∂f/∂vi) and  (∂f/∂²vi)
+pub fn polys_i_ii_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
+    let len:usize = IJn.len();
+    if len >= 29  
+    { 
+       let steps = auto_steps(len);
+       polys_i_ii_powi_steps(vi, vj, &IJn, &steps)
+    }
+    else
+    {
+        polys_i_ii_powi(vi, vj, &IJn)
+    }
+}
+
+/// The shared-power scaling method to compute four derivatives simultaneously
 ///  * the power of the derivative (∂f/∂vi) and vj
 ///  * the power of the derivative (∂²f/∂²vi) and vj
-///  * the power of  the derivative (∂f/∂vi) and (∂f/∂vi)
-///  * the power of the derivative vi and (∂²f/∂²vj)the polynomiapoly
+///  * the power of the derivative (∂²f/∂vi∂vj)
+///  * the power of vi and the derivative (∂²f/∂²vj)
 pub fn polys_i_ii_ij_jj_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64, f64, f64) {
     let len:usize = IJn.len();
     if len >= 29  

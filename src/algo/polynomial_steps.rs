@@ -88,9 +88,9 @@ pub fn poly_jj_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(u
     value
 }
 
-//---------------------- The recursive method to compute the multiple polynomials ---------------------------
+//---------------------- The shared-power scaling method to compute the multiple polynomials ---------------------------
 
-/// The recursive method to get the polynomials
+/// The shared-power scaling method to get the polynomials
 ///  * the power of vi and vj  
 ///  * the power of vi and the derivative (∂f/∂vj)
 #[inline(always)]
@@ -108,6 +108,9 @@ pub fn polys_0_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
     (poly_0, poly_j)
 }
 
+/// The shared-power scaling method to get the polynomials
+///  * the power of the derivative (∂f/∂vi) and vj
+///  * the power of vi and the derivative (∂f/∂vj)
 #[inline(always)]
 pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_i: f64 = 0.0;
@@ -125,6 +128,9 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
     (poly_i, poly_j)
 }
 
+/// The shared-power scaling method to get the polynomials
+///  * the power of the derivative (∂f/∂vi) and vj
+///  * the power of the derivative (∂²f/∂vi∂vj)
 #[inline(always)]
 pub fn polys_i_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_i: f64 = 0.0;
@@ -140,6 +146,8 @@ pub fn polys_i_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &
     (poly_i, poly_ij)
 }
 
+/// The shared-power scaling method to get the polynomials
+///  * the power of the derivative (∂f/∂vi) and  (∂²f/∂²vi)
 #[inline(always)]
 pub fn polys_i_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_i: f64 = 0.0;
@@ -155,6 +163,11 @@ pub fn polys_i_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &
     (poly_i, poly_ii)
 }
 
+/// The shared-power scaling method to get the polynomials
+///  * the power of the derivative (∂f/∂vi) and vj
+///  * the power of the derivative (∂²f/∂²vi) and vj
+///  * the power of the derivative (∂²f/∂vi∂vj)
+///  * the power of vi and the derivative (∂²f/∂²vj)
 #[inline(always)]
 pub fn polys_i_ii_ij_jj_powi_steps(
     vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)],

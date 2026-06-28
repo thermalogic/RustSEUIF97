@@ -111,8 +111,9 @@ pub fn polys_i_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
 
 #[inline(always)]
 pub fn polys_i_ii_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
-    const steps: [(usize, usize); 3] = [(0, 14), (14, 26), (26, 34)];
-    let (poly_pi, poly_pipi) = polys_i_ii_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    //const steps: [(usize, usize); 3] = [(0, 14), (14, 26), (26, 34)];
+    //let (poly_pi, poly_pipi) = polys_i_ii_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    let (poly_pi, poly_pipi) = polys_i_ii_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn);
     (-poly_pi, poly_pipi) // 7.1 - pi1,-> -d_pi
 }
 
@@ -130,8 +131,9 @@ pub fn polys_0_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
 
 #[inline(always)]
 pub fn polys_i_ij_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
-    const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
-    let (poly_pi, poly_pitau) = polys_i_ij_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    //const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    //let (poly_pi, poly_pitau) = polys_i_ij_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    let (poly_pi, poly_pitau) = polys_i_ij_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn);
     (-poly_pi, -poly_pitau) // 7.1 - pi1,so -> -d_pi ,-d_pitau
 }
 
@@ -143,6 +145,5 @@ pub fn polys_i_ii_ij_jj_powi_reg1(pi: f64, tau: f64) -> (f64, f64, f64, f64) {
    //     polys_i_ii_ij_jj_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
     let (poly_pi, poly_pipi, poly_pitau, poly_tautau) =
       polys_i_ii_ij_jj_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn);
-
     (-poly_pi, poly_pipi, -poly_pitau, poly_tautau)
 }

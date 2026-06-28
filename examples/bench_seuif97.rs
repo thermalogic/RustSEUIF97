@@ -178,8 +178,10 @@ fn benchmark_region1() {
     benchmark_fn(p,t+273.15,seuif97::r1::pT2f_reg1,"pT2f_reg1");
     benchmark_fn(p,t+273.15,seuif97::r1::pT2dvdpct_reg1,"pT2dvdpct_reg1");
     benchmark_fn(p,t+273.15,seuif97::r1::pT2iJTC_reg1,"pT2iJTC_reg1");
+    benchmark_fn(p,t+273.15,seuif97::r1::pT2kt_reg1,"pT2kt_reg1");
+    benchmark_fn(p,t+273.15,seuif97::r1::pT2ec_reg1,"pT2ec_reg1");
 
-    //  benchmark_region_pt(p, t,1)
+    //benchmark_region_pt(p, t,1)
 }
 
 
