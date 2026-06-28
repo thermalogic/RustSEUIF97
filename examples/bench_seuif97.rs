@@ -33,6 +33,23 @@ fn format_value(value: f64) -> String {
     }
 }
 
+fn benchmark_fn<F>(v1: f64, v2: f64, func: F, fname: &str)
+where
+    F: Fn(f64, f64) -> f64,
+{
+    const BENCH_ITERATIONS: u128 = 1_000_00;
+    let now = Instant::now();
+    let value: f64 = func(v1, v2);
+    for _ in 0..BENCH_ITERATIONS {
+            std::hint::black_box(func(std::hint::black_box(v1), std::hint::black_box(v2)));
+    }
+    let elapsed = now.elapsed();
+    let ns = elapsed.as_nanos() as f64 / BENCH_ITERATIONS as f64;
+    println!("{} {:.12} {:.1}", fname,value, ns);
+}
+    
+    
+
 fn benchmark_experiment<F>(v1: f64, v2: f64, func: F, prop_map: &[(&str, i32)], reg: i32, known_props: &[&str])
 where
     F: Fn(f64, f64, o_id_region_args) -> f64,
@@ -157,7 +174,12 @@ fn benchmark_region_pt(p:f64, t:f64,region:i32) {
 fn benchmark_region1() {
     let p: f64 = 3.0;
     let t: f64 = 300.0 - 273.15;
-    benchmark_region_pt(p, t,1)
+    benchmark_fn(p,t+273.15,seuif97::r1::pT2g_reg1,"pT2g_reg1");
+    benchmark_fn(p,t+273.15,seuif97::r1::pT2f_reg1,"pT2f_reg1");
+    benchmark_fn(p,t+273.15,seuif97::r1::pT2dvdpct_reg1,"pT2dvdpct_reg1");
+    benchmark_fn(p,t+273.15,seuif97::r1::pT2iJTC_reg1,"pT2iJTC_reg1");
+
+    //  benchmark_region_pt(p, t,1)
 }
 
 

@@ -10,7 +10,7 @@
 mod algo;
 mod common;
 mod if97_core;
-mod r1;
+pub mod r1;
 mod r2;
 mod r3;
 mod r4;
@@ -18,7 +18,7 @@ mod r5;
 
 pub use common::property_id::*;
 use common::*;
-use r1::*;
+pub use r1::*;
 use r2::*;
 use r3::*;
 use r4::*;

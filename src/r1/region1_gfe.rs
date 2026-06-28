@@ -50,55 +50,62 @@ pub const IJn: [(i32, i32, f64); 34] = [
 /// Fundamental equation for region 1
 #[inline(always)]
 pub fn gamma_reg1(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 2] = [(0, 19), (19, 34)];
-    poly_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    //const steps: [(usize, usize); 2] = [(0, 19), (19, 34)];
+    //poly_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    poly_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn)    
 }
 
 /// First derivative of fundamental equation in pi for region 1
 #[inline(always)]
 pub fn gamma_pi_reg1(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
-    -poly_i_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+   // const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+   // -poly_i_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    -poly_i_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn)    
 }
 
 /// Second derivative of fundamental equation in pi for region 1
 #[inline(always)]
 pub fn gamma_pipi_reg1(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
-    poly_ii_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    //const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    //poly_ii_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    poly_ii_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn)
+    
 }
 
 /// First derivative of fundamental equation in tau for region 1
 #[inline(always)]
 pub fn gamma_tau_reg1(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
-    poly_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    //const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    //poly_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
     
-    //poly_j_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn)    
+    poly_j_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn)    
     //poly_j_powi(7.1 - pi, tau - 1.222, &IJn)    
 }
 
 /// Second derivative of fundamental equation in tau for region 1
 #[inline(always)]
 pub fn gamma_tautau_reg1(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 3] = [(0, 15), (15, 26), (26, 34)];
-    poly_jj_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
-    // poly_jj_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn)
+    //const steps: [(usize, usize); 3] = [(0, 15), (15, 26), (26, 34)];
+    //poly_jj_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+     poly_jj_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn)
 }
 
 /// Second derivative of fundamental equation in pi and tau for region 1
 #[inline(always)]
 pub fn gamma_pitau_reg1(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
-    -poly_ij_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    //const steps: [(usize, usize); 2] = [(0, 17), (17, 34)];
+    //-poly_ij_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps)
+    -poly_ij_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn)
+
+
 }
 
 // ------------------- multiple -------------------------------------
 #[inline(always)]
 pub fn polys_i_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
-    const steps: [(usize, usize); 3] = [(0, 16), (16, 26), (26, 34)];
-    let (d_pi, d_tau) = polys_i_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
-    // let (d_pi, d_tau) = polys_i_j_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn);
+    //const steps: [(usize, usize); 3] = [(0, 16), (16, 26), (26, 34)];
+    //let (d_pi, d_tau) = polys_i_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    let (d_pi, d_tau) = polys_i_j_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn);
     (-d_pi, d_tau)
 }
 
@@ -111,10 +118,10 @@ pub fn polys_i_ii_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
 
 #[inline(always)]
 pub fn polys_0_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
-    const steps: [(usize, usize); 2] = [(0, 16), (16, 34)];
-    let (v,d_tau)=polys_0_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    //const steps: [(usize, usize); 2] = [(0, 16), (16, 34)];
+    //let (v,d_tau)=polys_0_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
     
-    //let (v,d_tau)=polys_0_j_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn);  
+    let (v,d_tau)=polys_0_j_powi_auto_tiling(7.1 - pi, tau - 1.222, &IJn);  
     
     // let v=poly_powi(7.1-pi,tau-1.222,&IJn);
     // let d_tau=poly_j_powi(7.1-pi,tau-1.222,&IJn);
