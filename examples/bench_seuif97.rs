@@ -9,7 +9,7 @@
 ///
 /// Features:
 /// - Tests all thermodynamic properties: p, t, V, H, S, U, CP, W
-/// - Covers Region 1,2,3,4, and Region 5
+/// - Covers Region 1, 2, 3, 4, and 5
 /// - Known input parameters are marked with `*` in the output table
 /// - Smart number formatting: adjusts decimal places based on value magnitude
 ///
@@ -55,8 +55,8 @@ where
             std::hint::black_box(func(std::hint::black_box(v1), std::hint::black_box(v2), std::hint::black_box((e.1, reg).into())));
         }
         let elapsed_with_region = now.elapsed();
-        let ns_with = elapsed_with_region.as_nanos() as f64 / BENCH_ITERATIONS as f64;
         let ns_no = elapsed_no_region.as_nanos() as f64 / BENCH_ITERATIONS as f64;
+        let ns_with = elapsed_with_region.as_nanos() as f64 / BENCH_ITERATIONS as f64;
         let ns_diff = ns_no - ns_with;
         names.push(e.0.to_string());
         let value_str = if known_props.contains(&e.0) {
@@ -144,13 +144,13 @@ where
 fn benchmark_region1() {
     let p: f64 = 3.0;
     let t: f64 = 300.0 - 273.15;
-    println!("Region 1: p={} t={:.3} ", p, t);
+    println!("Region 1: p={:.3} t={:.3} ", p, t);
     benchmark_experiment(p, t, pt, &prop_map_pt, 1, &["p", "t"]);
     let h = pt(p, t, (OH,1));
-    println!("Region 1: p={} h={:.3} ", p, h);
+    println!("Region 1: p={:.3} h={:.3} ", p, h);
     benchmark_experiment(p, h, ph, &prop_map_pt, 1, &["p", "H"]);
     let s = pt(p, t, (OS,1));
-    println!("Region 1: p={} s={:.3} ", p, s);
+    println!("Region 1: p={:.3} s={:.3} ", p, s);
     benchmark_experiment(p, s, ps, &prop_map_pt, 1, &["p", "S"]);
     println!("Region 1: h={:.3} s={:.3} ", h, s);
     benchmark_experiment(h, s, hs, &prop_map_pt, 1, &["H", "S"]);    
@@ -159,15 +159,15 @@ fn benchmark_region1() {
 fn benchmark_region2() {
     let p: f64 = 0.0035;
     let t: f64 = 300.0 - 273.15;
-    println!("Region 2: p={} t={:.3} ", p, t);
+    println!("Region 2: p={:.4} t={:.3} ", p, t);
     benchmark_experiment(p, t, pt, &prop_map_pt, 2, &["p", "t"]);
     let h = pt(p, t, (OH,2));
-    println!("Region 2: p={} h={:.3} ", p, h);
+    println!("Region 2: p={:.4} h={:.3} ", p, h);
     benchmark_experiment(p, h, ph, &prop_map_pt, 2, &["p", "H"]);
     let s = pt(p, t, (OS,2));
-    println!("Region 2: p={} s={:.3} ", p, s);
+    println!("Region 2: p={:.4} s={:.3} ", p, s);
     benchmark_experiment(p, s, ps, &prop_map_pt, 2, &["p", "S"]);
-    println!("Region 2: h={:.3} s={:.3} ", h, s);
+    println!("Region 2: h={:.4} s={:.3} ", h, s);
     benchmark_experiment(h, s, hs, &prop_map_pt, 2, &["H", "S"]);    
 
 }
@@ -189,7 +189,7 @@ fn benchmark_region4() {
 fn benchmark_region5() {
     let p: f64 = 0.5;
     let t: f64 = 1500.0 - 273.15;
-    println!("Region 5: p={} t={:.3} ", p, t);
+    println!("Region 5: p={:.3} t={:.3} ", p, t);
     benchmark_experiment(p, t, pt, &prop_map_pt, 5, &["p", "t"]);
 }
 

@@ -47,7 +47,9 @@ pub fn ph2T_reg2a(p: f64, h: f64) -> f64 {
 
     let pi: f64 = p / 1.0;
     let eta: f64 = h / 2000.0 - 2.1;
-    1.0 * poly_powi(pi, eta, &IJn)
+    let steps: [(usize, usize); 2] = [(0, 16), (16, 34)];
+    1.0 * poly_powi_steps(pi, eta, &IJn, &steps)
+    //1.0 * poly_powi(pi, eta, &IJn)
 }
 
 pub fn ph2T_reg2b(p: f64, h: f64) -> f64 {

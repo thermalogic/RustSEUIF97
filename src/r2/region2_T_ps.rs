@@ -70,8 +70,41 @@ pub fn ps2T_reg2a(p: f64, s: f64) -> f64 {
     let pi: f64 = p / 1.0;
     let sigma: f64 = s / 2.0 - 2.0;
     let mut theta: f64 = 0.0;
-    for k in IJn {
-        theta += k.2 * pi.powf(k.0) * sigma.powi(k.1); // IJn[k].0 is float
+    //for k in IJn {
+    //    theta += k.2 * pi.powf(k.0) * sigma.powi(k.1); // IJn[k].0 is float
+   // }
+ 
+
+    //const SO_I: [f64; 12] = [-1.5, -1.25, -1.0, -0.75, -0.5, -0.25, 0.25, 0.5, 0.75, 1.0, 1.25, 1.5];
+    const I2_SO_I: [usize; 46] = [0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3,
+                               4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7,
+                               8, 8, 8, 8, 9, 9, 10, 10, 11, 11];
+
+    let sqrt_pi = pi.sqrt();
+    let pi_0_25 = sqrt_pi.sqrt();      // pi^0.25
+    let rpi_0_25 = 1.0 / pi_0_25;      // pi^-0.25
+    let rpi_0_5 = 1.0 / sqrt_pi;       // pi^-0.5
+    let rpi = 1.0 / pi;                // pi^-1
+
+    let mut soI_pow = [0.0f64; 12];
+    soI_pow[0]  = rpi * rpi_0_5;       // -1.5
+    soI_pow[1]  = rpi * rpi_0_25;      // -1.25
+    soI_pow[2]  = rpi;                 // -1.0
+    soI_pow[3]  = rpi * pi_0_25;       // -0.75
+    soI_pow[4]  = rpi_0_5;             // -0.5
+    soI_pow[5]  = rpi_0_25;            // -0.25
+    soI_pow[6]  = pi_0_25;             //  0.25
+    soI_pow[7]  = sqrt_pi;             //  0.5
+    soI_pow[8]  = 1.0 / soI_pow[3];    //  0.75
+    soI_pow[9]  = pi;                  //  1.0
+    soI_pow[10] = pi * pi_0_25;        //  1.25
+    soI_pow[11] = pi * sqrt_pi;        //  1.5
+
+    const steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 46)];
+    for (start, end) in steps {
+       for k in start..end {
+            theta += IJn[k].2 * soI_pow[I2_SO_I[k]] * sigma.powi(IJn[k].1);
+        }
     }
     1.0 * theta
 }

@@ -36,8 +36,8 @@ assert_approx_eq = "1.1.0"
 criterion = { version = "0.8.2", features = ["html_reports"] }
 
 [[bench]]
-#name = "region_speed"
-name="speed_benchmark"
+name = "region_speed"
+#name="speed_benchmark"
 harness = false
 
 [profile.release]

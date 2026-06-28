@@ -66,8 +66,10 @@ pub fn hs2T_reg43(h: f64, s: f64) -> f64 {
 
     let nu: f64 = h / 2800.0 - 0.119;
     let sigma: f64 = s / 9.2 - 1.07;
-    let suma: f64 = poly_powi(nu, sigma, &IJn);
-    550.0 * suma
+
+    let steps: [(usize, usize); 2] = [(0, 18), (18,36)];
+    550.0* poly_powi_steps(nu, sigma, &IJn, &steps)
+    // 550.0* poly_powi(nu, sigma, &IJn);
 }
 
 /// residual: r(T) = (h-hl)*(sv-sl) - (s-sl)*(hv-hl)
