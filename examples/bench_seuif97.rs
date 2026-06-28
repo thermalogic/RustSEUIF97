@@ -37,7 +37,7 @@ fn benchmark_experiment<F>(v1: f64, v2: f64, func: F, prop_map: &[(&str, i32)], 
 where
     F: Fn(f64, f64, o_id_region_args) -> f64,
 {
-    const BENCH_ITERATIONS: u128 = 1_000_000;
+    const BENCH_ITERATIONS: u128 = 1_000_00;
     let mut names = Vec::new();
     let mut values = Vec::new();
     let mut times_with_region = Vec::new();
@@ -141,35 +141,30 @@ where
     println!();
 }
 
+fn benchmark_region_pt(p:f64, t:f64,region:i32) {
+    println!("Region {}: p={:.3} t={:.3} ", region, p, t);
+    benchmark_experiment(p, t, pt, &prop_map_pt, region, &["p", "t"]);
+    let h = pt(p, t, (OH,region));
+    println!("Region {}: p={:.3} h={:.3} ", region, p, h);
+    benchmark_experiment(p, h, ph, &prop_map_pt, region, &["p", "H"]);
+    let s = pt(p, t, (OS,region));
+    println!("Region {}: p={:.3} s={:.3} ", region, p, s);
+    benchmark_experiment(p, s, ps, &prop_map_pt, region, &["p", "S"]);
+    println!("Region {}: h={:.3} s={:.3} ", region, h, s);
+    benchmark_experiment(h, s, hs, &prop_map_pt, region, &["H", "S"]);    
+}
+
 fn benchmark_region1() {
     let p: f64 = 3.0;
     let t: f64 = 300.0 - 273.15;
-    println!("Region 1: p={:.3} t={:.3} ", p, t);
-    benchmark_experiment(p, t, pt, &prop_map_pt, 1, &["p", "t"]);
-    let h = pt(p, t, (OH,1));
-    println!("Region 1: p={:.3} h={:.3} ", p, h);
-    benchmark_experiment(p, h, ph, &prop_map_pt, 1, &["p", "H"]);
-    let s = pt(p, t, (OS,1));
-    println!("Region 1: p={:.3} s={:.3} ", p, s);
-    benchmark_experiment(p, s, ps, &prop_map_pt, 1, &["p", "S"]);
-    println!("Region 1: h={:.3} s={:.3} ", h, s);
-    benchmark_experiment(h, s, hs, &prop_map_pt, 1, &["H", "S"]);    
+    benchmark_region_pt(p, t,1)
 }
+
 
 fn benchmark_region2() {
     let p: f64 = 0.0035;
     let t: f64 = 300.0 - 273.15;
-    println!("Region 2: p={:.4} t={:.3} ", p, t);
-    benchmark_experiment(p, t, pt, &prop_map_pt, 2, &["p", "t"]);
-    let h = pt(p, t, (OH,2));
-    println!("Region 2: p={:.4} h={:.3} ", p, h);
-    benchmark_experiment(p, h, ph, &prop_map_pt, 2, &["p", "H"]);
-    let s = pt(p, t, (OS,2));
-    println!("Region 2: p={:.4} s={:.3} ", p, s);
-    benchmark_experiment(p, s, ps, &prop_map_pt, 2, &["p", "S"]);
-    println!("Region 2: h={:.4} s={:.3} ", h, s);
-    benchmark_experiment(h, s, hs, &prop_map_pt, 2, &["H", "S"]);    
-
+    benchmark_region_pt(p, t,2)
 }
 
 fn benchmark_region3() {
@@ -177,6 +172,9 @@ fn benchmark_region3() {
     let d: f64 = 500.0;
     println!("Region 3 t={:.3} d={:.3} ", t, d);
     benchmark_experiment(t, 1.0 / d, tv, &prop_map_pt, 3, &["t", "V"]);
+    let p: f64 = tv(t, 1.0 / d, (OP,3));
+    let t: f64 = tv(t, 1.0 / d, (OT,3));
+    benchmark_region_pt(p, t,3)
 }
 
 fn benchmark_region4() {
@@ -189,9 +187,9 @@ fn benchmark_region4() {
 fn benchmark_region5() {
     let p: f64 = 0.5;
     let t: f64 = 1500.0 - 273.15;
-    println!("Region 5: p={:.3} t={:.3} ", p, t);
-    benchmark_experiment(p, t, pt, &prop_map_pt, 5, &["p", "t"]);
+    benchmark_region_pt(p, t,5)
 }
+
 
 fn main() {
     benchmark_region1();

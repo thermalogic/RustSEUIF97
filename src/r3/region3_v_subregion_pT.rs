@@ -17,8 +17,18 @@ struct para { PS: f64,  TS: f64, VS: f64,
 /// The helper function to sum the sub-region (p,T)->v
 fn pT2v_sum(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para) -> f64 {
     let p1: f64 = (p / d.PS - d.a).powf(d.c);
-    let t1: f64 = (T / d.TS - d.b).powf(d.d);
-    let v: f64 = poly_powi(p1, t1, &IJn);
+    let T1: f64 = (T / d.TS - d.b).powf(d.d);
+    let len:usize = IJn.len();
+    let mut v: f64 = 0.0;
+    if len >= 32
+    { 
+       let steps: [(usize, usize); 2] = [(0, 16), (16, len)];
+       v = poly_powi_steps(p1, T1, &IJn, &steps);
+    }
+    else
+    {
+        v = poly_powi(p1, T1, &IJn);
+    }
     v.powf(d.e) * d.VS
 }
 /// for big array
