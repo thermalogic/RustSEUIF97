@@ -14,16 +14,26 @@ use crate::algo::*;
 
 /// 自动分片策略：
 /// - len < 36: 2段，平均分配
-/// - len >= 36: 每段尽可能平均
+/// - len >= 36: 3段，平均分配
 fn auto_steps(len: usize) -> Vec<(usize, usize)> {
     if len < 36 {
         let mid = len / 2;
         vec![(0, mid), (mid, len)]
     } else {
-        // 3段平均分配
         let third = len / 3;
         vec![(0, third), (third, 2 * third), (2 * third, len)]
     }
+}
+
+/// 四输出函数专用：4段平均分配
+fn auto_steps_4(len: usize) -> Vec<(usize, usize)> {
+    let quarter = len / 4;
+    vec![
+        (0, quarter),
+        (quarter, 2 * quarter),
+        (2 * quarter, 3 * quarter),
+        (3 * quarter, len)
+    ]
 }
 
 ///  the polynomial:  n*vi^i* vj^j
@@ -155,7 +165,7 @@ pub fn polys_i_ii_ij_jj_powi_auto_tiling(vi: f64, vj: f64, IJn: &[(i32, i32, f64
     let len:usize = IJn.len();
     if len >= 29  
     { 
-       let steps = auto_steps(len);
+       let steps = auto_steps_4(len);
        polys_i_ii_ij_jj_powi_steps(vi, vj, &IJn, &steps)
     }
     else
