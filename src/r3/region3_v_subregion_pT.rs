@@ -20,7 +20,7 @@ fn pT2v_sum(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para) -> f64 {
     let T1: f64 = (T / d.TS - d.b).powf(d.d);
     let len:usize = IJn.len();
     let mut v: f64 = 0.0;
-    if len >= 32
+    if len >= 29 // < 29: 20, 23, 24, 24, 27, 27 
     { 
        let steps: [(usize, usize); 2] = [(0, 16), (16, len)];
        v = poly_powi_steps(p1, T1, &IJn, &steps);
@@ -31,8 +31,8 @@ fn pT2v_sum(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para) -> f64 {
     }
     v.powf(d.e) * d.VS
 }
-/// for big array
-/// * 3d -35
+
+/// for big array with the specific steps 
 fn pT2v_sum_steps(p: f64, T: f64, IJn: &[(i32, i32, f64)], d: para, steps: &[(usize, usize)]) -> f64 {
     let p1: f64 = (p / d.PS - d.a).powf(d.c);
     let t1: f64 = (T / d.TS - d.b).powf(d.d);
