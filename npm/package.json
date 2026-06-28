@@ -1,6 +1,6 @@
 {
   "name": "seuif97",
-  "version": "2.3.7",
+  "version": "2.3.8",
   "description": "The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust",
   "module": "pkg/seuif97.js",
   "types": "pkg/seuif97.d.ts",
