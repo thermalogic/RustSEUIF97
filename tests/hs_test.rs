@@ -57,13 +57,12 @@ fn test_region5_hs() {
 
 #[test]
 fn test_region4_hs() {
-    const hsT: [[f64; 3]; 3] = [[1800.0, 5.3, 346.8475498], [2400.0, 6.0, 425.1373305], [2500.0, 5.5, 522.5579013]];
     let mut h: f64 = 0.0;
     let mut s: f64 = 0.0;
     for i in 0..2 {
-        h = hsT[i][0];
-        s = hsT[i][1];
-        assert_approx_eq!(hsT[i][2] - 273.15,hs(h, s, OT),1.0e-7f64);
+        h = r4_hsT[i][0];
+        s = r4_hsT[i][1];
+        assert_approx_eq!(r4_hsT[i][2] - 273.15,hs(h, s, OT),1.0e-7f64);
     }
 }
 
