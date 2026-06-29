@@ -71,9 +71,9 @@ pub const OPR: i32 = 28;
 pub const OST: i32 = 29;
 /// 30. ε - Static Dielectric Constant
 pub const OSDC: i32 = 30;
-/// 31. β - Isochoric pressure coefficient    1/K
+/// 31. β - Isochoric pressure coefficient   1/K
 pub const OPC: i32 = 31;
-/// 32. βp -  Isothermal stress coefficient, kg/m³
+/// 32. βp - Isothermal stress coefficient kg/m³
 pub const OBETAP: i32 = 32;
 /// 33. fi -  Fugacity coefficient
 pub const OFI: i32 = 33;
