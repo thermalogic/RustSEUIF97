@@ -1,5 +1,5 @@
 //! The functions compute the polynomial and its derivatives values 
-//!    using  shared-power scaling method 
+//!    using shared-power scaling method 
 //! 
 //! * IJn[(i32,i32,f64)]
 //!   * I - IJn[k].0
@@ -66,7 +66,7 @@ pub fn poly_ij_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> f64 {
     value
 }
 
-/// The recursive method to get the polynomials
+/// The shared-power scaling to get the polynomials
 ///  * the power of vi and vj  
 ///  * the power of vi and the derivative (∂f/∂vj)
 pub fn polys_0_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
@@ -81,7 +81,7 @@ pub fn polys_0_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
     (poly_0, poly_j)
 }
 
-/// The recursive method to get the polynomials
+/// The shared-power scaling method to get the polynomials
 ///  * the power of the derivative (∂f/∂vi) and vj
 ///  * the power of vi and the derivative (∂f/∂vj)
 pub fn polys_i_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
@@ -97,12 +97,11 @@ pub fn polys_i_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
     (poly_i, poly_j)
 }
 
-/// recursion the powers of the derivatives of (∂f/∂vi),(∂²f/∂²vi),(∂²f/∂vi∂vj) and (∂²f/∂²vj)
-/// The recursive method to get the polynomials
-///  * the power of the derivative (∂f/∂vi) and vj
-///  * the power of the derivative (∂²f/∂²vi) and vj
-///  * the power of  the derivative (∂f/∂vi) and (∂f/∂vi)
-///  * the power of the derivative vi and (∂²f/∂²vj)the polynomiapoly
+/// The shared-power scaling method to get the polynomials
+///  * the power of the derivative (∂f/∂vi)
+///  * the power of the derivative (∂²f/∂²vi) 
+///  * the power of  the derivative (∂f/∂vi/∂vj) 
+///  * the power of the derivative  (∂²f/∂²vj)
 pub fn polys_i_ii_ij_jj_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64, f64, f64) {
     let mut poly_i: f64 = 0.0;
     let mut poly_ii: f64 = 0.0;

@@ -3,9 +3,9 @@
 //! * The function to compute the polynomial and its derivative on IJn[(i32,i32,f64)
 
 pub mod polynomial;
-pub mod polynomial_steps;
+pub mod polynomial_tile;
 pub mod root;
 
 pub use self::polynomial::*;
-pub use self::polynomial_steps::*;
+pub use self::polynomial_tile::*;
 pub use self::root::*;

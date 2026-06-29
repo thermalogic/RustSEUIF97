@@ -65,7 +65,7 @@ pub const T_MIN1: f64 = 273.15;
 pub const P_MAX1: f64 = 100.00;
 pub const P_MIN1: f64 = 0.000611212677444; // T=273.15
 
-/// Region2  boundary constants
+/// Region 2  boundary constants
 pub const T02: f64 = 540.0;
 pub const P02: f64 = 1.0;
 pub const T_MAX2: f64 = 1073.15;
@@ -73,7 +73,7 @@ pub const T_MIN2: f64 = 273.15;
 pub const P_MAX2: f64 = 100.00;
 pub const P_MIN2: f64 = 1.0E-8;
 
-/// Region2  boundary constants
+/// Region 3  boundary constants
 pub const D03: f64 = 322.0;
 pub const T03: f64 = 647.096;
 pub const T_MAX3: f64 = 863.15;
@@ -81,7 +81,7 @@ pub const T_MIN3: f64 = 623.15;
 pub const P_MIN3: f64 = 16.5291643;
 pub const P_MAX3: f64 = 100.0;
 
-/// Region4  boundary constants
+/// Region 4  boundary constants
 pub const T_MAX4: f64 = 647.096;
 pub const T_MIN4: f64 = 273.15;
 pub const P_MAX4: f64 = 22.064;
@@ -91,7 +91,7 @@ pub const H_MIN4: f64 = 0.38039218566765925;
 pub const S_MAX4: f64 = 9.153081306725117;
 pub const S_MIN4: f64 = 0.33567511183921145;
 
-/// Region5  boundary constants
+/// Region 5  boundary constants
 pub const T05: f64 = 1000.0;
 pub const P05: f64 = 1.0;
 pub const T_MAX5: f64 = 2273.15;

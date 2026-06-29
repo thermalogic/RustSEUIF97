@@ -1,18 +1,18 @@
 //! Find the root of the equation f(x)
-//! Numerical Reciples  Ch.9
+//! Numerical Recipes  Ch.9
 //!   * Bisection method
 //!   * Secant method
 //!   * Brent's method
 
 type IF97_EQ = fn(f64, f64) -> f64;
 
-pub const FIRST_FIXED: i32 = 1;        /* f(fvar, x)：第一个参数固定，搜索第二个 */
-pub const SECOND_FIXED: i32 = 2;        /* f(x, fvar)：第二个参数固定，搜索第一个 */
-pub const CONVERGENCE_PRECISION: f64 = 1.0E-08; /* rtsec 的 xacc：搜索变量收敛阈值 */
-pub const FN_TOLERANCE: f64 = 1.0E-08;   /* bisection 的 tol：函数值阈值 */
-pub const INTERVAL_TOLERANCE: f64 = 1.0E-08;   /* bisection 的 x_tol：区间长度阈值 */
-pub const MAX_ITER: i32 = 20000;     /* 最大迭代次数 */
-pub const ESP: f64 = 3.0E-08; /* 机器的浮点精度 */
+pub const FIRST_FIXED: i32 = 1;        /* f(fvar, x): first parameter fixed, search second */
+pub const SECOND_FIXED: i32 = 2;        /* f(x, fvar): second parameter fixed, search first */
+pub const CONVERGENCE_PRECISION: f64 = 1.0E-08; /* rtsec xacc: convergence threshold for search variable */
+pub const FN_TOLERANCE: f64 = 1.0E-08;   /* bisection tol: function value tolerance */
+pub const INTERVAL_TOLERANCE: f64 = 1.0E-08;   /* bisection x_tol: interval length tolerance */
+pub const MAX_ITER: i32 = 20000;     /* maximum number of iterations */
+pub const ESP: f64 = 3.0E-08; /* machine floating-point precision */
 
 /// Finds the root of the equation f(x) = 0 using the bisection method.
 ///
@@ -61,7 +61,7 @@ where
 }
 
 /// Finds the root of the equation fun(f64, f64) = target using the secant method.
-/// Numerical Reciples  Ch.9.2
+/// Numerical Recipes  Ch.9.2
 /// # Arguments
 /// * `fun` - Target function fun(f64, f64) -> f64
 /// * `fvar` - Fixed parameter value
@@ -70,10 +70,10 @@ where
 /// * `x2` - Right boundary of the search interval
 /// * `fvar_position` - Position of the fixed parameter: 1=fun(fvar, x), 2=fun(x, fvar)
 /// * `i_max` - Maximum number of iterations
-/// * `xacc` - Convergence precisionerations
+/// * `xacc` - Convergence precision
 ///
 /// # Returns
-/// Approximate root satisfying the precision requirement
+///   Approximate root satisfying the precision requirement
 pub fn rtsec(fun: IF97_EQ, fvar: f64, target: f64, x1: f64, x2: f64,
             fvar_position: i32, i_max: i32, xacc: f64) -> f64 {
     let mut xl: f64;
@@ -114,7 +114,8 @@ pub fn rtsec(fun: IF97_EQ, fvar: f64, target: f64, x1: f64, x2: f64,
             xl = rts;
             fl = f;
             rts += dx;
-            // rts <=0.0 out of bounds
+            // rts <=0.0 out of bounds 
+            // Prevent non-positive root (physical quantities like T/P must be positive)
             if rts <= 0.0 {
                  rts = 0.000001;
              }
@@ -127,7 +128,7 @@ pub fn rtsec(fun: IF97_EQ, fvar: f64, target: f64, x1: f64, x2: f64,
 }
 
 
-// Brent's method: combines bisection, secant, and inverse quadratic interpolation
+/// Brent's method: combines bisection, secant, and inverse quadratic interpolation
 /// to find the root of fun(f64, f64) = target within bracket [x1, x2].
 ///
 /// # Arguments
@@ -141,13 +142,13 @@ pub fn rtsec(fun: IF97_EQ, fvar: f64, target: f64, x1: f64, x2: f64,
 /// * `tol` - Convergence precision (on x)
 ///
 /// # Returns
-/// Approximate root satisfying the precision requirement
+///   Approximate root satisfying the precision requirement
 ///
 /// # Panics
-/// Panics if f(x1) and f(x2) do not have opposite signs (no bracket).
+///   Panics if f(x1) and f(x2) do not have opposite signs (no bracket).
 pub fn zbrent(
     fun: IF97_EQ,
-    var: f64,
+    fvar: f64,
     target: f64,
     x1: f64,
     x2: f64,
@@ -158,9 +159,9 @@ pub fn zbrent(
     // Helper closure to evaluate f(x) = target - fun(x)
     let mut eval = |x: f64| -> f64 {
         if fvar_position == 1 {
-            target - fun(var, x)
+            target - fun(fvar, x)
         } else {
-            target - fun(x, var)
+            target - fun(x, fvar)
         }
     };
 
@@ -279,4 +280,3 @@ pub fn zbrent(
     // Max iterations reached
     b
 }
-

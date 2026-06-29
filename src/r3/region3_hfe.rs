@@ -55,52 +55,52 @@ pub const IJn: [(i32, i32, f64); 39] = [
 #[inline(always)]
 pub fn phi_reg3(delta: f64, tau: f64) -> f64 {
     let result: f64 = n1 * delta.ln();
-    const steps: [(usize, usize); 2] = [(0, 19), (19, 39)];
-    result + poly_powi_steps(delta, tau, &IJn, &steps)
+    const tiles: [(usize, usize); 2] = [(0, 19), (19, 39)];
+    result + poly_powi_tile(delta, tau, &IJn, &tiles)
 }
 
 /// First derivative in delta of fundamental equation for region 3
 #[inline(always)]
 pub fn phi_delta_reg3(delta: f64, tau: f64) -> f64 {
     let result: f64 = n1 / delta;
-    const steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
-    result + poly_i_powi_steps(delta, tau, &IJn, &steps)
+    const tiles: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    result + poly_i_powi_tile(delta, tau, &IJn, &tiles)
 }
 
 /// Second derivative in delta of fundamental equation for region 3
 #[inline(always)]
 pub fn phi_deltadelta_reg3(delta: f64, tau: f64) -> f64 {
     let result: f64 = -n1 / delta / delta;
-    const steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
-    result + poly_ii_powi_steps(delta, tau, &IJn, &steps)
+    const tiles: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    result + poly_ii_powi_tile(delta, tau, &IJn, &tiles)
 }
 
 /// First derivative in tau of fundamental equation for region 3
 #[inline(always)]
 pub fn phi_tau_reg3(delta: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
-    poly_j_powi_steps(delta, tau, &IJn, &steps)
+    const tiles: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    poly_j_powi_tile(delta, tau, &IJn, &tiles)
 }
 
 /// Second derivative in tau of fundamental equation for region 3
 #[inline(always)]
 pub fn phi_tautau_reg3(delta: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
-    poly_jj_powi_steps(delta, tau, &IJn, &steps)
+    const tiles: [(usize, usize); 4] = [(0, 13), (13, 23), (23, 33), (33, 39)];
+    poly_jj_powi_tile(delta, tau, &IJn, &tiles)
 }
 
 /// Second derivative in delta and tau of fundamental equation for region 3
 #[inline(always)]
 pub fn phi_deltatau_reg3(delta: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 3] = [(0, 17), (17, 34), (34, 39)];
-    poly_ij_powi_steps(delta, tau, &IJn, &steps)
+    const tiles: [(usize, usize); 3] = [(0, 17), (17, 34), (34, 39)];
+    poly_ij_powi_tile(delta, tau, &IJn, &tiles)
 }
 
 //---------- multiple -------------------------
 #[inline(always)]
 pub fn polys_0_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
-     const steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
-     let (poly_phi, poly_tau) = polys_0_j_powi_steps(delta, tau, &IJn, &steps);
+     const tiles: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
+     let (poly_phi, poly_tau) = polys_0_j_powi_tile(delta, tau, &IJn, &tiles);
 
      //let poly_phi = poly_powi(delta, tau, &IJn);
      //let poly_tau = poly_j_powi(delta, tau, &IJn);
@@ -110,8 +110,8 @@ pub fn polys_0_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
 
 #[inline(always)]
 pub fn polys_i_j_powi_reg3(delta: f64, tau: f64) -> (f64, f64) {
-    const steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
-    let (poly_delta, poly_tau) = polys_i_j_powi_steps(delta, tau, &IJn, &steps);
+    const tiles: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 39)];
+    let (poly_delta, poly_tau) = polys_i_j_powi_tile(delta, tau, &IJn, &tiles);
     //let poly_delta = poly_i_powi(delta, tau, &IJn);
     //let poly_tau = poly_j_powi(delta, tau, &IJn);
     (poly_delta + n1 / delta, poly_tau)
@@ -124,9 +124,9 @@ pub fn polys_i_ii_ij_jj_powi_reg3(delta: f64, tau: f64) -> (f64, f64, f64, f64) 
     let mut phi_delta: f64 = n1 / delta;
     let mut phi_deltadelta = -n1 / delta / delta;
 
-    const steps: [(usize, usize); 4] = [(0, 10), (10, 20), (20, 30), (30, 39)];
+    const tiles: [(usize, usize); 4] = [(0, 10), (10, 20), (20, 30), (30, 39)];
     let (sub_phi_delta, sub_phi_deltadelta, phi_deltatau, phi_tautau) =
-        polys_i_ii_ij_jj_powi_steps(delta, tau, &IJn, &steps);
+        polys_i_ii_ij_jj_powi_tile(delta, tau, &IJn, &tiles);
     phi_delta += sub_phi_delta;
     phi_deltadelta += sub_phi_deltadelta;
     (phi_delta, phi_deltadelta, phi_deltatau, phi_tautau)

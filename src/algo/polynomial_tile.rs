@@ -13,9 +13,9 @@
 
 ///  the polynomial:  n*vi^i* vj^j
 #[inline(always)]
-pub fn poly_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
+pub fn poly_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             value += n * vi.powi(I) * vj.powi(J);  
         }
@@ -26,9 +26,9 @@ pub fn poly_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usiz
 /// the polynomial of the derivative (∂f/∂vi)   
 /// * n * i*vi^(i-1) * vj^j
 #[inline(always)]
-pub fn poly_i_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
+pub fn poly_i_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             value += n * I as f64* vi.powi(I - 1) * vj.powi(J);
         }
@@ -39,9 +39,9 @@ pub fn poly_i_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(us
 /// the polynomial of the derivative (∂²f/∂²vi) 
 /// * n*i*(i-1)*vi^(i-2) * vj^j
 #[inline(always)]
-pub fn poly_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
+pub fn poly_ii_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             value += n * (I*(I-1))  as f64 *vi.powi(I - 2) * vj.powi(J);
         }
@@ -52,9 +52,9 @@ pub fn poly_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(u
 /// the polynomial of the derivative (∂²f/∂vi∂vj) 
 /// * n*i*vi^(i-1) *j*vj^(j-1)
 #[inline(always)]
-pub fn poly_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
+pub fn poly_ij_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             value += n * I as f64* vi.powi(I - 1) *J as f64* vj.powi(J - 1);
         }
@@ -65,9 +65,9 @@ pub fn poly_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(u
 /// the polynomial of derivative (∂f/∂vj)
 ///  n* vi^i  *j* vj^(j-1)
 #[inline(always)]
-pub fn poly_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
+pub fn poly_j_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> f64 {
     let mut value: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             value += n * vi.powi(I) *J as f64*vj.powi(J - 1);
         }
@@ -78,9 +78,9 @@ pub fn poly_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(us
 /// the polynomial of the derivative (∂²f/∂²vj)
 /// *  n* vi^i  *j*(j-1)* vj^(j-2)
 #[inline(always)]
-pub fn poly_jj_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> f64 {
+pub fn poly_jj_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> f64 {
     let mut value = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             value += n * vi.powi(I) * (J*(J-1)) as f64*vj.powi(J - 2);
         }
@@ -88,16 +88,16 @@ pub fn poly_jj_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(u
     value
 }
 
-//---------------------- The recursive method to compute the multiple polynomials ---------------------------
+//---------------------- The shared-power scaling method to compute the multiple polynomials ---------------------------
 
-/// The recursive method to get the polynomials
+/// The shared-power scaling method to get the polynomials
 ///  * the power of vi and vj  
 ///  * the power of vi and the derivative (∂f/∂vj)
 #[inline(always)]
-pub fn polys_0_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
+pub fn polys_0_j_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_0: f64 = 0.0;
     let mut poly_j: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             let item = n * vi.powi(I) * vj.powi(J);
             poly_0 += item;
@@ -109,11 +109,11 @@ pub fn polys_0_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
 }
 
 #[inline(always)]
-pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
+pub fn polys_i_j_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_i: f64 = 0.0;
     let mut poly_j: f64 = 0.0;
 
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             let item = n * vi.powi(I) * vj.powi(J);
             poly_i += I as f64 * item;
@@ -126,10 +126,10 @@ pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[
 }
 
 #[inline(always)]
-pub fn polys_i_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
+pub fn polys_i_ij_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_i: f64 = 0.0;
     let mut poly_ij: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             let item = n *I as f64 * vi.powi(I - 1) * vj.powi(J);
             poly_i += item;
@@ -141,10 +141,10 @@ pub fn polys_i_ij_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &
 }
 
 #[inline(always)]
-pub fn polys_i_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
+pub fn polys_i_ii_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_i: f64 = 0.0;
     let mut poly_ii: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             let item = n * I as f64 * vi.powi(I - 1) * vj.powi(J);
             poly_i += item;
@@ -156,14 +156,14 @@ pub fn polys_i_ii_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &
 }
 
 #[inline(always)]
-pub fn polys_i_ii_ij_jj_powi_steps(
-    vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)],
+pub fn polys_i_ii_ij_jj_powi_tile(
+    vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)],
 ) -> (f64, f64, f64, f64) {
     let mut poly_i: f64 = 0.0;
     let mut poly_ii: f64 = 0.0;
     let mut poly_ij: f64 = 0.0;
     let mut poly_jj: f64 = 0.0;
-    for &(start, end) in steps {
+    for &(start, end) in tiles {
        for &(I, J, n) in &IJn[start..end] {
             let item = n * vi.powi(I) * vj.powi(J);
             let i_item = I as f64 * item;

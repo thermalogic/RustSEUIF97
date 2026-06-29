@@ -57,7 +57,7 @@ where
 }
 
 /// pt(p,t,o_id) - the property of `o_id` (thermodynamic,transport,etc) <br/>
-/// pt(p,t,(o_id,reg)) - the property of `o_id` in the region of `reg`(thermodynamic,transport,etc)
+/// pt(p,t,(o_id,reg)) - the property of `o_id` in the region of `reg` (thermodynamic,transport,etc)
 ///
 /// # Examples
 ///
@@ -127,7 +127,7 @@ where
 /// let t=ps(p,s,OT);
 /// // set the region
 /// let h=ps(p,s,(OH,1));
-/// println!("p={p:.6} s={s:.6} t={t:.6} h={h:6}");    
+/// println!("p={p:.6} s={s:.6} t={t:.6} h={h:.6}");    
 /// ```
 #[inline(always)]
 pub fn ps<R>(p: f64, s: f64, o_id_reg: R) -> f64
@@ -269,7 +269,7 @@ where
 /// let p=tv(t,v,OP);
 /// //set the region
 /// let s=tv(t,v,(OS,1));
-/// println!("t={p:.6} v={v:.6} p={p:.6} s={s:.6}");    
+/// println!("t={t:.6} v={v:.6} p={p:.6} s={s:.6}");    
 /// ```
 #[inline(always)]
 pub fn tv<R>(t: f64, v: f64, o_id_reg: R) -> f64
@@ -297,7 +297,7 @@ where
 /// let p=th(t,h,OP);
 /// // set the region
 /// let s=th(t,h,(OS,1));
-/// println!("t={p:.6} h={h:.6} p={p:.6} s={s:.6}");    
+/// println!("t={t:.6} h={h:.6} p={p:.6} s={s:.6}");    
 /// ```
 #[inline(always)]
 pub fn th<R>(t: f64, h: f64, o_id_reg: R) -> f64
@@ -325,7 +325,7 @@ where
 /// let p=ts(t,s,OP);
 /// // set the region
 /// let h=ts(t,s,(OH,1));
-/// println!("t={p:.6} s={s:.6} p={p:.6} h={h:.6}");    
+/// println!("t={t:.6} s={s:.6} p={p:.6} h={h:.6}");    
 /// ```
 #[inline(always)]
 pub fn ts<R>(t: f64, s: f64, o_id_reg: R) -> f64
@@ -351,7 +351,7 @@ where
 ///  let x: f64 = 0.3;
 ///  let p: f64 = hx(h, x, OP);
 ///  let t: f64 = hx(h, x, OT);
-///  println!("hx: h={p:.6} x={x:.6} p={p:.6} t={t:.6}");
+///  println!("hx: h={h:.6} x={x:.6} p={p:.6} t={t:.6}");
 /// ```
 ///
 #[inline(always)]
@@ -377,7 +377,7 @@ pub fn hx(h: f64, x: f64, o_id: i32) -> f64 {
 ///  let x: f64 = 0.3;
 ///  let p: f64 = sx(s, x, OP);
 ///  let t: f64 = sx(s, x, OT);
-///  println!("sx: s={p:.6} x={x:.6} p={p:.6} t={t:.6}");
+///  println!("sx: s={s:.6} x={x:.6} p={p:.6} t={t:.6}");
 /// ```
 ///
 #[inline(always)]

@@ -1,7 +1,7 @@
 //! IAPWS-IF97 Basic Equation for Region 2:
 //!
-//! R7-97(2012) August 2007 : http://www.iapws.org/relguide/IF97-Rev.html
-//!
+//! R7-97(2012) August 2007 : https://iapws.org/documents/release/IF97-Rev
+//! 
 //! The dimensionless Gibbs free energy gamma and its derivatives
 //! * The  basic  equation  Eq.(15), P13
 //!      *  The ideal-gas part： Eq.(16)
@@ -126,52 +126,52 @@ pub fn gamma0_pitau_reg2() -> f64 {
 //   Eq(17), Page 13   Residual part of fundamental equation for region 2
 #[inline(always)]
 pub fn gammar_reg2(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 3] = [(0, 19), (19, 38), (38, 43)];
-    poly_powi_steps(pi, tau - 0.5, &IJn, &steps)
+    const tiles: [(usize, usize); 3] = [(0, 19), (19, 38), (38, 43)];
+    poly_powi_tile(pi, tau - 0.5, &IJn, &tiles)
 }
 
 /// First derivative in pi of residual part of fundamental equation for region 2
 #[inline(always)]
 pub fn gammar_pi_reg2(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 43)];
-    poly_i_powi_steps(pi, tau - 0.5, &IJn, &steps)
+    const tiles: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 43)];
+    poly_i_powi_tile(pi, tau - 0.5, &IJn, &tiles)
 }
 
 /// Second derivative in pi of residual part of fundamental equation for region 2
 #[inline(always)]
 pub fn gammar_pipi_reg2(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
-    poly_ii_powi_steps(pi, tau - 0.5, &IJn, &steps)
+    const tiles: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
+    poly_ii_powi_tile(pi, tau - 0.5, &IJn, &tiles)
 }
 
 /// First derivative in tau of residual part of fundamental equation for region 2
 #[inline(always)]
 pub fn gammar_tau_reg2(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
+    const tiles: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
    // poly_j_powi(pi, tau -0.5, &IJn)
-    poly_j_powi_steps(pi, tau - 0.5, &IJn, &steps)
+    poly_j_powi_tile(pi, tau - 0.5, &IJn, &tiles)
 }
 
 /// Second derivative in tau of residual part of fundamental equation for region 2
 #[inline(always)]
 pub fn gammar_tautau_reg2(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
-    poly_jj_powi_steps(pi, tau - 0.5, &IJn, &steps)
+    const tiles: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
+    poly_jj_powi_tile(pi, tau - 0.5, &IJn, &tiles)
 }
 
 /// Second derivative in pi and tau of residual part of fundamental equation for region 2
 #[inline(always)]
 pub fn gammar_pitau_reg2(pi: f64, tau: f64) -> f64 {
-    const steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
-    poly_ij_powi_steps(pi, tau - 0.5, &IJn, &steps)
+    const tiles: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
+    poly_ij_powi_tile(pi, tau - 0.5, &IJn, &tiles)
 }
 
 // -----------multiple ----------------------------
 
 #[inline(always)]
 pub fn polys_0_j_powi_reg2(pi: f64, tau: f64) -> (f64, f64) {
-    const steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
-    let (gammar, gammar_tau) = polys_0_j_powi_steps(pi, tau - 0.5, &IJn, &steps);
+    const tiles: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
+    let (gammar, gammar_tau) = polys_0_j_powi_tile(pi, tau - 0.5, &IJn, &tiles);
     //let gammar=poly_powi(pi, tau - 0.5, &IJn);
     //let gammar_tau=poly_j_powi(pi, tau - 0.5, &IJn);
     (gammar, gammar_tau)
@@ -179,15 +179,15 @@ pub fn polys_0_j_powi_reg2(pi: f64, tau: f64) -> (f64, f64) {
 
 #[inline(always)]
 pub fn polys_i_j_powi_reg2(pi: f64, tau: f64) -> (f64, f64) {
-    const steps: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
-    let (gammar, gammar_tau) = polys_i_j_powi_steps(pi, tau - 0.5, &IJn, &steps);
+    const tiles: [(usize, usize); 3] = [(0, 13), (13, 26), (26, 43)];
+    let (gammar, gammar_tau) = polys_i_j_powi_tile(pi, tau - 0.5, &IJn, &tiles);
     (gammar, gammar_tau)
 }
 
 #[inline(always)]
 pub fn polys_i_ii_ij_jj_powi_reg2(pi: f64, tau: f64) -> (f64, f64, f64, f64) {
-    const steps: [(usize, usize); 4] = [(0, 11), (11, 22), (22, 33), (33, 43)];
+    const tiles: [(usize, usize); 4] = [(0, 11), (11, 22), (22, 33), (33, 43)];
     let (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau) =
-        polys_i_ii_ij_jj_powi_steps(pi, tau - 0.5, &IJn, &steps);
+        polys_i_ii_ij_jj_powi_tile(pi, tau - 0.5, &IJn, &tiles);
     (gammar_pi, gammar_pipi, gammar_pitau, gammar_tautau)
 }

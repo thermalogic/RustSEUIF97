@@ -100,8 +100,8 @@ pub fn ps2T_reg2a(p: f64, s: f64) -> f64 {
     soI_pow[10] = pi * pi_0_25;        //  1.25
     soI_pow[11] = pi * sqrt_pi;        //  1.5
 
-    const steps: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 46)];
-    for (start, end) in steps {
+    const tiles: [(usize, usize); 3] = [(0, 16), (16, 32), (32, 46)];
+    for (start, end) in tiles {
        for k in start..end {
             theta += IJn[k].2 * soI_pow[I2_SO_I[k]] * sigma.powi(IJn[k].1);
         }
@@ -160,8 +160,8 @@ pub fn ps2T_reg2b(p: f64, s: f64) -> f64 {
 
     let pi: f64 = p / 1.0;
     let sigma: f64 = 10.0 - s / 0.7853;
-    let steps: [(usize, usize); 2] = [(0, 22), (22, 44)];
-    1.0 * poly_powi_steps(pi, sigma, &IJn, &steps)
+    let tiles: [(usize, usize); 2] = [(0, 22), (22, 44)];
+    1.0 * poly_powi_tile(pi, sigma, &IJn, &tiles)
 }
 
 pub fn ps2T_reg2c(p: f64, s: f64) -> f64 {
