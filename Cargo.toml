@@ -44,8 +44,6 @@ opt-level = 3
 lto = "fat"
 codegen-units = 1
 panic = "abort"
-target-cpu = "native"  
 
 [package.metadata.maturin]
 name = "seuif97"
-
