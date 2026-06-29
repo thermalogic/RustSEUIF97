@@ -78,7 +78,7 @@ wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --
 cd /npm
 ```
 
-### 4.1  Build NPM Packagefor web browsers (ES modules)
+### 4.1  Build NPM Package for web browsers (ES modules)
 
 ```bash
 npm run build:wasm
