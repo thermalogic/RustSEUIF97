@@ -10,6 +10,7 @@
 /// Features:
 /// - Tests all thermodynamic properties: p, t, V, H, S, U, CP, W
 /// - Covers Region 1, 2, 3, 4, and 5
+/// - Uses standard test data from tests/common/mod.rs
 /// - Known input parameters are marked with `*` in the output table
 /// - Smart number formatting: adjusts decimal places based on value magnitude
 ///
@@ -19,6 +20,9 @@
 /// ```
 use seuif97::*;
 use std::time::Instant;
+
+// Include standard test data
+include!("../tests/common/mod.rs");
 
 const prop_map_pt: [(&str, i32); 8] = [("p", OP), ("t", OT),("V", OV), ("H", OH), ("S", OS), ("U", OU), ("CP", OCP), ("W", OW)];
 
@@ -155,39 +159,45 @@ fn benchmark_region_pt(p:f64, t:f64,region:i32) {
 }
 
 fn benchmark_region1() {
-    let p: f64 = 3.0;
-    let t: f64 = 300.0 - 273.15;
-    benchmark_region_pt(p, t,1)
+    let data = &r1_pT_data[0];
+    let p = data.p;
+    let t = data.T - 273.15;
+    benchmark_region_pt(p, t, 1)
 }
 
 
 fn benchmark_region2() {
-    let p: f64 = 0.0035;
-    let t: f64 = 300.0 - 273.15;
-    benchmark_region_pt(p, t,2)
+    let data = &r2_pT_data[0];
+    let p = data.p;
+    let t = data.T - 273.15;
+    benchmark_region_pt(p, t, 2)
 }
 
 fn benchmark_region3() {
-    let t: f64 = 650.0-273.15;
-    let d: f64 = 500.0;
+    let data = &r3_Td[0];
+    let t_kelvin = data[0];
+    let d = data[1];
+    let t = t_kelvin - 273.15;
     println!("Region 3 t={:.3} d={:.3} ", t, d);
     benchmark_experiment(t, 1.0 / d, tv, &prop_map_pt, 3, &["t", "V"]);
-    let p: f64 = tv(t, 1.0 / d, (OP,3));
-    let t: f64 = tv(t, 1.0 / d, (OT,3));
-    benchmark_region_pt(p, t,3)
+    let p: f64 = tv(t, 1.0 / d, (OP, 3));
+    let t: f64 = tv(t, 1.0 / d, (OT, 3));
+    benchmark_region_pt(p, t, 3)
 }
 
 fn benchmark_region4() {
-    let h: f64 = 1800.0;
-    let s: f64 = 5.3;
+    let data = &r4_hsT[0];
+    let h = data[0];
+    let s = data[1];
     println!("Region 4 h={:.3} s={:.3} ", h, s);
-    benchmark_experiment(h,s,hs, &prop_map_pt, 4, &["H", "S"]);
+    benchmark_experiment(h, s, hs, &prop_map_pt, 4, &["H", "S"]);
 }
 
 fn benchmark_region5() {
-    let p: f64 = 0.5;
-    let t: f64 = 1500.0 - 273.15;
-    benchmark_region_pt(p, t,5)
+    let data = &r5_pT_data[0];
+    let p = data[1];
+    let t = data[0] - 273.15;
+    benchmark_region_pt(p, t, 5)
 }
 
 
