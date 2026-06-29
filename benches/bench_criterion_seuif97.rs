@@ -227,12 +227,6 @@ fn benchmark_region5(c: &mut Criterion) {
     group.finish();
 }
 
-
-
-
-
-
-
 /// Main benchmark entry point
 fn criterion_benchmark(c: &mut Criterion) {
     benchmark_region1(c);
