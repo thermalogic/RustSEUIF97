@@ -128,6 +128,6 @@ console.log(`s: ${s.toFixed(5)} kJ/(kg·K)`);
 | Isochoric pressure coefficient       |     1/K     |     β    |    OPC |     31     |
 | Isothermal stress coefficient        |    kg/m³    |    βp    | OBETAP |     32     |
 | Fugacity coefficient                 |    —        |    φ    |    OFI |     33     |
-| Fugacity                             |     MPa     |    f    |    OFU |     34     |
+| Fugacity                             |     MPa     |    f*    |    OFU |     34     |
 | Relative pressure coefficient        |     1/K     |    αp    | OAFLAP |     35     |
 
