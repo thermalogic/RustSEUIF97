@@ -4,7 +4,7 @@
 /dist
 /build
 /npm/pkg/
-/demo_using_lib/demo_wasm/pkg
+/pkg
 /demo_using_lib/demo_npm/node_modules
 /npm/package-lock.json
 *.exe

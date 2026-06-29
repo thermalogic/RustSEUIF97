@@ -2,7 +2,7 @@
 
 ![npm version](https://img.shields.io/npm/v/seuif97)![NPM Downloads](https://img.shields.io/npm/dm/seuif97)![NPM Downloads](https://img.shields.io/npm/dt/seuif97)
 
-The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust, enabling fast and accurate thermodynamic property calculations for water and steam directly in the browser or Node.js. 
+The WebAssembly (ES modules) implementation of the high-speed IAPWS-IF97 package SEUIF97, written in Rust, enabling fast and accurate thermodynamic property calculations for water and steam in the browser.
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties**, plus **thermodynamic process functions** for isentropic enthalpy drop and efficiency calculations.
 
@@ -13,25 +13,49 @@ cargo build --release --features wasm --target wasm32-unknown-unknown
 ```
 
 ```bash
-wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir demo_using_lib/demo_wasm/pkg --target web
+wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target web
 ```
 
-## Property Calculation API
+## Property Calculation Functions
 
-The package provides two types of API.
+The package provides two types of API for property calculation.
 
- 1.  Universal Functions (with o_id parameter)
-     - These functions accept an input property pair plus a property ID([o_id](#properties)) to calculate the desired output property. For example: `pt(p,t,o_id)`, where `o_id` specifies the output property.
+### Universal Property Functions
 
- 2. Direct Property Functions
-    -  These functions directly calculate a specific property `(p,t,h,s,v,x)` without requiring the property ID parameter. For example: `pt2h(p,t)`
+The following 12 input pairs are implemented:
 
-## Thermodynamic Process Functions
+```bash
+  (p,t), (p,h), (p,s), (p,v)
+  (h,s)
+  (t,h), (t,s), (t,v)
+  (h,x), (t,x), (v,x), (s,x)
+```            
+Each function accepts an input pair, an output property ID ([o_id](#properties)), and an `optional` region parameter for faster computation.
+For example: the input pair (p,t): `pt(p,t,o_id)`, `pt(p,t,(o_id,region))`
 
-The following thermodynamic process functions are also available:
+**Note:**
+ * The `region` parameter is Rust-only. C, Python and WASM bindings support the `o_id` form only.
+ * Only `linearly` related thermodynamic properties are calculable in the `wet` steam region.
 
-- `ishd(pi, ti, pe)` - Isentropic enthalpy drop (kJ/kg)
-- `ief(pi, ti, pe, te)` - Isentropic efficiency (%)
+### Direct Property Functions
+
+Function naming convention: `{input1}{input2}2{output}`.
+
+| Input | Outputs | Input | Outputs | Input | Outputs |
+|-------|---------|-------|---------|-------|---------|
+| (p,t) | h,s,v,x | (t,h) | p,s,v,x | (p,x) | t,h,s,v |
+| (p,h) | t,s,v,x | (t,s) | p,h,v,x | (t,x) | p,h,s,v |
+| (p,s) | t,h,v,x | (t,v) | p,h,s,x | (h,x) | p,t,s,v |
+| (p,v) | t,h,s,x | (h,s) | p,t,v,x | (s,x) | p,t,h,v |
+
+Total: 48 functions(e.g. `pt2h(p,t)`, `ph2t(p,h)`, `hs2p(h,s)`)
+
+### Thermodynamic Process Functions
+
+The following thermodynamic process functions are implemented:
+
+- `ishd(pi, ti, pe)`: isentropic enthalpy drop for steam expansion (kJ/kg)
+- `ief(pi, ti, pe, te)`: isentropic efficiency for superheated steam expansion (%)
 
 ## Basic Usage (ES Modules)
 
@@ -47,9 +71,9 @@ const h = pt(p, t, 4);
 console.log(`p = ${p} MPa, t = ${t} °C`);
 console.log(`h = ${h.toFixed(3)} kJ/kg`);
 ```
-## Using in Web Browsers
+## Using Local WASM（ES Modules）
 
-* Example: [./demo_using_lib/demo_wasm](./demo_using_lib/demo_wasm/)
+* [./demo_using_lib/demo_wasm](./demo_using_lib/demo_wasm/)
 
 ```bash
 python -m http.server 8080
@@ -59,13 +83,12 @@ python -m http.server 8080
 http://localhost:8080/
 ```
 
-## Using in Node.js With NPM Package 
+## Using NPM Package 
 
 * NPM package: [seuif97](https://www.npmjs.com/seuif97)
 
 ```bash
 npm install
-
 ```
 
 ```bash
@@ -77,20 +100,6 @@ npm run dev
 ```
 
 * NPM Package example: [./demo_using_lib/demo_npm](./demo_using_lib/demo_npm/)
-
-```javascript
-import init, { pt2h } from 'seuif97';
-
-await init();
-
-const p = 3.0;    // MPa
-const t = 250.0;  // °C
-
-const h = pt2h(p, t);
-
-console.log(`p = ${p} MPa, t = ${t} °C`);
-console.log(`h = ${h.toFixed(5)} kJ/kg`);
-```
 
 ## T-s Diagram
 

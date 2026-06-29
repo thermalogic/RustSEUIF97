@@ -1,6 +1,8 @@
 # SEUIF97 WebAssembly (WASM) Technical Documentation
 
-The SEUIF97 library is compiled to WebAssembly using `wasm-bindgen`, enabling high-performance thermodynamic property calculations directly in web browsers and Node.js environments. The NPM package `seuif97` provides a convenient distribution mechanism for these WASM bindings.
+The SEUIF97 library is compiled to WebAssembly using `wasm-bindgen`, enabling high-performance thermodynamic property calculations directly in web browsers.
+
+The NPM package `seuif97` provides a convenient distribution mechanism for these WASM bindings.
 
 ## 1. Architecture Overview
 
@@ -60,152 +62,38 @@ cargo install wasm-bindgen-cli
 rustup target add wasm32-unknown-unknown  
 ```
 
-### 3.2 Build Commands
-
-```bash
-# Build for web browsers (ES modules)
-npm run build:wasm
-
-# Build for Node.js (CommonJS compatibility)
-npm run build:wasm:node
-
-# Full build with NPM package
-npm run prepack
-```
-
-### 3.3 Manual Build Process
-
-#### wasm-bindgen
+### 3.2 build with wasm-bindgen
 
 ```bash
 # 1. Build Rust library for WASM target
 cargo build --release --features wasm --target wasm32-unknown-unknown
 
 # 2. Generate JS bindings for web
-wasm-bindgen ../../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target web
+wasm-bindgen target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target web
 ```
 
-#### wasm-pack
-
-**wasm-pack** 是对 rustc + wasm-bindgen + 打包输出的封装
-  
-```bash
-wasm-pack build --out-dir pkg --target web
-```
-
-### 3.4 NPM Package Distribution
+## 4 NPM Package
 
 ```bash
-cd \npm
+cd /npm
 ```
+
+### 4.1  Build NPM Packagefor web browsers (ES modules)
 
 ```bash
 npm run build:wasm
 ```
+
+### 4.2 Publish NPM Package
 
 ```bash
 npm login
 npm publish
 ```
 
-## 4. Using in Web Browsers
+## 5. API Reference
 
-### 4.1 Basic Usage (ES Modules)
-
-```javascript
-import init, { pt, pt2h, pt2s } from './pkg/seuif97.js';
-
-// Initialize the WASM module
-await init();
-
-// Calculate properties
-const p = 16.0;  // MPa
-const t = 535.1; // °C
-
-const h = pt2h(p, t);
-const s = pt2s(p, t);
-
-console.log(`p = ${p} MPa, t = ${t} °C`);
-console.log(`h = ${h.toFixed(3)} kJ/kg`);
-console.log(`s = ${s.toFixed(5)} kJ/(kg·K)`);
-```
-
-### 4.2 Complete Property Calculation
-
-```javascript
-import init, { pt } from './pkg/seuif97.js';
-
-await init();
-
-const p = 16.0;
-const t = 535.1;
-
-// Property IDs for various thermodynamic properties
-const OH = 4;  // Enthalpy
-const OS = 5;  // Entropy
-const OV = 3;  // Specific volume
-const OD = 2;  // Density
-const OU = 7;  // Internal energy
-const OCP = 8; // Isobaric heat capacity
-const OCV = 9; // Isochoric heat capacity
-const OW = 10; // Speed of sound
-const OKS = 11; // Isentropic exponent
-const OR = 16; // Region
-
-const results = {
-    region: pt(p, t, OR),
-    density: pt(p, t, OD),
-    enthalpy: pt(p, t, OH),
-    entropy: pt(p, t, OS),
-    volume: pt(p, t, OV),
-    internalEnergy: pt(p, t, OU),
-    cp: pt(p, t, OCP),
-    cv: pt(p, t, OCV),
-    speedOfSound: pt(p, t, OW),
-    isentropicExponent: pt(p, t, OKS)
-};
-
-console.table(results);
-```
-
-## 5. Using in Node.js
-
-### 5.1 With NPM Package
-
-```javascript
-import init, { pt, pt2h, pt2s, ph2t } from 'seuif97';
-
-await init();
-
-const p = 3.0;    // MPa
-const t = 250.0;  // °C
-
-const h = pt2h(p, t);
-const s = pt2s(p, t);
-const t_back = ph2t(p, h);  // Verify round-trip
-
-console.log(`p = ${p} MPa, t = ${t} °C`);
-console.log(`h = ${h.toFixed(3)} kJ/kg`);
-console.log(`s = ${s.toFixed(5)} kJ/(kg·K)`);
-console.log(`Round-trip temperature: ${t_back.toFixed(2)} °C`);
-```
-
-### 5.2 Using Locally Built WASM
-
-```javascript
-import { readFileSync } from 'fs';
-import { existsSync } from 'path';
-
-const wasmPath = './pkg/seuif97_bg.wasm';
-const wasmBinary = existsSync(wasmPath) ? readFileSync(wasmPath) : undefined;
-
-const { instance } = await WebAssembly.instantiate(wasmBinary);
-const { pt, pt2h, pt2s } = await import('./pkg/seuif97.js');
-```
-
-## 6. API Reference
-
-### 6.1 Universal Functions (with o_id parameter)
+### 5.1 Universal Functions (with o_id parameter)
 
 These functions accept an input property pair plus a property ID to calculate the desired output property.
 
@@ -224,7 +112,7 @@ These functions accept an input property pair plus a property ID to calculate th
 | `hx(h, x, o_id)` | Enthalpy (kJ/kg), Quality (0-1) | Property value | Saturation region only |
 | `sx(s, x, o_id)` | Entropy (kJ/(kg·K)), Quality (0-1) | Property value | Saturation region only |
 
-### 6.2 Direct Property Functions
+### 5.2 Direct Property Functions
 
 These functions directly calculate a specific property without requiring the property ID parameter.
 
@@ -308,7 +196,7 @@ sx2h(s, x)  // Entropy + Quality → Enthalpy
 sx2v(s, x)  // Entropy + Quality → Specific Volume
 ```
 
-### 6.3 Thermodynamic Process Functions
+### 5.3 Thermodynamic Process Functions
 
 The following thermodynamic process functions are also available:
 
@@ -317,7 +205,7 @@ The following thermodynamic process functions are also available:
 | `ishd(pi, ti, pe)` | Inlet pressure (MPa), Inlet temperature (°C), Outlet pressure (MPa) | Enthalpy drop (kJ/kg) | Isentropic enthalpy drop |
 | `ief(pi, ti, pe, te)` | Inlet pressure (MPa), Inlet temperature (°C), Outlet pressure (MPa), Outlet temperature (°C) | Efficiency (%) | Isentropic efficiency |
 
-#### Usage Example
+## 6 Usage
 
 ```javascript
 import init, { ishd, ief } from 'seuif97';
@@ -340,6 +228,11 @@ const te = 350.0; // °C (actual outlet temperature)
 const efficiency = ief(pi, ti, pe, te);
 console.log(`Isentropic efficiency: ${efficiency.toFixed(2)}%`);
 ```
+
+**Examples**
+
+*  demo_wasm
+*  demo_npm
 
 ## 7. Property ID Constants
 
@@ -384,302 +277,4 @@ The following property IDs can be used with the universal functions (`pt`, `ph`,
 | Fugacity | f* | 34 | MPa |
 | Relative Pressure Coefficient | αp | 35 | 1/K |
 
-## 8. Error Handling
 
-Invalid inputs return specific error values:
-
-| Return Value | Meaning |
-|--------------|---------|
-| `-9999.0` | Invalid value (out of range or invalid combination) |
-| `-2201.0` | Invalid pressure |
-| `-2101.0` | Invalid temperature |
-| `-2202.0` | Invalid (h,s) combination |
-
-### Validation Example
-
-```javascript
-import init, { hs2p, hs2t } from 'seuif97';
-
-await init();
-
-const h = 2800.0;  // kJ/kg
-const s = 6.5;    // kJ/(kg·K)
-
-const p = hs2p(h, s);
-const t = hs2t(h, s);
-
-if (p < 0 || t < -273.15) {
-    console.error('Invalid (h, s) combination for water/steam region');
-} else {
-    console.log(`p = ${p.toFixed(3)} MPa, t = ${t.toFixed(2)} °C`);
-}
-```
-
-## 9. TypeScript Support
-
-The NPM package includes full TypeScript type definitions:
-
-### 9.1 Type Declarations
-
-```typescript
-// seuif97.d.ts (included in package)
-export function init(): Promise<void>;
-export function pt(p: number, t: number, o_id: number): number;
-export function pt2h(p: number, t: number): number;
-export function pt2s(p: number, t: number): number;
-// ... all other functions
-```
-
-### 9.2 Usage with TypeScript
-
-```typescript
-import init, { pt, pt2h } from 'seuif97';
-
-const p: number = 16.0;
-const t: number = 535.1;
-
-await init();
-
-const h: number = pt2h(p, t);
-const enthalpy: number = pt(p, t, 4);
-
-console.log(`h = ${h.toFixed(3)} kJ/kg`);
-```
-
-### 9.3 Type Definitions for Property IDs
-
-```typescript
-export enum PropertyID {
-    OP = 0,   // Pressure
-    OT = 1,   // Temperature
-    OD = 2,   // Density
-    OV = 3,   // Specific Volume
-    OH = 4,   // Enthalpy
-    OS = 5,   // Entropy
-    OE = 6,   // Exergy
-    OU = 7,   // Internal Energy
-    OCP = 8,  // Isobaric Heat Capacity
-    OCV = 9,  // Isochoric Heat Capacity
-    OW = 10,  // Speed of Sound
-    OKS = 11, // Isentropic Exponent
-    OF = 12,  // Helmholtz Free Energy
-    OG = 13,  // Gibbs Free Energy
-    OZ = 14,  // Compressibility Factor
-    OX = 15,  // Steam Quality
-    OR = 16,  // Region
-    // ... transport and further properties
-}
-```
-
-## 10. Performance Considerations
-
-### 10.1 WASM vs Native Performance
-
-The WASM implementation maintains excellent performance characteristics:
-
-| Operation | Relative Performance |
-|-----------|---------------------|
-| Native Rust | 1.0x (baseline) |
-| WASM (browser) | 0.9x - 1.0x |
-| WASM (Node.js) | 0.95x - 1.05x |
-
-### 10.2 Best Practices
-
-1. **Batch Initialization**: Call `init()` once at application startup, not per calculation
-2. **Reuse WASM Instance**: The initialized module is reusable across all calculations
-3. **Avoid String Conversion in Hot Loops**: Pre-define property ID constants outside loops
-4. **Use Numeric Types**: All inputs/outputs are 64-bit floats (JavaScript `Number`)
-
-```javascript
-// Good: Initialize once, calculate many
-await init();
-for (let i = 0; i < 10000; i++) {
-    const h = pt2h(pressures[i], temperatures[i]);
-}
-
-// Bad: Re-initialize for each calculation
-for (let i = 0; i < 10000; i++) {
-    await init();  // Don't do this!
-    const h = pt2h(pressures[i], temperatures[i]);
-}
-```
-
-## 11. Demo Examples
-
-### 11.1 Basic Calculator (Browser)
-
-```javascript
-// demo_wasm/index.html
-import init, { pt2h, pt2s, pt2v, pt2x, pt } from './pkg/seuif97.js';
-
-await init();
-
-function calculate() {
-    const p = parseFloat(document.getElementById('pressure').value);
-    const t = parseFloat(document.getElementById('temperature').value);
-
-    const h = pt2h(p, t);
-    const s = pt2s(p, t);
-    const v = pt2v(p, t);
-    const x = pt2x(p, t);
-    const region = pt(p, t, 16);
-
-    document.getElementById('result').innerHTML = `
-        <p>Region: ${region}</p>
-        <p>Enthalpy: ${h.toFixed(3)} kJ/kg</p>
-        <p>Entropy: ${s.toFixed(5)} kJ/(kg·K)</p>
-        <p>Volume: ${v.toFixed(6)} m³/kg</p>
-        <p>Quality: ${x.toFixed(4)}</p>
-    `;
-}
-```
-
-### 11.2 H-S Diagram Generator (Browser)
-
-```javascript
-import init, { hs2p, hs2t, pt2s, pt } from './pkg/seuif97.js';
-
-await init();
-
-function drawHSDiagram() {
-    const canvas = document.getElementById('canvas');
-    const ctx = canvas.getContext('2d');
-
-    for (let h = 100; h <= 4500; h += 10) {
-        for (let s = 0; s <= 10; s += 0.1) {
-            const p = hs2p(h, s);
-            if (p > 0) {
-                const t = hs2t(h, s);
-                if (t > 0 && t < 1000) {
-                    const x = (h - hs2h(t, s)) / (hs2h(t, 1) - hs2h(t, 0));
-                    const color = x > 0 && x < 1 ? '#3498db' : '#e74c3c';
-                    ctx.fillStyle = color;
-                    ctx.fillRect(s * 50, 500 - h / 10, 1, 1);
-                }
-            }
-        }
-    }
-}
-```
-
-### 11.3 NPM Package with Vite (Build Tool)
-
-```javascript
-// demo_npm/src/main.js
-import init, {
-    pt, ph, ps, hs,
-    pt2h, pt2s, pt2v,
-    ph2t, ph2s, ph2v,
-    ps2t, ps2h, ps2v,
-    hs2p, hs2t, hs2v
-} from 'seuif97';
-
-await init();
-
-const p = 16.0;  // MPa
-const t = 535.1; // °C
-
-console.log('PT Calculation:');
-console.log(`h = ${pt2h(p, t).toFixed(3)} kJ/kg`);
-console.log(`s = ${pt2s(p, t).toFixed(5)} kJ/(kg·K)`);
-console.log(`v = ${pt2v(p, t).toFixed(6)} m³/kg`);
-
-console.log('\nHS Calculation:');
-const h = 3400.0;
-const s = 6.5;
-console.log(`p = ${hs2p(h, s).toFixed(3)} MPa`);
-console.log(`t = ${hs2t(h, s).toFixed(2)} °C`);
-```
-
-## 12. NPM Package Configuration
-
-```json
-{
-  "name": "seuif97",
-  "version": "1.3.1",
-  "description": "The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in Rust",
-  "main": "pkg/seuif97.js",
-  "types": "pkg/seuif97.d.ts",
-  "module": "pkg/seuif97.js",
-  "type": "module",
-  "files": [
-    "pkg/seuif97.js",
-    "pkg/seuif97_bg.js",
-    "pkg/seuif97_bg.wasm",
-    "pkg/seuif97_bg.wasm.d.ts",
-    "pkg/seuif97.d.ts",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "build:wasm": "cargo build --release --features wasm --target wasm32-unknown-unknown && wasm-bindgen ../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target web",
-    "build:wasm:node": "cargo build --release --features wasm --target wasm32-unknown-unknown && wasm-bindgen ../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target nodejs",
-    "prepack": "npm run build:wasm",
-    "test": "node tests/test.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/thermalogic/RustSEUIF97.git"
-  },
-  "keywords": [
-    "wasm",
-    "webassembly",
-    "if97",
-    "iapws-if97",
-    "thermodynamics",
-    "water",
-    "steam"
-  ],
-  "author": "Cheng Maohua <cmh@seu.edu.cn>",
-  "license": "MIT",
-  "engines": {
-    "node": ">=16.0.0"
-  }
-}
-```
-
-## 13. WASM Source Code Structure
-
-The WASM bindings are implemented in `src/wasm_if97.rs` using `wasm_bindgen` attributes:
-
-### 13.1 Key Implementation Patterns
-
-```rust
-use wasm_bindgen::prelude::*;
-
-#[wasm_bindgen]
-pub fn pt(p: f64, t: f64, o_id: i32) -> f64 {
-    let T: f64 = t + 273.15;
-    let reg: i32 = REGION_NONE;
-    match o_id {
-        OP => return p,
-        OT => return t,
-        _ => pair_properties(p, T, o_id, pT_sub_region, pT_reg1, pT_reg2, pT_reg3, pT_reg4, pT_reg5, reg),
-    }
-}
-
-#[wasm_bindgen]
-pub fn pt2h(p: f64, t: f64) -> f64 {
-    crate::rust_if97::pt(p, t, OH)
-}
-```
-
-### 13.2 Feature Flags
-
-The WASM feature is controlled by the `wasm` flag in `Cargo.toml`:
-
-```toml
-[features]
-wasm = ["wasm-bindgen"]
-
-[dependencies.wasm-bindgen]
-version = "0.2.100"
-optional = true
-```
-
-## 14. Related Documentation
-
-- [Main README](../README.md) - Project overview
-- [README_WASM](./README_WASM.md) - Quick start guide for WASM
-- [NPM README](../npm/README.md) - NPM package details
-- [Technical Documentation](./TECHNICAL_DOCUMENTATION_EN.md) - Full technical documentation
