@@ -6,7 +6,7 @@ The WebAssembly implementation of the high-speed IAPWS-IF97 package SEUIF97 in R
 
 This package supports **12 distinct input state pairs** for calculating **36 thermodynamic, transport, and derived properties**, plus **thermodynamic process functions** for isentropic enthalpy drop and efficiency calculations.
 
-## Building the WASM file
+## Building the WASM with wasm-bindgen 
 
 ```bash
 cargo build --release --features wasm --target wasm32-unknown-unknown

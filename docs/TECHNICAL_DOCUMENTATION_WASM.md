@@ -75,15 +75,22 @@ npm run prepack
 
 ### 3.3 Manual Build Process
 
+#### wasm-bindgen
+
 ```bash
 # 1. Build Rust library for WASM target
 cargo build --release --features wasm --target wasm32-unknown-unknown
 
 # 2. Generate JS bindings for web
 wasm-bindgen ../../target/wasm32-unknown-unknown/release/seuif97.wasm --out-dir pkg --target web
+```
 
-# 3. Generate JS bindings for Node.js
-wasm-bindgen ../../target/wasm32-unknown-unknown/release/seuif97.wasm   --out-dir pkg --target nodejs
+#### wasm-pack
+
+**wasm-pack** 是对 rustc + wasm-bindgen + 打包输出的封装
+  
+```bash
+wasm-pack build --out-dir pkg --target web
 ```
 
 ### 3.4 NPM Package Distribution
