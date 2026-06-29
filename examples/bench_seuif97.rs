@@ -33,16 +33,24 @@ fn format_value(value: f64) -> String {
     }
 }
 
-fn benchmark_experiment<F>(v1: f64, v2: f64, func: F, prop_map: &[(&str, i32)], reg: i32, known_props: &[&str])
+/// Benchmark result for a single property
+struct BenchmarkRow {
+    name: String,
+    value: String,
+    time_no_region: String,
+    time_with_region: String,
+    time_diff: String,
+}
+
+/// Collect benchmark timing data for all properties
+fn collect_benchmark_data<F>(
+    v1: f64, v2: f64, func: F, prop_map: &[(&str, i32)], reg: i32, known_props: &[&str],
+) -> Vec<BenchmarkRow>
 where
     F: Fn(f64, f64, o_id_region_args) -> f64,
 {
     const BENCH_ITERATIONS: u128 = 1_000_00;
-    let mut names = Vec::new();
-    let mut values = Vec::new();
-    let mut times_with_region = Vec::new();
-    let mut times_no_region = Vec::new();
-    let mut times_diff = Vec::new();
+    let mut rows = Vec::new();
     for e in prop_map {
         let value: f64 = func(v1, v2, (e.1, reg).into());
         let now = Instant::now();
@@ -58,55 +66,40 @@ where
         let ns_no = elapsed_no_region.as_nanos() as f64 / BENCH_ITERATIONS as f64;
         let ns_with = elapsed_with_region.as_nanos() as f64 / BENCH_ITERATIONS as f64;
         let ns_diff = ns_no - ns_with;
-        names.push(e.0.to_string());
-        let value_str = if known_props.contains(&e.0) {
+        let is_known = known_props.contains(&e.0);
+        let value_str = if is_known {
             format!("{}*", format_value(value))
         } else {
             format_value(value)
         };
-        values.push(value_str);
-        let time_str_with = if known_props.contains(&e.0) {
-            "-".to_string()
-        } else {
-            format!("{:.1}", ns_with)
-        };
-        let time_str_no = if known_props.contains(&e.0) {
-            "-".to_string()
-        } else {
-            format!("{:.1}", ns_no)
-        };
-        let time_str_diff = if known_props.contains(&e.0) {
-            "-".to_string()
-        } else {
-            format!("{:.1}", ns_diff)
-        };
-        times_with_region.push(time_str_with);
-        times_no_region.push(time_str_no);
-        times_diff.push(time_str_diff);
+        rows.push(BenchmarkRow {
+            name: e.0.to_string(),
+            value: value_str,
+            time_no_region: if is_known { "-".to_string() } else { format!("{:.1}", ns_no) },
+            time_with_region: if is_known { "-".to_string() } else { format!("{:.1}", ns_with) },
+            time_diff: if is_known { "-".to_string() } else { format!("{:.1}", ns_diff) },
+        });
     }
-    let mut widths: Vec<usize> = (0..names.len())
+    rows
+}
+
+/// Print benchmark results as a formatted table
+fn print_benchmark_table(rows: &[BenchmarkRow]) {
+    let mut widths: Vec<usize> = (0..rows.len())
         .map(|i| {
-            names[i]
-                .len()
-                .max(values[i].len())
-                .max(times_no_region[i].len())
-                .max(times_with_region[i].len())
-                .max(times_diff[i].len())
+            rows[i].name.len()
+                .max(rows[i].value.len())
+                .max(rows[i].time_no_region.len())
+                .max(rows[i].time_with_region.len())
+                .max(rows[i].time_diff.len())
         })
         .collect();
-    let label_width = "Symbol"
-        .len()
-        .max("Value".len())
-        .max("NoRegion".len())
-        .max("WithRegion".len())
-        .max("Overhead".len());
+    let label_width = "Symbol".len().max("Value".len()).max("NoRegion".len()).max("WithRegion".len()).max("Overhead".len());
     widths.insert(0, label_width);
     let print_separator = |widths: &[usize]| {
         for (i, &w) in widths.iter().enumerate() {
             print!("{}", "-".repeat(w));
-            if i < widths.len() - 1 {
-                print!("  ");
-            }
+            if i < widths.len() - 1 { print!("  "); }
         }
         println!();
     };
@@ -114,8 +107,7 @@ where
         if center {
             let padding = widths[0] - label.len();
             let left = padding / 2;
-            let right = padding - left;
-            print!("{}{}{}", " ".repeat(left), label, " ".repeat(right));
+            print!("{}{}{}", " ".repeat(left), label, " ".repeat(padding - left));
         } else {
             print!("{:>width$}", label, width = widths[0]);
         }
@@ -124,21 +116,29 @@ where
             if center {
                 let padding = widths[i + 1] - item.len();
                 let left = padding / 2;
-                let right = padding - left;
-                print!("{}{}{}", " ".repeat(left), item, " ".repeat(right));
+                print!("{}{}{}", " ".repeat(left), item, " ".repeat(padding - left));
             } else {
                 print!("{:>width$}", item, width = widths[i + 1]);
             }
         }
         println!();
     };
-    print_row("Symbol", &names, true);
+    print_row("Symbol", &rows.iter().map(|r| r.name.clone()).collect::<Vec<_>>(), true);
     print_separator(&widths);
-    print_row("Value", &values, false);
-    print_row("NoRegion", &times_no_region, false);
-    print_row("WithRegion", &times_with_region, false);
-    print_row("Overhead", &times_diff, false);
+    print_row("Value", &rows.iter().map(|r| r.value.clone()).collect::<Vec<_>>(), false);
+    print_row("NoRegion", &rows.iter().map(|r| r.time_no_region.clone()).collect::<Vec<_>>(), false);
+    print_row("WithRegion", &rows.iter().map(|r| r.time_with_region.clone()).collect::<Vec<_>>(), false);
+    print_row("Overhead", &rows.iter().map(|r| r.time_diff.clone()).collect::<Vec<_>>(), false);
     println!();
+}
+
+/// Run benchmark and print results
+fn benchmark_experiment<F>(v1: f64, v2: f64, func: F, prop_map: &[(&str, i32)], reg: i32, known_props: &[&str])
+where
+    F: Fn(f64, f64, o_id_region_args) -> f64,
+{
+    let rows = collect_benchmark_data(v1, v2, func, prop_map, reg, known_props);
+    print_benchmark_table(&rows);
 }
 
 fn benchmark_region_pt(p:f64, t:f64,region:i32) {
