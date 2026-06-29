@@ -11,8 +11,8 @@ else
 endif
 
 all: 
-	gcc speed.c -o$(EXEDIR)speed  $(LIBFLAGS)
-	$(EXEDIR)speed
+	gcc benchmark.c -o$(EXEDIR)benchmark  $(LIBFLAGS)
+	$(EXEDIR)benchmark
 
 
 

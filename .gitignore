@@ -5,6 +5,7 @@
 /build
 /npm/pkg/
 /demo_using_lib/demo_wasm/pkg
+/demo_using_lib/demo_npm/node_modules
 /npm/package-lock.json
 *.exe
 *.pdb

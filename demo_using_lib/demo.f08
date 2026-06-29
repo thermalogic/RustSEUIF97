@@ -1,7 +1,7 @@
 !  The Fortran example to call  the shared library
 !   Windows with MSYS2 install:
 !      pacman -S mingw-w64-x86_64-gcc-fortran
-!      make -f mf.mk
+!       make -f mf.mk
 !
 
 module seuif97
