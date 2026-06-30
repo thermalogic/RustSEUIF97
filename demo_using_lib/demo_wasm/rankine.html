@@ -135,17 +135,11 @@
     </div>
 
     <script type="module">
-        import init, {
-            pt2h, pt2s, ps2h, ps2t, px2h, px2s, px2t,
-            tx, ph2t, ph2s, px2v
-        } from '../../pkg/seuif97.js';
+       import init, * as allIf97 from '../../pkg/seuif97.js';
+       await init();
+       window.seuif97 = allIf97
 
-        window.seuif97 = {
-            pt2h, pt2s, ps2h, ps2t, px2h, px2s, px2t,
-            tx, ph2t, ph2s, px2v
-        };
-
-        try {
+       try {
             await init();
             const statusEl = document.getElementById('wasmStatus');
             statusEl.className = 'status success';

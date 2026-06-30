@@ -187,29 +187,9 @@
     </div>
 
     <script type="module">
-        import init, {
-            pt, ph, ps, hs,
-            pt2h, pt2s, pt2v,
-            ph2t, ph2s, ph2v,
-            ps2t, ps2h, ps2v,
-            hs2p, hs2t, hs2v,
-            tv, th, ts,
-            tv2h, tv2p, tv2s,
-            th2p, th2s,
-            ts2p, ts2h
-        } from '../../pkg/seuif97.js';
-
-        window.seuif97 = {
-            pt, ph, ps, hs,
-            pt2h, pt2s, pt2v,
-            ph2t, ph2s, ph2v,
-            ps2t, ps2h, ps2v,
-            hs2p, hs2t, hs2v,
-            tv, th, ts,
-            tv2h, tv2p, tv2s,
-            th2p, th2s,
-            ts2p, ts2h
-        };
+       import init, * as allIf97 from '../../pkg/seuif97.js';
+       await init();
+       window.seuif97 = allIf97
 
         try {
             await init();
