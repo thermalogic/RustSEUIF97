@@ -20,6 +20,7 @@ const n: [f64; 10] = [
 ];
 
 /// saturation pressure, MPa
+#[inline(always)]
 pub fn p_saturation(T: f64) -> f64 {
     let mut ps: f64 = 0.0;
     if T < 273.15 || T > T_MAX4 {
@@ -36,6 +37,7 @@ pub fn p_saturation(T: f64) -> f64 {
 }
 
 /// saturation temperature K
+#[inline(always)]
 pub fn T_saturation(p: f64) -> f64 {
     let mut Ts: f64 = 0.0;
     if p < 0.000611212677 || p > 22.064 {

@@ -10,19 +10,19 @@
 mod algo;
 mod common;
 mod if97_core;
-pub mod r1;
-pub mod r2;
+mod r1;
+mod r2;
 mod r3;
 mod r4;
-pub mod r5;
+mod r5;
 
 pub use common::property_id::*;
 use common::*;
-pub use r1::*;
-pub use r2::*;
+use r1::*;
+use r2::*;
 use r3::*;
 use r4::*;
-pub use r5::*;
+use r5::*;
 
 mod rust_if97;
 pub use rust_if97::*;
