@@ -11,9 +11,24 @@
     5.  Isobar lines
     6.  Isotherm lines   
 
+Works with both local build and PyPI install:
+
+Local build:
+  1. cargo build -r --features python
+  2. rename the shared library (*.dll / *.so) to seuif97.pyd
+  3. add the path of seuif97.pyd to sys.path before importing
+
+PyPI install:
+  pip install seuif97
+    
 Author:   Cheng Maohua
 Email:    cmh@seu.edu.cn
 """
+import sys
+import os
+# add the path of seuif97.pyd to sys.path
+sys.path.insert(0, os.path.abspath(r'D:\sim_rankine_workbench\iapws-if97\RustSEUIF97\target\release'))
+
 from seuif97 import ph2t, ps2h, pt2h, pt2s, ts2h, ps2t
 
 import matplotlib.pyplot as plt

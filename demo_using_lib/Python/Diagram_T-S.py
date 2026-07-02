@@ -8,12 +8,28 @@ T-s Diagram
 3 Calculating saturation lines x=0,x=1
 4 Calculating isoquality lines x(0.1,0.9)
 
+Works with both local build and PyPI install:
+
+Local build:
+  1. cargo build -r --features python
+  2. rename the shared library (*.dll / *.so) to seuif97.pyd
+  3. add the path of seuif97.pyd to sys.path before importing
+
+PyPI install:
+  pip install seuif97
+
 Author: Cheng Maohua
 Email: cmh@seu.edu.cn
 
 """
+import sys
+import os
 import numpy as np
 import matplotlib.pyplot as plt
+
+# add the path of seuif97.pyd to sys.path
+sys.path.insert(0, os.path.abspath(r'D:\sim_rankine_workbench\iapws-if97\RustSEUIF97\target\release'))
+
 from seuif97 import ph, tx, px
 
 OT = 1
