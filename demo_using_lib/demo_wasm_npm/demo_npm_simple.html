@@ -22,7 +22,7 @@
             
             const p = 16.0;   // MPa
             const t = 535.1;  // °C
-            const h = pt(p, t, 4);  // 4 = 比焓
+            const h = pt(p, t, 4);  // 4 h (kJ/kg)
 
             document.getElementById('output').innerHTML = `
                 <strong>Result:</strong>  h = ${h.toFixed(3)} kJ/kg
