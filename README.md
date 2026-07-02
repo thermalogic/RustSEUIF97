@@ -109,6 +109,8 @@ fn main() {
 
 ## C Shared Library
 
+* [SEUIF97_C_TECH](./docs/SEUIF97_C_TECH.md)
+
 Pre-compiled dynamic link libraries for Windows, Linux and macOS are available in [GitHub Releases](https://github.com/thermalogic/RustSEUIF97/releases).
 
 Interfaces and examples are provided in the [./demo\_using\_lib/](./demo_using_lib/) directory, supporting a wide range of languages and environments.
@@ -143,8 +145,6 @@ int main(void)
 
 ## Python binding
 
-- [SEUIF97_Python](./SEUIF97_Python.md)
-
 **Install**
 
 ```bash
@@ -176,7 +176,7 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## WASM binding
 
-- [SEUIF97_WASM_TECH](./docs/SEUIF97_WASM_TECH.md)
+* [SEUIF97_WASM_TECH](./docs/SEUIF97_WASM_TECH.md)
 
 **Install**
 

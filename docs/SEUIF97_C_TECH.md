@@ -148,11 +148,3 @@ make
 | cdecl | `--features cdecl` | MSVC, MinGW-GCC | Default, compatible with most C code |
 | stdcall | `--features stdcall` | MSVC 32/64-bit | Windows API compatibility |
 
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| `LINK : fatal error LNK1181: cannot open input file 'seuif97.lib'` | Build with `--features cdecl` first, or use `dumpbin /exports` to generate import library |
-| `error: linker x86_64-w64-mingw32-gcc not found` | Ensure MinGW `bin` directory is in system `PATH` |
-| `The code execution cannot proceed because seuif97.dll was not found` | Copy `seuif97.dll` to the same directory as the executable, or add the DLL location to `PATH` |
-| `undefined reference to pt2h` | Check that the correct calling convention was used when building the DLL |
