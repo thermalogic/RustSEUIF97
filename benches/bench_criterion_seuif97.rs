@@ -40,6 +40,7 @@ fn benchmark_region1(c: &mut Criterion) {
         &(data.p, t_celsius),
         |b, (p, t)| b.iter(|| pt(black_box(*p), black_box(*t), black_box(OH))),
     );
+
     group.bench_with_input(
         BenchmarkId::new("pt2s", format!("p={},T={}", data.p, t_celsius)),
         &(data.p, t_celsius),
@@ -80,10 +81,12 @@ fn benchmark_region1(c: &mut Criterion) {
     group.bench_function("ps2t", |b| {
         b.iter(|| ps(black_box(data.p), black_box(data.s), black_box(OT)))
     });
-    group.bench_function("hs2t", |b| {
-        b.iter(|| hs(black_box(data.h), black_box(data.s), black_box(OT)))
-    });
     
+    group.bench_with_input(
+        BenchmarkId::new("hs2p", format!("h={},s={}", data.h, data.s)),
+        &(data.h, data.s),
+        |b, (h, s)| b.iter(|| hs(black_box(*h), black_box(*s), black_box(OP))),
+    );
     group.finish();
 }
 
@@ -230,9 +233,9 @@ fn benchmark_region5(c: &mut Criterion) {
 /// Main benchmark entry point
 fn criterion_benchmark(c: &mut Criterion) {
     benchmark_region1(c);
-    benchmark_region2(c);
-    benchmark_region3(c);
-    benchmark_region5(c);
+   // benchmark_region2(c);
+   // benchmark_region3(c);
+    //benchmark_region5(c);
 }
 
 criterion_group!(benches, criterion_benchmark);

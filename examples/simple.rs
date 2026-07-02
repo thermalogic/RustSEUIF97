@@ -9,6 +9,7 @@
 ///    cargo run -r --example simple
 ///   
 use seuif97::*;
+
 fn main() {
   
     let mut p: f64 = 3.0;
@@ -19,9 +20,35 @@ fn main() {
     let s = pt(p, t, (OS, 1));
     // direct property function
     let mut v = pt2v(p, t);
-    println!("pt: p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");   
+    println!("pt: p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");
+
+
+    let Ps_623: f64 = 16.5291642526045;
+    let h23max: f64 = pT2h_reg2(100.0, 863.15);
+    let h23min: f64 = pT2h_reg2(Ps_623, 623.15);
+    println!("h23max={h23max:.16} h23min={h23min:.16}");   
     
+    let hmin_Ps3: f64 = pT2h_reg1(Ps_623, 623.15);
+    let hmax_Ps3: f64 = pT2h_reg2(Ps_623, 623.15);
+    println!("hmin_Ps3={hmin_Ps3:.16} hmax_Ps3={hmax_Ps3:.16}");   
+
+    let smin_Ps3: f64 = pT2s_reg1(Ps_623, 623.15);
+    let smax_Ps3: f64 = pT2s_reg2(Ps_623, 623.15);
+    println!("smin_Ps3={smin_Ps3:.16} smax_Ps3={smax_Ps3:.16}");   
+   
     let P_MIN: f64 = 0.000611212677444;
+    let hmin = pT2h_reg2(P_MIN, 273.15);
+    println!("\n hmin={hmin:.16}");   
+      
+
+    let s5_pmin=pT2s_reg5(P_MIN, 2273.15);
+    let h5_pmin=pT2h_reg5(P_MIN, 2273.15);
+    let s5_p50=pT2s_reg5(50.0, 1073.15);
+    let h5_p50=pT2h_reg5(50.0, 1073.15);
+    println!(" s5_pmin={s5_pmin:.16} h5_pmin={h5_pmin:.16} \n
+               s5_p50={s5_p50:.16} h5_p50={h5_p50:.16}");   
+
+
     let s_r5_1=pt(50.0, 1073.15-275.15,(OS,5));
     let s_r5_2=pt(P_MIN, 2273.15-273.15,(OS,5));
     let h_r5_1=pt(50.0, 1073.15-273.15,(OH,5)); 
@@ -34,7 +61,6 @@ fn main() {
 
      let s13: f64 = pt(100.0, 623.15-273.15,(OS,1));
      println!(" s13={s13:.8}");   
-     let Ps_623: f64 = 16.5291642526045;
      let s13s: f64 = pt(Ps_623, 623.15-273.15,(OS,1));
      println!(" s13s={s13s:.8}");   
      let h23min: f64 = pt(Ps_623, 623.15-273.15,(OH,2));

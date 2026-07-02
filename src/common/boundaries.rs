@@ -47,8 +47,9 @@ pub fn h2p_sat_reg3(h: f64) -> f64 {
         (36, 24, 0.813641294467829e38),
     ];
 
-    let hmin_Ps3: f64 = pT2h_reg1(Ps_623, 623.15);
-    let hmax_Ps3: f64 = pT2h_reg2(Ps_623, 623.15);
+    let hmin_Ps3: f64=1670.8582182746151830; // pT2h_reg1(Ps_623, 623.15);
+    let hmax_Ps3: f64=2563.5920038884150927; //pT2h_reg2(Ps_623, 623.15);
+
     if h < hmin_Ps3 || h > hmax_Ps3 {
         return INVALID_H as f64;
     }
@@ -76,8 +77,9 @@ pub fn s2p_sat_reg3(s: f64) -> f64 {
     ];
 
     // Check input parameters
-    let smin_Ps3: f64 = pT2s_reg1(Ps_623, 623.15);
-    let smax_Ps3: f64 = pT2s_reg2(Ps_623, 623.15);
+    let smin_Ps3: f64 =3.7782813395442649; // pT2s_reg1(Ps_623, 623.15);
+    let smax_Ps3: f64 =5.2108878249307473; // pT2s_reg2(Ps_623, 623.15);
+
     if s < smin_Ps3 || s > smax_Ps3 {
         return INVALID_S as f64;
     }

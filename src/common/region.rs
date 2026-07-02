@@ -101,6 +101,7 @@ pub fn pT_sub_region(p: f64, T: f64) -> i32 {
 /// Pmin -> Ps_623-> Pc-> 100MP, 3 range to check region
 ///  in each sub region use(hmin, hmax) to check region
 ///   - lazy version: -reg1 +47%, reg2 +5%  reg3 +22% reg5 same
+#[inline(always)]
 pub fn ph_sub_region(p: f64, h: f64) -> i32 {
     if p < P_MIN || p > P_MAX {
         return INVALID_P;
@@ -186,17 +187,17 @@ pub fn ph_sub_region(p: f64, h: f64) -> i32 {
 /// Pmin -> Ps_623-> Pc-> 100MP, 3 range to check region
 ///  in each sub region use(smin ,smax) to check region
 ///  - lazy version: -reg1 +71%, reg2 +3%, reg3 +25%, reg4%, reg5 same
+#[inline(always)]
 pub fn ps_sub_region(p: f64, s: f64) -> i32 {
-    
-     if p < P_MIN || p > P_MAX {
+    if p < P_MIN || p > P_MAX {
         return INVALID_P;
     }
 
     if s < S_MIN || s > S_MAX {
         return INVALID_S;
     }
+    
     let smin: f64 = pT2s_reg1(p, 273.15);
-
     // 1. First Range: [P_MIN ,Ps_623]
     if P_MIN <= p && p <= Ps_623 {
         let Tsat: f64 = T_saturation(p);
@@ -267,6 +268,7 @@ pub fn ps_sub_region(p: f64, s: f64) -> i32 {
 
 
 ///  region 1,2,3,4 (smin ->smax), region 5
+#[inline(always)]
 pub fn hs_sub_region(h: f64, s: f64) -> i32 {
     let mut T: f64 = 0.0;
     let mut p: f64 = 0.0;
@@ -294,10 +296,13 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
 
     // !!!! Check region 5 MUST On TOP !!!
     // if （s4v <= s && s<= smax） (h,s)may be setup to error region2
-    if pT2s_reg5(50.0, 1073.15) < s
-        && s <= pT2s_reg5(P_MIN, 2273.15)
-        && pT2h_reg5(50.0, 1073.15) < h
-        && h <= pT2h_reg5(P_MIN, 2273.15)
+    let s5_p50: f64=6.5226573875963556;// pT2s_reg5(50.0, 1073.15);
+    let h5_p50: f64=3926.0501400717794240;//pT2h_reg5(50.0, 1073.15);
+    let s5_pmin: f64=13.9049560834292283;//pT2s_reg5(P_MIN, 2273.15);
+    let h5_pmin: f64=7376.9802635985088273;//pT2h_reg5(P_MIN, 2273.15);
+   
+    if s5_p50 < s  && s <= s5_pmin &&
+       h5_p50 < h && h <= h5_pmin
     {
         p = hs2p_reg5(h, s);
         T = ph2T_reg5(p, h);
@@ -369,8 +374,8 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
         // Specific zone with 2-3 boundary in s shape
         hmin = h4l + (s - s4l) / (s4v - s4l) * (h4v - h4l);
         hs = hs_region_h2c3b_s(s);
-        let h23max: f64 = pT2h_reg2(100.0, 863.15);
-        let h23min: f64 = pT2h_reg2(Ps_623, 623.15);
+        let h23max: f64 =2812.9420606004150613;// pT2h_reg2(100.0, 863.15);
+        let h23min: f64 =2563.5920038884150927;// pT2h_reg2(Ps_623, 623.15);
         T = ps2T_reg2(100.0, s) - 0.019;
         hmax = pT2h_reg2(100.0, T);
 
@@ -448,7 +453,7 @@ pub fn hs_sub_region(h: f64, s: f64) -> i32 {
     }
 
     if s4v <= s && s <= smax {
-        hmin = pT2h_reg2(P_MIN, 273.15);
+        hmin = 2500.8926178171714128;// pT2h_reg2(P_MIN, 273.15);
         p = hs2p_reg2a(h, s); //hs2p_reg2a r2::region2_p_hs
         hmax = pT2h_reg2(p, 1073.15);
         if P_MIN <= p && p <= 100.0 && hmin <= h && h <= hmax {
