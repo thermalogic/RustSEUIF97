@@ -21,9 +21,10 @@ fn main() {
     // direct property function
     let mut v = pt2v(p, t);
     println!("pt: p={p:.6} t={t:.6} h={h:.6} s={s:.6} v={v:.6}");
-
-
     let Ps_623: f64 = 16.5291642526045;
+    let P_MIN: f64 = 0.000611212677444;
+
+/*/
     let h23max: f64 = pT2h_reg2(100.0, 863.15);
     let h23min: f64 = pT2h_reg2(Ps_623, 623.15);
     println!("h23max={h23max:.16} h23min={h23min:.16}");   
@@ -36,7 +37,6 @@ fn main() {
     let smax_Ps3: f64 = pT2s_reg2(Ps_623, 623.15);
     println!("smin_Ps3={smin_Ps3:.16} smax_Ps3={smax_Ps3:.16}");   
    
-    let P_MIN: f64 = 0.000611212677444;
     let hmin = pT2h_reg2(P_MIN, 273.15);
     println!("\n hmin={hmin:.16}");   
       
@@ -47,7 +47,7 @@ fn main() {
     let h5_p50=pT2h_reg5(50.0, 1073.15);
     println!(" s5_pmin={s5_pmin:.16} h5_pmin={h5_pmin:.16} \n
                s5_p50={s5_p50:.16} h5_p50={h5_p50:.16}");   
-
+*/
 
     let s_r5_1=pt(50.0, 1073.15-275.15,(OS,5));
     let s_r5_2=pt(P_MIN, 2273.15-273.15,(OS,5));
