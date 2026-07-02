@@ -2,19 +2,19 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>SEUIF97 NPM 最简单示例</title>
+    <title>SEUIF97 NPM Simple Example</title>
     <style>
         body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
         .result { background: #f0f0f0; padding: 15px; border-radius: 5px; margin-top: 20px; }
     </style>
 </head>
 <body>
-    <h1>SEUIF97 NPM 包最简单示例</h1>
-    <p>计算: p = 16 MPa, t = 535.1 °C 时的比焓</p>
-    <div class="result" id="output">加载中...</div>
+    <h1>SEUIF97 NPM Package Simple Example</h1>
+    <p> p = 16 MPa, t = 535.1 °C</p>
+    <div class="result" id="output">Loading...</div>
 
     <script type="module">
-        // 从 node_modules 导入（通过 HTTP 服务器访问）
+        // import from node_modules (accessed via HTTP server)
         import init, { pt } from './node_modules/seuif97/pkg/seuif97.js';
 
         try {
@@ -25,13 +25,10 @@
             const h = pt(p, t, 4);  // 4 = 比焓
 
             document.getElementById('output').innerHTML = `
-                <strong>计算结果：</strong><br>
-                p = ${p} MPa<br>
-                t = ${t} °C<br>
-                h = ${h.toFixed(3)} kJ/kg
+                <strong>Result:</strong>  h = ${h.toFixed(3)} kJ/kg
             `;
             
-            console.log('SEUIF97 加载成功');
+            console.log('SEUIF97 NPM Package loaded successfully');
             console.log(`h = ${h.toFixed(3)} kJ/kg`);
             
         } catch (e) {

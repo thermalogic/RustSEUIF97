@@ -2,32 +2,34 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>SEUIF97 WASM Demo</title>
+    <title>SEUIF97 WASM Simple Example</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; }
+        .result { background: #f0f0f0; padding: 15px; border-radius: 5px; margin-top: 20px; }
+    </style>
 </head>
 <body>
-    <h1>SEUIF97 WASM Demo</h1>
-    <pre id="output"></pre>
+    <h1>SEUIF97 WASM Simple Example</h1>
+    <p> p = 16 MPa, t = 535.1 °C</p>
+    <div class="result" id="output">Loading...</div>
      <script type="module">
         import init, { pt } from '../../pkg/seuif97.js';
         try {
             await init();
-            
+           
             const p = 16.0;   // MPa
             const t = 535.1;  // °C
             const h = pt(p, t, 4);  // 4 kJ/kg
 
             document.getElementById('output').innerHTML = `
-                <strong>Result:</strong><br>
-                p = ${p} MPa<br>
-                t = ${t} °C<br>
-                h = ${h.toFixed(3)} kJ/kg
+                <strong>Result:</strong> h = ${h.toFixed(3)} kJ/kg
             `;
-            console.log('SEUIF97 WASM ');
+            console.log('SEUIF97 WASM loaded successfully');
             console.log(`h = ${h.toFixed(3)} kJ/kg`);
             
         } catch (e) {
             document.getElementById('output').innerHTML = 
-                `<strong style="color:red">错误：</strong>${e.message}`;
+                `<strong style="color:red">Error:</strong>${e.message}`;
             console.error(e);
         }
     </script>
