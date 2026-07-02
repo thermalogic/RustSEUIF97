@@ -203,8 +203,8 @@ fn benchmark_region5() {
 
 fn main() {
     benchmark_region1();
-    //benchmark_region2();
-    //benchmark_region3();
-    //benchmark_region4();
-    //benchmark_region5();
+    benchmark_region2();
+    benchmark_region3();
+    benchmark_region4();
+    benchmark_region5();
 }
