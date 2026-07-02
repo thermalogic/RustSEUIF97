@@ -1,6 +1,6 @@
 # The code snippets of the acceleration methods
 
-[![DOI](https://img.shields.io/badge/DOI-10.20944/preprints202606.0793.v1)](https://doi.org/10.20944/preprints202606.0793.v1)
+https://doi.org/10.20944/preprints202606.0793.v1
 
 The code snippets demonstrate the acceleration methods to calculate the specific internal energy $u$ in region 1, illustrating the flow from the optimized kernel to the final physical property calculation:
 
