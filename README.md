@@ -143,7 +143,9 @@ int main(void)
 
 ## Python binding
 
-**Install from PyPI**
+- [SEUIF97_Python](./SEUIF97_Python.md)
+
+**Install**
 
 ```bash
 pip install seuif97
@@ -174,14 +176,13 @@ print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
 
 ## WASM binding
 
-**Install from npm:**
+- [SEUIF97_WASM_TECH](./docs/SEUIF97_WASM_TECH.md)
+
+**Install**
 
 ```bash
 npm install seuif97
 ```
-
-- Detailed documentation: [README_WASM.md](./README_WASM.md)
-- NPM package: [seuif97](https://www.npmjs.com/seuif97)
 
 ```javascript
 import init, { pt, pt2s } from 'seuif97';
