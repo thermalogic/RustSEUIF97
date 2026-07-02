@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <title>SEUIF97 WASM Simple Example</title>
@@ -9,22 +9,29 @@
     </style>
 </head>
 <body>
-    <h1>SEUIF97 WASM Simple Example</h1>
+    <h1>SEUIF97 NPM Package Simple Example</h1>
     <p> p = 16 MPa, t = 535.1 °C</p>
     <div class="result" id="output">Loading...</div>
-     <script type="module">
+
+    <script type="module">
+        // import from node_modules (accessed via HTTP server)
+        // import init, { pt } from './node_modules/seuif97/pkg/seuif97.js';
+        // import from local pkg (accessed via HTTP server)
         import init, { pt } from '../../pkg/seuif97.js';
+    
+
         try {
             await init();
-           
+            
             const p = 16.0;   // MPa
             const t = 535.1;  // °C
-            const h = pt(p, t, 4);  // 4 kJ/kg
+            const h = pt(p, t, 4);  // 4 h (kJ/kg)
 
             document.getElementById('output').innerHTML = `
-                <strong>Result:</strong> h = ${h.toFixed(3)} kJ/kg
+                <strong>Result:</strong>  h = ${h.toFixed(3)} kJ/kg
             `;
-            console.log('SEUIF97 WASM loaded successfully');
+            
+            console.log('SEUIF97 NPM Package loaded successfully');
             console.log(`h = ${h.toFixed(3)} kJ/kg`);
             
         } catch (e) {
