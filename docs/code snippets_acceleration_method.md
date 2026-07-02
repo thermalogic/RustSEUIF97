@@ -25,37 +25,33 @@ $$\frac{u(\pi, \tau)}{RT} = \tau \gamma_{\tau} - \pi \gamma_{\pi}$$
 ## Code snippets
 
 ```rust
-// --- Module: algo/polynomial_steps.rs ---
-// 1. The optimized kernel: Uses loop splitting (steps) and Shared-Power Scaling
+// --- Module: algo/polynomial_tile.rs ---
+// 1. The optimized kernel: Uses loop tiling and Shared-Power Scaling
 #[inline(always)]
-pub fn polys_i_j_powi_steps(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], steps: &[(usize, usize)]) -> (f64, f64) {
-    let mut item: f64 = 0.0;
+pub fn polys_i_j_powi_tile(vi: f64, vj: f64, IJn: &[(i32, i32, f64)], tiles: &[(usize, usize)]) -> (f64, f64) {
     let mut poly_i: f64 = 0.0;
     let mut poly_j: f64 = 0.0;
 
-    for m in 0..steps.len() {
-       // Loop splitting for better cache locality or SIMD potential
-        for k in steps[m].0..steps[m].1 {
-            //Shared-Power Scaling: Compute shared power terms only once
-            item = IJn[k].2 * vi.powi(IJn[k].0) * vj.powi(IJn[k].1);
-            poly_i += IJn[k].0 as f64 * item;
-            poly_j += IJn[k].1 as f64 * item;
+    for &(start, end) in tiles {
+       for &(I, J, n) in &IJn[start..end] {
+            let item = n * vi.powi(I) * vj.powi(J);
+            poly_i += I as f64 * item;
+            poly_j += J as f64 * item;
         }
     }
-
-    // the base scalingvision)
     poly_i /= vi;
     poly_j /= vj;
     (poly_i, poly_j)
 }
 
+
 // --- Module: r1/region1_gre.rs ---
 // 2. Region 1 Wrapper: Handles specific region 1 equations for Gibbs free energy
 // and returns the partial derivatives of Gibbs free energy with respect to pi and tau
 pub fn polys_i_j_powi_reg1(pi: f64, tau: f64) -> (f64, f64) {
-    // profiling-guided loop tiling: define calculation steps explicitly to assist compiler optimization
-    let steps: [(usize, usize); 3] = [(0, 16), (16, 26), (26, 34)];
-    let (d_pi, d_tau) = polys_i_j_powi_steps(7.1 - pi, tau - 1.222, &IJn, &steps);
+    // profiling-guided loop tiling: define calculation tiles explicitly to assist compiler optimization
+    let tiles: [(usize, usize); 3] = [(0, 16), (16, 26), (26, 34)];
+    let (d_pi, d_tau) = polys_i_j_powi_tile(7.1 - pi, tau - 1.222, &IJn, &tiles);
     (-d_pi, d_tau)
 }
 
