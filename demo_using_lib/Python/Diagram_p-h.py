@@ -83,7 +83,7 @@ for x in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]:
 # ============================================================
 # Temperature list matching the reference diagram
 T_list = [1, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300,
-          325, 350, 375, 400, 425, 450, 475, 500, 550, 600, 650, 700, 750, 800]
+          325, 350, 375, 400, 425, 450, 475, 500, 550, 600, 650, 700, 750, 800,1000,1200,1400,1600,1800,2000]
 
 # Pressure range for isotherms
 p_iso = np.logspace(np.log10(Pmin), np.log10(100.0), 200)
@@ -124,6 +124,26 @@ p_b23 = np.concatenate(([Ps_623], p_b23))
 ax.plot(h_b23, p_b23, 'm-', lw=1.5, label='Region 2/3 (B23)')
 
 # ============================================================
+# Region 1/3 boundary: T=623.15K isotherm (350°C)
+# ============================================================
+# From saturated liquid (x=0) at Ps_623 to 100 MPa
+# Use tx() for start point to ensure correct liquid-side value
+h_13_start = px(Ps_623, 0.0, OH)
+p_13_body = np.linspace(Ps_623 + 0.1, 100.0, 100)
+h_13_body = np.array([pt(p, 350.0, OH) for p in p_13_body])
+h_13 = np.concatenate(([h_13_start], h_13_body))
+p_13 = np.concatenate(([Ps_623], p_13_body))
+ax.plot(h_13, p_13, 'g-', lw=1.5, label='Region 1/3 (T=623.15K)')
+
+# ============================================================
+# Region 2/5 boundary: T=1073.15K isotherm (800°C)
+# ============================================================
+# Pressure range: 0.000611212677444 to 50 MPa
+p_25 = np.linspace(0.000611212677444, 50.0, 100)
+h_25 = np.array([pt(p, 800.0, OH) for p in p_25])
+ax.plot(h_25, p_25, 'c-', lw=1.5, label='Region 2/5 (T=1073.15K)')
+
+# ============================================================
 # Critical point
 # ============================================================
 h_crit = pt(Pcrit, tc, OH)
@@ -132,9 +152,10 @@ ax.plot(h_crit, Pcrit, 'ko', markersize=5)
 # ============================================================
 # Display
 # ============================================================
-ax.set_xlim(0, 4200)
+# HMAX=7376.99
+ax.set_xlim(0, 7500)
 ax.set_ylim(1e-3, 100)
 
-ax.legend(loc='upper right', fontsize=9)
+ax.legend(loc='lower right', fontsize=9)
 plt.tight_layout()
 plt.show()
