@@ -15,7 +15,7 @@ pub fn B23_T2p(T: f64) -> f64 {
     n23[0] + (n23[1] + n23[2] * T) * T
 }
 
-/// IF97-rev Table 5, pag 9: Auxiliary equation for the boundary 2-3
+/// IF97-rev Table 1, page 5.6: Auxiliary equation for the boundary 2-3
 ///  *  p pressure in MPa
 ///  * return: temperature between regions 2 and 3 in K
 pub fn B23_p2T(p: f64) -> f64 {
