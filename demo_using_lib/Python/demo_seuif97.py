@@ -30,3 +30,7 @@ h = pt(p, t, OH)
 # direct property functions
 s = pt2s(p,t)
 print(f"p={p}, t={t} h={h:.3f} s={s:.3f}")
+
+h_2000_1 =pt(0.000611212677444, 2000.0, OH)
+h_2000_2 =pt(50.0, 2000.0, OH)
+print(f"h_2000_1={h_2000_1:.3f} h_2000_2={h_2000_2:.3f}")
