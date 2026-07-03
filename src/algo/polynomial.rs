@@ -110,7 +110,7 @@ pub fn polys_i_j_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64) {
 /// The shared-power scaling method to get the polynomials
 ///  * the power of the derivative (∂f/∂vi)
 ///  * the power of the derivative (∂²f/∂²vi) 
-///  * the power of  the derivative (∂f/∂vi/∂vj) 
+///  * the power of the derivative (∂f/∂vi/∂vj) 
 ///  * the power of the derivative  (∂²f/∂²vj)
 #[inline(always)]
 pub fn polys_i_ii_ij_jj_powi(vi: f64, vj: f64, IJn: &[(i32, i32, f64)]) -> (f64, f64, f64, f64) {

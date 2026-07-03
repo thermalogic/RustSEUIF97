@@ -26,22 +26,15 @@ pub const ESP: f64 = 3.0E-08; /* machine floating-point precision */
 ///
 /// # Returns
 /// Approximate root satisfying the precision requirement
-pub fn bisection<F>(
-    mut x1: f64,
-    mut x2: f64,
-    f: F,
-    max_iter: usize,
-    tol: f64,
-    x_tol: f64,
-) -> f64
+pub fn bisection<F>(mut x1: f64, mut x2: f64, f: F,  max_iter: usize,  tol: f64,  x_tol: f64,) -> f64
 where
     F: Fn(f64) -> f64,
 {
     let mut r_x1 = f(x1);
     let mut r_x2 = f(x2);
-     if r_x1 * r_x2 > 0.0 {
+    if r_x1 * r_x2 > 0.0 {
          panic!("Bisection failed: f(x1) and f(x2) must have opposite signs!");
-     }
+    }
 
     for _ in 0..max_iter {
         let xm = 0.5 * (x1 + x2);
@@ -146,16 +139,9 @@ pub fn rtsec(fun: IF97_EQ, fvar: f64, target: f64, x1: f64, x2: f64,
 ///
 /// # Panics
 ///   Panics if f(x1) and f(x2) do not have opposite signs (no bracket).
-pub fn zbrent(
-    fun: IF97_EQ,
-    fvar: f64,
-    target: f64,
-    x1: f64,
-    x2: f64,
-    fvar_position: i32,
-    i_max: i32,
-    tol: f64,
-) -> f64 {
+pub fn zbrent(fun: IF97_EQ, fvar: f64, target: f64,  x1: f64,  x2: f64,
+    fvar_position: i32,  i_max: i32, tol: f64) -> f64 {
+  
     // Helper closure to evaluate f(x) = target - fun(x)
     let mut eval = |x: f64| -> f64 {
         if fvar_position == 1 {
