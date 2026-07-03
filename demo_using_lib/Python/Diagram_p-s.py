@@ -1,7 +1,7 @@
 """
 The Python example to call the seuif97
 
-p-h Diagram
+p-s Diagram
 
 1. Saturated liquid line (x=0) in blue
 2. Saturated vapor line (x=1) in red
@@ -35,13 +35,15 @@ from seuif97 import tx, px, pt
 OP = 0
 OT = 1
 OH = 4
+OS = 5
 
-# ============================================================
+
+# ============================================``================
 # Setup figure
 # ============================================================
 fig, ax = plt.subplots(figsize=(12, 7))
-ax.set_title("p-h Diagram", fontsize=14)
-ax.set_xlabel("h, kJ/kg")
+ax.set_title("p-s Diagram", fontsize=14)
+ax.set_xlabel("s, kJ/kgK")
 ax.set_ylabel("p, MPa")
 ax.set_yscale('log')
 ax.grid(True, alpha=0.3)
@@ -58,25 +60,25 @@ Pmin = 611.657e-6  # MPa
 # 1. Saturated liquid line (x=0) - blue
 # ============================================================
 T_sat = np.linspace(0.01, tc, 300)
-h_liq = np.array([tx(t, 0.0, OH) for t in T_sat])
+s_liq = np.array([tx(t, 0.0, OS) for t in T_sat])
 p_liq = np.array([tx(t, 0.0, OP) for t in T_sat])
-ax.plot(h_liq, p_liq, 'b-', lw=2.0)
+ax.plot(s_liq, p_liq, 'b-', lw=2.0)
 
 # ============================================================
 # 2. Saturated vapor line (x=1) - red
 # ============================================================
-h_vap = np.array([tx(t, 1.0, OH) for t in T_sat])
+s_vap = np.array([tx(t, 1.0, OS) for t in T_sat])
 p_vap = np.array([tx(t, 1.0, OP) for t in T_sat])
-ax.plot(h_vap, p_vap, 'r-', lw=2.0)
+ax.plot(s_vap, p_vap, 'r-', lw=2.0)
 
 # ============================================================
 # 3. Isoquality lines inside the dome - green dashed
 # ============================================================
 T_dome = np.linspace(0.01, tc, 200)
 for x in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]:
-    h_x = np.array([tx(t, x, OH) for t in T_dome])
+    s_x = np.array([tx(t, x, OS) for t in T_dome])
     p_x = np.array([tx(t, x, OP) for t in T_dome])
-    ax.plot(h_x, p_x, 'g--', lw=0.5, alpha=0.7)
+    ax.plot(s_x, p_x, 'g--', lw=0.5, alpha=0.7)
 
 # ============================================================
 # 4. Isotherms - black
@@ -89,13 +91,13 @@ T_list = [1, 25, 50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300,
 p_iso = np.logspace(np.log10(Pmin), np.log10(100.0), 200)
 
 for t_c in T_list:
-    h_vals = np.array([pt(p, t_c, OH) for p in p_iso])
-    ax.plot(h_vals, p_iso, 'k-', lw=0.4, alpha=0.5)
+    s_vals = np.array([pt(p, t_c, OS) for p in p_iso])
+    ax.plot(s_vals, p_iso, 'k-', lw=0.4, alpha=0.5)
     # Add temperature label at top of each isotherm
-    h_top = h_vals[-1]
+    s_top = s_vals[-1]
     p_top = p_iso[-1]
-    ax.annotate(f'{t_c}°C', xy=(h_top, p_top),
-                xytext=(h_top, p_top * 1.15),
+    ax.annotate(f'{t_c}°C', xy=(s_top, p_top),
+                xytext=(s_top, p_top * 1.15),
                 fontsize=6, ha='center', color='black', rotation=90)
 
 # ============================================================
@@ -111,59 +113,59 @@ Ps_623 = 16.5291642526045  # MPa, saturation pressure at 623.15K
 
 # Start from saturated vapor point, then B23 curve to 100 MPa
 T_start = 623.15  # K
-h_start = tx(T_start - 273.15, 1.0, OH)
+s_start = tx(T_start - 273.15, 1.0, OS)
 
 p_b23 = np.linspace(Ps_623 + 0.01, 100.0, 150)
 T_b23 = np.array([n4_b23 + ((p - n5_b23) / n3_b23) ** 0.5 for p in p_b23])
-h_b23 = np.array([pt(p, T - 273.15, OH) for p, T in zip(p_b23, T_b23)])
+s_b23 = np.array([pt(p, T - 273.15, OS) for p, T in zip(p_b23, T_b23)])
 
 # Prepend start point from saturated vapor line
-h_b23 = np.concatenate(([h_start], h_b23))
+s_b23 = np.concatenate(([s_start], s_b23))
 p_b23 = np.concatenate(([Ps_623], p_b23))
 
-ax.plot(h_b23, p_b23, 'm-', lw=1.5, label='Region 2/3 (B23)')
+ax.plot(s_b23, p_b23, 'm-', lw=1.5, label='Region 2/3 (B23)')
 
 # ============================================================
 # Region 1/3 boundary: T=623.15K isotherm (350°C)
 # ============================================================
 # From saturated liquid (x=0) at Ps_623 to 100 MPa
 # Use tx() for start point to ensure correct liquid-side value
-h_13_start = px(Ps_623, 0.0, OH)
+s_13_start = px(Ps_623, 0.0, OS)
 p_13_body = np.linspace(Ps_623 + 0.1, 100.0, 100)
-h_13_body = np.array([pt(p, 350.0, OH) for p in p_13_body])
-h_13 = np.concatenate(([h_13_start], h_13_body))
+s_13_body = np.array([pt(p, 350.0, OS) for p in p_13_body])
+s_13 = np.concatenate(([s_13_start], s_13_body))
 p_13 = np.concatenate(([Ps_623], p_13_body))
-ax.plot(h_13, p_13, 'g-', lw=1.5, label='Region 1/3 (T=623.15K)')
+ax.plot(s_13, p_13, 'g-', lw=1.5, label='Region 1/3 (T=623.15K)')
 
 # ============================================================
 # Region 2/5 boundary: T=1073.15K isotherm (800°C)
 # ============================================================
 # Pressure range: 0.000611212677444 to 50 MPa
 p_25 = np.linspace(0.000611212677444, 50.0, 100)
-h_25 = np.array([pt(p, 800.0, OH) for p in p_25])
-ax.plot(h_25, p_25, 'c-', lw=1.5, label='Region 2/5 (T=1073.15K)')
+s_25 = np.array([pt(p, 800.0, OS) for p in p_25])
+ax.plot(s_25, p_25, 'c-', lw=1.5, label='Region 2/5 (T=1073.15K)')
 
 # ============================================================
 # Region 5 boundary: T=2273.15K isotherm (2000°C)
 # ============================================================
 # Pressure range: 0.000611212677444 to 50 MPa
 p_2000 = np.linspace(0.000611212677444, 50.0, 100)
-h_2000 = np.array([pt(p, 2000.0, OH) for p in p_2000])
-ax.plot(h_2000, p_2000, 'c-', lw=1.5, label='Region 5 (T=2273.15K)')
+s_2000 = np.array([pt(p, 2000.0, OS) for p in p_2000])
+ax.plot(s_2000, p_2000, 'c-', lw=1.5, label='Region 5 (T=2273.15K)')
 
 # ============================================================
 # Critical point
 # ============================================================
-h_crit = pt(Pcrit, tc, OH)
-ax.plot(h_crit, Pcrit, 'ko', markersize=5)
+s_crit = pt(Pcrit, tc, OS)
+ax.plot(s_crit, Pcrit, 'ko', markersize=5)
 
 # ============================================================
 # Display
 # ============================================================
-# HMAX=7376.99
-ax.set_xlim(0, 7500)
+# SMAX=11.92105507
+ax.set_xlim(0, 14)
 ax.set_ylim(1e-3, 100)
 
-ax.legend(loc='lower right', fontsize=9)
+ax.legend(loc='upper right', fontsize=9)
 plt.tight_layout()
 plt.show()
