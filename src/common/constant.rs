@@ -54,7 +54,7 @@ pub const V_MAX: f64 = 1.71645345e3; // P=6.112127e-4 MPa, T=2273.15
 pub const V_MIN: f64 = 0.00095;      //  P=6.112127e-4 MPa, T=273.15 K v=1.00020698e-3
 pub const H_MAX: f64 = 7376.99;
 pub const H_MIN: f64 = 0.0;
-pub const S_MAX: f64 = 11.92105507;//18.992; // 1.0E-8, 2273.15
+pub const S_MAX: f64 = 13.9049560834292283;  // P_MIN, 2273.15
 pub const S_MIN: f64 = 0.0;//-0.008583; // 100,273.15
 
 /// Region1  boundary constants
